@@ -1,0 +1,15 @@
+﻿category,metric,segment,geography,year,value,unit,source_id,confidence,limitation,insight
+Market opportunity,Children enrolled — first-cycle ECE,All first-cycle pupils,Spain,2025-26,491811,children,S01,High,Administrative enrolled population; provisional 2025-26 data.,"Large institutional audience; validates access potential, not demand."
+Market opportunity,0–2 enrolment rate,Age 0–2,Spain,2025-26,50.2,percent,S01,High,"This is an official 0–2 metric, not the entire 0–3 target.",Institutional reach is substantial but should not be mislabeled as 0–3 penetration.
+Market opportunity,Age-2 enrolment rate,Age 2,Spain,2025-26,76.4,percent,S01,High,Official age-specific indicator.,Strong school access at an age relevant to early communication.
+Market opportunity,Average pupils per unit,First-cycle units,Spain,2025-26,12.2,pupils per unit,S01,High,National average; individual centres vary.,Useful operational reference for pilot sizing.
+Market opportunity,Net change in centres,First-cycle centres vs prior year,Spain,2025-26,140,centres,S01,High,Change vs previous year; not total number of centres.,Institutional footprint is still expanding.
+Digital readiness,Internet use,Age 16–74,Spain,2025,96.3,percent,S02,High,General population indicator; not parent-specific.,Basic digital access is unlikely to be a major barrier.
+Digital readiness,Internet use,Age 16–74,Madrid,2025,98.0,percent,S02,High,Regional estimate from same official survey.,Supports Madrid as a digitally mature pilot environment.
+Digital readiness,Online purchasing,Age 16–74,Spain,2025,59.6,percent,S02,High,General population indicator; not parent-specific.,Shows familiarity with digital transactions.
+Digital readiness,Online purchasing,Age 16–74,Madrid,2025,65.0,percent,S02,High,Regional estimate; not evidence of KinderFlow WTP.,Madrid exceeds national ecommerce level.
+AI readiness,GenAI use,Age 16–74,Spain,2025,37.9,percent,S02,High,Not parent-specific.,GenAI is already familiar to a substantial share of the public.
+AI readiness,GenAI use,Age 25–34,Spain,2025,57.2,percent,S02,High,Subgroup N not reported in press-release evidence; age cohort is only a parent proxy.,Relevant age cohort shows strong GenAI exposure.
+AI readiness,GenAI use,Age 35–44,Spain,2025,43.8,percent,S02,High,Subgroup N not reported in press-release evidence; age cohort is only a parent proxy.,Second plausible parent-age cohort is also above overall rate.
+AI readiness,Enterprises using AI,Enterprises with 10+ employees,European Union,2025,19.95,percent,S04,High,Not childcare-specific; excludes most microenterprises.,"AI is sufficiently mainstream to justify focused experimentation, not AI-first strategy."
+AI readiness,Small enterprises using AI,Small enterprises in Eurostat universe,European Union,2025,17.0,percent,S04,High,Small-enterprise definition within Eurostat ICT statistics; still not a direct match for a 5–10 employee nursery.,"Smaller firms participate in adoption, but trail larger companies."
