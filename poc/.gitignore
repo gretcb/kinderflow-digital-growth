@@ -10,8 +10,16 @@ output/previews/*.mp4
 # Keep small reproducible evidence summaries
 !output/validation_summary.json
 !output/landmarks/sign_reference_metadata.json
+!output/normalized/*_normalization_metadata.json
+!output/diagnostics/*.json
+!output/diagnostics/*.png
 
 # Python/cache
 __pycache__/
+**/__pycache__/
 *.pyc
 .DS_Store
+**/.DS_Store
+
+# Local virtual environments
+poc_env/

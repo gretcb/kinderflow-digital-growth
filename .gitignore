@@ -21,5 +21,9 @@ poc/input/*.mov
 # Preview videos derived from reference media
 poc/output/previews/*.mp4
 
+# Generated raw and derived coordinate tables
+poc/output/landmarks/*.csv
+poc/output/normalized/*.csv
+
 # MediaPipe model binaries not required by current Holistic pipeline
 poc/src/*.task

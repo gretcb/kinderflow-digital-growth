@@ -1,0 +1,178 @@
+{
+  "video": "sign_reference",
+  "analysis_stage": "raw_before_interpolation",
+  "detection_basis": "presence of all expected landmarks for dominant Right hand",
+  "total_frames": 332,
+  "fps": 29.97002997002997,
+  "dominant_hand": "Right",
+  "max_internal_gap_frames": 3,
+  "missing_frames": [
+    {
+      "frame": 0,
+      "timestamp_ms": 0.0
+    },
+    {
+      "frame": 1,
+      "timestamp_ms": 33.37
+    },
+    {
+      "frame": 2,
+      "timestamp_ms": 66.73
+    },
+    {
+      "frame": 3,
+      "timestamp_ms": 100.1
+    },
+    {
+      "frame": 4,
+      "timestamp_ms": 133.47
+    },
+    {
+      "frame": 5,
+      "timestamp_ms": 166.83
+    },
+    {
+      "frame": 6,
+      "timestamp_ms": 200.2
+    },
+    {
+      "frame": 7,
+      "timestamp_ms": 233.57
+    },
+    {
+      "frame": 8,
+      "timestamp_ms": 266.93
+    },
+    {
+      "frame": 320,
+      "timestamp_ms": 10677.33
+    },
+    {
+      "frame": 322,
+      "timestamp_ms": 10744.07
+    },
+    {
+      "frame": 323,
+      "timestamp_ms": 10777.43
+    },
+    {
+      "frame": 324,
+      "timestamp_ms": 10810.8
+    },
+    {
+      "frame": 325,
+      "timestamp_ms": 10844.17
+    },
+    {
+      "frame": 326,
+      "timestamp_ms": 10877.53
+    },
+    {
+      "frame": 327,
+      "timestamp_ms": 10910.9
+    },
+    {
+      "frame": 328,
+      "timestamp_ms": 10944.27
+    },
+    {
+      "frame": 329,
+      "timestamp_ms": 10977.63
+    },
+    {
+      "frame": 330,
+      "timestamp_ms": 11011.0
+    },
+    {
+      "frame": 331,
+      "timestamp_ms": 11044.37
+    }
+  ],
+  "gaps": [
+    {
+      "start_frame": 0,
+      "end_frame": 8,
+      "length_frames": 9,
+      "approximate_duration_ms": 300.3,
+      "gap_type": "leading",
+      "frame_numbers": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "timestamps_ms": [
+        0.0,
+        33.37,
+        66.73,
+        100.1,
+        133.47,
+        166.83,
+        200.2,
+        233.57,
+        266.93
+      ],
+      "interpolation_eligible": false,
+      "decision": "leave_unresolved"
+    },
+    {
+      "start_frame": 320,
+      "end_frame": 320,
+      "length_frames": 1,
+      "approximate_duration_ms": 33.37,
+      "gap_type": "internal",
+      "frame_numbers": [
+        320
+      ],
+      "timestamps_ms": [
+        10677.33
+      ],
+      "interpolation_eligible": true,
+      "decision": "interpolate"
+    },
+    {
+      "start_frame": 322,
+      "end_frame": 331,
+      "length_frames": 10,
+      "approximate_duration_ms": 333.67,
+      "gap_type": "trailing",
+      "frame_numbers": [
+        322,
+        323,
+        324,
+        325,
+        326,
+        327,
+        328,
+        329,
+        330,
+        331
+      ],
+      "timestamps_ms": [
+        10744.07,
+        10777.43,
+        10810.8,
+        10844.17,
+        10877.53,
+        10910.9,
+        10944.27,
+        10977.63,
+        11011.0,
+        11044.37
+      ],
+      "interpolation_eligible": false,
+      "decision": "leave_unresolved"
+    }
+  ],
+  "summary": {
+    "total_missing_frames": 20,
+    "longest_missing_run_frames": 10,
+    "median_gap_length_frames": 9.0,
+    "gap_count": 3
+  }
+}

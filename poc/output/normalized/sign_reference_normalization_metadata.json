@@ -1,0 +1,168 @@
+{
+  "video": "sign_reference",
+  "lineage": {
+    "stages": [
+      "raw",
+      "normalized",
+      "interpolated",
+      "smoothed",
+      "diagnostics"
+    ],
+    "raw_inputs": {
+      "poc/output/landmarks/sign_reference_hand_landmarks.csv": {
+        "sha256": "93ca1cacd1024e092abc84b00ea3e279cea270c6ed6404439bfe94acf0379ce3"
+      },
+      "poc/output/landmarks/sign_reference_pose_landmarks.csv": {
+        "sha256": "d9f4c7120d7f39a6da4db00e6b0e7135313d35cac6b69f211a5445fb36cfa8f1"
+      },
+      "poc/output/landmarks/sign_reference_metadata.json": {
+        "sha256": "8e483d830ec3a4212b483a6c023e6c2537ec1c52a1a062e4c5192c5c55f81957"
+      }
+    },
+    "derived_outputs": [
+      "poc/output/normalized/sign_reference_hand_normalized.csv",
+      "poc/output/normalized/sign_reference_pose_normalized.csv",
+      "poc/output/diagnostics/sign_reference_missing_frames.json"
+    ]
+  },
+  "dominant_hand": "Right",
+  "expected_index": {
+    "frames": 332,
+    "hands": [
+      "Right"
+    ],
+    "landmarks_per_hand": 21,
+    "hand_rows": 6972
+  },
+  "normalization": {
+    "origin": "shoulder_midpoint",
+    "origin_formula": "(left_shoulder_xyz + right_shoulder_xyz) / 2",
+    "scale": "shoulder_width",
+    "scale_formula": "euclidean_distance(left_shoulder_xyz, right_shoulder_xyz)",
+    "coordinate_formula": "norm_axis = (raw_axis - shoulder_mid_axis) / shoulder_width",
+    "interpretation": "Body-relative normalization reduces sensitivity to performer position and apparent scale.",
+    "limitation": "This transformation does not provide full viewpoint invariance."
+  },
+  "interpolation": {
+    "method": "linear",
+    "maximum_internal_gap_frames": 3,
+    "leading_extrapolation": false,
+    "trailing_extrapolation": false,
+    "interpolated_frames": [
+      320
+    ],
+    "interpolated_frame_count": 1,
+    "unresolved_frames": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      322,
+      323,
+      324,
+      325,
+      326,
+      327,
+      328,
+      329,
+      330,
+      331
+    ],
+    "unresolved_frame_count": 19,
+    "interpolated_gaps": [
+      {
+        "start_frame": 320,
+        "end_frame": 320,
+        "length_frames": 1,
+        "approximate_duration_ms": 33.37,
+        "gap_type": "internal",
+        "frame_numbers": [
+          320
+        ],
+        "timestamps_ms": [
+          10677.33
+        ],
+        "interpolation_eligible": true,
+        "decision": "interpolate"
+      }
+    ],
+    "unresolved_gaps": [
+      {
+        "start_frame": 0,
+        "end_frame": 8,
+        "length_frames": 9,
+        "approximate_duration_ms": 300.3,
+        "gap_type": "leading",
+        "frame_numbers": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "timestamps_ms": [
+          0.0,
+          33.37,
+          66.73,
+          100.1,
+          133.47,
+          166.83,
+          200.2,
+          233.57,
+          266.93
+        ],
+        "interpolation_eligible": false,
+        "decision": "leave_unresolved"
+      },
+      {
+        "start_frame": 322,
+        "end_frame": 331,
+        "length_frames": 10,
+        "approximate_duration_ms": 333.67,
+        "gap_type": "trailing",
+        "frame_numbers": [
+          322,
+          323,
+          324,
+          325,
+          326,
+          327,
+          328,
+          329,
+          330,
+          331
+        ],
+        "timestamps_ms": [
+          10744.07,
+          10777.43,
+          10810.8,
+          10844.17,
+          10877.53,
+          10910.9,
+          10944.27,
+          10977.63,
+          11011.0,
+          11044.37
+        ],
+        "interpolation_eligible": false,
+        "decision": "leave_unresolved"
+      }
+    ]
+  },
+  "smoothing": {
+    "method": "centered_rolling_mean",
+    "window_frames": 3,
+    "causal_lag": false,
+    "trade_off": "Minimal smoothing reduces frame-level detector jitter while preserving temporal structure.",
+    "normalized_coordinates_overwritten": false
+  }
+}
