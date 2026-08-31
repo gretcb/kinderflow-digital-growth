@@ -7,7 +7,6 @@ const FALLBACK_SIGN_DATA = {
   format: ["video", "routine card", "family guidance"],
   school_assignment: {
     classroom_group: "Toddlers",
-    child_profile: "Example child profile",
     tutors_included: 2,
     delivery: "existing school-family channel"
   },
@@ -44,7 +43,6 @@ const renderSignData = (data) => {
   setText("[data-age-range]", data.age_range);
   setText("[data-format]", data.format.map((item) => item.charAt(0).toUpperCase() + item.slice(1)).join(" + "));
   setText("[data-classroom]", data.school_assignment.classroom_group);
-  setText("[data-child-profile]", data.school_assignment.child_profile);
   setText("[data-tutors]", String(data.school_assignment.tutors_included));
   setText("[data-delivery]", data.school_assignment.delivery);
 };
@@ -83,20 +81,18 @@ if (selectButton && assignmentForm) {
 
   assignmentForm.addEventListener("submit", (event) => {
     event.preventDefault();
-    const target = new FormData(assignmentForm).get("assignment_type");
     const routines = signData.routine.join(" or ").toLowerCase();
 
     familyMessage = [
-      `This week’s Kinder Sign is “${signData.sign}”.`,
-      `Use it during ${routines} when your child wants more of something.`,
-      "Say the word while showing the sign, and repeat naturally in the routine.",
-      "The same sign is being used at school this week, helping provide a consistent cue.",
-      "This is family guidance, not clinical advice. Do not force repetition."
+      `This week at school, children are using the Kinder Sign “${signData.sign}”.`,
+      `At home, use it during ${routines} when your child wants more of something.`,
+      "Say the word while showing the sign. Repeat it naturally in the same routine.",
+      "This is routine guidance, not clinical advice. It does not promise faster development. Do not force repetition."
     ].join("\n\n");
 
     familyMessageElement.textContent = familyMessage;
-    assignmentStatus.textContent = `Assigned to ${target.toLowerCase()}`;
-    actionStatus.textContent = "Family output generated locally.";
+    assignmentStatus.textContent = "Assigned to classroom group";
+    actionStatus.textContent = "Approved family guidance ready to share.";
     messagePreview.focus();
   });
 }
@@ -127,7 +123,7 @@ if (copyMessageButton) {
     const text = familyMessage || familyMessageElement.textContent.trim();
     try {
       await copyText(text);
-      actionStatus.textContent = "Family message copied.";
+      actionStatus.textContent = "Family guidance copied.";
     } catch (_error) {
       actionStatus.textContent = "Copy is unavailable in this browser. The message remains ready to select.";
     }
@@ -221,8 +217,8 @@ if (adminAssignmentForm) {
     adminAssignmentStatus.classList.remove("is-warning");
     const selectedGroupNames = Array.from(selectedGroups, (checkbox) => checkbox.value).join(", ");
     adminAssignmentStatus.textContent =
-      `MORE assigned to ${schoolSelect.value} — ${selectedGroupNames}. ` +
-      "Family card ready for the school-family channel.";
+      `MORE sent to ${schoolSelect.value} — ${selectedGroupNames}. ` +
+      "Family guidance is ready for the school-family channel.";
   });
 }
 

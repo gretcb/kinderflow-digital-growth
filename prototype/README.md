@@ -1,8 +1,8 @@
 # Kinder Signs static prototype
 
-This dependency-free prototype shows the user-facing Kinder Signs product and its commercial logic. It is a product demonstration, not the internal Computer Vision or LLM workflow.
+This dependency-free prototype shows the Kinder Signs school-home experience and its commercial logic. Kinder Signs is not another sign dictionary: the school uses one approved sign in a real routine, and the family receives the same short guidance at home.
 
-It also includes `admin.html`, a separate internal prototype showing how KinderFlow could register adult reference material, inspect motion diagnostics, govern future rendering preparation, review library content and assign it through a school/client account and classroom-group hierarchy. School and group administration controls are illustrative only; the page does not upload, persist, process, publish or integrate data.
+It also includes `admin.html`, a separate internal prototype showing how Kinder Signs could create an approved sign video, run a movement quality check, prepare a family card, complete expert review and add the approved sign card to its library. A separate school-delivery view shows the approved card moving through a school/client and classroom-group hierarchy. School and group controls are illustrative only; the page does not save, process, publish or integrate data.
 
 ## How to open
 
@@ -30,13 +30,13 @@ The page uses `data/approved_sign_more.json` when served over HTTP. It includes 
 
 ### School-facing flow
 
-The prototype shows a school selecting a studied sign from the Kinder Signs library, assigning the weekly sign to a classroom group, child profile or tutor profile, and preparing a family output for its existing school-family channel.
+The prototype shows a school selecting an already approved sign card, assigning it to a classroom group and using it in the classroom routine. The family receives the same approved guidance at home. The school does not create the video, prepare the content or manage the internal workflow.
 
 The distribution actions are deliberately channel-neutral: copy a message, export the routine card through the browser print dialog, or prepare a prototype share-link state. Kinder Signs does not replace a school communication app.
 
 ### Tutor and family flow
 
-Two main tutors receive the weekly sign, short guidance for modelling it naturally, a school-home connection and clear boundaries. Families can extend access to a grandparent, nanny or second home as an optional paid add-on.
+Two main tutors receive the weekly sign, short guidance for using it naturally in the same home routine and clear boundaries. Families can extend access to a grandparent, nanny or second home as an optional paid add-on.
 
 ### Monetization hypothesis
 
@@ -65,6 +65,6 @@ This is a static feasibility prototype. It does not include:
 
 ## Privacy and governance boundaries
 
-No real child data is included, and no child video is required. The child profile is explicitly an example. All page data stays in local static files.
+No real child data is included, and no child video is required. All page data stays in local static files.
 
-KinderFlow may use Computer Vision to support motion representation and an LLM to support content drafting internally. These systems do not validate final sign correctness. Human review and controlled library operations remain KinderFlow responsibilities; the school does not manage the AI workflow. The family card is general routine guidance, not clinical advice.
+KinderFlow may use Computer Vision for movement quality checks and an LLM to help draft family cards. These tools do not confirm final sign correctness. Expert review and library management remain KinderFlow responsibilities; the school does not manage the AI workflow. Family cards are linked to school routines, do not provide clinical advice and do not promise faster development.

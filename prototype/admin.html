@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta
       name="description"
-      content="A static KinderFlow admin prototype for registering, auditing, reviewing and assigning Kinder Signs content."
+      content="A static KinderFlow admin prototype for checking, reviewing and sending approved Kinder Signs cards."
     >
     <title>KinderFlow Admin | Kinder Signs content operations</title>
     <link rel="stylesheet" href="styles.css">
@@ -19,7 +19,7 @@
       </a>
       <nav aria-label="Admin workflow sections">
         <a href="#register">Reference</a>
-        <a href="#cv-audit">CV audit</a>
+        <a href="#cv-audit">Movement check</a>
         <a href="#reviewed-item">Library</a>
         <a href="#school-assignment">Assignment</a>
       </nav>
@@ -29,50 +29,50 @@
     <main id="top">
       <div class="admin-intro section-shell">
         <div>
-          <p class="eyebrow">Internal content operations</p>
-          <h1>Kinder Signs governance flow</h1>
+          <p class="eyebrow">Internal Kinder Signs workflow</p>
+          <h1>Create and approve Kinder Signs content</h1>
           <p>
-            A static view of how KinderFlow registers adult reference material, audits motion evidence,
-            controls future rendering, completes professional review and assigns library content.
+            Kinder Signs creates the approved sign video, checks the movement, prepares the family card
+            and completes expert review before adding the approved sign card to the library.
           </p>
         </div>
         <div class="admin-scope-note">
-          <strong>Internal KinderFlow responsibility</strong>
-          <p>Schools do not manage Computer Vision, LLM, n8n, LangSmith or avatar-generation workflows.</p>
+          <strong>KinderFlow manages the checks</strong>
+          <p>Schools only choose or receive approved sign cards. They do not manage the AI workflow.</p>
         </div>
       </div>
 
       <div class="admin-step-track section-shell" aria-label="KinderFlow internal content sequence">
-        <span>Reference</span>
-        <span>Motion audit</span>
-        <span>Rendering preparation</span>
-        <span>Professional review</span>
-        <span>School assignment</span>
+        <span>Create approved sign video</span>
+        <span>Movement check</span>
+        <span>Family card prepared</span>
+        <span>Expert review</span>
+        <span>Approved card added to library</span>
       </div>
 
       <section class="admin-section section-shell" id="register" aria-labelledby="register-title">
         <div class="admin-section-heading">
           <p class="step-number">01</p>
           <div>
-            <p class="eyebrow">Source control</p>
-            <h2 id="register-title">1. Register validated reference</h2>
-            <p>Register adult reference material before any downstream technical processing.</p>
+            <p class="eyebrow">Kinder Signs internal production</p>
+            <h2 id="register-title">1. Create approved sign video</h2>
+            <p>Kinder Signs creates and manages the reference video internally. Schools never upload or prepare video content.</p>
           </div>
         </div>
 
         <div class="admin-card reference-panel">
-          <div class="reference-file" aria-label="Mock adult reference video registration">
-            <span class="reference-file-type">Adult reference video</span>
+          <div class="reference-file" aria-label="Mock internal approved sign video record">
+            <span class="reference-file-type">Approved sign video</span>
             <div class="file-mark" aria-hidden="true">MP4</div>
-            <strong>Validated reference registered</strong>
-            <small>Local processing · no child video</small>
+            <strong>Reference video ready</strong>
+            <small>Static demo · no child video required</small>
           </div>
           <dl class="admin-details">
             <div><dt>Sign name</dt><dd>More</dd></div>
             <div><dt>Routine</dt><dd>Asking for more during snack time</dd></div>
-            <div><dt>Source type</dt><dd>Adult validated reference</dd></div>
+            <div><dt>Source type</dt><dd>Kinder Signs internal production</dd></div>
             <div><dt>Child data</dt><dd>No child video required</dd></div>
-            <div><dt>Review status</dt><dd><span class="status-pill status-review">Professional review required</span></dd></div>
+            <div><dt>Review status</dt><dd><span class="status-pill status-review">Expert review required</span></dd></div>
           </dl>
         </div>
       </section>
@@ -82,9 +82,9 @@
           <div class="admin-section-heading">
             <p class="step-number">02</p>
             <div>
-              <p class="eyebrow">Technical evidence</p>
-              <h2 id="cv-audit-title">2. Computer Vision audit</h2>
-              <p>Observed motion is converted into structured diagnostics for technical inspection.</p>
+              <p class="eyebrow">Movement quality</p>
+              <h2 id="cv-audit-title">2. Movement quality check</h2>
+              <p>Check whether the movement can be followed clearly across the video.</p>
             </div>
           </div>
 
@@ -95,22 +95,22 @@
               <small>332 of 332 frames</small>
             </article>
             <article class="metric-card">
-              <span>Dominant hand detection</span>
+              <span>Hand detection</span>
               <strong>93.98%</strong>
               <small>312 of 332 frames</small>
             </article>
             <article class="metric-card">
               <span>Missing hand frames</span>
               <strong>20</strong>
-              <small>Retained for continuity review</small>
+              <small>Kept visible for expert review</small>
             </article>
             <article class="metric-card metric-status">
-              <span>Motion status</span>
+              <span>Status</span>
               <strong>Proceed with conditions</strong>
-              <small>Bounded technical decision</small>
+              <small>Continue with expert review</small>
             </article>
           </div>
-          <p class="evidence-note">Motion representation evidence, not proof of sign correctness.</p>
+          <p class="evidence-note">This movement check is not proof of final sign correctness.</p>
         </div>
       </section>
 
@@ -118,31 +118,31 @@
         <div class="admin-section-heading">
           <p class="step-number">03</p>
           <div>
-            <p class="eyebrow">Controlled future step</p>
-            <h2 id="avatar-title">3. Avatar rendering preparation</h2>
-            <p>Future rendering experiments would use the approved motion data as their controlled movement source.</p>
+            <p class="eyebrow">Next build</p>
+            <h2 id="avatar-title">3. Avatar preview preparation</h2>
+            <p>Avatar preview preparation is the next build. It would use the approved movement after review.</p>
           </div>
         </div>
 
         <div class="rendering-panel">
           <div class="rendering-flow" aria-label="Future avatar preparation sequence">
-            <div><span>Input</span><strong>Approved motion data</strong></div>
+            <div><span>Input</span><strong>Approved movement data</strong></div>
             <span class="flow-connector" aria-hidden="true">→</span>
-            <div><span>Constraint</span><strong>Motion-preserving render brief</strong></div>
+            <div><span>Rule</span><strong>Follow the movement as provided</strong></div>
             <span class="flow-connector" aria-hidden="true">→</span>
-            <div><span>Gate</span><strong>Professional validation</strong></div>
+            <div><span>Check</span><strong>Expert review</strong></div>
           </div>
           <blockquote>
-            The avatar can render approved movement. It must not invent or reinterpret the sign.
+            It must follow the approved movement, not invent the sign.
           </blockquote>
           <div class="boundary-grid">
             <div>
               <strong>Not implemented</strong>
-              <p>Avatar rendering is not implemented in this prototype.</p>
+              <p>Final avatar generation is not implemented in this prototype.</p>
             </div>
             <div>
               <strong>Required checkpoint</strong>
-              <p>Professional validation remains required before publication.</p>
+              <p>Expert review remains required before any release.</p>
             </div>
           </div>
         </div>
@@ -153,36 +153,36 @@
           <div class="admin-section-heading">
             <p class="step-number">04</p>
             <div>
-              <p class="eyebrow">Governed content library</p>
-              <h2 id="reviewed-title">4. Reviewed library item</h2>
-              <p>Only reviewed content moves into the assignable Kinder Signs library.</p>
+              <p class="eyebrow">Ready for schools</p>
+              <h2 id="reviewed-title">4. Approved sign card</h2>
+              <p>After expert review, the approved sign card is added to the Kinder Signs library.</p>
             </div>
           </div>
 
           <article class="reviewed-card">
             <div class="reviewed-card-title">
               <div>
-                <p class="card-label">Kinder Signs library item</p>
+                <p class="card-label">Approved sign card</p>
                 <h3>MORE</h3>
               </div>
-              <span class="status-pill status-ready">Professionally reviewed</span>
+              <span class="status-pill status-ready">Added to library</span>
             </div>
             <div class="review-content-grid">
               <div>
-                <span>Family guidance draft</span>
+                <span>Family guidance</span>
                 <p>Say “more” while modelling the studied sign naturally during the routine.</p>
               </div>
               <div>
-                <span>Classroom use context</span>
+                <span>In class</span>
                 <p>Use during snack time when offering or responding to a request for more.</p>
               </div>
               <div>
-                <span>Home practice suggestion</span>
+                <span>At home</span>
                 <p>Model the same cue during snack time without requiring the child to copy it.</p>
               </div>
               <div>
-                <span>Content boundary</span>
-                <p>No clinical or developmental claims. Family routine guidance only.</p>
+                <span>Clear boundary</span>
+                <p>No clinical advice and no promise of faster development. Guidance stays linked to the school routine.</p>
               </div>
             </div>
           </article>
@@ -193,22 +193,22 @@
         <div class="admin-section-heading">
           <p class="step-number">05</p>
           <div>
-            <p class="eyebrow">Controlled distribution</p>
-            <h2 id="school-assignment-title">5. Assign to schools</h2>
-            <p>Choose an example client account, select its classroom groups and assign the reviewed weekly sign.</p>
+            <p class="eyebrow">School delivery</p>
+            <h2 id="school-assignment-title">5. Send to school groups</h2>
+            <p>The school selects an approved library card and assigns it to the classroom groups using that routine.</p>
           </div>
         </div>
 
         <form class="admin-card school-assignment-panel" id="admin-assignment-form">
           <div class="assignment-copy">
-            <p class="card-label">Assignable item</p>
+            <p class="card-label">Approved sign card</p>
             <h3>MORE</h3>
             <p>Weekly sign · Snack-time routine</p>
             <ol class="assignment-hierarchy" aria-label="Assignment hierarchy">
               <li>School / client account</li>
               <li>Classroom groups</li>
-              <li>Weekly sign</li>
-              <li>Family output</li>
+              <li>Approved sign card</li>
+              <li>Family guidance</li>
             </ol>
           </div>
           <div class="assignment-workspace">
@@ -245,7 +245,7 @@
             </fieldset>
 
             <div class="assignment-submit-row">
-              <button class="button button-primary" type="submit">Assign weekly sign</button>
+              <button class="button button-primary" type="submit">Send approved sign card</button>
               <p class="admin-assignment-status" id="admin-assignment-status" aria-live="polite"></p>
             </div>
             <p class="prototype-boundary">
@@ -258,7 +258,7 @@
 
     <footer>
       <span>KinderFlow internal admin prototype</span>
-      <span>Static demonstration · no uploads, integrations, publication or child data</span>
+      <span>Static demonstration · no real video production, integrations, publication or child data</span>
     </footer>
   </body>
 </html>
