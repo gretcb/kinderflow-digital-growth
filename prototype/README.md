@@ -2,6 +2,8 @@
 
 This dependency-free prototype shows the user-facing Kinder Signs product and its commercial logic. It is a product demonstration, not the internal Computer Vision or LLM workflow.
 
+It also includes `admin.html`, a separate internal prototype showing how KinderFlow could register adult reference material, inspect motion diagnostics, govern future rendering preparation, review library content and assign it to example school groups. The admin page is illustrative and does not upload, process, publish or integrate data.
+
 ## How to open
 
 Option 1 — open the file directly:
@@ -18,6 +20,9 @@ python -m http.server 8000
 ```
 
 Then open [http://localhost:8000](http://localhost:8000).
+
+- School-family view: [http://localhost:8000/index.html](http://localhost:8000/index.html)
+- Internal admin view: [http://localhost:8000/admin.html](http://localhost:8000/admin.html)
 
 The page uses `data/approved_sign_more.json` when served over HTTP. It includes equivalent fallback data in `app.js`, so the interactions also work when `index.html` is opened directly with a `file://` URL.
 

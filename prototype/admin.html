@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta
+      name="description"
+      content="A static KinderFlow admin prototype for registering, auditing, reviewing and assigning Kinder Signs content."
+    >
+    <title>KinderFlow Admin | Kinder Signs content operations</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="app.js" defer></script>
+  </head>
+  <body class="admin-page">
+    <header class="site-header">
+      <a class="brand" href="index.html" aria-label="Return to the Kinder Signs school-family prototype">
+        <span class="brand-mark" aria-hidden="true">K</span>
+        <span>KinderFlow Admin</span>
+      </a>
+      <nav aria-label="Admin workflow sections">
+        <a href="#register">Reference</a>
+        <a href="#cv-audit">CV audit</a>
+        <a href="#reviewed-item">Library</a>
+        <a href="#school-assignment">Assignment</a>
+      </nav>
+      <a class="prototype-label page-switch" href="index.html">School-family view</a>
+    </header>
+
+    <main id="top">
+      <div class="admin-intro section-shell">
+        <div>
+          <p class="eyebrow">Internal content operations</p>
+          <h1>Kinder Signs governance flow</h1>
+          <p>
+            A static view of how KinderFlow registers adult reference material, audits motion evidence,
+            controls future rendering, completes professional review and assigns library content.
+          </p>
+        </div>
+        <div class="admin-scope-note">
+          <strong>Internal KinderFlow responsibility</strong>
+          <p>Schools do not manage Computer Vision, LLM, n8n, LangSmith or avatar-generation workflows.</p>
+        </div>
+      </div>
+
+      <div class="admin-step-track section-shell" aria-label="KinderFlow internal content sequence">
+        <span>Reference</span>
+        <span>Motion audit</span>
+        <span>Rendering preparation</span>
+        <span>Professional review</span>
+        <span>School assignment</span>
+      </div>
+
+      <section class="admin-section section-shell" id="register" aria-labelledby="register-title">
+        <div class="admin-section-heading">
+          <p class="step-number">01</p>
+          <div>
+            <p class="eyebrow">Source control</p>
+            <h2 id="register-title">1. Register validated reference</h2>
+            <p>Register adult reference material before any downstream technical processing.</p>
+          </div>
+        </div>
+
+        <div class="admin-card reference-panel">
+          <div class="reference-file" aria-label="Mock adult reference video registration">
+            <span class="reference-file-type">Adult reference video</span>
+            <div class="file-mark" aria-hidden="true">MP4</div>
+            <strong>Validated reference registered</strong>
+            <small>Local processing · no child video</small>
+          </div>
+          <dl class="admin-details">
+            <div><dt>Sign name</dt><dd>More</dd></div>
+            <div><dt>Routine</dt><dd>Asking for more during snack time</dd></div>
+            <div><dt>Source type</dt><dd>Adult validated reference</dd></div>
+            <div><dt>Child data</dt><dd>No child video required</dd></div>
+            <div><dt>Review status</dt><dd><span class="status-pill status-review">Professional review required</span></dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="admin-section section-tint" id="cv-audit" aria-labelledby="cv-audit-title">
+        <div class="section-shell">
+          <div class="admin-section-heading">
+            <p class="step-number">02</p>
+            <div>
+              <p class="eyebrow">Technical evidence</p>
+              <h2 id="cv-audit-title">2. Computer Vision audit</h2>
+              <p>Observed motion is converted into structured diagnostics for technical inspection.</p>
+            </div>
+          </div>
+
+          <div class="metric-grid">
+            <article class="metric-card">
+              <span>Pose detection</span>
+              <strong>100%</strong>
+              <small>332 of 332 frames</small>
+            </article>
+            <article class="metric-card">
+              <span>Dominant hand detection</span>
+              <strong>93.98%</strong>
+              <small>312 of 332 frames</small>
+            </article>
+            <article class="metric-card">
+              <span>Missing hand frames</span>
+              <strong>20</strong>
+              <small>Retained for continuity review</small>
+            </article>
+            <article class="metric-card metric-status">
+              <span>Motion status</span>
+              <strong>Proceed with conditions</strong>
+              <small>Bounded technical decision</small>
+            </article>
+          </div>
+          <p class="evidence-note">Motion representation evidence, not proof of sign correctness.</p>
+        </div>
+      </section>
+
+      <section class="admin-section section-shell" id="avatar-preparation" aria-labelledby="avatar-title">
+        <div class="admin-section-heading">
+          <p class="step-number">03</p>
+          <div>
+            <p class="eyebrow">Controlled future step</p>
+            <h2 id="avatar-title">3. Avatar rendering preparation</h2>
+            <p>Future rendering experiments would use the approved motion data as their controlled movement source.</p>
+          </div>
+        </div>
+
+        <div class="rendering-panel">
+          <div class="rendering-flow" aria-label="Future avatar preparation sequence">
+            <div><span>Input</span><strong>Approved motion data</strong></div>
+            <span class="flow-connector" aria-hidden="true">→</span>
+            <div><span>Constraint</span><strong>Motion-preserving render brief</strong></div>
+            <span class="flow-connector" aria-hidden="true">→</span>
+            <div><span>Gate</span><strong>Professional validation</strong></div>
+          </div>
+          <blockquote>
+            The avatar can render approved movement. It must not invent or reinterpret the sign.
+          </blockquote>
+          <div class="boundary-grid">
+            <div>
+              <strong>Not implemented</strong>
+              <p>Avatar rendering is not implemented in this prototype.</p>
+            </div>
+            <div>
+              <strong>Required checkpoint</strong>
+              <p>Professional validation remains required before publication.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="admin-section section-tint" id="reviewed-item" aria-labelledby="reviewed-title">
+        <div class="section-shell">
+          <div class="admin-section-heading">
+            <p class="step-number">04</p>
+            <div>
+              <p class="eyebrow">Governed content library</p>
+              <h2 id="reviewed-title">4. Reviewed library item</h2>
+              <p>Only reviewed content moves into the assignable Kinder Signs library.</p>
+            </div>
+          </div>
+
+          <article class="reviewed-card">
+            <div class="reviewed-card-title">
+              <div>
+                <p class="card-label">Kinder Signs library item</p>
+                <h3>MORE</h3>
+              </div>
+              <span class="status-pill status-ready">Professionally reviewed</span>
+            </div>
+            <div class="review-content-grid">
+              <div>
+                <span>Family guidance draft</span>
+                <p>Say “more” while modelling the studied sign naturally during the routine.</p>
+              </div>
+              <div>
+                <span>Classroom use context</span>
+                <p>Use during snack time when offering or responding to a request for more.</p>
+              </div>
+              <div>
+                <span>Home practice suggestion</span>
+                <p>Model the same cue during snack time without requiring the child to copy it.</p>
+              </div>
+              <div>
+                <span>Content boundary</span>
+                <p>No clinical or developmental claims. Family routine guidance only.</p>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="admin-section section-shell" id="school-assignment" aria-labelledby="school-assignment-title">
+        <div class="admin-section-heading">
+          <p class="step-number">05</p>
+          <div>
+            <p class="eyebrow">Controlled distribution</p>
+            <h2 id="school-assignment-title">5. Assign to schools</h2>
+            <p>Assign the reviewed weekly sign to example client groups without exposing internal workflow tools.</p>
+          </div>
+        </div>
+
+        <form class="admin-card school-assignment-panel" id="admin-assignment-form">
+          <div class="assignment-copy">
+            <p class="card-label">Assignable item</p>
+            <h3>MORE</h3>
+            <p>Weekly sign · Snack-time routine</p>
+          </div>
+          <fieldset class="school-options">
+            <legend>Select school groups</legend>
+            <label>
+              <input type="checkbox" name="school_group" value="School A — 1-2 years" checked>
+              <span><strong>School A</strong><small>1-2 years</small></span>
+            </label>
+            <label>
+              <input type="checkbox" name="school_group" value="School A — 2-3 years">
+              <span><strong>School A</strong><small>2-3 years</small></span>
+            </label>
+            <label>
+              <input type="checkbox" name="school_group" value="School B — Toddler group">
+              <span><strong>School B</strong><small>Toddler group</small></span>
+            </label>
+          </fieldset>
+          <button class="button button-primary" type="submit">Assign weekly sign</button>
+          <p class="admin-assignment-status" id="admin-assignment-status" aria-live="polite"></p>
+        </form>
+      </section>
+    </main>
+
+    <footer>
+      <span>KinderFlow internal admin prototype</span>
+      <span>Static demonstration · no uploads, integrations, publication or child data</span>
+    </footer>
+  </body>
+</html>

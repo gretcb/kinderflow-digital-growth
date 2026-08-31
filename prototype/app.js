@@ -71,33 +71,35 @@ const familyMessageElement = document.querySelector("#family-message");
 const messagePreview = document.querySelector("#message-preview");
 const actionStatus = document.querySelector("#action-status");
 
-selectButton.addEventListener("click", () => {
-  selectButton.textContent = "Weekly sign selected";
-  selectButton.setAttribute("aria-pressed", "true");
-  selectionStatus.textContent = "Selected";
-  selectionStatus.classList.add("selected");
-  assignmentStatus.textContent = `${signData.sign} selected`;
-  document.querySelector("#assignment").scrollIntoView({ behavior: "smooth", block: "start" });
-});
+if (selectButton && assignmentForm) {
+  selectButton.addEventListener("click", () => {
+    selectButton.textContent = "Weekly sign selected";
+    selectButton.setAttribute("aria-pressed", "true");
+    selectionStatus.textContent = "Selected";
+    selectionStatus.classList.add("selected");
+    assignmentStatus.textContent = `${signData.sign} selected`;
+    document.querySelector("#assignment").scrollIntoView({ behavior: "smooth", block: "start" });
+  });
 
-assignmentForm.addEventListener("submit", (event) => {
-  event.preventDefault();
-  const target = new FormData(assignmentForm).get("assignment_type");
-  const routines = signData.routine.join(" or ").toLowerCase();
+  assignmentForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const target = new FormData(assignmentForm).get("assignment_type");
+    const routines = signData.routine.join(" or ").toLowerCase();
 
-  familyMessage = [
-    `This week’s Kinder Sign is “${signData.sign}”.`,
-    `Use it during ${routines} when your child wants more of something.`,
-    "Say the word while showing the sign, and repeat naturally in the routine.",
-    "The same sign is being used at school this week, helping provide a consistent cue.",
-    "This is family guidance, not clinical advice. Do not force repetition."
-  ].join("\n\n");
+    familyMessage = [
+      `This week’s Kinder Sign is “${signData.sign}”.`,
+      `Use it during ${routines} when your child wants more of something.`,
+      "Say the word while showing the sign, and repeat naturally in the routine.",
+      "The same sign is being used at school this week, helping provide a consistent cue.",
+      "This is family guidance, not clinical advice. Do not force repetition."
+    ].join("\n\n");
 
-  familyMessageElement.textContent = familyMessage;
-  assignmentStatus.textContent = `Assigned to ${target.toLowerCase()}`;
-  actionStatus.textContent = "Family output generated locally.";
-  messagePreview.focus();
-});
+    familyMessageElement.textContent = familyMessage;
+    assignmentStatus.textContent = `Assigned to ${target.toLowerCase()}`;
+    actionStatus.textContent = "Family output generated locally.";
+    messagePreview.focus();
+  });
+}
 
 const copyText = async (text) => {
   if (navigator.clipboard && window.isSecureContext) {
@@ -116,33 +118,65 @@ const copyText = async (text) => {
   textArea.remove();
 };
 
-document.querySelector("#copy-message").addEventListener("click", async () => {
-  const text = familyMessage || familyMessageElement.textContent.trim();
-  try {
-    await copyText(text);
-    actionStatus.textContent = "Family message copied.";
-  } catch (_error) {
-    actionStatus.textContent = "Copy is unavailable in this browser. The message remains ready to select.";
-  }
-});
+const copyMessageButton = document.querySelector("#copy-message");
+const exportPdfButton = document.querySelector("#export-pdf");
+const createLinkButton = document.querySelector("#create-link");
 
-document.querySelector("#export-pdf").addEventListener("click", () => {
-  actionStatus.textContent = "Opening the browser print dialog. Choose Save as PDF to export this prototype card.";
-  window.print();
-});
+if (copyMessageButton) {
+  copyMessageButton.addEventListener("click", async () => {
+    const text = familyMessage || familyMessageElement.textContent.trim();
+    try {
+      await copyText(text);
+      actionStatus.textContent = "Family message copied.";
+    } catch (_error) {
+      actionStatus.textContent = "Copy is unavailable in this browser. The message remains ready to select.";
+    }
+  });
+}
 
-document.querySelector("#create-link").addEventListener("click", () => {
-  actionStatus.textContent = "Prototype share link prepared. Nothing was published or sent.";
-});
+if (exportPdfButton) {
+  exportPdfButton.addEventListener("click", () => {
+    actionStatus.textContent = "Opening the browser print dialog. Choose Save as PDF to export this prototype card.";
+    window.print();
+  });
+}
+
+if (createLinkButton) {
+  createLinkButton.addEventListener("click", () => {
+    actionStatus.textContent = "Prototype share link prepared. Nothing was published or sent.";
+  });
+}
 
 const routineButton = document.querySelector("#open-routine");
 const routineDetail = document.querySelector("#routine-detail");
 
-routineButton.addEventListener("click", () => {
-  const isOpen = routineButton.getAttribute("aria-expanded") === "true";
-  routineButton.setAttribute("aria-expanded", String(!isOpen));
-  routineButton.textContent = isOpen ? "Open routine card" : "Close routine card";
-  routineDetail.hidden = isOpen;
-});
+if (routineButton) {
+  routineButton.addEventListener("click", () => {
+    const isOpen = routineButton.getAttribute("aria-expanded") === "true";
+    routineButton.setAttribute("aria-expanded", String(!isOpen));
+    routineButton.textContent = isOpen ? "Open routine card" : "Close routine card";
+    routineDetail.hidden = isOpen;
+  });
+}
+
+const adminAssignmentForm = document.querySelector("#admin-assignment-form");
+const adminAssignmentStatus = document.querySelector("#admin-assignment-status");
+
+if (adminAssignmentForm) {
+  adminAssignmentForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const selectedGroups = adminAssignmentForm.querySelectorAll('input[name="school_group"]:checked');
+
+    if (selectedGroups.length === 0) {
+      adminAssignmentStatus.textContent = "Select at least one school group before assigning the weekly sign.";
+      adminAssignmentStatus.classList.add("is-warning");
+      return;
+    }
+
+    adminAssignmentStatus.classList.remove("is-warning");
+    adminAssignmentStatus.textContent =
+      "Assigned to selected school groups. Family card ready for the school-family channel.";
+  });
+}
 
 loadSignData();
