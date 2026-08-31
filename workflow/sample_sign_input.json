@@ -1,0 +1,21 @@
+{
+  "sign_id": "KS_MORE_001",
+  "sign_name": "More",
+  "age_range": "6-36 months",
+  "routine_context": "Snack time, playtime or classroom routines when the child wants more of an activity, object or food.",
+  "approved_description": "Use this sign when offering or asking for more of something already present in the routine. The adult should say the word clearly while modelling the approved sign.",
+  "movement_notes": "Use only the approved reference video as the movement source. Do not add movement steps beyond the validated reference.",
+  "school_home_connection": "This is the sign selected for this week's school-home practice.",
+  "do_not_claim": [
+    "Do not claim that Baby Sign accelerates language development.",
+    "Do not claim that this sign treats communication delays.",
+    "Do not diagnose communication needs.",
+    "Do not mention ASL or LSE unless explicitly provided in the approved input.",
+    "Do not invent additional movement instructions.",
+    "Do not replace professional advice."
+  ],
+  "source_type": "approved_internal_content",
+  "source_id": "KS_APPROVED_001",
+  "review_status": "approved_for_draft_only",
+  "requires_human_review": true
+}
