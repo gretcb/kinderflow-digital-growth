@@ -1,0 +1,39 @@
+{
+  "sign": "More",
+  "routine": [
+    "Snack time",
+    "Playtime"
+  ],
+  "age_range": "0-3",
+  "format": [
+    "video",
+    "routine card",
+    "family guidance"
+  ],
+  "school_assignment": {
+    "classroom_group": "Toddlers",
+    "child_profile": "Example child profile",
+    "tutors_included": 2,
+    "delivery": "existing school-family channel"
+  },
+  "family_access": {
+    "included": "2 main tutors included",
+    "extra_caregiver": "Optional paid add-on",
+    "examples": [
+      "Grandparent",
+      "Nanny",
+      "Second home"
+    ]
+  },
+  "add_ons": [
+    "printed flashcards",
+    "original mini stories",
+    "original short songs",
+    "routine packs"
+  ],
+  "boundaries": [
+    "No child video required",
+    "Family guidance, not clinical advice",
+    "Internal AI workflow is not managed by the school"
+  ]
+}
