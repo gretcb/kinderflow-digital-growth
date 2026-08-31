@@ -1,0 +1,17 @@
+{
+    "video": "sign_reference",
+    "metrics": {
+        "frames_total": 332,
+        "frames_with_hands": 312,
+        "hand_detection_rate_percent": 93.98,
+        "frames_with_pose": 332,
+        "pose_detection_rate_percent": 100.0,
+        "frames_with_left_hand": 0,
+        "frames_with_right_hand": 312,
+        "missing_frames": 20
+    },
+    "status": "PASS",
+    "notes": [
+        "Sufficient technical landmark stability for motion tracking."
+    ]
+}

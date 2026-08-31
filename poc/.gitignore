@@ -1,7 +1,17 @@
+# Private/local inputs
 input/*.mp4
 input/*.mov
-input/*.avi
+
+# Generated large/raw outputs
 output/landmarks/*.csv
-output/landmarks/*.json
+output/normalized/*.csv
 output/previews/*.mp4
-output/*.json
+
+# Keep small reproducible evidence summaries
+!output/validation_summary.json
+!output/landmarks/sign_reference_metadata.json
+
+# Python/cache
+__pycache__/
+*.pyc
+.DS_Store
