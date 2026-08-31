@@ -1,0 +1,25 @@
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Python
+__pycache__/
+**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+poc_env/
+.venv/
+venv/
+
+# Private/local reference media
+poc/input/*.mp4
+poc/input/*.mov
+
+# Preview videos derived from reference media
+poc/output/previews/*.mp4
+
+# MediaPipe model binaries not required by current Holistic pipeline
+poc/src/*.task
