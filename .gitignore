@@ -27,3 +27,7 @@ poc/output/normalized/*.csv
 
 # MediaPipe model binaries not required by current Holistic pipeline
 poc/src/*.task
+
+# Local secrets
+.env
+*.env
