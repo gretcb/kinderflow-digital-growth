@@ -44,14 +44,12 @@
     },
     {
       "parameters": {
-        "mode": "raw",
-        "jsonOutput": "={{ { ...$json, cv_motion_summary: {\"video_id\":\"sign_reference\",\"frames_total\":332,\"pose_detection_rate_percent\":100,\"hand_detection_rate_percent\":93.98,\"missing_hand_frames\":20,\"motion_representation_status\":\"MOTION_REPRESENTATION_PARTIAL\",\"technical_interpretation\":\"The reference video can be converted into structured motion data for further experimentation, but motion fidelity and professional sign correctness are not proven.\",\"limitations\":[\"Single adult reference video\",\"No professional sign correctness validation\",\"No avatar generation\",\"No synthetic-video fidelity test\"]} } }}",
-        "options": {}
+        "jsCode": "const incoming = $input.first()?.json;\nconst safeIncoming =\n  incoming && typeof incoming === 'object' && !Array.isArray(incoming)\n    ? incoming\n    : {};\n\nreturn [\n  {\n    json: {\n      ...safeIncoming,\n      cv_motion_summary: {\n        video_id: \"sign_reference\",\n        frames_total: 332,\n        pose_detection_rate_percent: 100.0,\n        hand_detection_rate_percent: 93.98,\n        missing_hand_frames: 20,\n        motion_representation_status: \"MOTION_REPRESENTATION_PARTIAL\",\n        technical_interpretation:\n          \"The reference video can be converted into structured motion data for further experimentation, but motion fidelity and professional sign correctness are not proven.\",\n        limitations: [\n          \"Single adult reference video\",\n          \"No professional sign correctness validation\",\n          \"No avatar generation\",\n          \"No synthetic-video fidelity test\",\n        ],\n      },\n    },\n  },\n];"
       },
       "id": "de8a345e-b880-41b4-bb05-3dd6c3852cab",
       "name": "CV Motion Summary",
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
       "position": [
         -260,
         40
@@ -59,7 +57,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const item = $input.first().json;\nconst sign = item.sign;\nconst cv = item.cv_motion_summary;\nconst requiredSign = ['sign_id', 'source_id', 'approved_description', 'do_not_claim'];\nconst missingSign = requiredSign.filter((field) => sign?.[field] === undefined || sign[field] === null);\nif (missingSign.length) throw new Error('Missing approved sign fields: ' + missingSign.join(', '));\nif (sign.requires_human_review !== true) throw new Error('requires_human_review must be true');\nif (sign.source_type !== 'approved_internal_content') throw new Error('source_type is not approved_internal_content');\nconst requiredCv = ['motion_representation_status', 'technical_interpretation'];\nconst missingCv = requiredCv.filter((field) => cv?.[field] === undefined || cv[field] === null);\nif (missingCv.length) throw new Error('Missing CV summary fields: ' + missingCv.join(', '));\nreturn [{ json: item }];"
+        "jsCode": "const item = $input.first()?.json ?? {};\nconst sign = item.sign;\nconst cv = item.cv_motion_summary;\nconst failedChecks = [];\n\nif (!sign || typeof sign !== 'object' || Array.isArray(sign)) {\n  failedChecks.push({\n    check: 'approved_sign_object',\n    detail: 'Approved sign object is missing or is not a JSON object.',\n  });\n} else {\n  for (const field of ['sign_id', 'sign_name', 'source_id', 'approved_description']) {\n    if (typeof sign[field] !== 'string' || !sign[field].trim()) {\n      failedChecks.push({\n        check: field,\n        detail: field + ' must be a non-empty string.',\n      });\n    }\n  }\n\n  if (!Object.prototype.hasOwnProperty.call(sign, 'movement_notes') ||\n      typeof sign.movement_notes !== 'string') {\n    failedChecks.push({\n      check: 'movement_notes',\n      detail: 'movement_notes must exist and be a string.',\n    });\n  }\n\n  if (!Array.isArray(sign.do_not_claim)) {\n    failedChecks.push({\n      check: 'do_not_claim',\n      detail: 'do_not_claim must exist and be an array.',\n    });\n  }\n\n  if (sign.requires_human_review !== true) {\n    failedChecks.push({\n      check: 'requires_human_review',\n      detail: 'requires_human_review must be true.',\n    });\n  }\n}\n\nif (!cv || typeof cv !== 'object' || Array.isArray(cv)) {\n  failedChecks.push({\n    check: 'cv_motion_summary',\n    detail: 'cv_motion_summary is missing or is not a JSON object.',\n  });\n} else if (\n  typeof cv.motion_representation_status !== 'string' ||\n  !cv.motion_representation_status.trim()\n) {\n  failedChecks.push({\n    check: 'motion_representation_status',\n    detail: 'cv_motion_summary.motion_representation_status must exist.',\n  });\n}\n\nif (failedChecks.length) {\n  return [\n    {\n      json: {\n        ...item,\n        schema_check: {\n          passed: false,\n          failed_checks: failedChecks,\n        },\n        workflow_status: 'draft_rejected_by_schema_check',\n        automatic_publication: false,\n      },\n    },\n  ];\n}\n\nreturn [\n  {\n    json: {\n      ...item,\n      schema_check: {\n        passed: true,\n        failed_checks: [],\n      },\n    },\n  },\n];"
       },
       "id": "a4817ba4-70ef-4f41-b3d4-593f7ed0e14a",
       "name": "Schema Check",
@@ -67,6 +65,40 @@
       "typeVersion": 2,
       "position": [
         -20,
+        40
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "8314effe-6597-45b0-825c-7d88149a331f",
+              "leftValue": "={{ $json.schema_check.passed }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "2af777bf-6b4b-4f14-b834-3fb44aa764ef",
+      "name": "Schema Valid?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        220,
         40
       ]
     },
@@ -81,7 +113,7 @@
       "type": "@n8n/n8n-nodes-langchain.chainLlm",
       "typeVersion": 1.5,
       "position": [
-        240,
+        500,
         40
       ]
     },
@@ -97,15 +129,9 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        240,
+        500,
         260
-      ],
-      "credentials": {
-        "openAiApi": {
-          "id": "PLACEHOLDER_OPENAI_CREDENTIAL_ID",
-          "name": "OpenAI account"
-        }
-      }
+      ]
     },
     {
       "parameters": {
@@ -116,7 +142,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        500,
+        760,
         40
       ]
     },
@@ -150,7 +176,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        740,
+        1000,
         40
       ]
     },
@@ -165,14 +191,14 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1000,
+        1260,
         -60
       ]
     },
     {
       "parameters": {
         "mode": "raw",
-        "jsonOutput": "={{ { workflow_status: 'draft_rejected_by_quality_gate', automatic_publication: false, quality_gate: $json.quality_gate } }}",
+        "jsonOutput": "={{ { workflow_status: $json.workflow_status || 'draft_rejected_by_quality_gate', automatic_publication: false, schema_check: $json.schema_check || null, quality_gate: $json.quality_gate || null } }}",
         "options": {}
       },
       "id": "efbe1320-1d10-46bf-ad5d-772544421a1a",
@@ -180,7 +206,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1000,
+        1260,
         140
       ]
     }
@@ -224,7 +250,7 @@
       "main": [
         [
           {
-            "node": "Family Draft",
+            "node": "Schema Valid?",
             "type": "main",
             "index": 0
           }
@@ -281,13 +307,31 @@
           }
         ]
       ]
+    },
+    "Schema Valid?": {
+      "main": [
+        [
+          {
+            "node": "Family Draft",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Rejected draft",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "0c8f0ca7-85dc-4a1e-a434-67127d760f0e",
+  "versionId": "65b26a29-9242-4611-a2c9-f8af1a77dfc8",
   "meta": {
     "templateCredsSetupCompleted": false,
     "documentationFirst": true,

@@ -20,12 +20,13 @@ There is no automatic publication.
 |---|---|---|---|---|
 | 1. Manual Trigger | Manual execution | Execution event | Starts a controlled demonstration | No downstream action until manually started |
 | 2. Set: Approved Sign Object | Embedded generic sample or approved internal object | `sign` object | Establishes the content source of truth | Stop if object is absent |
-| 3. Set: CV Motion Summary | Bounded technical summary | `sign` plus `cv_motion_summary` | Supplies technical status without claiming sign correctness | Stop if status or interpretation is absent |
-| 4. Code: Schema Check | Sign and CV objects | Validated input bundle | Checks required fields, review flag, source type, and CV boundary | Throw an error; no LLM call |
-| 5. LLM: Family Draft | Exact governed prompt and validated objects | JSON-only family draft | Transforms approved content into the required schema | Fail closed on provider, parsing, or schema error |
-| 6. Code: Quality Gate | LLM draft and upstream approved source | `quality_gate` result plus draft | Applies deterministic claim, ID, review, and movement checks | Returns `passed=false` with reasons |
-| 7. IF: Pass / Fail | `quality_gate.passed` | Pass or fail branch | Prevents failed drafts reaching the approval queue | Fail branch ends as rejected draft |
-| 8. Set: Draft pending professional approval | Passing draft | Draft with `workflow_status=draft_pending_professional_approval` | Produces a reviewable artifact | Human/professional review remains required |
+| 3. Code: CV Motion Summary | Incoming approved-sign item | Incoming item plus `cv_motion_summary` | Adds a stable technical summary while preserving the approved sign object | Always returns a JSON object; schema check rejects missing upstream data |
+| 4. Code: Schema Check | Sign and CV objects | `schema_check.passed` plus the input bundle | Checks required fields, review flag, and CV boundary | Returns a structured rejected state; does not throw a raw JavaScript error |
+| 5. IF: Schema Valid? | `schema_check.passed` | Valid or rejected branch | Prevents invalid input from reaching the LLM | Invalid branch routes directly to Rejected draft |
+| 6. LLM: Family Draft | Exact governed prompt and validated objects | JSON-only family draft | Transforms approved content into the required schema | Fail closed on provider, parsing, or schema error |
+| 7. Code: Quality Gate | LLM draft and upstream approved source | `quality_gate` result plus draft | Applies deterministic claim, ID, review, and movement checks | Returns `passed=false` with reasons |
+| 8. IF: Pass / Fail | `quality_gate.passed` | Pass or fail branch | Prevents failed drafts reaching the approval queue | Fail branch ends as rejected draft |
+| 9. Set: Draft pending professional approval | Passing draft | Draft with `workflow_status=draft_pending_professional_approval` | Produces a reviewable artifact | Human/professional review remains required |
 
 The example export also contains a fail-state Set node so rejected drafts are explicit rather than discarded silently.
 
@@ -82,14 +83,22 @@ CV MOTION SUMMARY:
 
 ## Schema Check node
 
-The pre-LLM Code node must fail closed when:
+The pre-LLM Code node must return `schema_check.passed=false` when:
 
-- `sign_id`, `source_id`, `approved_description`, or `do_not_claim` is missing
+- `sign_id`, `sign_name`, `source_id`, or `approved_description` is missing
+- `movement_notes` does not exist as a string
+- `do_not_claim` does not exist as an array
 - `requires_human_review` is not the boolean `true`
-- `source_type` is not `approved_internal_content`
-- the CV summary lacks `motion_representation_status` or `technical_interpretation`
+- `cv_motion_summary` is missing
+- the CV summary lacks `motion_representation_status`
 
-Missing `movement_notes` does not trigger an LLM invention. It triggers the fixed no-instruction fallback and a later quality-gate warning.
+An empty `movement_notes` string remains valid and triggers the fixed no-instruction fallback. A missing or non-string field is rejected before the LLM.
+
+## Troubleshooting CV Motion Summary
+
+If the CV Motion Summary node returns `Cannot convert undefined or null to object`, the node is not returning a valid `cv_motion_summary` object. Configure it as a Code node, or as a Set/Edit Fields node that returns the expected JSON payload while preserving the incoming approved-sign item.
+
+The importable workflow uses a defensive Code node. It treats a missing/non-object input as an empty object, adds the complete `cv_motion_summary`, and lets Schema Check return a structured rejection if the approved sign object is absent.
 
 ## Quality Gate node
 
