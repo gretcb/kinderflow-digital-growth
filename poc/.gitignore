@@ -1,0 +1,7 @@
+input/*.mp4
+input/*.mov
+input/*.avi
+output/landmarks/*.csv
+output/landmarks/*.json
+output/previews/*.mp4
+output/*.json
