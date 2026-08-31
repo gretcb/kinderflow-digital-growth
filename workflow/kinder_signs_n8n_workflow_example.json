@@ -1,0 +1,297 @@
+{
+  "name": "Kinder Signs — Governed Family Draft (Example)",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Governance boundary\nThis workflow creates a draft only. LangSmith traces the LLM content-transformation step; it does not validate video, movement, CV quality, Baby Sign correctness, or professional validity.",
+        "height": 260,
+        "width": 430
+      },
+      "id": "7b18a2ce-4ca1-43fe-b1f3-01f72b7fb6c0",
+      "name": "Governance boundary",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -780,
+        -360
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "0bf95c0b-cfae-4e91-b2fb-386b09d04d20",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -740,
+        40
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"sign\": {\n    \"sign_id\": \"KS_MORE_001\",\n    \"sign_name\": \"More\",\n    \"age_range\": \"6-36 months\",\n    \"routine_context\": \"Snack time, playtime, or classroom routines when the child wants more of an activity, object, or food.\",\n    \"approved_description\": \"Use this sign when offering or asking for more of something already present in the routine. The adult should say the word clearly while modelling the approved sign.\",\n    \"movement_notes\": \"Use only the approved reference video as the movement source. Do not add movement steps beyond the validated reference.\",\n    \"school_home_connection\": \"This is the sign selected for this week's school-home practice.\",\n    \"do_not_claim\": [\n      \"Do not claim that Baby Sign accelerates language development.\",\n      \"Do not claim that this sign treats communication delays.\",\n      \"Do not diagnose communication needs.\",\n      \"Do not mention ASL or LSE unless explicitly provided in the approved input.\",\n      \"Do not invent additional movement instructions.\",\n      \"Do not replace professional advice.\"\n    ],\n    \"source_type\": \"approved_internal_content\",\n    \"source_id\": \"KS_APPROVED_001\",\n    \"review_status\": \"approved_for_draft_only\",\n    \"requires_human_review\": true\n  }\n}",
+        "options": {}
+      },
+      "id": "b55a987d-42b1-4315-aa6d-990b44ebf8b7",
+      "name": "Approved Sign Object",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -500,
+        40
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={{ { ...$json, cv_motion_summary: {\"video_id\":\"sign_reference\",\"frames_total\":332,\"pose_detection_rate_percent\":100,\"hand_detection_rate_percent\":93.98,\"missing_hand_frames\":20,\"motion_representation_status\":\"MOTION_REPRESENTATION_PARTIAL\",\"technical_interpretation\":\"The reference video can be converted into structured motion data for further experimentation, but motion fidelity and professional sign correctness are not proven.\",\"limitations\":[\"Single adult reference video\",\"No professional sign correctness validation\",\"No avatar generation\",\"No synthetic-video fidelity test\"]} } }}",
+        "options": {}
+      },
+      "id": "de8a345e-b880-41b4-bb05-3dd6c3852cab",
+      "name": "CV Motion Summary",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -260,
+        40
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first().json;\nconst sign = item.sign;\nconst cv = item.cv_motion_summary;\nconst requiredSign = ['sign_id', 'source_id', 'approved_description', 'do_not_claim'];\nconst missingSign = requiredSign.filter((field) => sign?.[field] === undefined || sign[field] === null);\nif (missingSign.length) throw new Error('Missing approved sign fields: ' + missingSign.join(', '));\nif (sign.requires_human_review !== true) throw new Error('requires_human_review must be true');\nif (sign.source_type !== 'approved_internal_content') throw new Error('source_type is not approved_internal_content');\nconst requiredCv = ['motion_representation_status', 'technical_interpretation'];\nconst missingCv = requiredCv.filter((field) => cv?.[field] === undefined || cv[field] === null);\nif (missingCv.length) throw new Error('Missing CV summary fields: ' + missingCv.join(', '));\nreturn [{ json: item }];"
+      },
+      "id": "a4817ba4-70ef-4f41-b3d4-593f7ed0e14a",
+      "name": "Schema Check",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -20,
+        40
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ `You are KinderFlow's family-facing content transformation assistant.\n\nTransform only the approved sign content below into a concise family-facing draft.\nThe approved sign object is the content source of truth.\nThe CV motion summary is technical context only. It does not establish movement\nfidelity, professional sign correctness, linguistic correctness, or developmental benefit.\n\nRules:\n1. Return valid JSON only, with exactly the requested schema.\n2. Preserve sign_id and source_id exactly.\n3. Set review_status to \"draft_requires_professional_approval\".\n4. Set requires_human_review to true.\n5. Do not invent movement details.\n6. If movement_notes is present, copy it verbatim into motion_note. If it is empty,\n   set motion_note exactly to: \"Movement instructions are unavailable in the approved\n   input; use an approved reference only after professional review.\"\n7. Do not claim language acceleration or other unsupported developmental benefit.\n8. Do not diagnose, describe treatment, or replace professional advice.\n9. Do not mention ASL or LSE unless explicitly supplied as approved content.\n10. Use the CV motion summary only for bounded technical context, never as evidence\n    that the sign is correct.\n11. Keep the language clear, practical, and appropriate for families.\n12. Preserve the approved school-home connection.\n\nRequired output schema:\n{\n  \"sign_id\": \"...\",\n  \"source_id\": \"...\",\n  \"review_status\": \"draft_requires_professional_approval\",\n  \"requires_human_review\": true,\n  \"parent_title\": \"...\",\n  \"short_explanation\": \"...\",\n  \"when_to_use\": [\"...\", \"...\"],\n  \"practice_tip\": \"...\",\n  \"school_home_connection\": \"...\",\n  \"motion_note\": \"...\",\n  \"boundaries\": [\"...\", \"...\"]\n}\n\nAPPROVED SIGN OBJECT:\n${JSON.stringify($json.sign, null, 2)}\n\nCV MOTION SUMMARY:\n${JSON.stringify($json.cv_motion_summary, null, 2)}` }}",
+        "options": {}
+      },
+      "id": "ac0bb175-10d0-4c42-82ad-04c5910b0803",
+      "name": "Family Draft",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.5,
+      "position": [
+        240,
+        40
+      ]
+    },
+    {
+      "parameters": {
+        "modelName": "gpt-5-mini",
+        "options": {
+          "responseFormat": "json_object"
+        }
+      },
+      "id": "25326761-0fe7-420c-b1cc-b10f9f512b9c",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        240,
+        260
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "PLACEHOLDER_OPENAI_CREDENTIAL_ID",
+          "name": "OpenAI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const source = $('Schema Check').first().json.sign;\nconst raw = $json.text ?? $json.output ?? $json.response ?? $json;\nlet draft;\ntry {\n  draft = typeof raw === 'string' ? JSON.parse(raw) : raw;\n} catch (error) {\n  return [{ json: { draft: null, quality_gate: { passed: false, failed_checks: [{ check: 'valid_json', detail: error.message }], warnings: [] } } }];\n}\nconst required = ['sign_id','source_id','review_status','requires_human_review','parent_title','short_explanation','when_to_use','practice_tip','school_home_connection','motion_note','boundaries'];\nconst failed = [];\nconst missing = required.filter((field) => !(field in draft));\nif (missing.length) failed.push({ check: 'required_fields_present', detail: 'Missing: ' + missing.join(', ') });\nif (draft.requires_human_review !== true) failed.push({ check: 'human_review_required', detail: 'requires_human_review must be true' });\nif (draft.review_status !== 'draft_requires_professional_approval') failed.push({ check: 'review_status_preserved', detail: 'Invalid review_status' });\nif (draft.sign_id !== source.sign_id) failed.push({ check: 'sign_id_preserved', detail: 'sign_id changed' });\nif (draft.source_id !== source.source_id) failed.push({ check: 'source_id_preserved', detail: 'source_id changed' });\nconst text = JSON.stringify(draft);\nconst banned = [/\\baccelerate\\b/i,/\\baccelerated\\b/i,/\\bboost\\s+language\\b/i,/\\btreat(?:s|ed|ing)?\\s+(?:a\\s+)?(?:communication\\s+)?delay/i,/\\bdiagnos(?:e|es|ed|ing|is|tic)\\b/i,/\\btherapy\\b/i,/\\bcure(?:s|d|ing)?\\b/i,/\\bASL\\b/i,/\\bLSE\\b/i];\nif (banned.some((pattern) => pattern.test(text))) failed.push({ check: 'banned_claims_absent', detail: 'Banned claim or term detected' });\nconst fallback = 'Movement instructions are unavailable in the approved input; use an approved reference only after professional review.';\nconst expectedMotion = (source.movement_notes || '').trim() || fallback;\nif (draft.motion_note !== expectedMotion) failed.push({ check: 'movement_note_source_adherence', detail: 'motion_note differs from approved source or fallback' });\nconst warnings = source.movement_notes?.trim() ? [] : ['Approved movement_notes are missing; fixed fallback required.'];\nreturn [{ json: { draft, quality_gate: { passed: failed.length === 0, failed_checks: failed, warnings } } }];"
+      },
+      "id": "b32f7f8f-b356-4d8f-b30e-3d0f8f2f0f55",
+      "name": "Quality Gate",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        500,
+        40
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "567d1906-6193-4cf6-af20-af1e0c0cc8db",
+              "leftValue": "={{ $json.quality_gate.passed }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "0efb4ecb-8157-480a-b8c1-3602970ff19b",
+      "name": "Pass / Fail",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        740,
+        40
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={{ { ...$json.draft, quality_gate: $json.quality_gate, workflow_status: 'draft_pending_professional_approval', requires_human_review: true, automatic_publication: false } }}",
+        "options": {}
+      },
+      "id": "f34e97d3-3571-4de0-8e83-07834a099ee5",
+      "name": "Draft pending professional approval",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1000,
+        -60
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={{ { workflow_status: 'draft_rejected_by_quality_gate', automatic_publication: false, quality_gate: $json.quality_gate } }}",
+        "options": {}
+      },
+      "id": "efbe1320-1d10-46bf-ad5d-772544421a1a",
+      "name": "Rejected draft",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1000,
+        140
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Approved Sign Object",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Approved Sign Object": {
+      "main": [
+        [
+          {
+            "node": "CV Motion Summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CV Motion Summary": {
+      "main": [
+        [
+          {
+            "node": "Schema Check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schema Check": {
+      "main": [
+        [
+          {
+            "node": "Family Draft",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Family Draft",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Family Draft": {
+      "main": [
+        [
+          {
+            "node": "Quality Gate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Quality Gate": {
+      "main": [
+        [
+          {
+            "node": "Pass / Fail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pass / Fail": {
+      "main": [
+        [
+          {
+            "node": "Draft pending professional approval",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Rejected draft",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "0c8f0ca7-85dc-4a1e-a434-67127d760f0e",
+  "meta": {
+    "templateCredsSetupCompleted": false,
+    "documentationFirst": true,
+    "credentialPolicy": "Select an existing local n8n credential after import; no secrets are included."
+  },
+  "tags": []
+}

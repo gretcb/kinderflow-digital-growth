@@ -1,0 +1,15 @@
+{
+  "video_id": "sign_reference",
+  "frames_total": 332,
+  "pose_detection_rate_percent": 100.0,
+  "hand_detection_rate_percent": 93.98,
+  "missing_hand_frames": 20,
+  "motion_representation_status": "MOTION_REPRESENTATION_PARTIAL",
+  "technical_interpretation": "The reference video can be converted into structured motion data for further experimentation, but motion fidelity and professional sign correctness are not proven.",
+  "limitations": [
+    "Single adult reference video",
+    "No professional sign correctness validation",
+    "No avatar generation",
+    "No synthetic-video fidelity test"
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "mode": "dry_run",
+  "network_calls_made": false,
+  "api_keys_required": false,
+  "dataset": "kinder_signs_microlearning_v1",
+  "langsmith_project": "kinderflow-kinder-signs-workflow",
+  "prompt_sha256": "39e93ecc49865e34bcb9b9af10b75bef9f93aeb7d51f8f275661b170e968ca91",
+  "inputs_loaded": [
+    "sample_sign_input.json",
+    "sample_cv_motion_summary.json"
+  ],
+  "output_loaded": "sample_llm_output.json",
+  "would_trace": {
+    "run_name": "kinder_signs_family_draft",
+    "run_type": "chain_with_nested_llm_call",
+    "inputs": [
+      "approved_sign_object",
+      "cv_motion_summary",
+      "governed_prompt"
+    ],
+    "output": "structured_family_draft",
+    "tags": [
+      "kinderflow",
+      "kinder-signs",
+      "approved-content",
+      "human-review-required"
+    ],
+    "metadata": {
+      "dataset": "kinder_signs_microlearning_v1",
+      "evaluation_scope": "llm_content_transformation_only"
+    }
+  },
+  "would_not_trace_or_evaluate": [
+    "MP4 video",
+    "sign movement correctness",
+    "Baby Sign correctness",
+    "Computer Vision quality",
+    "professional validity"
+  ],
+  "quality_gate": {
+    "passed": true,
+    "failed_checks": [],
+    "warnings": []
+  }
+}

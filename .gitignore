@@ -31,3 +31,7 @@ poc/src/*.task
 # Local secrets
 .env
 *.env
+.env.*
+
+# Local workflow run output
+workflow/generated_llm_output.json
