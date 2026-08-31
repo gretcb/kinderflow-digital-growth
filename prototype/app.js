@@ -161,8 +161,53 @@ if (routineButton) {
 
 const adminAssignmentForm = document.querySelector("#admin-assignment-form");
 const adminAssignmentStatus = document.querySelector("#admin-assignment-status");
+const schoolSelect = document.querySelector("#school-select");
+const schoolGroupOptions = document.querySelector("#school-group-options");
+const selectedSchoolLabel = document.querySelector("#selected-school-label");
+const adminControlStatus = document.querySelector("#admin-control-status");
+
+const schoolGroups = {
+  "School A": ["Baby group", "1-2 years", "2-3 years"],
+  "School B": ["Toddler group", "Preschool transition group"],
+  "School C": ["Mixed early-years group"]
+};
+
+const renderSchoolGroups = (schoolName) => {
+  const existingLabels = schoolGroupOptions.querySelectorAll("label");
+  existingLabels.forEach((label) => label.remove());
+  selectedSchoolLabel.textContent = schoolName;
+
+  schoolGroups[schoolName].forEach((groupName, index) => {
+    const label = document.createElement("label");
+    const checkbox = document.createElement("input");
+    const visualLabel = document.createElement("span");
+    const groupText = document.createElement("strong");
+
+    checkbox.type = "checkbox";
+    checkbox.name = "school_group";
+    checkbox.value = groupName;
+    checkbox.checked = index === 0;
+    groupText.textContent = groupName;
+    visualLabel.appendChild(groupText);
+    label.append(checkbox, visualLabel);
+    schoolGroupOptions.appendChild(label);
+  });
+};
 
 if (adminAssignmentForm) {
+  schoolSelect.addEventListener("change", () => {
+    renderSchoolGroups(schoolSelect.value);
+    adminAssignmentStatus.textContent = "";
+    adminControlStatus.textContent = "";
+  });
+
+  document.querySelectorAll("[data-admin-action]").forEach((button) => {
+    button.addEventListener("click", () => {
+      adminControlStatus.textContent =
+        `${button.dataset.adminAction} is a visual prototype control. No school records were changed.`;
+    });
+  });
+
   adminAssignmentForm.addEventListener("submit", (event) => {
     event.preventDefault();
     const selectedGroups = adminAssignmentForm.querySelectorAll('input[name="school_group"]:checked');
@@ -174,8 +219,10 @@ if (adminAssignmentForm) {
     }
 
     adminAssignmentStatus.classList.remove("is-warning");
+    const selectedGroupNames = Array.from(selectedGroups, (checkbox) => checkbox.value).join(", ");
     adminAssignmentStatus.textContent =
-      "Assigned to selected school groups. Family card ready for the school-family channel.";
+      `MORE assigned to ${schoolSelect.value} — ${selectedGroupNames}. ` +
+      "Family card ready for the school-family channel.";
   });
 }
 

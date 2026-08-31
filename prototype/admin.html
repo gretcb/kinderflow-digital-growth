@@ -195,7 +195,7 @@
           <div>
             <p class="eyebrow">Controlled distribution</p>
             <h2 id="school-assignment-title">5. Assign to schools</h2>
-            <p>Assign the reviewed weekly sign to example client groups without exposing internal workflow tools.</p>
+            <p>Choose an example client account, select its classroom groups and assign the reviewed weekly sign.</p>
           </div>
         </div>
 
@@ -204,24 +204,54 @@
             <p class="card-label">Assignable item</p>
             <h3>MORE</h3>
             <p>Weekly sign · Snack-time routine</p>
+            <ol class="assignment-hierarchy" aria-label="Assignment hierarchy">
+              <li>School / client account</li>
+              <li>Classroom groups</li>
+              <li>Weekly sign</li>
+              <li>Family output</li>
+            </ol>
           </div>
-          <fieldset class="school-options">
-            <legend>Select school groups</legend>
-            <label>
-              <input type="checkbox" name="school_group" value="School A — 1-2 years" checked>
-              <span><strong>School A</strong><small>1-2 years</small></span>
-            </label>
-            <label>
-              <input type="checkbox" name="school_group" value="School A — 2-3 years">
-              <span><strong>School A</strong><small>2-3 years</small></span>
-            </label>
-            <label>
-              <input type="checkbox" name="school_group" value="School B — Toddler group">
-              <span><strong>School B</strong><small>Toddler group</small></span>
-            </label>
-          </fieldset>
-          <button class="button button-primary" type="submit">Assign weekly sign</button>
-          <p class="admin-assignment-status" id="admin-assignment-status" aria-live="polite"></p>
+          <div class="assignment-workspace">
+            <div class="school-selector-block">
+              <label for="school-select">School / client account</label>
+              <select id="school-select" name="school">
+                <option value="School A">School A</option>
+                <option value="School B">School B</option>
+                <option value="School C">School C</option>
+              </select>
+              <div class="admin-control-row" aria-label="Static school administration controls">
+                <button class="button button-quiet" type="button" data-admin-action="Add new school">Add new school</button>
+                <button class="button button-quiet" type="button" data-admin-action="Edit school">Edit school</button>
+                <button class="button button-quiet button-danger" type="button" data-admin-action="Delete school">Delete school</button>
+                <button class="button button-quiet" type="button" data-admin-action="Add group">Add group</button>
+              </div>
+              <p class="admin-control-status" id="admin-control-status" aria-live="polite"></p>
+            </div>
+
+            <fieldset class="school-options" id="school-group-options">
+              <legend>Classroom groups for <span id="selected-school-label">School A</span></legend>
+              <label>
+                <input type="checkbox" name="school_group" value="Baby group" checked>
+                <span><strong>Baby group</strong></span>
+              </label>
+              <label>
+                <input type="checkbox" name="school_group" value="1-2 years">
+                <span><strong>1-2 years</strong></span>
+              </label>
+              <label>
+                <input type="checkbox" name="school_group" value="2-3 years">
+                <span><strong>2-3 years</strong></span>
+              </label>
+            </fieldset>
+
+            <div class="assignment-submit-row">
+              <button class="button button-primary" type="submit">Assign weekly sign</button>
+              <p class="admin-assignment-status" id="admin-assignment-status" aria-live="polite"></p>
+            </div>
+            <p class="prototype-boundary">
+              Static demo only. No real school database, permissions or live integration are implemented.
+            </p>
+          </div>
         </form>
       </section>
     </main>

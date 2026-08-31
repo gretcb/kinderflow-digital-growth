@@ -2,7 +2,7 @@
 
 This dependency-free prototype shows the user-facing Kinder Signs product and its commercial logic. It is a product demonstration, not the internal Computer Vision or LLM workflow.
 
-It also includes `admin.html`, a separate internal prototype showing how KinderFlow could register adult reference material, inspect motion diagnostics, govern future rendering preparation, review library content and assign it to example school groups. The admin page is illustrative and does not upload, process, publish or integrate data.
+It also includes `admin.html`, a separate internal prototype showing how KinderFlow could register adult reference material, inspect motion diagnostics, govern future rendering preparation, review library content and assign it through a school/client account and classroom-group hierarchy. School and group administration controls are illustrative only; the page does not upload, persist, process, publish or integrate data.
 
 ## How to open
 
