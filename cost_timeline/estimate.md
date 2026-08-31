@@ -4,149 +4,95 @@
 
 This estimate defines the minimum investment required to continue validating Kinder Signs as a market opportunity.
 
-The estimate is not a full product budget. It covers the next controlled validation phase:
-
-- technical feasibility refinement;
-- approved content workflow;
-- family-facing concept testing;
-- educator workflow testing;
-- and market-validation evidence.
+This is not a product-launch budget. It is a validation budget designed to answer whether Kinder Signs is worth taking beyond the current feasibility stage.
 
 The current recommendation is:
 
-> **Proceed with further market validation before scaling product development.**
+> **Proceed with further market validation before scaling.**
 
 ---
 
-## 2. Scope of the next validation phase
-
-The next phase should test three questions:
+## 2. What the next phase needs to prove
 
 | Question | Why it matters |
 |---|---|
-| Can validated sign movement be captured as structured motion data? | Tests the core Computer Vision production hypothesis |
-| Can approved content be transformed into parent-facing guidance safely? | Tests the LLM workflow and governance layer |
-| Do families and educators perceive enough value to justify adoption? | Tests desirability and workflow fit |
+| Can validated sign movement be captured as structured motion data? | Tests the Computer Vision production hypothesis |
+| Can approved content be transformed into family-facing guidance safely? | Tests the governed LLM workflow |
+| Do families find school-home continuity useful? | Tests desirability |
+| Can educators use the workflow without extra burden? | Tests adoption feasibility |
+| Is there a credible payer route? | Tests commercial viability |
 
 ---
 
 ## 3. Timeline
 
-| Phase | Duration | Main activities | Output |
-|---|---:|---|---|
-| **Phase 1 — Technical feasibility** | 1 week | Complete landmark extraction, normalization, diagnostics and documentation | Reproducible CV POC |
-| **Phase 2 — Content workflow** | 1 week | Build n8n workflow, define quality gate, trace LLM step in LangSmith | Governed microlearning workflow |
-| **Phase 3 — Concept validation** | 2 weeks | Parent/educator interviews, concept test, compare against free video alternative | Desirability evidence |
-| **Phase 4 — Small controlled service test** | 3–4 weeks | Test 3–5 approved signs with a limited school/family group | Usage and workflow evidence |
-| **Phase 5 — Decision review** | 1 week | Review evidence, risks, costs and go/no-go criteria | Continue / change / stop decision |
+| Phase | Duration | Main output |
+|---|---:|---|
+| **Technical feasibility** | 1 week | CV motion-representation POC |
+| **Governed content workflow** | 1 week | n8n + LangSmith workflow |
+| **Concept validation** | 2 weeks | Parent and educator feedback |
+| **Controlled service test** | 3-4 weeks | 3-5 approved signs tested in real routines |
+| **Decision review** | 1 week | Continue / change / stop recommendation |
 
-### Total estimated validation timeline
+### Estimated validation timeline
 
-> **8–9 weeks**
-
-This assumes a lightweight validation setup and does not include full product development.
+> **8-9 weeks**
 
 ---
 
-## 4. Estimated cost ranges
+## 4. Estimated budget
 
 | Cost area | Low estimate | High estimate | Notes |
 |---|---:|---:|---|
-| Technical POC refinement | €1,000 | €3,000 | CV pipeline, diagnostics, documentation |
-| Content and expert review | €800 | €2,500 | Review of 3–5 signs and parent-facing content |
+| Technical POC refinement | €1,000 | €3,000 | CV pipeline, diagnostics and documentation |
+| Expert review | €800 | €2,500 | Review of signs and parent-facing content |
 | Workflow automation | €500 | €1,500 | n8n workflow and quality gate |
-| LangSmith / evaluation setup | €200 | €800 | Small tracing/evaluation setup |
+| LangSmith / evaluation setup | €200 | €800 | Small tracing and evaluation setup |
 | User research | €1,000 | €3,000 | Parent and educator interviews |
-| Visual/content production test | €1,000 | €4,000 | Original demo assets, not full content library |
-| Project coordination | €1,000 | €2,500 | Planning, analysis, decision review |
+| Visual/content production test | €1,000 | €4,000 | Original demo assets, not a full library |
+| Project coordination | €1,000 | €2,500 | Planning, synthesis and decision review |
 
 ### Estimated validation budget
 
-> **Low range:** ~€5,500  
-> **High range:** ~€17,800
-
-This is a validation budget, not a launch budget.
+> **€5.5k-€17.8k**
 
 ---
 
-## 5. Tooling assumptions
+## 5. Main cost drivers
 
-| Tool / service | Role | Cost assumption |
-|---|---|---|
-| Python / MediaPipe | Local CV processing | Open-source / local |
-| n8n | Workflow automation | Free/self-hosted or low-cost cloud tier |
-| LLM API | Parent-facing draft generation | Low usage during validation |
-| LangSmith | Tracing and evaluation | Low usage during validation |
-| Tableau Public | Market-opportunity dashboard | Free public publishing |
-| GitHub | Repository and documentation | Existing account |
+The largest cost is not software.
 
-Tool costs are expected to be low during validation. Most cost comes from expert review, user research and content production.
+The main cost drivers are:
 
----
-
-## 6. Human effort assumptions
-
-| Role | Estimated involvement | Why needed |
-|---|---:|---|
-| AI / technical consultant | Medium | CV POC, workflow, evaluation |
-| Early-childhood expert | Medium | Content validation and review |
-| Educator | Low–Medium | Workflow testing |
-| Parent participants | Low | Concept and usability feedback |
-| School director / owner | Low–Medium | Business and adoption decision |
+- expert review;
+- user research;
+- original content production;
+- educator workflow testing;
+- and technical refinement across more signs.
 
 ---
 
-## 7. Key risks affecting cost
+## 6. Go / change / stop criteria
 
-| Risk | Cost impact |
+| Decision | Criteria |
 |---|---|
-| CV landmarks fail across more signs or performers | More technical work needed |
-| Expert validation is slower than expected | Content-production cost increases |
-| Educators find workflow burdensome | Redesign required |
-| Families prefer free content | Commercial model may need to change |
-| Legal/privacy review becomes more complex | Governance costs increase |
-| Synthetic content production is not reliable | Manual recording may be cheaper initially |
+| **Continue** | Families value school-home continuity; educators accept the workflow; CV works across several signs; at least one payer route looks credible |
+| **Change direction** | Users like the idea but the workflow is too heavy, or Kinder Daily/Food shows stronger demand |
+| **Stop** | Families prefer free content, professional validation is not feasible, or no payer route is credible |
 
 ---
 
-## 8. Go / no-go criteria
-
-### Continue if
-
-- CV extraction is stable across several signs;
-- educator workflow remains lightweight;
-- parents understand and value school-home continuity;
-- expert review is feasible;
-- the service is clearly better than sending a free video;
-- at least one payer route appears credible.
-
-### Change direction if
-
-- Kinder Signs is valued only as free content;
-- educators reject the workflow;
-- content validation costs are too high;
-- technical production does not improve over manual recording;
-- Kinder Daily or Kinder Food shows stronger validated demand.
-
-### Stop if
-
-- the value proposition depends on unsupported developmental claims;
-- professional validation cannot be secured;
-- privacy/data requirements become disproportionate;
-- no buyer or payer route is credible.
-
----
-
-## 9. Decision framing
+## 7. Recommendation
 
 The next investment should buy evidence, not features.
 
 KinderFlow should not move into full platform development until there is stronger evidence on:
 
-- willingness to pay;
+- parent willingness to pay;
+- school willingness to pay;
 - educator adoption;
-- parent engagement;
+- engagement;
 - retention;
 - and scalable acquisition.
 
-The recommended next step is a controlled market-validation phase focused on Kinder Signs, while keeping Kinder Daily and Kinder Food as adjacent platform opportunities.
+The recommended next step is a focused market-validation phase for Kinder Signs.
