@@ -1,167 +1,209 @@
-# KinderFlow - Early Childhood Digital Growth
+# KinderFlow: Early Childhood Digital Growth
 
-## Executive summary
+KinderFlow explores how an early-years centre in Madrid can turn its trusted relationship with families into a digital service.
 
-KinderFlow is a market-validation and AI consulting project for an early-childhood education business in Madrid.
+The first opportunity is **Kinder Signs**: a school-led **Signs and Flashcards Library** that helps families repeat at home the same sign used in class that week.
 
-The project evaluates **Kinder Signs** as a potential first opportunity: a trusted early-communication service that connects approved sign guidance between school and home.
+## Round 1 recommendation
 
-The recommendation is:
+**Proceed with a focused 8 to 9 week commercial validation phase before scaling.**
 
-> **Proceed with further market validation before scaling.**
+The project has enough evidence to justify the next validation phase. The next step is to test demand, educator adoption, family engagement, willingness to pay and technical reliability with a small set of signs.
 
-The evidence supports a focused validation phase. It does not yet prove product-market fit, willingness to pay or scalable adoption.
+## The product idea
 
----
+Kinder Signs is not another Baby Sign dictionary.
 
-## Project question
+The core flow is simple:
 
-Can a small early-childhood education business use its existing school-family trust relationship to create a credible digital growth opportunity?
+```text
+Kinder Signs creates the Signs and Flashcards Library
+→ the educator selects this week's sign
+→ the sign is assigned to a group or child
+→ families receive matching guidance at home
+```
 
-For Kinder Signs, the specific question is:
+The educator does not create content, upload videos or manage AI. The school uses a ready-to-use library and keeps the classroom workflow simple.
 
-> Can professionally bounded Baby Sign guidance become more useful when it is connected to the real routines that happen across school and home?
+The school-facing action is:
 
----
+```text
+Select group or child
+→ choose this week's sign
+→ send to families
+```
+
+The internal Kinder Signs workflow is separate:
+
+```text
+Kinder Signs library item
+→ reference video registered
+→ movement check
+→ movement data and skeleton
+→ visual guide brief
+→ next build: avatar preview
+→ expert review
+```
+
+Core principle:
+
+```text
+The character defines the look.
+The reference movement defines the sign.
+```
 
 ## Why Kinder Signs
 
-Three use cases were assessed:
+Three use cases were compared.
 
 | Use case | Role |
 |---|---|
 | **Kinder Signs** | Early communication across school and home |
-| **Kinder Daily** | School-family context and daily communication |
-| **Kinder Food** | Food continuity between school and home |
+| **Kinder Daily** | School-family communication and daily context |
+| **Kinder Food** | Food routines and family guidance |
 
-Kinder Signs was selected as the first validation opportunity because it combines:
+Kinder Signs was selected as the first commercial validation wedge because it brings together:
 
-- a clear school-home continuity hypothesis;
-- differentiation beyond a generic Baby Sign dictionary;
-- a credible Computer Vision feasibility test;
-- low need for child personal data in the first experiment;
-- and strong fit with the existing early-childhood education context.
+| Reason | Why it matters |
+|---|---|
+| School-home continuity | The same routine can continue from classroom to home |
+| Simple educator action | The educator only selects the sign used that week |
+| Differentiation | The value is not more content, but trusted continuity |
+| Reusable library | One Signs and Flashcards Library can serve more schools and groups |
+| Technical feasibility | Computer Vision can test the movement capture layer |
+| School-led model | The school is the main customer and distribution channel |
 
-This does not mean Kinder Signs is already a proven business. It means it is the strongest first validation step.
+## What was built for Round 1
 
----
+### 1. Research and use-case framing
 
-## Repository structure
+The research covers the early-childhood education context in Spain, Madrid as a first entry market, opportunity and risk analysis, competitor evidence, and the comparison of Kinder Signs, Kinder Daily and Kinder Food.
 
-```text
-.
-├── cost_timeline/       # Validation budget and timeline
-├── dashboard/           # Tableau dashboard documentation and workbook assets
-├── data/                # Tableau-ready datasets and source register
-├── feedback/            # Decision notes after review / feedback
-├── poc/                 # Computer Vision motion-representation POC
-├── research/            # Sector research, opportunities, risks and use-case analysis
-└── workflow/            # n8n and LangSmith governed LLM workflow
-````
-
----
-
-## Market and dashboard evidence
-
-The Tableau dashboard evaluates whether there is enough market, digital and competitive evidence to justify further validation of Kinder Signs.
-
-It supports three conclusions:
-
-1. Spain provides a meaningful early-years education audience.
-2. Madrid is a credible initial market environment.
-3. Existing Baby Sign alternatives validate the category, but Spanish-language content alone is not a moat.
-
-The dashboard supports market access and positioning. It does **not** prove demand, willingness to pay or product-market fit.
-
-Relevant files:
+Relevant folder:
 
 ```text
-dashboard/
-data/
+research/
 ```
 
----
+### 2. Tableau dashboard
 
-## Computer Vision POC
+The dashboard supports a commercial validation decision. It is designed to answer:
 
-The technical POC tests whether a validated sign video can be converted into structured motion data.
+**Is the market reachable enough to justify an 8 to 9 week validation phase?**
 
-The POC uses MediaPipe to extract hand and pose landmarks from an adult reference video.
+The dashboard uses public datasets and 7 stakeholder metrics.
 
-Current observed results:
+| Metric | Why it matters |
+|---|---|
+| Children in first-cycle education | Market access |
+| Enrolment rate at age 2 | Early routine access |
+| Enrolment rate at age 3 | Continuity into the next stage |
+| Early-childhood centres in Madrid | Local entry market |
+| Private and concerted centre share | Potential commercial channel |
+| Internet and digital readiness | Family reachability |
+| GenAI adoption context | Digital readiness for AI-enabled services |
 
-| Metric                               |                  Result |
-| ------------------------------------ | ----------------------: |
-| Frames analysed                      |                     332 |
-| Pose detection                       |                    100% |
-| Dominant hand detection              |                  93.98% |
-| Missing hand frames                  |                      20 |
-| Overall motion-representation status | Proceed with conditions |
+Sources include the Spanish Ministry of Education, Comunidad de Madrid and INE public datasets.
 
-The POC demonstrates that movement can be captured as structured data for further experimentation.
+Relevant folders:
 
-It does **not** prove:
+```text
+data/
+dashboard/
+```
 
-* Baby Sign correctness;
-* ASL or LSE correctness;
-* clinical or developmental benefit;
-* avatar generation;
-* motion retargeting;
-* synthetic-video fidelity;
-* or product-market fit.
+### 3. Static MVP mock
 
-Relevant files:
+The prototype shows how Kinder Signs could work as a product.
+
+| View | Purpose |
+|---|---|
+| `prototype/index.html` | School-family experience |
+| `prototype/admin.html` | Kinder Signs internal and school/admin logic |
+
+The mock shows the Signs and Flashcards Library, the school account structure, the group, teacher and child hierarchy, assignment to a whole group or individual child, family access and active packs, automatic family output preparation, and the reference-video-to-avatar preparation flow.
+
+Run locally:
+
+```bash
+cd prototype
+python -m http.server 8000
+```
+
+Then open:
+
+```text
+http://localhost:8000/index.html
+http://localhost:8000/admin.html
+```
+
+Relevant folder:
+
+```text
+prototype/
+```
+
+### 4. Computer Vision POC
+
+The Computer Vision POC tests whether a reference sign video can be converted into structured movement data.
+
+| Metric | Result |
+|---|---:|
+| Frames analysed | 332 |
+| Pose detection | 100% |
+| Dominant hand detection | 93.98% |
+| Missing hand frames | 20 |
+| Overall status | Proceed with conditions |
+
+The POC supports the first technical step:
+
+```text
+reference video
+→ landmarks
+→ movement data
+→ motion diagnostics
+```
+
+This gives Kinder Signs a technical basis for the next build: testing whether a visual guide or avatar preview can follow reference movement without changing the sign.
+
+Relevant folder:
 
 ```text
 poc/
 ```
 
----
+### 5. Governed AI workflow
 
-## Governed AI workflow
-
-The workflow layer demonstrates how approved sign content and a CV motion summary can be transformed into a parent-facing draft while preserving quality controls.
-
-Workflow logic:
+The workflow shows how Kinder Signs can use AI internally while keeping content controlled.
 
 ```text
 approved sign content + CV motion summary
 → LLM-generated family draft
 → deterministic quality checks
-→ LangSmith trace/evaluation
-→ draft pending professional approval
+→ LangSmith trace and evaluation
+→ draft pending expert review
 ```
 
-Important boundary:
+LangSmith is used to evaluate the LLM content step. The workflow keeps AI as support for content operations, not as the authority on sign correctness.
 
-> LangSmith evaluates the LLM content-transformation step. It does not validate the MP4 video, sign movement, Baby Sign correctness or Computer Vision quality.
-
-Relevant files:
+Relevant folder:
 
 ```text
 workflow/
 ```
 
----
+### 6. Cost and timeline
 
-## Cost and timeline
+The proposed next phase is a focused validation investment.
 
-The next validation phase is estimated at:
+| Item | Estimate |
+|---|---:|
+| Timeline | 8 to 9 weeks |
+| Validation investment | €5.5k to €17.8k |
 
-| Item              |     Estimate |
-| ----------------- | -----------: |
-| Timeline          |    8-9 weeks |
-| Validation budget | €5.5k-€17.8k |
+This is a validation budget, not a full launch budget.
 
-This is a validation budget, not a product-launch budget.
-
-The main cost drivers are:
-
-* expert review;
-* user research;
-* original content production;
-* educator workflow testing;
-* and technical refinement across more signs.
+The main cost drivers are expert review, user research, a 3 to 5 sign content test, Computer Vision refinement, workflow testing and content production.
 
 Relevant file:
 
@@ -169,32 +211,75 @@ Relevant file:
 cost_timeline/estimate.md
 ```
 
----
+## Business model hypothesis
 
-## Key limitations
+Kinder Signs is designed as a **school-led B2B/B2B2C product**.
 
-KinderFlow is not ready to scale.
+The school is the main customer. Families are users and beneficiaries.
 
-The main open questions are:
+| Layer | Product logic |
+|---|---|
+| **School account** | The centre subscribes to Kinder Signs |
+| **Classroom group** | Signs and packs can be assigned by group |
+| **Teacher** | The educator selects the sign used that week |
+| **Child profile** | Outputs can be prepared for a group or a specific child |
+| **Family access** | Parents and caregivers receive the guidance |
+| **Premium packs** | Flashcards, routines, mini stories or songs can be activated by school or group |
+| **Prepared output** | Kinder Signs prepares the right family material automatically |
 
-* parent willingness to pay;
-* school willingness to pay;
-* educator adoption and workload;
-* engagement and retention;
-* professional validation process;
-* scalable acquisition economics;
-* and motion reliability across more signs, performers and capture conditions.
+The MVP supports two assignment levels:
 
----
+```text
+Assign to whole group
+Assign to individual child
+```
 
-## Recommended next step
+Premium content is positioned mainly as a school or classroom-group purchase.
 
-Run a focused validation phase for Kinder Signs:
+## Repository structure
 
-1. Test 3-5 approved signs.
-2. Interview parents and educators.
-3. Measure whether school-home continuity creates enough additional value.
-4. Validate willingness to pay.
-5. Decide whether to continue, change direction or stop.
+```text
+.
+├── cost_timeline/       Validation budget and timeline
+├── dashboard/           Tableau dashboard documentation and assets
+├── data/                Tableau-ready datasets and source register
+├── feedback/            Round 1 decision after feedback
+├── poc/                 Computer Vision movement POC
+├── prototype/           Static MVP mock
+├── research/            Market research, risks and use cases
+└── workflow/            n8n and LangSmith workflow
+```
 
-The next investment should buy evidence, not features.
+## Round 1 status
+
+| Requirement | Status |
+|---|---|
+| Sector and company size | Covered |
+| Research and 2 to 3 use cases | Covered |
+| Public dataset selected and justified | Covered |
+| Dashboard with 5 to 7 stakeholder metrics | Covered |
+| Simple POC | Covered |
+| n8n or equivalent workflow | Covered |
+| LangSmith sample | Covered |
+| Cost and timeline | Covered |
+| Presentation | Covered |
+| `round1_decision.md` | To complete after feedback |
+
+## Next validation phase
+
+After Round 1 feedback, the next phase should focus on a small MVP.
+
+```text
+4 to 5 signs
+→ Signs and Flashcards Library
+→ school, group, teacher and child assignment
+→ family card output
+→ active packs logic
+→ movement preview and avatar preview exploration
+```
+
+Expected decision after Round 1 feedback:
+
+**KEEP Kinder Signs as the first commercial validation wedge**, unless feedback shows that another use case has stronger evidence.
+
+The goal is to test whether Kinder Signs creates enough value for schools and families before scaling.
