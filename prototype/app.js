@@ -68,8 +68,24 @@ const assignmentForm = document.querySelector("#assignment-form");
 const familyMessageElement = document.querySelector("#family-message");
 const messagePreview = document.querySelector("#message-preview");
 const actionStatus = document.querySelector("#action-status");
+const assignmentConfirmation = document.querySelector("#assignment-confirmation");
+const childSelect = document.querySelector("#child-select");
+
+const bindAssignmentMode = (form, radioName, childSelector) => {
+  const updateChildSelector = () => {
+    const selectedMode = form.querySelector(`input[name="${radioName}"]:checked`).value;
+    childSelector.disabled = selectedMode !== "child";
+  };
+
+  form.querySelectorAll(`input[name="${radioName}"]`).forEach((radio) => {
+    radio.addEventListener("change", updateChildSelector);
+  });
+  updateChildSelector();
+};
 
 if (selectButton && assignmentForm) {
+  bindAssignmentMode(assignmentForm, "assignment_mode", childSelect);
+
   selectButton.addEventListener("click", () => {
     selectButton.textContent = "Weekly sign selected";
     selectButton.setAttribute("aria-pressed", "true");
@@ -82,6 +98,8 @@ if (selectButton && assignmentForm) {
   assignmentForm.addEventListener("submit", (event) => {
     event.preventDefault();
     const routines = signData.routine.join(" or ").toLowerCase();
+    const assignmentMode = new FormData(assignmentForm).get("assignment_mode");
+    const isGroupAssignment = assignmentMode === "group";
 
     familyMessage = [
       `This week at school, children are using the Kinder Sign “${signData.sign}”.`,
@@ -91,7 +109,10 @@ if (selectButton && assignmentForm) {
     ].join("\n\n");
 
     familyMessageElement.textContent = familyMessage;
-    assignmentStatus.textContent = "Assigned to classroom group";
+    assignmentStatus.textContent = isGroupAssignment ? "Assigned to group" : `Assigned to ${childSelect.value}`;
+    assignmentConfirmation.textContent = isGroupAssignment
+      ? "MORE assigned to Group A — 1–2 years. Family card prepared for all active children. Premium materials prepared only where active."
+      : `MORE assigned to ${childSelect.value}. Family card prepared for the child’s family. Premium materials prepared based on active child/family access.`;
     actionStatus.textContent = "Approved family guidance ready to share.";
     messagePreview.focus();
   });
@@ -157,45 +178,11 @@ if (routineButton) {
 
 const adminAssignmentForm = document.querySelector("#admin-assignment-form");
 const adminAssignmentStatus = document.querySelector("#admin-assignment-status");
-const schoolSelect = document.querySelector("#school-select");
-const schoolGroupOptions = document.querySelector("#school-group-options");
-const selectedSchoolLabel = document.querySelector("#selected-school-label");
 const adminControlStatus = document.querySelector("#admin-control-status");
-
-const schoolGroups = {
-  "School A": ["Baby group", "1-2 years", "2-3 years"],
-  "School B": ["Toddler group", "Preschool transition group"],
-  "School C": ["Mixed early-years group"]
-};
-
-const renderSchoolGroups = (schoolName) => {
-  const existingLabels = schoolGroupOptions.querySelectorAll("label");
-  existingLabels.forEach((label) => label.remove());
-  selectedSchoolLabel.textContent = schoolName;
-
-  schoolGroups[schoolName].forEach((groupName, index) => {
-    const label = document.createElement("label");
-    const checkbox = document.createElement("input");
-    const visualLabel = document.createElement("span");
-    const groupText = document.createElement("strong");
-
-    checkbox.type = "checkbox";
-    checkbox.name = "school_group";
-    checkbox.value = groupName;
-    checkbox.checked = index === 0;
-    groupText.textContent = groupName;
-    visualLabel.appendChild(groupText);
-    label.append(checkbox, visualLabel);
-    schoolGroupOptions.appendChild(label);
-  });
-};
+const adminChildSelect = document.querySelector("#admin-child-select");
 
 if (adminAssignmentForm) {
-  schoolSelect.addEventListener("change", () => {
-    renderSchoolGroups(schoolSelect.value);
-    adminAssignmentStatus.textContent = "";
-    adminControlStatus.textContent = "";
-  });
+  bindAssignmentMode(adminAssignmentForm, "admin_assignment_mode", adminChildSelect);
 
   document.querySelectorAll("[data-admin-action]").forEach((button) => {
     button.addEventListener("click", () => {
@@ -206,19 +193,12 @@ if (adminAssignmentForm) {
 
   adminAssignmentForm.addEventListener("submit", (event) => {
     event.preventDefault();
-    const selectedGroups = adminAssignmentForm.querySelectorAll('input[name="school_group"]:checked');
-
-    if (selectedGroups.length === 0) {
-      adminAssignmentStatus.textContent = "Select at least one school group before assigning the weekly sign.";
-      adminAssignmentStatus.classList.add("is-warning");
-      return;
-    }
-
+    const assignmentMode = new FormData(adminAssignmentForm).get("admin_assignment_mode");
+    const isGroupAssignment = assignmentMode === "group";
     adminAssignmentStatus.classList.remove("is-warning");
-    const selectedGroupNames = Array.from(selectedGroups, (checkbox) => checkbox.value).join(", ");
-    adminAssignmentStatus.textContent =
-      `MORE sent to ${schoolSelect.value} — ${selectedGroupNames}. ` +
-      "Family guidance is ready for the school-family channel.";
+    adminAssignmentStatus.textContent = isGroupAssignment
+      ? "MORE assigned to Group A — 1–2 years. Family card prepared for all active children. Premium materials prepared only where active."
+      : `MORE assigned to ${adminChildSelect.value}. Family card prepared for the child’s family. Premium materials prepared based on active child/family access.`;
   });
 }
 

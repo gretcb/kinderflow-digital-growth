@@ -2,7 +2,7 @@
 
 This dependency-free prototype shows the Kinder Signs school-home experience and its commercial logic. Kinder Signs is not another sign dictionary: the school uses one approved sign in a real routine, and the family receives the same short guidance at home.
 
-It also includes `admin.html`, a separate internal prototype showing how Kinder Signs could create an approved sign video, run a movement quality check, prepare a family card, complete expert review and add the approved sign card to its library. A separate school-delivery view shows the approved card moving through a school/client and classroom-group hierarchy. School and group controls are illustrative only; the page does not save, process, publish or integrate data.
+It also includes `admin.html`, a separate internal prototype showing how Kinder Signs could create an approved sign video, run a movement quality check, prepare a family card, complete expert review and add the approved sign card to its library. The school-delivery view follows the hierarchy `school account → classroom group → teacher → child profile → family access / packs`. All controls and profiles are illustrative; the page does not save, process, publish or integrate data.
 
 ## How to open
 
@@ -30,7 +30,15 @@ The page uses `data/approved_sign_more.json` when served over HTTP. It includes 
 
 ### School-facing flow
 
-The prototype shows a school selecting an already approved sign card, assigning it to a classroom group and using it in the classroom routine. The family receives the same approved guidance at home. The school does not create the video, prepare the content or manage the internal workflow.
+The prototype shows School A on the Kinder Signs Basic plan, Group A for ages 1–2 years and Teacher 1. The educator selects an already approved weekly sign and assigns it either to the whole group or to one example child. The family receives the same approved guidance at home. The school does not create the video, prepare the content or manage the internal workflow.
+
+The child roster makes active access visible to the teacher/admin:
+
+- Child A has two parent profiles, flashcards and extra caregiver access;
+- Child B has one parent profile and base access only; and
+- Child C has two parent profiles and flashcards.
+
+The prepared output follows the active access attached to each child or family. A group assignment prepares the base family card for all active children and includes premium materials only where those materials are active.
 
 The distribution actions are deliberately channel-neutral: copy a message, export the routine card through the browser print dialog, or prepare a prototype share-link state. Kinder Signs does not replace a school communication app.
 
@@ -40,7 +48,7 @@ Two main tutors receive the weekly sign, short guidance for using it naturally i
 
 ### Monetization hypothesis
 
-The base access model includes two main tutors. Incremental value can come from:
+The base access model includes two main tutors. Premium packs can be active for a whole group or an individual child, while extra caregiver access remains linked to a child’s family. Incremental value can come from:
 
 - extra caregiver invitations;
 - printed flashcards;
@@ -56,6 +64,7 @@ This is a static feasibility prototype. It does not include:
 
 - accounts, login or permissions;
 - a database or saved profiles;
+- billing, charges or payment-state management;
 - live school communication integrations;
 - real share links or message delivery;
 - payment or checkout;

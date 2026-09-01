@@ -99,9 +99,9 @@
           <div class="section-heading">
             <div>
               <p class="eyebrow">Step 2 · Assign</p>
-              <h2 id="assignment-title">Assign the sign to a classroom group</h2>
+              <h2 id="assignment-title">Assign this week’s approved sign</h2>
             </div>
-            <p>The school assigns an approved library item. Kinder Signs has already created and reviewed the content.</p>
+            <p>Choose the full classroom group or one child. Kinder Signs has already created and reviewed the content.</p>
           </div>
 
           <div class="assignment-grid">
@@ -114,14 +114,43 @@
                 <span class="step-status" id="assignment-status">Ready to assign</span>
               </div>
 
-              <dl class="assignment-details">
-                <div><dt>Classroom group</dt><dd data-classroom>Toddlers</dd></div>
-                <div><dt>Routine</dt><dd data-routine>Snack time / playtime</dd></div>
-                <div><dt>Content</dt><dd>Approved sign card</dd></div>
-                <div><dt>Delivery</dt><dd data-delivery>Existing school-family channel</dd></div>
-              </dl>
+              <div class="account-context">
+                <div>
+                  <span>School account</span>
+                  <strong>School A</strong>
+                  <small>Plan: Kinder Signs Basic</small>
+                </div>
+                <div>
+                  <span>Group profile</span>
+                  <strong>Group A — 1–2 years</strong>
+                  <small>Teacher: Teacher 1</small>
+                </div>
+              </div>
+
+              <fieldset class="assignment-mode-control">
+                <legend>Assignment mode</legend>
+                <label>
+                  <input type="radio" name="assignment_mode" value="group" checked>
+                  <span><strong>Assign to group</strong><small>Assign to whole group — all active children</small></span>
+                </label>
+                <label>
+                  <input type="radio" name="assignment_mode" value="child">
+                  <span><strong>Assign to child</strong><small>Assign to individual child profile</small></span>
+                </label>
+              </fieldset>
+
+              <div class="child-select-block">
+                <label for="child-select">Child profile</label>
+                <select id="child-select" name="child" disabled>
+                  <option value="Child A">Child A</option>
+                  <option value="Child B">Child B</option>
+                  <option value="Child C">Child C</option>
+                </select>
+                <small>Select “Assign to child” to choose one profile.</small>
+              </div>
 
               <button class="button button-primary button-wide" type="submit">Assign approved sign card</button>
+              <p class="assignment-confirmation" id="assignment-confirmation" aria-live="polite"></p>
             </form>
 
             <aside class="output-panel" aria-labelledby="output-title">
@@ -149,6 +178,52 @@
               <p class="action-status" id="action-status" aria-live="polite"></p>
             </aside>
           </div>
+
+          <article class="family-overview-panel" aria-labelledby="family-overview-title">
+            <div class="family-overview-heading">
+              <div>
+                <p class="card-label">Child roster</p>
+                <h3 id="family-overview-title">Family access overview</h3>
+              </div>
+              <p>Example profiles only. No billing, payment or real child records.</p>
+            </div>
+            <div class="table-scroll">
+              <table class="family-access-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Child</th>
+                    <th scope="col">Parents / caregivers</th>
+                    <th scope="col">Active packs</th>
+                    <th scope="col">Prepared output</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">Child A</th>
+                    <td>Parent 1 + Parent 2</td>
+                    <td><span class="access-badge">Flashcards active</span> <span class="access-badge">Extra caregiver active</span></td>
+                    <td>Family card + PDF/image flashcard + caregiver access</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Child B</th>
+                    <td>Parent 1</td>
+                    <td><span class="access-badge access-badge-muted">Base only</span></td>
+                    <td>Family card</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Child C</th>
+                    <td>Parent 1 + Parent 2</td>
+                    <td><span class="access-badge">Flashcards active</span></td>
+                    <td>Family card + PDF/image flashcard</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="pack-level-note">
+              Premium packs may be active for a whole group or for one child. Family access extensions remain linked to the child’s family profile.
+              Base only prepares a Family card; Flashcards active prepares a Family card + PDF/image flashcard; Extra caregiver active prepares a Family card + caregiver access.
+            </p>
+          </article>
         </div>
       </section>
 

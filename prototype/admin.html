@@ -194,8 +194,8 @@
           <p class="step-number">05</p>
           <div>
             <p class="eyebrow">School delivery</p>
-            <h2 id="school-assignment-title">5. Send to school groups</h2>
-            <p>The school selects an approved library card and assigns it to the classroom groups using that routine.</p>
+            <h2 id="school-assignment-title">5. Assign the weekly sign</h2>
+            <p>The educator selects the approved card, then assigns it to the whole group or one child profile.</p>
           </div>
         </div>
 
@@ -205,20 +205,28 @@
             <h3>MORE</h3>
             <p>Weekly sign · Snack-time routine</p>
             <ol class="assignment-hierarchy" aria-label="Assignment hierarchy">
-              <li>School / client account</li>
-              <li>Classroom groups</li>
-              <li>Approved sign card</li>
-              <li>Family guidance</li>
+              <li>School account</li>
+              <li>Classroom group</li>
+              <li>Teacher</li>
+              <li>Child profile</li>
+              <li>Family access / packs</li>
             </ol>
           </div>
           <div class="assignment-workspace">
+            <div class="account-context account-context-admin">
+              <div>
+                <span>School account</span>
+                <strong>School A</strong>
+                <small>Plan: Kinder Signs Basic</small>
+              </div>
+              <div>
+                <span>Group profile</span>
+                <strong>Group A — 1–2 years</strong>
+                <small>Teacher: Teacher 1</small>
+              </div>
+            </div>
+
             <div class="school-selector-block">
-              <label for="school-select">School / client account</label>
-              <select id="school-select" name="school">
-                <option value="School A">School A</option>
-                <option value="School B">School B</option>
-                <option value="School C">School C</option>
-              </select>
               <div class="admin-control-row" aria-label="Static school administration controls">
                 <button class="button button-quiet" type="button" data-admin-action="Add new school">Add new school</button>
                 <button class="button button-quiet" type="button" data-admin-action="Edit school">Edit school</button>
@@ -228,24 +236,30 @@
               <p class="admin-control-status" id="admin-control-status" aria-live="polite"></p>
             </div>
 
-            <fieldset class="school-options" id="school-group-options">
-              <legend>Classroom groups for <span id="selected-school-label">School A</span></legend>
+            <fieldset class="assignment-mode-control assignment-mode-admin">
+              <legend>Assignment mode</legend>
               <label>
-                <input type="checkbox" name="school_group" value="Baby group" checked>
-                <span><strong>Baby group</strong></span>
+                <input type="radio" name="admin_assignment_mode" value="group" checked>
+                <span><strong>Assign to group</strong><small>Assign to whole group — all active children</small></span>
               </label>
               <label>
-                <input type="checkbox" name="school_group" value="1-2 years">
-                <span><strong>1-2 years</strong></span>
-              </label>
-              <label>
-                <input type="checkbox" name="school_group" value="2-3 years">
-                <span><strong>2-3 years</strong></span>
+                <input type="radio" name="admin_assignment_mode" value="child">
+                <span><strong>Assign to child</strong><small>Assign to individual child profile</small></span>
               </label>
             </fieldset>
 
+            <div class="child-select-block">
+              <label for="admin-child-select">Child profile</label>
+              <select id="admin-child-select" name="admin_child" disabled>
+                <option value="Child A">Child A</option>
+                <option value="Child B">Child B</option>
+                <option value="Child C">Child C</option>
+              </select>
+              <small>Select “Assign to child” to choose one profile.</small>
+            </div>
+
             <div class="assignment-submit-row">
-              <button class="button button-primary" type="submit">Send approved sign card</button>
+              <button class="button button-primary" type="submit">Assign approved sign card</button>
               <p class="admin-assignment-status" id="admin-assignment-status" aria-live="polite"></p>
             </div>
             <p class="prototype-boundary">
@@ -253,6 +267,52 @@
             </p>
           </div>
         </form>
+
+        <article class="family-overview-panel admin-family-overview" aria-labelledby="admin-family-overview-title">
+          <div class="family-overview-heading">
+            <div>
+              <p class="card-label">Child roster</p>
+              <h3 id="admin-family-overview-title">Family access overview</h3>
+            </div>
+            <p>Teacher/admin view of active access. Static example data only.</p>
+          </div>
+          <div class="table-scroll">
+            <table class="family-access-table">
+              <thead>
+                <tr>
+                  <th scope="col">Child</th>
+                  <th scope="col">Parents / caregivers</th>
+                  <th scope="col">Active packs</th>
+                  <th scope="col">Prepared output</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Child A</th>
+                  <td>Parent 1 + Parent 2</td>
+                  <td><span class="access-badge">Flashcards active</span> <span class="access-badge">Extra caregiver active</span></td>
+                  <td>Family card + PDF/image flashcard + caregiver access</td>
+                </tr>
+                <tr>
+                  <th scope="row">Child B</th>
+                  <td>Parent 1</td>
+                  <td><span class="access-badge access-badge-muted">Base only</span></td>
+                  <td>Family card</td>
+                </tr>
+                <tr>
+                  <th scope="row">Child C</th>
+                  <td>Parent 1 + Parent 2</td>
+                  <td><span class="access-badge">Flashcards active</span></td>
+                  <td>Family card + PDF/image flashcard</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="pack-level-note">
+            Premium packs may be active at group or child level. Family access extensions remain linked to each child’s family.
+            Base only prepares a Family card; Flashcards active prepares a Family card + PDF/image flashcard; Extra caregiver active prepares a Family card + caregiver access.
+          </p>
+        </article>
       </section>
     </main>
 
