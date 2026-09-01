@@ -18,8 +18,7 @@
         <span>KinderFlow Admin</span>
       </a>
       <nav aria-label="Admin workflow sections">
-        <a href="#register">Reference</a>
-        <a href="#cv-audit">Movement check</a>
+        <a href="#reference-avatar">Preparation</a>
         <a href="#reviewed-item">Library</a>
         <a href="#school-assignment">Assignment</a>
       </nav>
@@ -32,8 +31,8 @@
           <p class="eyebrow">Internal Kinder Signs workflow</p>
           <h1>Create and approve Kinder Signs content</h1>
           <p>
-            Kinder Signs creates the approved sign video, checks the movement, prepares the family card
-            and completes expert review before adding the approved sign card to the library.
+            Kinder Signs registers the reference video, checks the movement data and prepares the visual
+            guide brief internally. Schools only select approved library items.
           </p>
         </div>
         <div class="admin-scope-note">
@@ -42,119 +41,88 @@
         </div>
       </div>
 
-      <div class="admin-step-track section-shell" aria-label="KinderFlow internal content sequence">
-        <span>Create approved sign video</span>
-        <span>Movement check</span>
-        <span>Family card prepared</span>
-        <span>Expert review</span>
-        <span>Approved card added to library</span>
-      </div>
-
-      <section class="admin-section section-shell" id="register" aria-labelledby="register-title">
+      <section class="admin-section section-shell" id="reference-avatar" aria-labelledby="reference-avatar-title">
         <div class="admin-section-heading">
           <p class="step-number">01</p>
           <div>
-            <p class="eyebrow">Kinder Signs internal production</p>
-            <h2 id="register-title">1. Create approved sign video</h2>
-            <p>Kinder Signs creates and manages the reference video internally. Schools never upload or prepare video content.</p>
+            <p class="eyebrow">Internal Kinder Signs workflow</p>
+            <h2 id="reference-avatar-title">Reference video and avatar preparation</h2>
+            <p>Kinder Signs owns this workflow. The school does not create, upload or validate sign videos.</p>
           </div>
         </div>
 
-        <div class="admin-card reference-panel">
-          <div class="reference-file" aria-label="Mock internal approved sign video record">
-            <span class="reference-file-type">Approved sign video</span>
-            <div class="file-mark" aria-hidden="true">MP4</div>
-            <strong>Reference video ready</strong>
-            <small>Static demo · no child video required</small>
-          </div>
-          <dl class="admin-details">
-            <div><dt>Sign name</dt><dd>More</dd></div>
-            <div><dt>Routine</dt><dd>Asking for more during snack time</dd></div>
-            <div><dt>Source type</dt><dd>Kinder Signs internal production</dd></div>
-            <div><dt>Child data</dt><dd>No child video required</dd></div>
-            <div><dt>Review status</dt><dd><span class="status-pill status-review">Expert review required</span></dd></div>
-          </dl>
-        </div>
-      </section>
+        <ol class="preparation-pipeline" aria-label="Reference video to avatar preview preparation pipeline">
+          <li><span>01</span>Approved sign card</li>
+          <li><span>02</span>Reference video registered</li>
+          <li><span>03</span>Movement check</li>
+          <li><span>04</span>Movement data / skeleton</li>
+          <li><span>05</span>Visual guide brief</li>
+          <li><span>06</span>Next build: avatar preview</li>
+          <li><span>07</span>Expert review required</li>
+        </ol>
 
-      <section class="admin-section section-tint" id="cv-audit" aria-labelledby="cv-audit-title">
-        <div class="section-shell">
-          <div class="admin-section-heading">
-            <p class="step-number">02</p>
-            <div>
-              <p class="eyebrow">Movement quality</p>
-              <h2 id="cv-audit-title">2. Movement quality check</h2>
-              <p>Check whether the movement can be followed clearly across the video.</p>
+        <p class="look-motion-rule">The character defines the look. The reference movement defines the sign.</p>
+
+        <div class="preparation-grid">
+          <article class="preparation-card">
+            <div class="preparation-card-heading">
+              <p class="card-label">Reference video</p>
+              <span class="status-pill status-ready">Registered</span>
             </div>
-          </div>
+            <h3>MORE</h3>
+            <dl class="preparation-details">
+              <div><dt>Sign</dt><dd>MORE</dd></div>
+              <div><dt>Routine</dt><dd>Snack time / asking for more</dd></div>
+              <div><dt>Reference video status</dt><dd>Registered</dd></div>
+              <div><dt>Movement check</dt><dd>Proceed with conditions</dd></div>
+              <div><dt>Child video</dt><dd>Not used</dd></div>
+              <div><dt>Expert review</dt><dd>Required</dd></div>
+            </dl>
+          </article>
 
-          <div class="metric-grid">
-            <article class="metric-card">
-              <span>Pose detection</span>
-              <strong>100%</strong>
-              <small>332 of 332 frames</small>
-            </article>
-            <article class="metric-card">
-              <span>Hand detection</span>
-              <strong>93.98%</strong>
-              <small>312 of 332 frames</small>
-            </article>
-            <article class="metric-card">
-              <span>Missing hand frames</span>
-              <strong>20</strong>
-              <small>Kept visible for expert review</small>
-            </article>
-            <article class="metric-card metric-status">
-              <span>Status</span>
-              <strong>Proceed with conditions</strong>
-              <small>Continue with expert review</small>
-            </article>
-          </div>
-          <p class="evidence-note">This movement check is not proof of final sign correctness.</p>
-        </div>
-      </section>
-
-      <section class="admin-section section-shell" id="avatar-preparation" aria-labelledby="avatar-title">
-        <div class="admin-section-heading">
-          <p class="step-number">03</p>
-          <div>
-            <p class="eyebrow">Next build</p>
-            <h2 id="avatar-title">3. Avatar preview preparation</h2>
-            <p>Avatar preview preparation is the next build. It would use the approved movement after review.</p>
-          </div>
-        </div>
-
-        <div class="rendering-panel">
-          <div class="rendering-flow" aria-label="Future avatar preparation sequence">
-            <div><span>Input</span><strong>Approved movement data</strong></div>
-            <span class="flow-connector" aria-hidden="true">→</span>
-            <div><span>Rule</span><strong>Follow the movement as provided</strong></div>
-            <span class="flow-connector" aria-hidden="true">→</span>
-            <div><span>Check</span><strong>Expert review</strong></div>
-          </div>
-          <blockquote>
-            It must follow the approved movement, not invent the sign.
-          </blockquote>
-          <div class="boundary-grid">
-            <div>
-              <strong>Not implemented</strong>
-              <p>Final avatar generation is not implemented in this prototype.</p>
+          <article class="preparation-card movement-data-card">
+            <div class="preparation-card-heading">
+              <p class="card-label">Movement data / skeleton</p>
+              <span class="status-pill status-review">Conditions apply</span>
             </div>
-            <div>
-              <strong>Required checkpoint</strong>
-              <p>Expert review remains required before any release.</p>
+            <h3>Movement quality check</h3>
+            <dl class="preparation-details metric-details">
+              <div><dt>Pose detection</dt><dd>100%</dd></div>
+              <div><dt>Hand detection</dt><dd>93.98%</dd></div>
+              <div><dt>Frames analysed</dt><dd>332</dd></div>
+              <div><dt>Status</dt><dd>Proceed with conditions</dd></div>
+            </dl>
+            <p class="panel-note">Movement check is not proof of final sign correctness.</p>
+          </article>
+
+          <article class="preparation-card visual-guide-card">
+            <div class="preparation-card-heading">
+              <p class="card-label">Visual guide brief</p>
+              <span class="status-pill status-review">Preview only</span>
             </div>
-          </div>
+            <h3>Character and scene direction</h3>
+            <dl class="preparation-details">
+              <div><dt>Character direction</dt><dd>Calm female guide</dd></div>
+              <div><dt>Style</dt><dd>Clean, warm, educational</dd></div>
+              <div><dt>Hands</dt><dd>Always visible</dd></div>
+              <div><dt>Background</dt><dd>Light and simple</dd></div>
+              <div><dt>Status</dt><dd>Brief ready; avatar preview not final</dd></div>
+            </dl>
+          </article>
         </div>
+
+        <p class="avatar-boundary">
+          The avatar preview is the next build. Final validated avatar generation is not implemented yet.
+        </p>
       </section>
 
       <section class="admin-section section-tint" id="reviewed-item" aria-labelledby="reviewed-title">
         <div class="section-shell">
           <div class="admin-section-heading">
-            <p class="step-number">04</p>
+            <p class="step-number">02</p>
             <div>
               <p class="eyebrow">Ready for schools</p>
-              <h2 id="reviewed-title">4. Approved sign card</h2>
+              <h2 id="reviewed-title">2. Approved sign card</h2>
               <p>After expert review, the approved sign card is added to the Kinder Signs library.</p>
             </div>
           </div>
@@ -191,10 +159,10 @@
 
       <section class="admin-section section-shell" id="school-assignment" aria-labelledby="school-assignment-title">
         <div class="admin-section-heading">
-          <p class="step-number">05</p>
+          <p class="step-number">03</p>
           <div>
             <p class="eyebrow">School delivery</p>
-            <h2 id="school-assignment-title">5. Assign the weekly sign</h2>
+            <h2 id="school-assignment-title">3. Assign the weekly sign</h2>
             <p>The educator selects the approved card, then assigns it to the whole group or one child profile.</p>
           </div>
         </div>

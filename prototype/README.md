@@ -28,6 +28,12 @@ The page uses `data/approved_sign_more.json` when served over HTTP. It includes 
 
 ## What the prototype demonstrates
 
+### Reference video and avatar preparation
+
+The internal admin view registers a Kinder Signs reference video, shows the existing movement-check evidence, records the movement data/skeleton step and turns the visual direction into a short guide brief. The character defines the look; the reference movement defines the sign. No child video is used.
+
+The avatar preview is the next build, not a finished feature. Final validated avatar generation is not implemented, and expert review remains required. This internal workflow belongs to Kinder Signs; the school only selects approved library items and assigns them to groups or children.
+
 ### School-facing flow
 
 The prototype shows School A on the Kinder Signs Basic plan, Group A for ages 1–2 years and Teacher 1. The educator selects an already approved weekly sign and assigns it either to the whole group or to one example child. The family receives the same approved guidance at home. The school does not create the video, prepare the content or manage the internal workflow.

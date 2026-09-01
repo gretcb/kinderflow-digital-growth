@@ -1056,6 +1056,124 @@ footer {
   font-weight: 800;
 }
 
+.preparation-pipeline {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.preparation-pipeline li {
+  position: relative;
+  min-height: 112px;
+  padding: 18px 14px;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  background: var(--white);
+  color: var(--text);
+  font-size: 0.78rem;
+  font-weight: 750;
+  line-height: 1.35;
+}
+
+.preparation-pipeline li:not(:last-child)::after {
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  right: -9px;
+  color: var(--primary);
+  content: "→";
+  transform: translateY(-50%);
+}
+
+.preparation-pipeline span {
+  display: block;
+  margin-bottom: 14px;
+  color: var(--primary);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+}
+
+.look-motion-rule {
+  margin: 24px 0;
+  padding: 22px 24px;
+  border-left: 4px solid var(--accent);
+  background: var(--surface);
+  font-size: clamp(1.05rem, 2vw, 1.3rem);
+  font-weight: 750;
+}
+
+.preparation-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.preparation-card {
+  min-width: 0;
+  padding: 26px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--white);
+  box-shadow: 0 12px 30px rgba(31, 63, 61, 0.05);
+}
+
+.preparation-card-heading {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.preparation-card-heading .card-label {
+  margin-bottom: 0;
+}
+
+.preparation-details {
+  margin: 18px 0 0;
+}
+
+.preparation-details div {
+  display: grid;
+  grid-template-columns: minmax(110px, 0.8fr) minmax(0, 1.2fr);
+  gap: 12px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.preparation-details div:last-child {
+  border-bottom: 0;
+}
+
+.metric-details dd {
+  color: var(--primary-dark);
+  font-size: 1.05rem;
+}
+
+.panel-note {
+  margin: 18px 0 0;
+  padding: 14px;
+  border-radius: 9px;
+  background: var(--surface);
+  color: #5e514b;
+  font-size: 0.82rem;
+  font-weight: 750;
+}
+
+.avatar-boundary {
+  margin: 20px 0 0;
+  padding: 16px 20px;
+  border: 1px solid #b8cfcd;
+  border-radius: 10px;
+  background: var(--surface-strong);
+  color: var(--primary-dark);
+  font-size: 0.88rem;
+  font-weight: 750;
+}
+
 .admin-card,
 .rendering-panel,
 .reviewed-card {
@@ -1513,8 +1631,15 @@ footer {
   .internal-note,
   .admin-intro,
   .reference-panel,
-  .school-assignment-panel {
+  .school-assignment-panel,
+  .preparation-grid {
     grid-template-columns: 1fr;
+  }
+
+  .preparation-pipeline {
+    grid-template-columns: repeat(7, minmax(155px, 1fr));
+    overflow-x: auto;
+    padding-bottom: 8px;
   }
 
   .hero {
@@ -1677,6 +1802,11 @@ footer {
 
   .admin-details div {
     grid-template-columns: 1fr;
+  }
+
+  .preparation-details div {
+    grid-template-columns: 1fr;
+    gap: 2px;
   }
 
   .admin-control-row {
