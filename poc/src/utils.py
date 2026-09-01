@@ -1,6 +1,8 @@
 import json
-import pandas as pd
 import os
+from pathlib import Path
+
+import pandas as pd
 
 def save_metadata(metadata, output_path):
     with open(output_path, 'w') as f:
@@ -13,6 +15,12 @@ def save_landmarks_csv(data_list, output_path):
         df = pd.DataFrame(data_list)
     df.to_csv(output_path, index=False)
     
-def ensure_directories_exist():
-    for d in ["poc/output/landmarks", "poc/output/previews"]:
-        os.makedirs(d, exist_ok=True)
+def ensure_directories_exist(output_root="poc/output"):
+    """Create extraction directories below the requested output root.
+
+    The default preserves the original POC paths. The MVP supplies an isolated
+    run directory so live processing cannot overwrite the canonical evidence.
+    """
+    root = Path(output_root)
+    for directory in (root / "landmarks", root / "previews"):
+        os.makedirs(directory, exist_ok=True)

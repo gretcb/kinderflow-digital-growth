@@ -284,18 +284,23 @@ def assess_quality(
     return dimensions, overall, reasons
 
 
-def analyse_motion(video_name: str, mad_multiplier: float = 6.0) -> dict:
+def analyse_motion(
+    video_name: str,
+    mad_multiplier: float = 6.0,
+    output_root: str | Path = "poc/output",
+) -> dict:
     if mad_multiplier <= 0:
         raise ValueError("mad_multiplier must be positive")
 
-    normalized_dir = Path("poc/output/normalized")
-    diagnostics_dir = Path("poc/output/diagnostics")
+    output_root = Path(output_root)
+    normalized_dir = output_root / "normalized"
+    diagnostics_dir = output_root / "diagnostics"
     diagnostics_dir.mkdir(parents=True, exist_ok=True)
     hand_path = normalized_dir / f"{video_name}_hand_normalized.csv"
     pose_path = normalized_dir / f"{video_name}_pose_normalized.csv"
     normalization_path = normalized_dir / f"{video_name}_normalization_metadata.json"
     missing_path = diagnostics_dir / f"{video_name}_missing_frames.json"
-    validation_path = Path("poc/output/validation_summary.json")
+    validation_path = output_root / "validation_summary.json"
     for path in (hand_path, pose_path, normalization_path, missing_path, validation_path):
         if not path.exists():
             raise FileNotFoundError(f"Required pipeline input not found: {path}")
@@ -457,5 +462,14 @@ if __name__ == "__main__":
     )
     parser.add_argument("--video-name", default="sign_reference")
     parser.add_argument("--abrupt-jump-mad-multiplier", type=float, default=6.0)
+    parser.add_argument(
+        "--output-root",
+        default="poc/output",
+        help="Output directory (defaults to the canonical POC output path)",
+    )
     arguments = parser.parse_args()
-    analyse_motion(arguments.video_name, arguments.abrupt_jump_mad_multiplier)
+    analyse_motion(
+        arguments.video_name,
+        arguments.abrupt_jump_mad_multiplier,
+        arguments.output_root,
+    )

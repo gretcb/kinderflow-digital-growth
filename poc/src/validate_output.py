@@ -109,15 +109,24 @@ def generate_validation_summary(
     return summary
 
 
-def validate_existing_output(video_name: str) -> dict:
-    landmarks_dir = Path("poc/output/landmarks")
+def validate_existing_output(
+    video_name: str, output_root: str | Path = "poc/output"
+) -> dict:
+    output_root = Path(output_root)
+    landmarks_dir = output_root / "landmarks"
     metadata = json.loads(
         (landmarks_dir / f"{video_name}_metadata.json").read_text(encoding="utf-8")
     )
     hand_df = pd.read_csv(landmarks_dir / f"{video_name}_hand_landmarks.csv")
     pose_df = pd.read_csv(landmarks_dir / f"{video_name}_pose_landmarks.csv")
     total_frames = int(metadata["total_frames_metadata"])
-    return generate_validation_summary(video_name, total_frames, hand_df, pose_df)
+    return generate_validation_summary(
+        video_name,
+        total_frames,
+        hand_df,
+        pose_df,
+        output_root / "validation_summary.json",
+    )
 
 
 if __name__ == "__main__":
@@ -125,5 +134,10 @@ if __name__ == "__main__":
         description="Assess raw MediaPipe extraction coverage."
     )
     parser.add_argument("--video-name", default="sign_reference")
+    parser.add_argument(
+        "--output-root",
+        default="poc/output",
+        help="Output directory (defaults to the canonical POC output path)",
+    )
     args = parser.parse_args()
-    validate_existing_output(args.video_name)
+    validate_existing_output(args.video_name, args.output_root)

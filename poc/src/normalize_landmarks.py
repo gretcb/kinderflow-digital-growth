@@ -194,16 +194,21 @@ def smooth_resolved_segments(
 
 
 def normalize_and_smooth(
-    video_name: str, max_gap_frames: int = 3, window_size: int = 3, hand: str | None = None
+    video_name: str,
+    max_gap_frames: int = 3,
+    window_size: int = 3,
+    hand: str | None = None,
+    output_root: str | Path = "poc/output",
 ) -> dict:
     if max_gap_frames < 0:
         raise ValueError("max_gap_frames must be non-negative")
     if window_size < 1 or window_size % 2 == 0:
         raise ValueError("window_size must be a positive odd integer")
 
-    raw_dir = Path("poc/output/landmarks")
-    normalized_dir = Path("poc/output/normalized")
-    diagnostics_dir = Path("poc/output/diagnostics")
+    output_root = Path(output_root)
+    raw_dir = output_root / "landmarks"
+    normalized_dir = output_root / "normalized"
+    diagnostics_dir = output_root / "diagnostics"
     normalized_dir.mkdir(parents=True, exist_ok=True)
     diagnostics_dir.mkdir(parents=True, exist_ok=True)
 
@@ -419,10 +424,16 @@ if __name__ == "__main__":
     parser.add_argument("--max-gap-frames", type=int, default=3)
     parser.add_argument("--smoothing-window", type=int, default=3)
     parser.add_argument("--hand", choices=["Left", "Right"], default=None)
+    parser.add_argument(
+        "--output-root",
+        default="poc/output",
+        help="Output directory (defaults to the canonical POC output path)",
+    )
     arguments = parser.parse_args()
     normalize_and_smooth(
         arguments.video_name,
         max_gap_frames=arguments.max_gap_frames,
         window_size=arguments.smoothing_window,
         hand=arguments.hand,
+        output_root=arguments.output_root,
     )

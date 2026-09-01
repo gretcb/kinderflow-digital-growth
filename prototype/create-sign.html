@@ -1,25 +1,125 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="KinderFlow Create a sign prototype showing the existing Computer Vision POC evidence and governed publication boundary.">
-    <title>Master Content Studio | Create a sign</title><link rel="icon" href="data:,"><link rel="stylesheet" href="styles.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="KinderFlow Create a Sign working MVP for local, governed movement processing and human-controlled publication.">
+    <title>Master Content Studio | Create a Sign</title>
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="styles.css">
+    <script src="create-sign.js" defer></script>
   </head>
-  <body class="admin-page">
-    <header class="site-header admin-header"><a class="brand" href="content-studio.html" aria-label="Back to Master Content Studio"><span class="brand-mark" aria-hidden="true">K</span><span>Master Content Studio</span></a><nav aria-label="Master Content Studio navigation"><a href="content-studio.html">Studio overview</a><a href="create-sign.html" aria-current="page">Create sign</a><a href="flashcards.html">Create flashcard</a><a href="create-story.html">Create story</a><a href="create-song.html">Create song</a></nav><a class="prototype-label page-switch" href="admin.html">KinderFlow Admin</a></header>
+  <body class="admin-page create-sign-page">
+    <header class="site-header admin-header">
+      <a class="brand" href="content-studio.html" aria-label="Back to Master Content Studio"><span class="brand-mark" aria-hidden="true">K</span><span>Master Content Studio</span></a>
+      <nav aria-label="Master Content Studio navigation"><a href="content-studio.html">Studio overview</a><a href="create-sign.html" aria-current="page">Create sign</a><a href="flashcards.html">Create flashcard</a><a href="create-story.html">Create story</a><a href="create-song.html">Create song</a></nav>
+      <a class="prototype-label page-switch" href="admin.html">KinderFlow Admin</a>
+    </header>
+
     <main>
-      <section class="workspace-hero section-shell" aria-labelledby="create-sign-title"><div><p class="eyebrow">Master Content Studio · Working MVP</p><h1 id="create-sign-title">Create a sign</h1><p>Use Computer Vision to structure movement from a validated reference sign video, then route the evidence to human review.</p></div><span class="status-pill status-ready">Local POC evidence available</span></section>
-      <section class="workspace-section section-shell">
-        <ol class="preparation-pipeline" aria-label="Sign production pipeline"><li><span>01</span>Validated reference sign video</li><li><span>02</span>Upload</li><li><span>03</span>MediaPipe processing</li><li><span>04</span>Hand / pose landmarks</li><li><span>05</span>Movement preview</li><li><span>06</span>Human review</li><li><span>07</span>Publish</li></ol>
-        <div class="sign-workspace-grid">
-          <article class="workspace-card source-card"><div class="card-topline"><p class="card-label">01 · Source</p><span class="status-pill status-ready">Registered locally</span></div><h2>Validated reference sign video</h2><dl class="preparation-details"><div><dt>Sign</dt><dd>MORE</dd></div><div><dt>Routine</dt><dd>Snack time · Asking for more</dd></div><div><dt>Source</dt><dd>Validated reference material</dd></div><div><dt>Child video</dt><dd>Not required or used</dd></div></dl><button class="button button-secondary" type="button" disabled aria-disabled="true">Upload disabled in static prototype</button><p class="panel-note">The working extraction runs locally outside this static interface. No video is uploaded to an external service.</p></article>
-          <article class="workspace-card movement-data-card"><div class="card-topline"><p class="card-label">02 · Movement check</p><span class="status-pill status-review">Proceed with conditions</span></div><h2>Single reference POC</h2><div class="evidence-metrics"><div><span>Frames analysed</span><strong>332</strong></div><div><span>Pose detection</span><strong>100%</strong></div><div><span>Dominant hand detection</span><strong>93.98%</strong></div><div><span>Missing hand frames</span><strong>20</strong></div></div><p class="panel-note"><strong>Technical processing status:</strong> Proceed with conditions. This is one POC result, not a system-wide accuracy claim or correctness score.</p></article>
-          <article class="workspace-card skeleton-card"><div class="card-topline"><p class="card-label">03 · Movement data / skeleton</p><span class="status-pill status-review">Preview evidence</span></div><h2>Movement preview</h2><div class="movement-preview-grid" aria-label="Illustrative frame-level movement data preview"><div><span>Frame 001</span><strong>Pose + hand detected</strong></div><div><span>Frame 002</span><strong>Pose + hand detected</strong></div><div><span>Frame 003</span><strong>Normalized landmarks</strong></div><div><span>Sequence</span><strong>Temporal diagnostics available</strong></div></div><p class="panel-note">This interface summarizes movement data; it is not a production avatar. Landmarks make movement inspectable but do not determine linguistic sign correctness.</p></article>
-          <article class="workspace-card visual-card"><div class="card-topline"><p class="card-label">04 · Visual layer</p><span class="status-pill status-neutral">Next build</span></div><h2>Avatar build / preview</h2><ul class="plain-list"><li>Target guide: calm female guide</li><li>Hands: always visible</li><li>Visual layer: skeleton / avatar preview</li><li>Production avatar: not implemented</li></ul><blockquote>The character defines the look. The validated reference movement defines the sign.</blockquote></article>
+      <section class="workspace-hero section-shell create-sign-hero" aria-labelledby="create-sign-title">
+        <div><p class="eyebrow">Master Content Studio · Working MVP</p><h1 id="create-sign-title">Create a Sign</h1><p>Turn one validated reference movement into a governed, reusable KinderFlow content asset.</p></div>
+        <div class="principle-card"><span>Product principle</span><strong>The character defines the look.<br>The validated reference movement defines the sign.</strong></div>
+      </section>
+
+      <section class="sign-flow-shell section-shell" aria-labelledby="workflow-title">
+        <div class="workspace-heading compact-heading"><div><p class="eyebrow">Guided production</p><h2 id="workflow-title">From reference to review</h2></div><p>Computer Vision preserves and represents movement. A human reviewer controls publication.</p></div>
+        <ol class="sign-production-flow" aria-label="Create a Sign production stages">
+          <li><span>01</span>Sign details</li><li><span>02</span>Reference video</li><li><span>03</span>Movement check</li><li><span>04</span>Human review</li><li><span>05</span>Publish</li>
+        </ol>
+      </section>
+
+      <section class="workspace-section section-tint" aria-labelledby="setup-title">
+        <div class="section-shell create-sign-setup">
+          <div class="workspace-heading"><div><p class="eyebrow">Steps 1–2</p><h2 id="setup-title">Prepare the reference</h2></div><p>Processing stays on this computer. No child video or external upload is required.</p></div>
+          <div class="create-sign-grid">
+            <form class="sign-input-card" id="sign-run-form" novalidate>
+              <fieldset>
+                <legend><span>1</span> Sign details</legend>
+                <div class="form-field"><label for="sign-name">Sign name</label><input id="sign-name" name="sign_name" value="MORE" maxlength="60" required><small>Use the library name, for example MORE.</small></div>
+                <div class="form-field"><label for="routine-context">Routine / context</label><input id="routine-context" name="routine_context" value="Snack time, mealtime, playtime" maxlength="180" required><small>Describe where families and schools may use the sign.</small></div>
+                <div class="form-field"><label for="reference-status">Reference status</label><select id="reference-status" name="reference_status"><option selected>Validated reference</option></select><small>Use validated adult reference material only.</small></div>
+              </fieldset>
+
+              <fieldset>
+                <legend><span>2</span> Reference video</legend>
+                <div class="upload-zone" id="upload-zone">
+                  <input class="sr-only" id="reference-video" name="reference_video" type="file" accept="video/mp4,.mp4">
+                  <label class="button button-secondary" for="reference-video">Select reference video</label>
+                  <strong id="selected-file-name">No video selected</strong>
+                  <span id="selected-file-meta">MP4 · maximum 100 MB</span>
+                </div>
+                <div class="demo-reference-row"><div><strong>Reliable demo path</strong><span>Use the existing local POC reference for a reproducible presentation.</span></div><button class="text-link-button" id="use-demo-video" type="button">Use demo reference video</button></div>
+                <div class="button-row sign-run-actions"><button class="button button-primary" id="run-movement-check" type="submit" disabled>Run movement check</button><button class="button button-secondary" id="reset-sign-run" type="button" hidden>Try again</button></div>
+                <p class="form-message" id="sign-form-message" role="status" aria-live="polite">Select an MP4 or use the demo reference.</p>
+              </fieldset>
+            </form>
+
+            <aside class="reference-checklist" aria-labelledby="checklist-title">
+              <p class="card-label">Capture quality</p><h3 id="checklist-title">Reference video checklist</h3>
+              <ul class="check-list"><li>Adult validated reference</li><li>Hands remain visible</li><li>Upper body is visible</li><li>Stable camera</li><li>Good lighting</li><li>Minimal obstruction</li></ul>
+              <p>This checklist improves movement capture. It does not assess linguistic correctness.</p>
+            </aside>
+          </div>
         </div>
       </section>
-      <section class="workspace-section section-tint" aria-labelledby="review-title"><div class="section-shell review-gate"><div><p class="eyebrow">05 · Publication gate</p><h2 id="review-title">Human review remains mandatory</h2><p>Computer Vision provides movement evidence. An appropriate professional decides whether the sign can be published in the Signs &amp; Flashcards Library.</p></div><div class="review-actions"><button class="button button-secondary" type="button" disabled>Request changes</button><button class="button button-primary" type="button" disabled>Publish after review</button><small>Controls are illustrative; no content is published.</small></div></div></section>
+
+      <section class="workspace-section section-shell processing-section" id="processing-section" aria-labelledby="processing-title">
+        <div class="workspace-heading"><div><p class="eyebrow">Step 3</p><h2 id="processing-title">Movement check</h2></div><p id="service-state">Checking the local processing service…</p></div>
+        <ol class="processing-stages" id="processing-stages" aria-label="Movement processing status"></ol>
+        <p class="processing-note" id="processing-note" role="status" aria-live="polite">Waiting for a reference video.</p>
+      </section>
+
+      <section class="workspace-section section-tint result-section" id="result-section" aria-labelledby="result-title" hidden>
+        <div class="section-shell">
+          <div class="result-summary">
+            <div><p class="eyebrow" id="result-kicker">Movement check complete</p><h2 id="result-title">Technical result</h2><p id="result-explanation">Technical processing does not certify sign-language correctness.</p></div>
+            <dl class="status-separation"><div><dt>Technical status</dt><dd id="technical-status">—</dd></div><div><dt>Publication status</dt><dd id="content-status">—</dd></div></dl>
+          </div>
+
+          <div class="movement-comparison" id="movement-comparison" aria-labelledby="movement-evidence-title">
+            <div class="comparison-heading"><div><p class="card-label">Visual evidence</p><h3 id="movement-evidence-title">Original movement → structured movement representation</h3></div><span class="run-identifier" id="run-identifier"></span></div>
+            <article><h4>Reference video</h4><video id="reference-video-preview" controls muted playsinline preload="metadata"></video><p id="reference-playback-status" role="status">Loading video metadata…</p><p>Validated reference supplied for this run.</p></article>
+            <article><h4>Movement representation</h4><video id="movement-video-preview" controls muted playsinline preload="metadata"></video><p id="movement-playback-status" role="status">Loading video metadata…</p><p>Real MediaPipe overlay generated from this run. This is not a family-facing avatar.</p></article>
+          </div>
+
+          <details class="technical-details" id="technical-details">
+            <summary>View technical details</summary>
+            <div class="technical-detail-grid">
+              <div class="metric-panel"><span>Frames analysed</span><strong id="metric-frames">—</strong><small>Video frames processed in this run</small></div>
+              <div class="metric-panel"><span>Pose detection coverage</span><strong id="metric-pose">—</strong><small>Frames with complete pose landmarks</small></div>
+              <div class="metric-panel"><span>Dominant-hand detection coverage</span><strong id="metric-hand">—</strong><small>Frames with dominant-hand landmarks; not sign accuracy</small></div>
+              <div class="metric-panel"><span>Missing hand frames</span><strong id="metric-missing">—</strong><small>Frames without detected dominant-hand landmarks</small></div>
+              <div class="metric-panel"><span>Unresolved frames</span><strong id="metric-unresolved">—</strong><small>Frames deliberately left missing after conservative gap handling</small></div>
+              <div class="metric-panel"><span>Processing duration</span><strong id="metric-duration">—</strong><small>Measured local pipeline runtime</small></div>
+            </div>
+            <div class="diagnostic-evidence"><a id="detection-timeline-link" href="#" target="_blank" rel="noopener"><img id="detection-timeline" alt="Detection and gap-handling timeline generated from this run"></a><a id="wrist-trajectory-link" href="#" target="_blank" rel="noopener"><img id="wrist-trajectory" alt="Body-relative wrist trajectory generated from this run"></a></div>
+            <div class="warning-panel"><strong>Technical notes</strong><ul id="technical-warnings"></ul><p id="raw-technical-statuses"></p></div>
+          </details>
+        </div>
+      </section>
+
+      <section class="workspace-section section-shell review-section" id="review-section" aria-labelledby="review-title" hidden>
+        <div class="review-gate-card">
+          <div><p class="eyebrow">Step 4</p><h2 id="review-title">Human approval is the publication gate</h2><p id="review-guidance">Review the technical evidence before publication.</p><ul class="review-reasons" id="review-reasons"></ul><p class="prototype-boundary">Demo/local controls only. No reviewer identity, audit trail or production persistence is implemented.</p></div>
+          <div class="review-controls"><span class="status-pill status-review" id="review-state">Draft</span><button class="button button-primary" id="approve-sign" type="button">Approve</button><button class="button button-secondary" id="use-another-reference" type="button">Use another reference video</button><p id="review-message" class="form-message" aria-live="polite">No approval action recorded.</p></div>
+        </div>
+      </section>
+
+      <section class="workspace-section section-tint downstream-section" id="downstream-section" aria-labelledby="downstream-title" hidden>
+        <div class="section-shell">
+          <div class="workspace-heading"><div><p class="eyebrow">Step 5 · Reusable library asset</p><h2 id="downstream-title">Published sign</h2></div><p>This demo-published sign can be offered to entitled schools and reused across controlled family content.</p></div>
+          <div class="downstream-grid">
+            <article><span class="content-type-tag">Available</span><h3>Flashcard</h3><p>Use the sign name and routine in the existing deterministic builder.</p><a class="button button-primary" id="create-flashcard-link" href="flashcards.html">Create flashcard</a></article>
+            <article><span class="content-type-tag">Can be created</span><h3>Story</h3><p>Prepare an original contextual draft through the governed story workflow.</p><a class="button button-secondary" id="create-story-link" href="create-story.html">Create story</a></article>
+            <article><span class="content-type-tag">Future capability</span><h3>Song</h3><p>Future original content capability; no music generation is implemented.</p><a class="text-link" href="create-song.html">Explore concept</a></article>
+            <article><span class="content-type-tag">After entitlement</span><h3>School distribution</h3><p>Make the library asset available to schools without requiring them to operate Computer Vision.</p><a class="text-link" href="library.html">View Master Content Library</a></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="workspace-section section-shell cv-boundary" aria-labelledby="boundary-title"><div><p class="eyebrow">Governance boundary</p><h2 id="boundary-title">Movement evidence, not automatic correctness</h2></div><p>Computer Vision quantifies and structures observed movement. It does not invent the sign, certify linguistic correctness or publish content automatically. No child video is required.</p></section>
     </main>
-    <footer><span>Master Content Studio · Create a sign</span><span>No automatic sign certification · No child video</span></footer>
+    <footer><span>Master Content Studio · Create a Sign</span><span>Local processing · Human-controlled publication</span></footer>
   </body>
 </html>

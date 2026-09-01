@@ -99,9 +99,19 @@ The internal flow remains:
 
 `Validated reference sign video → MediaPipe processing → landmarks → movement preview → technical metrics → human review → publish`
 
-The UI shows the existing single-reference evidence: 332 frames, 100% pose detection, 93.98% dominant-hand detection and 20 missing hand frames. These metrics are technical signals, not linguistic correctness certification or system-wide accuracy.
+The Create a Sign route becomes functional when it is served by the local MVP service. An operator can use the existing demo reference or select another MP4. Each run uses the real POC pipeline, produces its own movement overlay and diagnostics, and reports only metrics calculated for that input.
 
-No child video is required. The static page does not upload video or run the local CV scripts. Production-ready avatar generation is not complete.
+The browser preview is an H.264 MP4 created from the real OpenCV/MediaPipe overlay through a local ffmpeg transcode. Operator-facing outcomes are **Pass**, **Review needed**, or **Fail**. Only Pass and Review needed may be approved; Fail requires another reference.
+
+Start it from the repository root:
+
+~~~bash
+python mvp/app.py
+~~~
+
+Then open [http://127.0.0.1:8000/create-sign.html](http://127.0.0.1:8000/create-sign.html).
+
+No child video is required. Files remain local, every run is isolated under *mvp/runs/*, and canonical Round 1 evidence is not overwritten. Technical metrics are movement-processing signals, not linguistic correctness certification or system-wide accuracy. Human review remains the publication gate. Production-ready avatar generation is not complete.
 
 ## Internal Flashcard Builder
 

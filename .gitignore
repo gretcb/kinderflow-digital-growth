@@ -35,3 +35,7 @@ poc/src/*.task
 
 # Local workflow run output
 workflow/generated_llm_output.json
+
+# Local Create a Sign MVP run artifacts and uploaded reference media
+mvp/runs/*
+!mvp/runs/.gitkeep

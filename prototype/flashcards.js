@@ -23,6 +23,28 @@ const OUTPUT_COPY = {
   }
 };
 
+const incoming = new URLSearchParams(window.location.search);
+const incomingSign = incoming.get("sign");
+const incomingRoutine = incoming.get("routine");
+const incomingRun = incoming.get("source_run");
+if (incomingSign) {
+  const sign = incomingSign.trim().toUpperCase();
+  OUTPUT_COPY.en.signName = sign;
+  OUTPUT_COPY.es.signName = sign === "MORE" ? "MÁS" : sign;
+  if (incomingRoutine && sign !== "MORE") {
+    OUTPUT_COPY.en.routine = incomingRoutine;
+    OUTPUT_COPY.es.routine = incomingRoutine;
+  }
+  const signOption = document.querySelector("#published-sign option");
+  if (signOption) signOption.textContent = `${sign} · Demo-published sign`;
+  const sourceDescription = document.querySelector(".source-description p");
+  if (sourceDescription) {
+    sourceDescription.textContent = incomingRun
+      ? `Loaded from local Create a Sign run ${incomingRun}. Review all language copy before approval.`
+      : "Loaded from a demo-published sign. Review all language copy before approval.";
+  }
+}
+
 const builder = { language: "en", cardType: "flashcard", outputFormat: "pdf", approved: false };
 const card = document.querySelector(".flashcard-output");
 const preview = document.querySelector("#builder-preview");
