@@ -3,290 +3,32 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta
-      name="description"
-      content="A static KinderFlow admin prototype for checking, reviewing and sending approved Kinder Signs cards."
-    >
-    <title>KinderFlow Admin | Kinder Signs content operations</title>
+    <meta name="description" content="KinderFlow Admin overview for clients, content operations, library governance and product metrics.">
+    <title>KinderFlow Admin | Overview</title>
+    <link rel="icon" href="data:,">
     <link rel="stylesheet" href="styles.css">
-    <script src="app.js" defer></script>
   </head>
   <body class="admin-page">
-    <header class="site-header">
-      <a class="brand" href="index.html" aria-label="Return to the Kinder Signs school-family prototype">
-        <span class="brand-mark" aria-hidden="true">K</span>
-        <span>KinderFlow Admin</span>
-      </a>
-      <nav aria-label="Admin workflow sections">
-        <a href="#reference-avatar">Preparation</a>
-        <a href="#reviewed-item">Library</a>
-        <a href="#school-assignment">Assignment</a>
-      </nav>
-      <a class="prototype-label page-switch" href="index.html">School-family view</a>
+    <header class="site-header admin-header">
+      <a class="brand" href="admin.html" aria-label="KinderFlow Admin overview"><span class="brand-mark" aria-hidden="true">K</span><span>KinderFlow Admin</span></a>
+      <nav aria-label="KinderFlow Admin navigation"><a href="content-studio.html">Master Content Studio</a><a href="#clients">Clients / Schools</a><a href="library.html">Master Content Library</a><a href="#metrics">Metrics</a></nav>
+      <a class="prototype-label page-switch" href="index.html">KinderFlow Hub</a>
     </header>
-
-    <main id="top">
-      <div class="admin-intro section-shell">
-        <div>
-          <p class="eyebrow">Internal Kinder Signs workflow</p>
-          <h1>Create and approve Kinder Signs content</h1>
-          <p>
-            Kinder Signs registers the reference video, checks the movement data and prepares the visual
-            guide brief internally. Schools only select approved library items.
-          </p>
-        </div>
-        <div class="admin-scope-note">
-          <strong>KinderFlow manages the checks</strong>
-          <p>Schools only choose or receive approved sign cards. They do not manage the AI workflow.</p>
-        </div>
-      </div>
-
-      <section class="admin-section section-shell" id="reference-avatar" aria-labelledby="reference-avatar-title">
-        <div class="admin-section-heading">
-          <p class="step-number">01</p>
-          <div>
-            <p class="eyebrow">Internal Kinder Signs workflow</p>
-            <h2 id="reference-avatar-title">Reference video and avatar preparation</h2>
-            <p>Kinder Signs owns this workflow. The school does not create, upload or validate sign videos.</p>
-          </div>
-        </div>
-
-        <ol class="preparation-pipeline" aria-label="Reference video to avatar preview preparation pipeline">
-          <li><span>01</span>Approved sign card</li>
-          <li><span>02</span>Reference video registered</li>
-          <li><span>03</span>Movement check</li>
-          <li><span>04</span>Movement data / skeleton</li>
-          <li><span>05</span>Visual guide brief</li>
-          <li><span>06</span>Next build: avatar preview</li>
-          <li><span>07</span>Expert review required</li>
-        </ol>
-
-        <p class="look-motion-rule">The character defines the look. The reference movement defines the sign.</p>
-
-        <div class="preparation-grid">
-          <article class="preparation-card">
-            <div class="preparation-card-heading">
-              <p class="card-label">Reference video</p>
-              <span class="status-pill status-ready">Registered</span>
-            </div>
-            <h3>MORE</h3>
-            <dl class="preparation-details">
-              <div><dt>Sign</dt><dd>MORE</dd></div>
-              <div><dt>Routine</dt><dd>Snack time / asking for more</dd></div>
-              <div><dt>Reference video status</dt><dd>Registered</dd></div>
-              <div><dt>Movement check</dt><dd>Proceed with conditions</dd></div>
-              <div><dt>Child video</dt><dd>Not used</dd></div>
-              <div><dt>Expert review</dt><dd>Required</dd></div>
-            </dl>
-          </article>
-
-          <article class="preparation-card movement-data-card">
-            <div class="preparation-card-heading">
-              <p class="card-label">Movement data / skeleton</p>
-              <span class="status-pill status-review">Conditions apply</span>
-            </div>
-            <h3>Movement quality check</h3>
-            <dl class="preparation-details metric-details">
-              <div><dt>Pose detection</dt><dd>100%</dd></div>
-              <div><dt>Hand detection</dt><dd>93.98%</dd></div>
-              <div><dt>Frames analysed</dt><dd>332</dd></div>
-              <div><dt>Status</dt><dd>Proceed with conditions</dd></div>
-            </dl>
-            <p class="panel-note">Movement check is not proof of final sign correctness.</p>
-          </article>
-
-          <article class="preparation-card visual-guide-card">
-            <div class="preparation-card-heading">
-              <p class="card-label">Visual guide brief</p>
-              <span class="status-pill status-review">Preview only</span>
-            </div>
-            <h3>Character and scene direction</h3>
-            <dl class="preparation-details">
-              <div><dt>Character direction</dt><dd>Calm female guide</dd></div>
-              <div><dt>Style</dt><dd>Clean, warm, educational</dd></div>
-              <div><dt>Hands</dt><dd>Always visible</dd></div>
-              <div><dt>Background</dt><dd>Light and simple</dd></div>
-              <div><dt>Status</dt><dd>Brief ready; avatar preview not final</dd></div>
-            </dl>
-          </article>
-        </div>
-
-        <p class="avatar-boundary">
-          The avatar preview is the next build. Final validated avatar generation is not implemented yet.
-        </p>
+    <main>
+      <section class="workspace-hero section-shell" aria-labelledby="admin-title"><div><p class="eyebrow">Internal operations · Static prototype</p><h1 id="admin-title">KinderFlow Admin</h1><p>Manage content production, school access, the master library and operational metrics from one internal workspace.</p></div></section>
+      <section class="workspace-section section-shell" aria-labelledby="workspaces-title">
+        <div class="workspace-heading"><div><p class="eyebrow">Overview</p><h2 id="workspaces-title">Operations at a glance</h2></div><p>Static demonstration data. No live accounts, permissions or analytics are connected.</p></div>
+        <div class="overview-grid"><a class="overview-card" href="content-studio.html"><span>4</span><strong>Master Content Studio</strong><small>Sign, flashcard, story and song operations</small></a><a class="overview-card" href="#clients"><span>3</span><strong>Client schools</strong><small>Manage product and published-asset access</small></a><a class="overview-card" href="library.html"><span>2</span><strong>Published demo items</strong><small>Across the Master Content Library</small></a><a class="overview-card" href="#metrics"><span>42</span><strong>Children reached</strong><small>Illustrative prototype metric</small></a></div>
       </section>
-
-      <section class="admin-section section-tint" id="reviewed-item" aria-labelledby="reviewed-title">
-        <div class="section-shell">
-          <div class="admin-section-heading">
-            <p class="step-number">02</p>
-            <div>
-              <p class="eyebrow">Ready for schools</p>
-              <h2 id="reviewed-title">2. Approved sign card</h2>
-              <p>After expert review, the approved sign card is added to the Kinder Signs library.</p>
-            </div>
-          </div>
-
-          <article class="reviewed-card">
-            <div class="reviewed-card-title">
-              <div>
-                <p class="card-label">Approved sign card</p>
-                <h3>MORE</h3>
-              </div>
-              <span class="status-pill status-ready">Added to library</span>
-            </div>
-            <div class="review-content-grid">
-              <div>
-                <span>Family guidance</span>
-                <p>Say “more” while modelling the studied sign naturally during the routine.</p>
-              </div>
-              <div>
-                <span>In class</span>
-                <p>Use during snack time when offering or responding to a request for more.</p>
-              </div>
-              <div>
-                <span>At home</span>
-                <p>Model the same cue during snack time without requiring the child to copy it.</p>
-              </div>
-              <div>
-                <span>Clear boundary</span>
-                <p>No clinical advice and no promise of faster development. Guidance stays linked to the school routine.</p>
-              </div>
-            </div>
+      <section class="workspace-section section-tint" id="clients" aria-labelledby="clients-title">
+        <div class="section-shell"><div class="workspace-heading"><div><p class="eyebrow">Clients / Schools</p><h2 id="clients-title">Entitlements</h2></div><p>KinderFlow sets what each school may access. Schools decide what to activate or assign inside that allowance.</p></div>
+          <article class="client-card"><div class="client-card-heading"><div><p class="card-label">Example client</p><h3>School A</h3><p>Plan: Kinder Signs Basic</p></div><a class="button button-secondary" href="school.html">View School Admin</a></div>
+            <div class="entitlement-grid"><section aria-labelledby="products-heading"><h4 id="products-heading">Products</h4><ul class="status-list"><li><span>Kinder Signs</span><b class="status-text status-text-active">Active</b></li><li><span>Kinder Daily</span><b>Concept · inactive</b></li><li><span>Kinder Food</span><b>Concept · inactive</b></li></ul></section><section aria-labelledby="services-heading"><h4 id="services-heading">Kinder Signs access</h4><ul class="status-list"><li><span>Signs library</span><b class="status-text status-text-active">Active</b></li><li><span>Flashcards</span><b class="status-text status-text-active">Active</b></li><li><span>Stories</span><b class="status-text status-text-active">Available</b></li><li><span>Songs</span><b>Future · not active</b></li></ul></section></div>
           </article>
         </div>
       </section>
-
-      <section class="admin-section section-shell" id="school-assignment" aria-labelledby="school-assignment-title">
-        <div class="admin-section-heading">
-          <p class="step-number">03</p>
-          <div>
-            <p class="eyebrow">School delivery</p>
-            <h2 id="school-assignment-title">3. Assign the weekly sign</h2>
-            <p>The educator selects the approved card, then assigns it to the whole group or one child profile.</p>
-          </div>
-        </div>
-
-        <form class="admin-card school-assignment-panel" id="admin-assignment-form">
-          <div class="assignment-copy">
-            <p class="card-label">Approved sign card</p>
-            <h3>MORE</h3>
-            <p>Weekly sign · Snack-time routine</p>
-            <ol class="assignment-hierarchy" aria-label="Assignment hierarchy">
-              <li>School account</li>
-              <li>Classroom group</li>
-              <li>Teacher</li>
-              <li>Child profile</li>
-              <li>Family access / packs</li>
-            </ol>
-          </div>
-          <div class="assignment-workspace">
-            <div class="account-context account-context-admin">
-              <div>
-                <span>School account</span>
-                <strong>School A</strong>
-                <small>Plan: Kinder Signs Basic</small>
-              </div>
-              <div>
-                <span>Group profile</span>
-                <strong>Group A — 1–2 years</strong>
-                <small>Teacher: Teacher 1</small>
-              </div>
-            </div>
-
-            <div class="school-selector-block">
-              <div class="admin-control-row" aria-label="Static school administration controls">
-                <button class="button button-quiet" type="button" data-admin-action="Add new school">Add new school</button>
-                <button class="button button-quiet" type="button" data-admin-action="Edit school">Edit school</button>
-                <button class="button button-quiet button-danger" type="button" data-admin-action="Delete school">Delete school</button>
-                <button class="button button-quiet" type="button" data-admin-action="Add group">Add group</button>
-              </div>
-              <p class="admin-control-status" id="admin-control-status" aria-live="polite"></p>
-            </div>
-
-            <fieldset class="assignment-mode-control assignment-mode-admin">
-              <legend>Assignment mode</legend>
-              <label>
-                <input type="radio" name="admin_assignment_mode" value="group" checked>
-                <span><strong>Assign to group</strong><small>Assign to whole group — all active children</small></span>
-              </label>
-              <label>
-                <input type="radio" name="admin_assignment_mode" value="child">
-                <span><strong>Assign to child</strong><small>Assign to individual child profile</small></span>
-              </label>
-            </fieldset>
-
-            <div class="child-select-block">
-              <label for="admin-child-select">Child profile</label>
-              <select id="admin-child-select" name="admin_child" disabled>
-                <option value="Child A">Child A</option>
-                <option value="Child B">Child B</option>
-                <option value="Child C">Child C</option>
-              </select>
-              <small>Select “Assign to child” to choose one profile.</small>
-            </div>
-
-            <div class="assignment-submit-row">
-              <button class="button button-primary" type="submit">Assign approved sign card</button>
-              <p class="admin-assignment-status" id="admin-assignment-status" aria-live="polite"></p>
-            </div>
-            <p class="prototype-boundary">
-              Static demo only. No real school database, permissions or live integration are implemented.
-            </p>
-          </div>
-        </form>
-
-        <article class="family-overview-panel admin-family-overview" aria-labelledby="admin-family-overview-title">
-          <div class="family-overview-heading">
-            <div>
-              <p class="card-label">Child roster</p>
-              <h3 id="admin-family-overview-title">Family access overview</h3>
-            </div>
-            <p>Teacher/admin view of active access. Static example data only.</p>
-          </div>
-          <div class="table-scroll">
-            <table class="family-access-table">
-              <thead>
-                <tr>
-                  <th scope="col">Child</th>
-                  <th scope="col">Parents / caregivers</th>
-                  <th scope="col">Active packs</th>
-                  <th scope="col">Prepared output</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th scope="row">Child A</th>
-                  <td>Parent 1 + Parent 2</td>
-                  <td><span class="access-badge">Flashcards active</span> <span class="access-badge">Extra caregiver active</span></td>
-                  <td>Family card + PDF/image flashcard + caregiver access</td>
-                </tr>
-                <tr>
-                  <th scope="row">Child B</th>
-                  <td>Parent 1</td>
-                  <td><span class="access-badge access-badge-muted">Base only</span></td>
-                  <td>Family card</td>
-                </tr>
-                <tr>
-                  <th scope="row">Child C</th>
-                  <td>Parent 1 + Parent 2</td>
-                  <td><span class="access-badge">Flashcards active</span></td>
-                  <td>Family card + PDF/image flashcard</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <p class="pack-level-note">
-            Premium packs may be active at group or child level. Family access extensions remain linked to each child’s family.
-            Base only prepares a Family card; Flashcards active prepares a Family card + PDF/image flashcard; Extra caregiver active prepares a Family card + caregiver access.
-          </p>
-        </article>
-      </section>
+      <section class="workspace-section section-shell" id="metrics" aria-labelledby="metrics-title"><div class="workspace-heading"><div><p class="eyebrow">Metrics</p><h2 id="metrics-title">Bounded operational signals</h2></div><p>These figures illustrate the future reporting surface; they are not live commercial evidence.</p></div><div class="metric-grid"><article><span>Published content</span><strong>2</strong><small>Illustrative library count</small></article><article><span>Schools with access</span><strong>3</strong><small>Static client examples</small></article><article><span>Active assignments</span><strong>6</strong><small>Illustrative product usage</small></article><article><span>Content awaiting review</span><strong>1</strong><small>Story prototype state</small></article></div><p class="prototype-boundary">No tracking, production analytics or real school records are implemented.</p></section>
     </main>
-
-    <footer>
-      <span>KinderFlow internal admin prototype</span>
-      <span>Static demonstration · no real video production, integrations, publication or child data</span>
-    </footer>
+    <footer><span>KinderFlow Admin prototype</span><span>Internal static demonstration</span></footer>
   </body>
 </html>

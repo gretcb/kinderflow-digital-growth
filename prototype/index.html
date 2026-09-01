@@ -3,354 +3,60 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta
-      name="description"
-      content="A static Kinder Signs product prototype showing the school-to-family weekly sign routine."
-    >
-    <title>Kinder Signs | School-to-family routine</title>
+    <meta name="description" content="KinderFlow is a school-led early-childhood digital platform. Kinder Signs is its active school-home continuity module.">
+    <title>KinderFlow | Early-childhood digital platform</title>
+    <link rel="icon" href="data:,">
     <link rel="stylesheet" href="styles.css">
-    <script src="app.js" defer></script>
   </head>
-  <body>
-    <header class="site-header">
-      <a class="brand" href="#top" aria-label="Kinder Signs home">
-        <span class="brand-mark" aria-hidden="true">K</span>
-        <span>Kinder Signs</span>
-      </a>
-      <nav aria-label="Prototype sections">
-        <a href="#library">Library</a>
-        <a href="#assignment">Assignment</a>
-        <a href="#family-access">Family access</a>
-      </nav>
-      <a class="prototype-label page-switch" href="admin.html">Internal admin</a>
+  <body class="hub-page">
+    <header class="site-header platform-header">
+      <a class="brand" href="index.html" aria-label="KinderFlow home"><span class="brand-mark" aria-hidden="true">K</span><span>KinderFlow</span></a>
+      <nav aria-label="Platform navigation"><a href="#products">Products</a><a href="#roles">Prototype views</a><a href="#principle">Product principle</a></nav>
+      <a class="prototype-label page-switch" href="admin.html">KinderFlow Admin</a>
     </header>
 
     <main id="top">
-      <section class="hero section-shell" aria-labelledby="hero-title">
-        <div class="hero-copy">
-          <p class="eyebrow">KinderFlow for early-childhood settings</p>
-          <h1 id="hero-title">Kinder Signs</h1>
-          <p class="hero-subtitle">The same approved sign, practised at school and continued at home.</p>
-          <p class="hero-explanation">
-            Each week, the school selects an approved sign card from the Kinder Signs library and assigns
-            it to a classroom group. Families receive the same guidance for the routine at home.
-          </p>
-          <a class="button button-primary" href="#library">See this week’s sign</a>
+      <section class="hub-hero section-shell" aria-labelledby="hub-title">
+        <div>
+          <p class="eyebrow">Early-childhood digital growth</p>
+          <h1 id="hub-title">One platform. Clear school-to-family continuity.</h1>
+          <p class="hero-subtitle">KinderFlow is the hub. Kinder Signs is the first deeply developed product module.</p>
+          <p class="hero-explanation">Schools activate approved content in everyday routines. Families receive the same concise guidance at home. KinderFlow owns content production, quality controls and governance behind the scenes.</p>
+          <div class="button-row"><a class="button button-primary" href="school.html">Open School Admin</a><a class="button button-secondary" href="family.html">Open family preview</a></div>
         </div>
-
-        <div class="flow-panel" aria-label="Kinder Signs primary product flow">
-          <p class="flow-label">From classroom to home</p>
-          <ol class="flow-list">
-            <li><span>01</span>School selects an approved sign card</li>
-            <li><span>02</span>School assigns it to a classroom group</li>
-            <li><span>03</span>Children use it in the classroom routine</li>
-            <li><span>04</span>Families receive the same guidance</li>
-          </ol>
-        </div>
+        <aside class="north-star-panel" aria-label="KinderFlow platform model">
+          <p class="card-label">Platform architecture</p><strong>KinderFlow</strong>
+          <ul><li><span>Kinder Signs</span><b>Active demo</b></li><li><span>Kinder Daily</span><b>Concept</b></li><li><span>Kinder Food</span><b>Concept</b></li></ul>
+        </aside>
       </section>
 
-      <section class="section section-shell" id="library" aria-labelledby="library-title">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">Step 1 · Choose</p>
-            <h2 id="library-title">Kinder Signs library</h2>
-          </div>
-          <p>Short, approved sign cards connected to routines children already know.</p>
-        </div>
-
-        <article class="sign-card">
-          <div class="video-placeholder" role="img" aria-label="Video placeholder for the studied sign More">
-            <span class="video-badge">Studied sign</span>
-            <span class="play-mark" aria-hidden="true"></span>
-            <span class="video-caption">Reference video · 00:18</span>
-          </div>
-          <div class="sign-content">
-            <div class="title-row">
-              <div>
-                <p class="card-label">Weekly sign</p>
-                <h3 data-sign-name>More</h3>
-              </div>
-              <span class="availability" id="selection-status">Available</span>
-            </div>
-            <dl class="sign-details">
-              <div>
-                <dt>Routine</dt>
-                <dd data-routine>Snack time / playtime</dd>
-              </div>
-              <div>
-                <dt>Age range</dt>
-                <dd data-age-range>0-3</dd>
-              </div>
-              <div>
-                <dt>Format</dt>
-                <dd data-format>Video + routine card + family guidance</dd>
-              </div>
-            </dl>
-            <p>One short sign video with simple guidance for the same routine at school and home.</p>
-            <button class="button button-primary" id="select-sign" type="button" aria-pressed="false">
-              Select approved sign card
-            </button>
-          </div>
-        </article>
-      </section>
-
-      <section class="section section-tint" id="assignment" aria-labelledby="assignment-title">
+      <section class="section section-tint" id="products" aria-labelledby="products-title">
         <div class="section-shell">
-          <div class="section-heading">
-            <div>
-              <p class="eyebrow">Step 2 · Assign</p>
-              <h2 id="assignment-title">Assign this week’s approved sign</h2>
-            </div>
-            <p>Choose the full classroom group or one child. Kinder Signs has already created and reviewed the content.</p>
+          <div class="section-heading compact-heading"><div><p class="eyebrow">Product family</p><h2 id="products-title">Built as modules, not disconnected features</h2></div><p>Kinder Signs is the current validation wedge. The other modules show the wider platform direction without implying they are built.</p></div>
+          <div class="module-grid">
+            <article class="module-card module-card-active"><div class="card-topline"><span class="card-label">KinderFlow module</span><span class="status-pill status-ready">Active demo</span></div><h3>Kinder Signs</h3><p>Reinforce Baby Signs consistently from school to home.</p><div class="module-actions"><a class="button button-primary" href="school.html">School experience</a><a class="text-link" href="family.html">Family preview</a></div></article>
+            <article class="module-card"><div class="card-topline"><span class="card-label">KinderFlow module</span><span class="status-pill status-neutral">Concept</span></div><h3>Kinder Daily</h3><p>Daily school-to-family communication and context.</p><span class="muted-action" aria-disabled="true">Not implemented</span></article>
+            <article class="module-card"><div class="card-topline"><span class="card-label">KinderFlow module</span><span class="status-pill status-neutral">Concept</span></div><h3>Kinder Food</h3><p>Help families complement school meals with practical breakfast and dinner guidance.</p><span class="muted-action" aria-disabled="true">Not implemented</span></article>
           </div>
-
-          <div class="assignment-grid">
-            <form class="assignment-panel" id="assignment-form">
-              <div class="panel-header">
-                <div>
-                  <p class="card-label">Weekly sign</p>
-                  <h3 data-sign-name>More</h3>
-                </div>
-                <span class="step-status" id="assignment-status">Ready to assign</span>
-              </div>
-
-              <div class="account-context">
-                <div>
-                  <span>School account</span>
-                  <strong>School A</strong>
-                  <small>Plan: Kinder Signs Basic</small>
-                </div>
-                <div>
-                  <span>Group profile</span>
-                  <strong>Group A — 1–2 years</strong>
-                  <small>Teacher: Teacher 1</small>
-                </div>
-              </div>
-
-              <fieldset class="assignment-mode-control">
-                <legend>Assignment mode</legend>
-                <label>
-                  <input type="radio" name="assignment_mode" value="group" checked>
-                  <span><strong>Assign to group</strong><small>Assign to whole group — all active children</small></span>
-                </label>
-                <label>
-                  <input type="radio" name="assignment_mode" value="child">
-                  <span><strong>Assign to child</strong><small>Assign to individual child profile</small></span>
-                </label>
-              </fieldset>
-
-              <div class="child-select-block">
-                <label for="child-select">Child profile</label>
-                <select id="child-select" name="child" disabled>
-                  <option value="Child A">Child A</option>
-                  <option value="Child B">Child B</option>
-                  <option value="Child C">Child C</option>
-                </select>
-                <small>Select “Assign to child” to choose one profile.</small>
-              </div>
-
-              <button class="button button-primary button-wide" type="submit">Assign approved sign card</button>
-              <p class="assignment-confirmation" id="assignment-confirmation" aria-live="polite"></p>
-            </form>
-
-            <aside class="output-panel" aria-labelledby="output-title">
-              <div>
-                <p class="card-label">Distribution</p>
-                <h3 id="output-title">Family guidance ready</h3>
-                <p>Ready to copy into the school’s existing family communication channel.</p>
-              </div>
-
-              <div class="message-preview" id="message-preview" tabindex="-1">
-                <p class="preview-kicker">Weekly Kinder Sign</p>
-                <h4 data-sign-name>More</h4>
-                <p id="family-message">
-                  Assign the approved sign card to preview the family guidance supplied by Kinder Signs.
-                </p>
-              </div>
-
-              <div class="action-stack">
-                <button class="button button-secondary" id="copy-message" type="button">Copy message</button>
-                <button class="button button-secondary" id="export-pdf" type="button">
-                  Export routine card as PDF
-                </button>
-                <button class="button button-secondary" id="create-link" type="button">Create share link</button>
-              </div>
-              <p class="action-status" id="action-status" aria-live="polite"></p>
-            </aside>
-          </div>
-
-          <article class="family-overview-panel" aria-labelledby="family-overview-title">
-            <div class="family-overview-heading">
-              <div>
-                <p class="card-label">Child roster</p>
-                <h3 id="family-overview-title">Family access overview</h3>
-              </div>
-              <p>Example profiles only. No billing, payment or real child records.</p>
-            </div>
-            <div class="table-scroll">
-              <table class="family-access-table">
-                <thead>
-                  <tr>
-                    <th scope="col">Child</th>
-                    <th scope="col">Parents / caregivers</th>
-                    <th scope="col">Active packs</th>
-                    <th scope="col">Prepared output</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <th scope="row">Child A</th>
-                    <td>Parent 1 + Parent 2</td>
-                    <td><span class="access-badge">Flashcards active</span> <span class="access-badge">Extra caregiver active</span></td>
-                    <td>Family card + PDF/image flashcard + caregiver access</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">Child B</th>
-                    <td>Parent 1</td>
-                    <td><span class="access-badge access-badge-muted">Base only</span></td>
-                    <td>Family card</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">Child C</th>
-                    <td>Parent 1 + Parent 2</td>
-                    <td><span class="access-badge">Flashcards active</span></td>
-                    <td>Family card + PDF/image flashcard</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <p class="pack-level-note">
-              Premium packs may be active for a whole group or for one child. Family access extensions remain linked to the child’s family profile.
-              Base only prepares a Family card; Flashcards active prepares a Family card + PDF/image flashcard; Extra caregiver active prepares a Family card + caregiver access.
-            </p>
-          </article>
         </div>
       </section>
 
-      <section class="section section-shell" id="tutor-view" aria-labelledby="tutor-title">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">Step 3 · Practise</p>
-            <h2 id="tutor-title">Families receive the same sign</h2>
-          </div>
-          <p>The same short guidance used in class is ready for parents and tutors at home.</p>
-        </div>
-
-        <article class="tutor-card">
-          <div class="tutor-card-header">
-            <div>
-              <p class="card-label">This week’s Kinder Sign</p>
-              <h3 data-sign-name>More</h3>
-            </div>
-            <span class="channel-label">Family view</span>
-          </div>
-          <div class="tutor-card-body">
-            <div class="video-placeholder video-placeholder-small" role="img" aria-label="Short video placeholder">
-              <span class="play-mark" aria-hidden="true"></span>
-              <span class="video-caption">Short video</span>
-            </div>
-            <div class="guidance-grid">
-              <div>
-                <h4>When to use it</h4>
-                <p>Use it during snack time or playtime when your child wants more of something.</p>
-              </div>
-              <div>
-                <h4>How to model it</h4>
-                <p>Say the word while showing the sign. Repeat naturally in the routine.</p>
-              </div>
-              <div>
-                <h4>School-home connection</h4>
-                <p>The school uses this sign in the same routine this week, creating one clear cue across school and home.</p>
-              </div>
-              <div>
-                <h4>Boundaries</h4>
-                <p>This is routine guidance, not clinical advice. It does not promise faster development. Do not force repetition.</p>
-              </div>
-            </div>
-          </div>
-          <button class="button button-secondary" id="open-routine" type="button" aria-expanded="false">
-            Open routine card
-          </button>
-          <div class="routine-detail" id="routine-detail" hidden>
-            <strong>Try it in context:</strong>
-            Offer a little more of an activity or snack, say “more”, and model the studied sign naturally.
-            Follow the child’s response without requiring them to copy it.
-          </div>
-        </article>
-      </section>
-
-      <section class="section section-tint" id="family-access" aria-labelledby="family-access-title">
-        <div class="section-shell">
-          <div class="section-heading">
-            <div>
-              <p class="eyebrow">Step 4 · Extend</p>
-              <h2 id="family-access-title">Family access &amp; add-ons</h2>
-            </div>
-            <p>Core access stays simple, while families can extend the routine to more people and formats.</p>
-          </div>
-
-          <div class="access-grid">
-            <article class="access-card included-card">
-              <span class="offer-type">Included</span>
-              <h3>2 main tutors included</h3>
-              <p>Base access for the child’s parents or legal guardians.</p>
-            </article>
-            <article class="access-card">
-              <span class="offer-type add-on">Optional paid add-on</span>
-              <h3>Invite extra caregiver</h3>
-              <p>Grandparent / nanny / second home access.</p>
-            </article>
-            <article class="access-card">
-              <span class="offer-type add-on">Optional paid add-on</span>
-              <h3>Printed flashcards</h3>
-              <p>Routine cards for home or classroom use.</p>
-            </article>
-            <article class="access-card">
-              <span class="offer-type add-on">Optional paid add-on</span>
-              <h3>Original mini stories</h3>
-              <p>Short original Kinder Signs stories linked to the weekly sign and routine.</p>
-            </article>
-            <article class="access-card">
-              <span class="offer-type add-on">Optional paid add-on</span>
-              <h3>Original short songs</h3>
-              <p>Simple original Kinder Signs songs for repetition during routines.</p>
-            </article>
-            <article class="access-card">
-              <span class="offer-type add-on">Optional paid add-on</span>
-              <h3>Routine packs</h3>
-              <p>Snack time, playtime, emotions, care routines and seasonal packs.</p>
-            </article>
-          </div>
-
-          <p class="business-message">One weekly school routine becomes useful across the wider family network.</p>
+      <section class="section section-shell" id="roles" aria-labelledby="roles-title">
+        <div class="section-heading compact-heading"><div><p class="eyebrow">Role separation</p><h2 id="roles-title">Each role sees only what it needs</h2></div><p>The prototype separates internal production, school operations and family guidance.</p></div>
+        <div class="role-grid">
+          <article class="role-card"><p class="card-label">KinderFlow team</p><h3>KinderFlow Admin</h3><p>Manage school access, create governed content, publish library items and inspect illustrative metrics.</p><a class="button button-secondary" href="admin.html">Open Admin</a></article>
+          <article class="role-card"><p class="card-label">Educator / school admin</p><h3>School Admin</h3><p>Select entitled Signs &amp; Flashcards Library items and assign them to groups or individual children.</p><a class="button button-secondary" href="school.html">Open School Admin</a></article>
+          <article class="role-card"><p class="card-label">Parent / caregiver</p><h3>Family preview</h3><p>See only active sign guidance and any materials shared with that family.</p><a class="button button-secondary" href="family.html">Open family preview</a></article>
         </div>
       </section>
 
-      <section class="section section-shell internal-section" aria-labelledby="internal-title">
-        <div class="internal-note">
-          <div>
-            <p class="eyebrow">Internal operations</p>
-            <h2 id="internal-title">What KinderFlow manages internally</h2>
-            <p>KinderFlow prepares and checks each sign card. The school only chooses or receives approved content.</p>
-          </div>
-          <ul class="backend-list" aria-label="KinderFlow internal capabilities">
-            <li>Movement quality check</li>
-            <li>Family card drafting</li>
-            <li>Content checks</li>
-            <li>Expert review</li>
-            <li>Library updates</li>
-          </ul>
-          <p class="boundary-note">
-            Movement checks support quality review; they do not confirm final sign correctness. Expert review
-            is required before a sign card is released.
-          </p>
+      <section class="section section-tint" id="principle" aria-labelledby="principle-title">
+        <div class="section-shell decision-panel">
+          <div><p class="eyebrow">Technology judgment</p><h2 id="principle-title">Use the simplest appropriate technology</h2><p>Different content problems need different production methods. Not every problem needs generative AI.</p></div>
+          <div class="decision-list" role="list"><div role="listitem"><strong>Sign</strong><span>Computer Vision preserves validated movement.</span></div><div role="listitem"><strong>Flashcard</strong><span>Deterministic templates format published content reliably.</span></div><div role="listitem"><strong>Story</strong><span>Generative AI creates original context with evaluation and review.</span></div><div role="listitem"><strong>Song</strong><span>A future generative capability, not a working feature.</span></div></div>
         </div>
       </section>
     </main>
-
-    <footer>
-      <span>Kinder Signs static prototype</span>
-      <span>No live accounts, payments, integrations or child data</span>
-    </footer>
+    <footer><span>KinderFlow static capstone prototype</span><span>No live accounts, payments, integrations or child data</span></footer>
   </body>
 </html>

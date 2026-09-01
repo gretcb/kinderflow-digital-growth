@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="KinderFlow internal Flashcard Builder for creating reviewed printable assets from published signs.">
+    <title>Master Content Studio | Create a flashcard</title>
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="styles.css">
+    <script src="flashcards.js" defer></script>
+  </head>
+  <body class="flashcard-page">
+    <header class="site-header admin-header builder-header">
+      <a class="brand" href="content-studio.html" aria-label="Back to Master Content Studio"><span class="brand-mark" aria-hidden="true">K</span><span>Master Content Studio</span></a>
+      <nav aria-label="Master Content Studio navigation"><a href="content-studio.html">Studio overview</a><a href="create-sign.html">Create sign</a><a href="flashcards.html" aria-current="page">Create flashcard</a><a href="create-story.html">Create story</a><a href="create-song.html">Create song</a></nav>
+      <a class="prototype-label page-switch" href="admin.html">KinderFlow Admin</a>
+    </header>
+
+    <main class="builder-main">
+      <section class="builder-intro section-shell" aria-labelledby="builder-title">
+        <div><p class="eyebrow">Master Content Studio · Internal operations</p><h1 id="builder-title">Create a flashcard</h1><p>Transform an already-published sign and its approved text into a reviewed printable asset.</p></div>
+        <ol class="builder-flow" aria-label="Flashcard production flow"><li>Published sign</li><li>Sign text description</li><li>Create flashcard</li><li>Human review</li><li>Published asset</li><li>Print / export</li></ol>
+      </section>
+
+      <section class="builder-workspace section-shell" aria-label="Flashcard Builder workspace">
+        <aside class="builder-controls" aria-labelledby="settings-title">
+          <div class="builder-controls-heading"><p class="card-label">Configuration</p><h2 id="settings-title">Flashcard Builder</h2><p>Choose a controlled format without editing the underlying sign.</p></div>
+
+          <div class="form-field builder-sign-select"><label for="published-sign">Published sign</label><select id="published-sign"><option value="more">MORE</option></select><small>MORE is the only published sign connected to current CV evidence.</small></div>
+
+          <div class="source-description"><span>Approved sign text</span><p id="source-description">Use during snack time, playtime or mealtime when asking for more.</p></div>
+
+          <fieldset class="builder-choice"><legend>Language</legend><div class="builder-segments builder-segments-two"><label><input type="radio" name="language" value="en" checked><span>English</span></label><label><input type="radio" name="language" value="es"><span>Spanish</span></label></div></fieldset>
+
+          <fieldset class="builder-choice"><legend>Card type</legend><div class="builder-segments builder-segments-two"><label><input type="radio" name="card_type" value="flashcard" checked><span>Flashcard<small>Word + visual</small></span></label><label><input type="radio" name="card_type" value="routine"><span>Routine card<small>Context + concise guidance</small></span></label></div></fieldset>
+
+          <fieldset class="builder-choice"><legend>Output format</legend><div class="builder-segments builder-segments-two"><label><input type="radio" name="output_format" value="pdf" checked><span>PDF</span></label><label><input type="radio" name="output_format" value="image"><span>Image</span></label></div></fieldset>
+
+          <div class="builder-actions"><button class="button button-secondary" id="preview-card" type="button">Preview</button><button class="button button-primary" id="approve-flashcard" type="button">Approve asset</button><button class="button button-secondary" id="export-flashcard" type="button" disabled>Print / Save as PDF</button></div>
+          <p class="builder-status" id="builder-status" aria-live="polite">Draft ready for internal review.</p>
+          <p class="prototype-boundary">Static internal prototype. Approval is local only; no asset is saved or published.</p>
+        </aside>
+
+        <section class="builder-preview" id="builder-preview" aria-labelledby="preview-title" tabindex="-1">
+          <div class="preview-toolbar"><div><p class="card-label">Preview</p><h2 id="preview-title">Flashcard · English</h2></div><span class="status-pill status-review" id="flashcard-state">Draft</span></div>
+          <div class="print-sheet" id="print-sheet">
+            <article class="flashcard-output" data-card-type="flashcard">
+              <header class="flashcard-output-header"><strong>KINDER SIGNS</strong><span data-card-kind>FLASHCARD</span></header>
+              <div class="flashcard-sign-heading"><p data-card-label="sign">Sign</p><h3 data-card-sign>MORE</h3></div>
+              <div class="flashcard-visual" role="img" aria-label="Placeholder for the published MORE sign visual"><span class="flashcard-visual-word" data-card-sign>MORE</span><small data-card-label="visual">Published sign visual</small></div>
+              <div class="flashcard-routine" data-card-section="routine" hidden><span data-card-label="routine">Routine</span><p data-card-routine>Snack time · Playtime · Mealtime</p></div>
+              <div class="flashcard-guidance" data-card-section="guidance" hidden><span data-card-label="how">When and how to use it</span><p data-card-guidance>Use the sign naturally when offering or asking for more. Say the word while showing the sign.</p></div>
+            </article>
+          </div>
+          <p class="builder-print-note" id="output-help">PDF output uses the browser print dialog. Choose “Save as PDF” to export the reviewed card.</p>
+        </section>
+      </section>
+    </main>
+    <footer class="builder-footer"><span>Master Content Studio · Flashcard Builder</span><span>Published signs only · Human approval before export</span></footer>
+  </body>
+</html>

@@ -1,18 +1,24 @@
-# Kinder Signs static prototype
+# KinderFlow static product prototype
 
-This dependency-free prototype shows the Kinder Signs school-home experience and its commercial logic. Kinder Signs is not another sign dictionary: the school uses one approved sign in a real routine, and the family receives the same short guidance at home.
+This dependency-free prototype presents KinderFlow as the platform and Kinder Signs as its active demonstration module. The primary customer is a nursery school or school group; families receive school-linked guidance and published materials.
 
-It also includes `admin.html`, a separate internal prototype showing how Kinder Signs could create an approved sign video, run a movement quality check, prepare a family card, complete expert review and add the approved sign card to its library. The school-delivery view follows the hierarchy `school account → classroom group → teacher → child profile → family access / packs`. All controls and profiles are illustrative; the page does not save, process, publish or integrate data.
+The product is intentionally role-separated:
+
+- KinderFlow internal teams create, review, publish and entitle content;
+- schools assign available published content and manage permitted add-ons; and
+- families receive only the relevant guidance and assets shared by the school.
 
 ## How to open
 
-Option 1 — open the file directly:
+No package installation is required.
+
+Option 1:
 
 ```text
 open prototype/index.html
 ```
 
-Option 2 — serve it locally:
+Option 2:
 
 ```bash
 cd prototype
@@ -21,65 +27,129 @@ python -m http.server 8000
 
 Then open [http://localhost:8000](http://localhost:8000).
 
-- School-family view: [http://localhost:8000/index.html](http://localhost:8000/index.html)
-- Internal admin view: [http://localhost:8000/admin.html](http://localhost:8000/admin.html)
+## Routes
 
-The page uses `data/approved_sign_more.json` when served over HTTP. It includes equivalent fallback data in `app.js`, so the interactions also work when `index.html` is opened directly with a `file://` URL.
+- KinderFlow Hub: [http://localhost:8000/index.html](http://localhost:8000/index.html)
+- KinderFlow Admin: [http://localhost:8000/admin.html](http://localhost:8000/admin.html)
+- Master Content Studio: [http://localhost:8000/content-studio.html](http://localhost:8000/content-studio.html)
+- Create a sign: [http://localhost:8000/create-sign.html](http://localhost:8000/create-sign.html)
+- Create a flashcard: [http://localhost:8000/flashcards.html](http://localhost:8000/flashcards.html)
+- Create a story: [http://localhost:8000/create-story.html](http://localhost:8000/create-story.html)
+- Create a song concept: [http://localhost:8000/create-song.html](http://localhost:8000/create-song.html)
+- Master Content Library: [http://localhost:8000/library.html](http://localhost:8000/library.html)
+- School Admin: [http://localhost:8000/school.html](http://localhost:8000/school.html)
+- Family preview: [http://localhost:8000/family.html](http://localhost:8000/family.html)
 
-## What the prototype demonstrates
+## Platform architecture
 
-### Reference video and avatar preparation
+```text
+KinderFlow
+├── Kinder Signs — Active demo
+├── Kinder Daily — Concept
+└── Kinder Food — Concept
+```
 
-The internal admin view registers a Kinder Signs reference video, shows the existing movement-check evidence, records the movement data/skeleton step and turns the visual direction into a short guide brief. The character defines the look; the reference movement defines the sign. No child video is used.
+All modules use the same KinderFlow design system. They do not have separate logos or monograms.
 
-The avatar preview is the next build, not a finished feature. Final validated avatar generation is not implemented, and expert review remains required. This internal workflow belongs to Kinder Signs; the school only selects approved library items and assigns them to groups or children.
+KinderFlow Admin uses this primary navigation:
 
-### School-facing flow
+```text
+KinderFlow Admin
+├── Master Content Studio
+├── Clients / Schools
+├── Master Content Library
+└── Metrics
+```
 
-The prototype shows School A on the Kinder Signs Basic plan, Group A for ages 1–2 years and Teacher 1. The educator selects an already approved weekly sign and assigns it either to the whole group or to one example child. The family receives the same approved guidance at home. The school does not create the video, prepare the content or manage the internal workflow.
+## Master Content Studio
 
-The child roster makes active access visible to the teacher/admin:
+Master Content Studio owns all content creation. The contextual Create menu contains:
 
-- Child A has two parent profiles, flashcards and extra caregiver access;
-- Child B has one parent profile and base access only; and
-- Child C has two parent profiles and flashcards.
+- Create a sign;
+- Create a flashcard;
+- Create a story; and
+- Create a song.
 
-The prepared output follows the active access attached to each child or family. A group assignment prepares the base family card for all active children and includes premium materials only where those materials are active.
+Signs are foundational assets. The dependency is:
 
-The distribution actions are deliberately channel-neutral: copy a message, export the routine card through the browser print dialog, or prepare a prototype share-link state. Kinder Signs does not replace a school communication app.
+```text
+Create a sign
+→ Human review
+→ Published sign
+→ Master Content Library
+→ Flashcard / Story / Song
+```
 
-### Tutor and family flow
+A flashcard, story or future song must use an already-published sign. `MORE` is currently the only item connected to real CV evidence. Other library examples are explicitly illustrative.
 
-Two main tutors receive the weekly sign, short guidance for using it naturally in the same home routine and clear boundaries. Families can extend access to a grandparent, nanny or second home as an optional paid add-on.
+## Technology decisions
 
-### Monetization hypothesis
+| Content type | Technology | Reason | Prototype state |
+| --- | --- | --- | --- |
+| Sign | Computer Vision | Preserve and inspect validated movement | Existing local POC evidence |
+| Flashcard | Deterministic template | Create reliable reusable formatting | Functional internal builder |
+| Story | Generative AI + evaluation architecture | Create controlled original contextual content | Illustrative local prototype |
+| Song | Future generative capability | Demonstrate platform extensibility | Concept only |
 
-The base access model includes two main tutors. Premium packs can be active for a whole group or an individual child, while extra caregiver access remains linked to a child’s family. Incremental value can come from:
+Not every problem needs generative AI.
 
-- extra caregiver invitations;
-- printed flashcards;
-- original Kinder Signs mini stories;
-- original Kinder Signs short songs; and
-- routine packs for recurring school and home contexts.
+## Create a sign
 
-All story and song concepts are original Kinder Signs content linked to the weekly sign and its routine. No third-party characters, brands, songs or stories are used.
+The internal flow remains:
 
-## What is not implemented
+`Validated reference sign video → MediaPipe processing → landmarks → movement preview → technical metrics → human review → publish`
 
-This is a static feasibility prototype. It does not include:
+The UI shows the existing single-reference evidence: 332 frames, 100% pose detection, 93.98% dominant-hand detection and 20 missing hand frames. These metrics are technical signals, not linguistic correctness certification or system-wide accuracy.
 
-- accounts, login or permissions;
-- a database or saved profiles;
-- billing, charges or payment-state management;
-- live school communication integrations;
-- real share links or message delivery;
-- payment or checkout;
-- API calls, analytics or tracking;
-- video playback or PDF generation beyond the browser print dialog; or
-- a production content-management system.
+No child video is required. The static page does not upload video or run the local CV scripts. Production-ready avatar generation is not complete.
 
-## Privacy and governance boundaries
+## Internal Flashcard Builder
 
-No real child data is included, and no child video is required. All page data stays in local static files.
+The Flashcard Builder belongs exclusively to KinderFlow internal content operations. Schools and families receive published flashcards but do not design them.
 
-KinderFlow may use Computer Vision for movement quality checks and an LLM to help draft family cards. These tools do not confirm final sign correctness. Expert review and library management remain KinderFlow responsibilities; the school does not manage the AI workflow. Family cards are linked to school routines, do not provide clinical advice and do not promise faster development.
+The flow is:
+
+`Published sign → approved sign text → create flashcard → human review → published asset → print / export`
+
+Controls are intentionally limited to:
+
+- published sign;
+- output language: English or Spanish;
+- card type: Flashcard or Routine card; and
+- output format: PDF or Image.
+
+The application interface stays in English. Spanish appears only inside the printable preview when Spanish is selected.
+
+A basic Flashcard contains the sign word and visual placeholder. A Routine card adds routine context and concise usage guidance. PDF uses browser-native print and Save as PDF. Image export is labelled illustrative and does not create a file. No freeform editor, page-packing controls, server-side PDF service or persistence is included.
+
+## Story prototype
+
+The story route accepts only a published sign and produces a short original English prototype draft. It demonstrates explicit deterministic checks, evaluator-style review dimensions, LangSmith observability boundaries and human review actions.
+
+No live LLM, n8n or LangSmith call runs from the static page. LangSmith represents traceability for the content-transformation step; it does not validate sign biomechanics, MediaPipe output or linguistic sign correctness.
+
+## School Admin
+
+The school sees only entitled published assets and operational assignment tools. It does not see source/reference videos, MediaPipe, LangSmith, internal review, or content-production actions.
+
+The assignment flow is deliberately simple:
+
+`Select sign/content → Select one group → Optionally select one child in that group → Confirm → Assign another`
+
+The child dropdown is derived from the selected group. Assign another preserves the group to make repetitive assignment faster.
+
+The school-facing Family Overview shows broad distribution and engagement indicators plus a fictional child roster with:
+
+`Child | Group | Parents / caregivers | Active packs`
+
+No output-format column or sensitive individual behavior scoring is included.
+
+## Family preview
+
+The family route is labelled as a preview of what families receive. It contains one active sign, concise routine guidance and shared family materials. It is not an administrative dashboard and exposes no internal AI or content-production terminology.
+
+## Boundaries
+
+This prototype does not include authentication, billing, payments, databases, APIs, cloud persistence, production CMS capabilities, real school integrations, real child data, tracking, server-side PDF generation, production avatar fidelity or music generation.
+
+KinderFlow controls product and published-asset availability. Schools control assignment and permitted add-ons. Families receive shared materials. Those responsibilities remain separate throughout the prototype.
