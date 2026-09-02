@@ -188,3 +188,24 @@ receive sign/version
 After an explicit recorded human approval, a separate `build_approved_package` operation may build the versioned package. n8n must not set `PUBLISHED` autonomously.
 
 The operation key is `sign_id:sign_version:operation`. Repeating the same operation must reuse or update the same review package rather than create a duplicate content version. The local Python content-operations harness demonstrates the idempotent package behavior; the imported n8n example does not claim production persistence.
+
+### Generate Content Pack adapter
+
+The Wednesday Content Engine uses one bounded operation: `GENERATE_CONTENT_PACK`. Its input and output contracts are:
+
+- `content_ops/contracts/content_pack_input.schema.json`
+- `content_ops/contracts/content_pack_output.schema.json`
+
+```text
+structured sign + approved source context
+→ optional family-copy drafting
+→ structured JSON
+→ deterministic quality gate
+→ optional LangSmith evaluation of LLM-assisted wording
+→ human review
+→ reviewed Flashcard Studio handoff
+```
+
+The prototype currently runs this path as an explicit local dry-run. It does not call n8n, an LLM or LangSmith live. The existing importable n8n workflow remains the orchestration reference; connecting the new contract requires mapping those schemas into the installed n8n environment and revalidating the Code nodes there.
+
+`generation_method` records whether copy is `human` or `llm_assisted`. `generation_mode` records whether the LLM path was a `DRY_RUN`. These fields must not be used as publication approval. A deterministic PASS and a LangSmith evaluation can prepare content for review; neither may publish it.

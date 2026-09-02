@@ -10,7 +10,7 @@
   "technical_evidence_sha256": "feb413fc233610f95f6dc962c9f6d6a6dd44412479ea78dd9345f084bfc6fef3",
   "technical_evidence_scope": "Capture-pipeline evidence only; the reference identity is not confirmed here as linguistic evidence for MORE.",
   "sign_data_reference": "prototype/data/signs.json",
-  "sign_data_sha256": "58d7f24debf0cc9785250bef1d170cf9ec68cd38f7157924c0f8675527ff5c22",
+  "sign_data_sha256": "25f7af5965d92f8c304ba2febad270a8f96419ce431e7f659a3924d38ab34567",
   "content_version": "v1",
   "content_state": "READY_FOR_REVIEW",
   "generation_method": "human",

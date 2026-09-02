@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Kinder Signs Generate Content Pack input",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["sign_id", "display_name", "spanish_label", "routine", "audience", "language", "approved_context", "requested_outputs"],
+  "properties": {
+    "sign_id": {"type": "string", "minLength": 1},
+    "display_name": {"type": "string", "minLength": 1},
+    "spanish_label": {"type": "string", "minLength": 1},
+    "routine": {"$ref": "#/$defs/bilingualText"},
+    "audience": {"const": "family"},
+    "language": {"enum": ["es", "en", "bilingual"]},
+    "approved_context": {"type": "object", "additionalProperties": false, "required": ["context_id", "scope", "school_use"], "properties": {"context_id": {"type": "string", "minLength": 1}, "scope": {"type": "string", "minLength": 1}, "school_use": {"$ref": "#/$defs/bilingualText"}}},
+    "requested_outputs": {"type": "array", "uniqueItems": true, "minItems": 5, "maxItems": 5, "items": {"enum": ["family_guidance", "try_it_during", "teacher_message", "family_message", "flashcard_copy"]}}
+  },
+  "$defs": {"bilingualText": {"type": "object", "additionalProperties": false, "required": ["en", "es"], "properties": {"en": {"type": "string", "minLength": 1}, "es": {"type": "string", "minLength": 1}}}}
+}

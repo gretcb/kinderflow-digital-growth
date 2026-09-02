@@ -7,6 +7,15 @@ import unittest
 from pathlib import Path
 
 from content_ops.content import resolve_content
+from content_ops.content_engine import (
+    approve_content_locally,
+    build_demo_report,
+    build_dry_run_candidate,
+    content_input_from_sign,
+    prepare_flashcard_handoff,
+    validate_content_input,
+    validate_generated_output,
+)
 from content_ops.domain import InvalidTransition, transition_state
 from content_ops.golden_set import build_domain_package, evaluate_golden_set, load_json, verify_manifest_provenance, CONTENT_ROOT
 from content_ops.policy import check_content_quality, evaluate_package
@@ -112,6 +121,117 @@ class GoldenSetTests(unittest.TestCase):
         self.assertEqual(len(report["results"]), 5)
         self.assertTrue(all(item["schema"] == "PASS" for item in report["results"]))
         self.assertTrue(all(item["library"] == "Blocked" for item in report["results"]))
+
+
+class ContentEngineTests(unittest.TestCase):
+    def setUp(self) -> None:
+        payload = load_json(Path(__file__).parents[2] / "prototype/data/signs.json")
+        self.sign = payload["signs"][0]
+        self.source = content_input_from_sign(self.sign)
+
+    def test_valid_structured_input(self) -> None:
+        self.assertTrue(validate_content_input(self.source)["passed"])
+
+    def test_missing_approved_context_is_rejected(self) -> None:
+        source = copy.deepcopy(self.source)
+        source.pop("approved_context")
+        result = validate_content_input(source)
+        self.assertFalse(result["passed"])
+        self.assertIn("approved_context", {item["check"] for item in result["failed_checks"]})
+
+    def test_malformed_output_is_rejected_cleanly(self) -> None:
+        candidate, result = validate_generated_output("{not-json", self.source)
+        self.assertIsNone(candidate)
+        self.assertFalse(result["passed"])
+        self.assertEqual(result["failed_checks"][0]["check"], "valid_json")
+
+    def test_movement_instructions_are_rejected(self) -> None:
+        candidate = build_dry_run_candidate(self.sign)
+        candidate["family_guidance"]["en"] = "Rotate the wrist before snack time."
+        _, result = validate_generated_output(candidate, self.source)
+        self.assertFalse(result["passed"])
+        self.assertIn("biomechanics_content", {item["check"] for item in result["failed_checks"]})
+
+    def test_nested_biomechanics_field_is_rejected(self) -> None:
+        candidate = build_dry_run_candidate(self.sign)
+        candidate["flashcard_copy"]["movement_steps"] = []
+        _, result = validate_generated_output(candidate, self.source)
+        self.assertFalse(result["passed"])
+        self.assertIn("biomechanics_fields", {item["check"] for item in result["failed_checks"]})
+
+    def test_unsupported_claim_is_rejected(self) -> None:
+        candidate = build_dry_run_candidate(self.sign)
+        candidate["family_message"]["en"] = "This will accelerate language development."
+        _, result = validate_generated_output(candidate, self.source)
+        self.assertFalse(result["passed"])
+        self.assertIn("unsupported_claim", {item["check"] for item in result["failed_checks"]})
+
+    def test_gate_is_deterministic_and_dry_run_is_not_live(self) -> None:
+        candidate = build_dry_run_candidate(self.sign)
+        first = validate_generated_output(candidate, self.source)[1]
+        second = validate_generated_output(candidate, self.source)[1]
+        self.assertEqual(first, second)
+        self.assertEqual(candidate["generation_mode"], "DRY_RUN")
+        self.assertFalse(candidate["automatic_publication"])
+
+    def test_generation_does_not_mutate_human_source(self) -> None:
+        original = copy.deepcopy(self.sign)
+        build_dry_run_candidate(self.sign)
+        self.assertEqual(self.sign, original)
+
+    def test_unreviewed_content_cannot_reach_flashcard_handoff(self) -> None:
+        with self.assertRaises(ValueError):
+            prepare_flashcard_handoff(build_dry_run_candidate(self.sign))
+
+    def test_explicit_local_review_enables_limited_handoff(self) -> None:
+        approved = approve_content_locally(build_dry_run_candidate(self.sign), "explicit_demo_approval")
+        handoff = prepare_flashcard_handoff(approved)
+        self.assertEqual(handoff["review_status"], "APPROVED")
+        self.assertNotIn("automatic_publication", handoff)
+        self.assertNotIn("teacher_message", handoff)
+
+    def test_all_five_signs_use_same_operation_contract(self) -> None:
+        report = build_demo_report(Path(__file__).parents[2] / "prototype/data/signs.json")
+        self.assertEqual(report["operation"], "GENERATE_CONTENT_PACK")
+        self.assertEqual(len(report["results"]), 5)
+        self.assertTrue(all(item["deterministic_quality_gate"]["passed"] for item in report["results"]))
+        self.assertTrue(all(item["langsmith"]["trace_status"] == "NOT_SENT" for item in report["results"]))
+
+
+class FlashcardIntegrationTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.repo = Path(__file__).parents[2]
+
+    def test_candidate_inventory_is_valid_and_not_runtime_enabled(self) -> None:
+        inventory = load_json(self.repo / "assets/flashcards/open_peeps/candidates.json")
+        self.assertEqual(inventory["licence_status"], "LICENCE_VERIFICATION_NEEDED")
+        self.assertFalse(inventory["source_library_runtime_use"])
+        self.assertLessEqual(len(inventory["candidates"]), 3)
+        self.assertTrue(all(item["status"] == "CANDIDATE_ONLY" for item in inventory["candidates"]))
+
+    def test_runtime_does_not_reference_ignored_source_library(self) -> None:
+        runtime_files = list((self.repo / "prototype").glob("*.html")) + list((self.repo / "prototype").glob("*.js")) + list((self.repo / "prototype").glob("*.css"))
+        self.assertTrue(runtime_files)
+        self.assertFalse(any("source_libraries" in path.read_text(encoding="utf-8") for path in runtime_files))
+
+    def test_one_flashcard_renderer_and_attached_sign_lockup(self) -> None:
+        html = (self.repo / "prototype/flashcards.html").read_text(encoding="utf-8")
+        self.assertEqual(html.count('class="flashcard-output"'), 1)
+        self.assertIn('class="flashcard-visual-unit"', html)
+        self.assertIn('class="flashcard-sign-lockup"', html)
+        js = (self.repo / "prototype/flashcards.js").read_text(encoding="utf-8")
+        self.assertIn("window.print()", js)
+
+    def test_family_card_never_receives_governance_metadata(self) -> None:
+        approved = approve_content_locally(build_dry_run_candidate(load_json(self.repo / "prototype/data/signs.json")["signs"][0]), "explicit_demo_approval")
+        handoff = prepare_flashcard_handoff(approved)
+        forbidden = {"human_review", "automatic_publication", "teacher_message", "family_message", "generation_mode"}
+        self.assertFalse(forbidden.intersection(handoff))
+
+    def test_more_pose_package_is_explicitly_blocked(self) -> None:
+        package = load_json(self.repo / "assets/flashcards/hand_pose_references/more/reference_package.json")
+        self.assertEqual(package["target_svg_slot"]["status"], "NOT_CREATED")
+        self.assertEqual(package["library_readiness"], "BLOCKED")
 
 
 if __name__ == "__main__":

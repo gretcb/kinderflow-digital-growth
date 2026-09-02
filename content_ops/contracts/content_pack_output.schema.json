@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Kinder Signs Generate Content Pack output",
+  "type": "object",
+  "required": ["sign_id", "source_context_id", "generation_method", "generation_mode", "family_guidance", "try_it_during", "routine_context", "teacher_message", "family_message", "flashcard_copy", "review_status", "requires_human_review", "automatic_publication"],
+  "properties": {
+    "sign_id": {"type": "string", "minLength": 1}, "source_context_id": {"type": "string", "minLength": 1},
+    "generation_method": {"enum": ["human", "llm_assisted"]}, "generation_mode": {"enum": ["LIVE", "DRY_RUN", "NOT_APPLICABLE"]},
+    "family_guidance": {"$ref": "#/$defs/bilingualText"}, "try_it_during": {"$ref": "#/$defs/bilingualText"},
+    "routine_context": {"$ref": "#/$defs/bilingualText"}, "teacher_message": {"$ref": "#/$defs/bilingualText"}, "family_message": {"$ref": "#/$defs/bilingualText"},
+    "flashcard_copy": {"type": "object", "required": ["primary_label", "secondary_label"], "properties": {"primary_label": {"type": "string"}, "secondary_label": {"type": "string"}}},
+    "review_status": {"enum": ["READY_FOR_REVIEW", "APPROVED", "CHANGES_REQUESTED"]}, "requires_human_review": {"const": true}, "automatic_publication": {"const": false}
+  },
+  "$defs": {"bilingualText": {"type": "object", "required": ["en", "es"], "properties": {"en": {"type": "string", "minLength": 1}, "es": {"type": "string", "minLength": 1}}}}
+}

@@ -2713,6 +2713,184 @@ footer {
 
 /* Content operations readiness and review */
 
+.content-engine {
+  display: grid;
+  gap: 24px;
+}
+
+.content-engine-flow {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: engine-step;
+}
+
+.content-engine-flow li {
+  min-height: 72px;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 0.82rem;
+  font-weight: 750;
+  counter-increment: engine-step;
+}
+
+.content-engine-flow li::before {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--primary);
+  content: "0" counter(engine-step);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+}
+
+.content-engine-layout {
+  display: grid;
+  grid-template-columns: minmax(270px, 0.8fr) minmax(0, 1.4fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.content-engine-controls,
+.content-engine-output {
+  display: grid;
+  gap: 16px;
+}
+
+.compact-options {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.compact-options legend {
+  margin-bottom: 8px;
+  font-weight: 750;
+}
+
+.compact-options label {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  cursor: pointer;
+}
+
+.compact-options input {
+  width: 18px;
+  height: 18px;
+}
+
+.source-context-summary {
+  display: grid;
+  gap: 6px;
+  padding: 16px;
+  border-left: 4px solid var(--primary);
+  background: var(--surface);
+}
+
+.source-context-summary span,
+.source-context-summary small {
+  color: var(--muted);
+}
+
+.source-context-summary p {
+  margin: 0;
+}
+
+.structured-output {
+  max-height: 448px;
+  margin: 0;
+  padding: 16px;
+  overflow: auto;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #18201f;
+  color: #f7faf9;
+  font: 0.78rem/1.55 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  white-space: pre-wrap;
+}
+
+.content-gate {
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+}
+
+.content-gate h4 {
+  margin: 0 0 10px;
+}
+
+.content-gate ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.content-engine-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.button.is-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.content-readiness-strip {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.content-readiness-strip div {
+  min-width: 0;
+  padding: 14px;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: var(--white);
+}
+
+.content-readiness-strip div:nth-child(5n) {
+  border-right: 0;
+}
+
+.content-readiness-strip div:nth-last-child(-n + 5) {
+  border-bottom: 0;
+}
+
+.content-readiness-strip span,
+.content-readiness-strip strong {
+  display: block;
+}
+
+.content-readiness-strip span {
+  margin-bottom: 5px;
+  color: var(--muted);
+  font-size: 0.64rem;
+  font-weight: 750;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.content-readiness-strip strong {
+  overflow-wrap: anywhere;
+  font-size: 0.82rem;
+}
+
 .content-operations {
   padding-bottom: 80px;
 }
@@ -2819,12 +2997,36 @@ footer {
 }
 
 @media (max-width: 850px) {
+  .content-engine-flow {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .content-engine-layout {
+    grid-template-columns: 1fr;
+  }
+
   .operations-review-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 @media (max-width: 560px) {
+  .content-engine-flow,
+  .content-readiness-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .content-readiness-strip div,
+  .content-readiness-strip div:nth-child(5n),
+  .content-readiness-strip div:nth-last-child(-n + 5) {
+    border-right: 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .content-readiness-strip div:last-child {
+    border-bottom: 0;
+  }
+
   .operations-review-grid {
     grid-template-columns: 1fr;
   }

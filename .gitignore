@@ -44,3 +44,6 @@ mvp/runs/*
 assets/avatar/*.mp4
 assets/avatar/*.jpg
 assets/avatar/*.jpeg
+
+# Local third-party illustration source libraries (licence review required)
+assets/flashcards/source_libraries/

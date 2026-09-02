@@ -1,8 +1,9 @@
 "use strict";
 
 const REQUIRED_SIGN_FIELDS = [
-  "id", "display_name", "spanish_label", "routine", "short_family_guidance",
-  "try_it_during", "publication_status", "school_visibility", "flashcard_status",
+  "id", "sign_id", "display_name", "spanish_label", "routine", "approved_source_context",
+  "short_family_guidance", "try_it_during", "teacher_message", "family_message",
+  "generation_method", "content_status", "publication_status", "school_visibility", "flashcard_status",
   "video_asset", "character_asset", "hand_pose_asset", "movement_reference",
   "school_pack_required", "printable", "image_export_available", "last_reviewed",
   "review_status"
@@ -28,7 +29,7 @@ const STATUS_LABELS = {
   waiting_for_asset: "Waiting for asset"
 };
 
-const builder = { signs: [], selectedId: null, language: "es", cardType: "flashcard", layoutReviewed: false };
+const builder = { signs: [], selectedId: null, language: "es", cardType: "flashcard", layoutReviewed: false, reviewedHandoff: null };
 const card = document.querySelector(".flashcard-output");
 const signSelect = document.querySelector("#published-sign");
 const preview = document.querySelector("#builder-preview");
@@ -49,14 +50,40 @@ const validateSignData = (payload) => {
     if (missing.length) throw new Error(`Sign record ${index + 1} is missing: ${missing.join(", ")}.`);
     if (ids.has(sign.id)) throw new Error(`Duplicate sign id: ${sign.id}.`);
     ids.add(sign.id);
-    ["routine", "short_family_guidance", "try_it_during"].forEach((field) => {
+    ["routine", "short_family_guidance", "try_it_during", "teacher_message", "family_message"].forEach((field) => {
       if (!sign[field]?.en || !sign[field]?.es) throw new Error(`${sign.id} requires English and Spanish ${field}.`);
     });
+    if (!sign.approved_source_context?.context_id || !sign.approved_source_context?.school_use?.en || !sign.approved_source_context?.school_use?.es) {
+      throw new Error(`${sign.id} requires an approved bilingual source context.`);
+    }
   });
   return payload.signs;
 };
 
 const selectedSign = () => builder.signs.find((sign) => sign.id === builder.selectedId);
+
+const loadReviewedHandoff = () => {
+  if (new URLSearchParams(window.location.search).get("reviewed") !== "1") return null;
+  try {
+    const payload = JSON.parse(sessionStorage.getItem("kinderflowReviewedContentPack") || "null");
+    const bilingual = (value) => value?.en?.trim() && value?.es?.trim();
+    if (!payload || payload.review_status !== "APPROVED" || payload.human_review?.approved !== true || !payload.sign_id || !bilingual(payload.family_guidance) || !bilingual(payload.try_it_during) || !bilingual(payload.routine_context)) return null;
+    return payload;
+  } catch (error) {
+    return null;
+  }
+};
+
+const applyReviewedHandoff = () => {
+  const handoff = loadReviewedHandoff();
+  if (!handoff) return;
+  const sign = builder.signs.find((item) => item.sign_id === handoff.sign_id);
+  if (!sign) return;
+  sign.short_family_guidance = handoff.family_guidance;
+  sign.try_it_during = handoff.try_it_during;
+  sign.routine = handoff.routine_context;
+  builder.reviewedHandoff = handoff;
+};
 
 const resetLayoutReview = () => {
   builder.layoutReviewed = false;
@@ -111,8 +138,10 @@ const render = ({ preserveReview = false } = {}) => {
   document.querySelector("#illustration-status").textContent = humanStatus(sign.illustration_status);
   document.querySelector("#hand-pose-status").textContent = humanStatus(sign.hand_pose_asset);
   document.querySelector("#print-readiness").textContent = sign.printable ? "Proof available" : "Not ready";
-  document.querySelector("#sign-source-help").textContent = sign.publication_status === "published"
-    ? `${sign.display_name} is a published source item. Artwork status remains separate.`
+  document.querySelector("#sign-source-help").textContent = builder.reviewedHandoff?.sign_id === sign.sign_id
+    ? `${sign.display_name} uses the locally reviewed Content Pack. Artwork and hand-pose readiness remain separate.`
+    : sign.publication_status === "published"
+    ? `${sign.display_name} is a published source item using its human-authored prototype copy. Artwork status remains separate.`
     : `${sign.display_name} is visible for readiness review but cannot be used for a production flashcard yet.`;
   if (!preserveReview) resetLayoutReview();
 };
@@ -138,6 +167,7 @@ const loadSigns = async () => {
     const response = await fetch("data/signs.json", { cache: "no-store" });
     if (!response.ok) throw new Error("The sign library could not be loaded.");
     builder.signs = validateSignData(await response.json());
+    applyReviewedHandoff();
     populateSignSelect();
     renderLibrary();
     render();

@@ -138,7 +138,7 @@ The asset contract is documented under `assets/flashcards/`. It reserves separat
 - template assets; and
 - local exports.
 
-No external illustration library or substitute artwork is included. The preview deliberately says **Open Peeps character + Kinder Signs hand pose pending**. Open Peeps will define the modular character look; it will not provide or validate sign-specific hand biomechanics.
+Local Open Peeps and Miroodles source libraries have been audited but remain ignored, unmodified working sources. No licence or attribution record was found beside them, so no vendor asset has been copied into the runtime. Three inspected Open Peeps candidates are recorded for founder review; their use remains blocked by licence verification. The preview deliberately says **Open Peeps character + Kinder Signs hand pose pending**. Open Peeps will define the modular character look; it will not provide or validate sign-specific hand biomechanics.
 
 The visual rule is:
 
@@ -162,6 +162,26 @@ Browser-native Print → Save as PDF is the working export path. Print CSS place
 When a school/group or child has the Flashcards pack active, the matching reviewed flashcard is included automatically in prepared family output. When the pack is inactive, the item can remain visible to the school as available content but is not sent to families. No billing, manual educator design, freeform editor, server-side PDF service or persistence is included.
 
 Because the Studio loads its structured JSON source at runtime, use the local HTTP option rather than opening `flashcards.html` directly from the filesystem.
+
+## Content Engine and reviewed handoff
+
+The Master Content Library now demonstrates one reusable `GENERATE_CONTENT_PACK` operation for MORE, EAT, WATER, ALL DONE and HELP:
+
+```text
+approved structured context
+→ human or AI-assisted review candidate
+→ structured JSON
+→ deterministic quality gate
+→ LangSmith status (dry-run for the prototype)
+→ explicit local content review
+→ reviewed Flashcard Studio handoff
+```
+
+Run `python -m content_ops` before serving the prototype to regenerate `prototype/data/content_engine_demo.json`. In `library.html`, select a sign and content origin, generate the pack, inspect its JSON and gate result, then approve it locally. Only that reviewed copy can populate Flashcard Studio. Generation never edits the stored source record and never publishes content.
+
+The static path does not call an LLM, n8n or LangSmith live. `AI-assisted draft` describes the intended origin; `DRY_RUN / NOT_SENT` is shown explicitly. LangSmith is relevant only to LLM-assisted wording. It does not assess movement or sign correctness. The Python input/output contracts and deterministic validation live under `content_ops/` and the n8n adapter boundary is documented under `workflow/`.
+
+MORE is the deepest demonstration target, but final library readiness remains blocked by the character selection, contextual export and custom reviewed hand-pose asset. The other four signs prove the shared data contract and renderer without claiming final assets or publication readiness.
 
 ## Story prototype
 

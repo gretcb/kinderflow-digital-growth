@@ -1,0 +1,31 @@
+{
+  "audit_date": "2026-09-02",
+  "source_library": "assets/flashcards/source_libraries/Flat Assets",
+  "source_library_runtime_use": false,
+  "licence_status": "LICENCE_VERIFICATION_NEEDED",
+  "selection_status": "FOUNDER_REVIEW_NEEDED",
+  "decision": "No candidate may be copied into runtime assets until licence and provenance are recorded.",
+  "candidates": [
+    {
+      "candidate_id": "open_peeps_bust_12",
+      "source_file": "Templates/Bust/peep-12.svg",
+      "why_shortlisted": "Simple upper-body composition and restrained clothing pattern.",
+      "review_concern": "Eye-patch detail may make the base less neutral for the Kinder Signs guide.",
+      "status": "CANDIDATE_ONLY"
+    },
+    {
+      "candidate_id": "open_peeps_bust_30",
+      "source_file": "Templates/Bust/peep-30.svg",
+      "why_shortlisted": "Calm facial treatment and clear upper-body silhouette.",
+      "review_concern": "Existing arm placement would require controlled replacement for the sign-specific pose.",
+      "status": "CANDIDATE_ONLY"
+    },
+    {
+      "candidate_id": "open_peeps_bust_40",
+      "source_file": "Templates/Bust/peep-40.svg",
+      "why_shortlisted": "Simple torso and clear arm area for a replaceable pose layer.",
+      "review_concern": "Sunglasses may feel too informal for the intended educational guide.",
+      "status": "CANDIDATE_ONLY"
+    }
+  ]
+}

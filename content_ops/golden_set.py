@@ -8,6 +8,7 @@ from typing import Any
 
 from .policy import evaluate_package
 from .provenance import build_publication_package, sha256_file
+from .content_engine import build_demo_report
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -151,6 +152,9 @@ def main() -> int:
     report_path.write_text(rendered, encoding="utf-8")
     prototype_path = REPO_ROOT / "prototype/data/content_operations.json"
     prototype_path.write_text(rendered, encoding="utf-8")
+    content_engine_report = build_demo_report(SIGN_DATA_PATH)
+    content_engine_path = REPO_ROOT / "prototype/data/content_engine_demo.json"
+    content_engine_path.write_text(json.dumps(content_engine_report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     for result in report["results"]:
         print(result["display_name"])
         print(f"  schema: {result['schema']}")
@@ -158,6 +162,7 @@ def main() -> int:
         print(f"  visual: {result['artwork']}")
         print(f"  publication: {result['library']}")
     print(f"JSON report: {report_path}")
+    print(f"Content engine demo: {content_engine_path}")
     return 0
 
 

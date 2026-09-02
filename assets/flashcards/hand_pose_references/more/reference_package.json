@@ -1,0 +1,35 @@
+{
+  "sign_id": "more",
+  "package_status": "INCOMPLETE",
+  "purpose": "Human-inspectable source package for a future custom MORE arm and hand SVG.",
+  "reference_still": {
+    "status": "MISSING_RIGHTS_CLEARED_EXPORT",
+    "target": "assets/flashcards/hand_pose_references/more/more_reference_still.png"
+  },
+  "landmark_snapshot": {
+    "status": "NEEDS_HUMAN_SELECTION",
+    "available_evidence": [
+      "poc/output/diagnostics/sign_reference_detection_timeline.png",
+      "poc/output/diagnostics/sign_reference_wrist_trajectory.png",
+      "poc/output/diagnostics/sign_reference_fingertip_trajectories.png"
+    ],
+    "note": "The diagnostic charts are technical evidence. They are not a final hand-pose reference or proof of sign correctness.",
+    "target": "assets/flashcards/hand_pose_references/more/more_landmark_snapshot.png"
+  },
+  "poc_evidence": {
+    "frames_analysed": 332,
+    "pose_detection_coverage_percent": 100.0,
+    "dominant_hand_detection_coverage_percent": 93.98,
+    "missing_hand_frames": 20,
+    "motion_representation_status": "MOTION_REPRESENTATION_PARTIAL",
+    "technical_decision": "Proceed with conditions",
+    "source": "poc/output/diagnostics/sign_reference_motion_summary.json"
+  },
+  "target_svg_slot": {
+    "status": "NOT_CREATED",
+    "target": "assets/flashcards/hand_pose_references/more/more_hand_pose.svg",
+    "rule": "The SVG must be derived from the validated reference movement and must not be inferred from the generic character pose."
+  },
+  "review_record": "assets/flashcards/hand_pose_references/more/review_notes.md",
+  "library_readiness": "BLOCKED"
+}

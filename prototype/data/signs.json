@@ -1,25 +1,27 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "2.0",
   "content_note": "Prototype content only. Movement instructions must come from validated sign references and expert review.",
   "signs": [
     {
       "id": "ks-more",
+      "sign_id": "more",
       "display_name": "MORE",
       "spanish_label": "MÁS",
-      "routine": {
-        "en": "Snack time / playtime",
-        "es": "Merienda / juego"
-      },
-      "short_family_guidance": {
-        "en": "Use it when your child asks for more food, more play or another turn.",
-        "es": "Úsalo cuando tu hijo pida más comida, más juego u otro turno."
-      },
-      "try_it_during": {
-        "en": "Try it during snack time.",
-        "es": "Pruébalo durante la merienda."
-      },
+      "routine": {"en": "Snack time / playtime", "es": "Merienda / juego"},
+      "approved_source_context": {"context_id": "ctx_more_v1", "scope": "Approved for prototype wording preparation; not linguistic sign certification.", "school_use": {"en": "Used during snack time and repeated play routines.", "es": "Se usa durante la merienda y en rutinas de juego repetidas."}},
+      "short_family_guidance": {"en": "Use it when your child asks for more food, more play or another turn.", "es": "Úsalo cuando tu hijo pida más comida, más juego u otro turno."},
+      "try_it_during": {"en": "Try it during snack time.", "es": "Pruébalo durante la merienda."},
+      "teacher_message": {"en": "We are using MORE during familiar snack and play routines.", "es": "Usamos MÁS durante rutinas habituales de merienda y juego."},
+      "family_message": {"en": "The group is using MORE. You can repeat the same cue during snack time at home.", "es": "El grupo está usando MÁS. Puedes repetir la misma señal durante la merienda en casa."},
+      "generation_method": "human",
+      "video_status": "technical_evidence_available",
+      "character_status": "needs_selection",
+      "context_status": "needs_export",
+      "hand_pose_status": "needs_review",
+      "content_status": "ready_for_review",
       "publication_status": "published",
       "school_visibility": "visible",
+      "print_readiness": "proof_only",
       "flashcard_status": "needs_artwork",
       "video_asset": "ready",
       "character_asset": "pending",
@@ -34,22 +36,24 @@
     },
     {
       "id": "ks-eat",
+      "sign_id": "eat",
       "display_name": "EAT",
       "spanish_label": "COMER",
-      "routine": {
-        "en": "Mealtime",
-        "es": "Hora de comer"
-      },
-      "short_family_guidance": {
-        "en": "Use it when food is offered or when a familiar meal begins.",
-        "es": "Úsalo al ofrecer comida o al comenzar una comida habitual."
-      },
-      "try_it_during": {
-        "en": "Try it during a familiar meal.",
-        "es": "Pruébalo durante una comida habitual."
-      },
+      "routine": {"en": "Mealtime", "es": "Hora de comer"},
+      "approved_source_context": {"context_id": "ctx_eat_v1", "scope": "Approved for prototype wording preparation; not linguistic sign certification.", "school_use": {"en": "Used when a familiar meal begins.", "es": "Se usa al comenzar una comida habitual."}},
+      "short_family_guidance": {"en": "Use it when food is offered or when a familiar meal begins.", "es": "Úsalo al ofrecer comida o al comenzar una comida habitual."},
+      "try_it_during": {"en": "Try it during a familiar meal.", "es": "Pruébalo durante una comida habitual."},
+      "teacher_message": {"en": "We are introducing EAT during familiar mealtime routines.", "es": "Introducimos COMER durante rutinas habituales de comida."},
+      "family_message": {"en": "You can repeat the EAT cue when a familiar meal begins at home.", "es": "Puedes repetir la señal COMER al comenzar una comida habitual en casa."},
+      "generation_method": "human",
+      "video_status": "needs_reference_review",
+      "character_status": "needs_selection",
+      "context_status": "needs_export",
+      "hand_pose_status": "needs_review",
+      "content_status": "ready_for_review",
       "publication_status": "draft",
       "school_visibility": "hidden",
+      "print_readiness": "blocked",
       "flashcard_status": "needs_artwork",
       "video_asset": "needs_review",
       "character_asset": "pending",
@@ -64,22 +68,24 @@
     },
     {
       "id": "ks-water",
+      "sign_id": "water",
       "display_name": "WATER",
       "spanish_label": "AGUA",
-      "routine": {
-        "en": "Drinks / mealtime",
-        "es": "Bebidas / hora de comer"
-      },
-      "short_family_guidance": {
-        "en": "Use it when offering water during a familiar school or home routine.",
-        "es": "Úsalo al ofrecer agua durante una rutina habitual en la escuela o en casa."
-      },
-      "try_it_during": {
-        "en": "Try it when drinks are offered.",
-        "es": "Pruébalo al ofrecer una bebida."
-      },
+      "routine": {"en": "Drinks / mealtime", "es": "Bebidas / hora de comer"},
+      "approved_source_context": {"context_id": "ctx_water_v1", "scope": "Approved for prototype wording preparation; not linguistic sign certification.", "school_use": {"en": "Used when water is offered during a familiar routine.", "es": "Se usa al ofrecer agua durante una rutina habitual."}},
+      "short_family_guidance": {"en": "Use it when offering water during a familiar school or home routine.", "es": "Úsalo al ofrecer agua durante una rutina habitual en la escuela o en casa."},
+      "try_it_during": {"en": "Try it when drinks are offered.", "es": "Pruébalo al ofrecer una bebida."},
+      "teacher_message": {"en": "We are using WATER when drinks are offered.", "es": "Usamos AGUA cuando ofrecemos bebidas."},
+      "family_message": {"en": "You can repeat the WATER cue when offering a drink at home.", "es": "Puedes repetir la señal AGUA al ofrecer una bebida en casa."},
+      "generation_method": "human",
+      "video_status": "needs_reference_review",
+      "character_status": "needs_selection",
+      "context_status": "needs_export",
+      "hand_pose_status": "needs_review",
+      "content_status": "ready_for_review",
       "publication_status": "draft",
       "school_visibility": "hidden",
+      "print_readiness": "blocked",
       "flashcard_status": "needs_artwork",
       "video_asset": "needs_review",
       "character_asset": "pending",
@@ -94,22 +100,24 @@
     },
     {
       "id": "ks-all-done",
+      "sign_id": "all_done",
       "display_name": "ALL DONE",
       "spanish_label": "TERMINADO",
-      "routine": {
-        "en": "End of a meal / activity",
-        "es": "Fin de una comida / actividad"
-      },
-      "short_family_guidance": {
-        "en": "Use it when a familiar meal or activity is coming to an end.",
-        "es": "Úsalo cuando una comida o actividad habitual esté terminando."
-      },
-      "try_it_during": {
-        "en": "Try it at the end of playtime.",
-        "es": "Pruébalo al terminar el juego."
-      },
+      "routine": {"en": "End of a meal / activity", "es": "Fin de una comida / actividad"},
+      "approved_source_context": {"context_id": "ctx_all_done_v1", "scope": "Approved for prototype wording preparation; not linguistic sign certification.", "school_use": {"en": "Used as a familiar meal or activity comes to an end.", "es": "Se usa cuando termina una comida o actividad habitual."}},
+      "short_family_guidance": {"en": "Use it when a familiar meal or activity is coming to an end.", "es": "Úsalo cuando una comida o actividad habitual esté terminando."},
+      "try_it_during": {"en": "Try it at the end of playtime.", "es": "Pruébalo al terminar el juego."},
+      "teacher_message": {"en": "We are using ALL DONE at the end of familiar routines.", "es": "Usamos TERMINADO al final de rutinas habituales."},
+      "family_message": {"en": "You can repeat the ALL DONE cue as a familiar activity ends at home.", "es": "Puedes repetir la señal TERMINADO cuando finalice una actividad habitual en casa."},
+      "generation_method": "human",
+      "video_status": "needs_reference_review",
+      "character_status": "needs_selection",
+      "context_status": "needs_export",
+      "hand_pose_status": "needs_review",
+      "content_status": "ready_for_review",
       "publication_status": "draft",
       "school_visibility": "hidden",
+      "print_readiness": "blocked",
       "flashcard_status": "needs_artwork",
       "video_asset": "needs_review",
       "character_asset": "pending",
@@ -124,22 +132,24 @@
     },
     {
       "id": "ks-help",
+      "sign_id": "help",
       "display_name": "HELP",
       "spanish_label": "AYUDA",
-      "routine": {
-        "en": "Playtime / getting dressed",
-        "es": "Juego / vestirse"
-      },
-      "short_family_guidance": {
-        "en": "Use it when offering or asking for help during a familiar task.",
-        "es": "Úsalo al ofrecer o pedir ayuda durante una tarea habitual."
-      },
-      "try_it_during": {
-        "en": "Try it while getting dressed.",
-        "es": "Pruébalo al vestirse."
-      },
+      "routine": {"en": "Playtime / getting dressed", "es": "Juego / vestirse"},
+      "approved_source_context": {"context_id": "ctx_help_v1", "scope": "Approved for prototype wording preparation; not linguistic sign certification.", "school_use": {"en": "Used when help is offered or requested during a familiar task.", "es": "Se usa al ofrecer o pedir ayuda durante una tarea habitual."}},
+      "short_family_guidance": {"en": "Use it when offering or asking for help during a familiar task.", "es": "Úsalo al ofrecer o pedir ayuda durante una tarea habitual."},
+      "try_it_during": {"en": "Try it while getting dressed.", "es": "Pruébalo al vestirse."},
+      "teacher_message": {"en": "We are using HELP during familiar tasks and play.", "es": "Usamos AYUDA durante tareas y juegos habituales."},
+      "family_message": {"en": "You can repeat the HELP cue during a familiar task at home.", "es": "Puedes repetir la señal AYUDA durante una tarea habitual en casa."},
+      "generation_method": "human",
+      "video_status": "needs_reference_review",
+      "character_status": "needs_selection",
+      "context_status": "needs_export",
+      "hand_pose_status": "needs_review",
+      "content_status": "ready_for_review",
       "publication_status": "draft",
       "school_visibility": "hidden",
+      "print_readiness": "blocked",
       "flashcard_status": "needs_artwork",
       "video_asset": "needs_review",
       "character_asset": "pending",
