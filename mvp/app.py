@@ -14,6 +14,14 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import unquote, urlparse
 
+from content_packs import (
+    ContentPackError,
+    approve_content_pack,
+    generate_content_pack,
+    load_content_run,
+    request_content_changes,
+    restore_human_copy,
+)
 from pipeline import (
     InputError,
     MAX_UPLOAD_BYTES,
@@ -31,6 +39,7 @@ from pipeline import (
 
 
 PROTOTYPE_ROOT = REPO_ROOT / "prototype"
+CHARACTER_CANDIDATES_PATH = REPO_ROOT / "assets/flashcards/open_peeps/candidates.json"
 PROCESSING_LOCK = threading.Lock()
 
 
@@ -116,7 +125,19 @@ class KinderFlowHandler(BaseHTTPRequestHandler):
     def do_GET(self) -> None:  # noqa: N802
         route = unquote(urlparse(self.path).path)
         if route == "/api/health":
-            self.send_json({"status": "ok", "service": "kinderflow-create-sign"})
+            self.send_json({"status": "ok", "service": "kinderflow-local-mvp", "capabilities": ["create_sign", "generate_content_pack"]})
+            return
+        if route == "/api/visual-assets/open-peeps":
+            try:
+                self.send_json(json.loads(CHARACTER_CANDIDATES_PATH.read_text(encoding="utf-8")))
+            except (OSError, json.JSONDecodeError):
+                self.send_json({"error": "Character candidate metadata is unavailable."}, HTTPStatus.NOT_FOUND)
+            return
+        if route.startswith("/api/content-packs/"):
+            try:
+                self.send_json(load_content_run(route.rsplit("/", 1)[-1]))
+            except ContentPackError as error:
+                self.send_json({"error": str(error)}, error.status)
             return
         if route.startswith("/api/runs/"):
             try:
@@ -142,6 +163,21 @@ class KinderFlowHandler(BaseHTTPRequestHandler):
     def do_POST(self) -> None:  # noqa: N802
         route = urlparse(self.path).path
         try:
+            if route == "/api/content-packs/generate":
+                result = generate_content_pack(self.read_json())
+                self.send_json(result, HTTPStatus.CREATED)
+                return
+            content_action = re.fullmatch(r"/api/content-packs/(content_[A-Za-z0-9_-]+)/(approve|request-changes|restore)", route)
+            if content_action:
+                run_id, action = content_action.groups()
+                if action == "approve":
+                    result = approve_content_pack(run_id)
+                elif action == "request-changes":
+                    result = request_content_changes(run_id)
+                else:
+                    result = restore_human_copy(run_id)
+                self.send_json(result)
+                return
             if route == "/api/runs/demo":
                 payload = self.read_json()
                 run_dir, manifest = prepare_run(
@@ -176,6 +212,8 @@ class KinderFlowHandler(BaseHTTPRequestHandler):
             )
             worker.start()
             self.send_json(public_run(manifest), HTTPStatus.ACCEPTED)
+        except ContentPackError as error:
+            self.send_json({"error": str(error)}, error.status)
         except InputError as error:
             self.send_json({"error": str(error)}, HTTPStatus.BAD_REQUEST)
         except (ValueError, TypeError):

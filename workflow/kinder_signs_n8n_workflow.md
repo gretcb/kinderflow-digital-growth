@@ -206,6 +206,16 @@ structured sign + approved source context
 → reviewed Flashcard Studio handoff
 ```
 
-The prototype currently runs this path as an explicit local dry-run. It does not call n8n, an LLM or LangSmith live. The existing importable n8n workflow remains the orchestration reference; connecting the new contract requires mapping those schemas into the installed n8n environment and revalidating the Code nodes there.
+The local MVP now exposes this operation at `POST /api/content-packs/generate` and stores isolated run evidence under the ignored `mvp/runs/content_packs/` directory. It can run human, live-provider or dry-run modes. The existing importable n8n workflow remains the orchestration reference; it has not been falsely marked as executed against the new endpoint.
 
-`generation_method` records whether copy is `human` or `llm_assisted`. `generation_mode` records whether the LLM path was a `DRY_RUN`. These fields must not be used as publication approval. A deterministic PASS and a LangSmith evaluation can prepare content for review; neither may publish it.
+Manual n8n connection steps:
+
+1. Import `workflow/kinder_signs_n8n_workflow.json` and attach the existing local OpenAI credential.
+2. Replace the sample sign Set node with an input matching `content_pack_input.schema.json`.
+3. Map generation to `GENERATE_CONTENT_PACK`. If n8n runs in a container, use the correct host address rather than assuming container `localhost` reaches this service.
+4. Keep the deterministic Code node after generation and map failure to a rejected review package.
+5. Trace/evaluate only the LLM wording step in LangSmith.
+6. End at a human review package; never connect the pass branch directly to publication.
+7. Run MORE once and save only non-sensitive execution evidence.
+
+`generation_method` records whether copy is `human` or `llm_assisted`. `generation_mode` records `LIVE`, `DRY_RUN` or `NOT_APPLICABLE`. These fields must not be used as publication approval. A deterministic PASS and a LangSmith trace/evaluation can prepare content for review; neither may publish it.

@@ -19,7 +19,7 @@ The local source folder is ignored by Git to reduce accidental redistribution ri
 - Structure found: Separate Atoms for accessories, faces, people, bodies, heads, standing/sitting poses and facial hair; composed Bust, Standing and Sitting templates are also present.
 - SVG/PNG technical classification: **DIRECTLY USABLE** as file formats, but **REFERENCE ONLY** for this repository until licence verification is complete.
 - Separate Atoms classification: **USABLE AFTER SIMPLE COMPOSITION**, subject to the same licence block.
-- Three inspected Bust candidates: `peep-12.svg`, `peep-30.svg` and `peep-40.svg`. These are candidate records, not a final character selection.
+- Three clean modular candidate recipes are recorded in `open_peeps/candidates.json`. They use shortlisted face, head/hair and clothing atoms with no accessory. `open_peeps/modular_inventory.json` records counts, viewBoxes and compatibility constraints. These are metadata-only recipes, not final compositions.
 
 ### Miroodles format findings
 

@@ -36,6 +36,22 @@ const renderSignData = (data) => {
   setText("[data-format]", data.format.map((item) => item.charAt(0).toUpperCase() + item.slice(1)).join(" + "));
 };
 
+const applyReviewedFamilyPreview = () => {
+  if (new URLSearchParams(window.location.search).get("reviewed") !== "1") return;
+  try {
+    const content = JSON.parse(sessionStorage.getItem("kinderflowReviewedContentPack") || "null");
+    if (content?.review_status !== "APPROVED" || content?.human_review?.approved !== true) return;
+    const label = content.flashcard_copy?.primary_label || content.sign_id?.toUpperCase();
+    if (label) setText("[data-sign-name]", label);
+    if (content.routine_context?.en) setText("[data-family-routine]", `${content.routine_context.en}. Continue the same reviewed cue at home.`);
+    if (content.family_guidance?.en) setText("[data-family-guidance]", content.family_guidance.en);
+    if (content.try_it_during?.en) setText("[data-family-try]", content.try_it_during.en);
+    if (content.family_message?.en) setText("[data-school-home-copy]", content.family_message.en);
+  } catch (_error) {
+    // Invalid or absent session content leaves the reviewed human-authored preview unchanged.
+  }
+};
+
 const loadSignData = async () => {
   let data = FALLBACK_SIGN_DATA;
   try {
@@ -54,11 +70,11 @@ if (routineButton && routineDetail) {
   routineButton.addEventListener("click", () => {
     const isOpen = routineButton.getAttribute("aria-expanded") === "true";
     routineButton.setAttribute("aria-expanded", String(!isOpen));
-    routineButton.textContent = isOpen ? "Open routine card" : "Close routine card";
+    routineButton.textContent = isOpen ? "Show routine card" : "Hide routine card";
     routineDetail.hidden = isOpen;
   });
 }
 
 document.querySelector("#print-family-card")?.addEventListener("click", () => window.print());
 
-loadSignData();
+loadSignData().finally(applyReviewedFamilyPreview);

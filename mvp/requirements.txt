@@ -1,1 +1,3 @@
 -r ../poc/requirements.txt
+openai>=1.0.0
+langsmith>=0.1.0

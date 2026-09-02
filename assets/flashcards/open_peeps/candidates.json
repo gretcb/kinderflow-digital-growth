@@ -4,27 +4,40 @@
   "source_library_runtime_use": false,
   "licence_status": "LICENCE_VERIFICATION_NEEDED",
   "selection_status": "FOUNDER_REVIEW_NEEDED",
-  "decision": "No candidate may be copied into runtime assets until licence and provenance are recorded.",
+  "composition_status": "METADATA_ONLY_UNTIL_LICENCE_VERIFIED",
+  "decision": "No source SVG is copied into the runtime. The founder selects modular parts only after reviewing the local originals and confirming licence terms.",
   "candidates": [
     {
-      "candidate_id": "open_peeps_bust_12",
-      "source_file": "Templates/Bust/peep-12.svg",
-      "why_shortlisted": "Simple upper-body composition and restrained clothing pattern.",
-      "review_concern": "Eye-patch detail may make the base less neutral for the Kinder Signs guide.",
+      "candidate_id": "calm_bun_sweater",
+      "base": "Separate Atoms/a person/bust.svg",
+      "face": "Separate Atoms/face/Calm.svg",
+      "hair": "Separate Atoms/head/Bun.svg",
+      "body": "Separate Atoms/body/Sweater.svg",
+      "accessories": "None",
+      "why_shortlisted": "Calm expression, simple clothing and no face obstruction.",
+      "composition_note": "Parts have category-specific viewBoxes and require an explicit anchor/scale map before composition.",
       "status": "CANDIDATE_ONLY"
     },
     {
-      "candidate_id": "open_peeps_bust_30",
-      "source_file": "Templates/Bust/peep-30.svg",
-      "why_shortlisted": "Calm facial treatment and clear upper-body silhouette.",
-      "review_concern": "Existing arm placement would require controlled replacement for the sign-specific pose.",
+      "candidate_id": "smile_afro_tee",
+      "base": "Separate Atoms/a person/bust.svg",
+      "face": "Separate Atoms/face/Smile.svg",
+      "hair": "Separate Atoms/head/Afro.svg",
+      "body": "Separate Atoms/body/Tee 1.svg",
+      "accessories": "None",
+      "why_shortlisted": "Readable expression, clear head silhouette and restrained clothing.",
+      "composition_note": "Parts have category-specific viewBoxes and require an explicit anchor/scale map before composition.",
       "status": "CANDIDATE_ONLY"
     },
     {
-      "candidate_id": "open_peeps_bust_40",
-      "source_file": "Templates/Bust/peep-40.svg",
-      "why_shortlisted": "Simple torso and clear arm area for a replaceable pose layer.",
-      "review_concern": "Sunglasses may feel too informal for the intended educational guide.",
+      "candidate_id": "gentle_bangs_striped_tee",
+      "base": "Separate Atoms/a person/bust.svg",
+      "face": "Separate Atoms/face/Cute.svg",
+      "hair": "Separate Atoms/head/Bangs.svg",
+      "body": "Separate Atoms/body/Striped Tee.svg",
+      "accessories": "None",
+      "why_shortlisted": "Friendly expression with an uncluttered upper-body composition.",
+      "composition_note": "Parts have category-specific viewBoxes and require an explicit anchor/scale map before composition.",
       "status": "CANDIDATE_ONLY"
     }
   ]

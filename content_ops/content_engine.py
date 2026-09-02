@@ -12,9 +12,18 @@ from typing import Any
 REQUIRED_OUTPUTS = {"family_guidance", "try_it_during", "teacher_message", "family_message", "flashcard_copy"}
 ALLOWED_LANGUAGES = {"es", "en", "bilingual"}
 ALLOWED_GENERATION_METHODS = {"human", "llm_assisted"}
+PROMPT_VERSION = "kinder_signs_content_pack_v1"
+GENERATED_FIELDS = {
+    "schema_version", "run_id", "sign_id", "source_context_id", "source_reference",
+    "prompt_version", "generation_method", "generation_mode", "language",
+    "family_guidance", "try_it_during", "routine_context", "teacher_message",
+    "family_message", "flashcard_copy", "review_status", "requires_human_review",
+    "automatic_publication",
+}
 TEXT_LIMITS = {"family_guidance": 240, "try_it_during": 160, "routine_context": 160, "teacher_message": 320, "family_message": 320}
-BIOMECHANICS = re.compile(r"\b(?:palm|finger|fingers|thumb|wrist|handshape|rotate|bend|tap|touch|palma|dedo|muñeca|gira|dobla)\b", re.IGNORECASE)
+BIOMECHANICS = re.compile(r"\b(?:hand|hands|palm|finger|fingers|thumb|wrist|handshape|rotate|bend|tap|touch|mano|manos|palma|dedo|dedos|muñeca|gira|dobla)\b", re.IGNORECASE)
 UNSUPPORTED_CLAIMS = re.compile(r"\b(?:accelerat(?:e|es|ed|ing)|boost language|treat(?:s|ed|ing)? delay|diagnos(?:e|es|ed|ing|is|tic)|therapy|cure(?:s|d|ing)?|acelera(?:r|do)?|diagnóstic[oa]|terapia|cura)\b", re.IGNORECASE)
+CORRECTNESS_CLAIMS = re.compile(r"\b(?:the sign is correct|correct sign|linguistically correct|professionally validated sign|signo correcto|signo validado profesionalmente)\b", re.IGNORECASE)
 BIOMECHANICS_KEYS = {"hand_shape", "handshape", "biomechanics", "finger_position", "movement_steps"}
 
 
@@ -36,8 +45,8 @@ def validate_content_input(payload: Any) -> dict[str, Any]:
     if not _is_bilingual_text(payload.get("routine")):
         failures.append({"check": "routine", "detail": "routine must contain non-empty English and Spanish values."})
     context = payload.get("approved_context")
-    if not isinstance(context, dict) or not context.get("context_id") or not isinstance(context.get("scope"), str) or not context["scope"].strip() or not _is_bilingual_text(context.get("school_use")):
-        failures.append({"check": "approved_context", "detail": "Approved source context with context_id, scope and bilingual school_use is required."})
+    if not isinstance(context, dict) or not context.get("context_id") or not isinstance(context.get("scope"), str) or not context["scope"].strip() or not _is_bilingual_text(context.get("school_use")) or not _is_bilingual_text(context.get("family_use")):
+        failures.append({"check": "approved_context", "detail": "Approved source context with context_id, scope, school_use and family_use is required."})
     requested = payload.get("requested_outputs")
     if not isinstance(requested, list) or len(requested) != len(REQUIRED_OUTPUTS) or set(requested) != REQUIRED_OUTPUTS:
         failures.append({"check": "requested_outputs", "detail": "The required Content Pack output list is incomplete or unsupported."})
@@ -45,6 +54,8 @@ def validate_content_input(payload: Any) -> dict[str, Any]:
         failures.append({"check": "language", "detail": "language must be es, en, or bilingual."})
     if payload.get("audience") != "family":
         failures.append({"check": "audience", "detail": "The current Content Pack contract supports the family audience only."})
+    if BIOMECHANICS.search(" ".join(_walk_strings(payload))):
+        failures.append({"check": "input_biomechanics", "detail": "Content Pack input cannot contain free-form movement or hand instructions."})
     return _result(failures)
 
 
@@ -56,12 +67,20 @@ def content_input_from_sign(sign: dict[str, Any], language: str = "bilingual") -
     }
 
 
-def build_dry_run_candidate(sign: dict[str, Any], generation_method: str = "llm_assisted") -> dict[str, Any]:
+def build_dry_run_candidate(
+    sign: dict[str, Any],
+    generation_method: str = "llm_assisted",
+    run_id: str | None = None,
+    language: str = "bilingual",
+) -> dict[str, Any]:
     if generation_method not in ALLOWED_GENERATION_METHODS:
         raise ValueError("Unsupported generation method")
     return {
-        "schema_version": "1.0", "sign_id": sign["sign_id"], "source_context_id": sign["approved_source_context"]["context_id"],
+        "schema_version": "1.0", "run_id": run_id or f"content_dry_run_preview_{sign['sign_id']}",
+        "sign_id": sign["sign_id"], "source_context_id": sign["approved_source_context"]["context_id"],
+        "source_reference": sign["approved_source_context"]["context_id"], "prompt_version": PROMPT_VERSION,
         "generation_method": generation_method, "generation_mode": "DRY_RUN" if generation_method == "llm_assisted" else "NOT_APPLICABLE",
+        "language": language,
         "family_guidance": deepcopy(sign["short_family_guidance"]), "try_it_during": deepcopy(sign["try_it_during"]),
         "routine_context": deepcopy(sign["routine"]), "teacher_message": deepcopy(sign["teacher_message"]),
         "family_message": deepcopy(sign["family_message"]),
@@ -101,19 +120,28 @@ def validate_generated_output(raw: Any, source_input: dict[str, Any]) -> tuple[d
     if not isinstance(candidate, dict):
         return None, _result([{"check": "output_object", "detail": "Generated output must be a JSON object."}])
 
-    required = {"sign_id", "source_context_id", "generation_method", "generation_mode", "family_guidance", "try_it_during", "routine_context", "teacher_message", "family_message", "flashcard_copy", "review_status", "requires_human_review", "automatic_publication"}
+    required = GENERATED_FIELDS
     missing = sorted(required.difference(candidate))
     if missing:
         failures.append({"check": "required_fields", "detail": f"Missing required output fields: {', '.join(missing)}."})
+    extras = sorted(set(candidate).difference(GENERATED_FIELDS))
+    if extras:
+        failures.append({"check": "unsupported_fields", "detail": f"Unsupported output fields found: {', '.join(extras)}."})
     if candidate.get("sign_id") != source_input.get("sign_id"):
         failures.append({"check": "sign_id", "detail": "Generated sign_id does not match the structured source."})
     if candidate.get("source_context_id") != source_input.get("approved_context", {}).get("context_id"):
         failures.append({"check": "source_context_id", "detail": "Generated source_context_id does not match the approved context."})
+    if candidate.get("source_reference") != source_input.get("approved_context", {}).get("context_id"):
+        failures.append({"check": "source_reference", "detail": "Generated source_reference does not match the approved context."})
+    if candidate.get("prompt_version") != PROMPT_VERSION:
+        failures.append({"check": "prompt_version", "detail": "Generated prompt_version is missing or unsupported."})
     if candidate.get("generation_method") not in ALLOWED_GENERATION_METHODS:
         failures.append({"check": "generation_method", "detail": "generation_method must be human or llm_assisted."})
     expected_modes = {"llm_assisted": {"DRY_RUN", "LIVE"}, "human": {"NOT_APPLICABLE"}}
     if candidate.get("generation_mode") not in expected_modes.get(candidate.get("generation_method"), set()):
         failures.append({"check": "generation_mode", "detail": "generation_mode must match the recorded generation method."})
+    if candidate.get("language") != source_input.get("language"):
+        failures.append({"check": "language", "detail": "Generated language does not match the structured request."})
     if candidate.get("review_status") != "READY_FOR_REVIEW":
         failures.append({"check": "review_status", "detail": "Generated content must remain READY_FOR_REVIEW."})
     if candidate.get("requires_human_review") is not True:
@@ -141,6 +169,8 @@ def validate_generated_output(raw: Any, source_input: dict[str, Any]) -> tuple[d
         failures.append({"check": "biomechanics_content", "detail": "Content Pack contains unsupported movement or hand-shape wording."})
     if UNSUPPORTED_CLAIMS.search(combined_text):
         failures.append({"check": "unsupported_claim", "detail": "Content Pack contains an unsupported developmental or clinical claim."})
+    if CORRECTNESS_CLAIMS.search(combined_text):
+        failures.append({"check": "sign_correctness_claim", "detail": "Content Pack contains an unsupported sign-correctness claim."})
     return candidate, _result(failures)
 
 
@@ -158,7 +188,7 @@ def prepare_flashcard_handoff(candidate: dict[str, Any]) -> dict[str, Any]:
     if candidate.get("review_status") != "APPROVED" or candidate.get("human_review", {}).get("approved") is not True:
         raise ValueError("Only human-reviewed content can populate the Flashcard Studio handoff")
     return {
-        "schema_version": "1.0", "sign_id": candidate["sign_id"], "generation_method": candidate["generation_method"],
+        "schema_version": "1.0", "run_id": candidate["run_id"], "sign_id": candidate["sign_id"], "generation_method": candidate["generation_method"],
         "review_status": candidate["review_status"], "family_guidance": deepcopy(candidate["family_guidance"]),
         "try_it_during": deepcopy(candidate["try_it_during"]), "routine_context": deepcopy(candidate["routine_context"]),
         "flashcard_copy": deepcopy(candidate["flashcard_copy"]),
@@ -176,7 +206,7 @@ def build_demo_report(signs_path: str | Path) -> dict[str, Any]:
             "sign_id": sign["sign_id"], "display_name": sign["display_name"], "input": input_payload,
             "candidate_output": candidate, "deterministic_quality_gate": gate,
             "langsmith": {"mode": "DRY_RUN", "trace_status": "NOT_SENT", "evaluates": "LLM-assisted wording only", "dimensions": ["clarity", "brevity", "source consistency", "unsupported-claim risk", "hallucination against structured input"], "evidence": "workflow/langsmith_dry_run_summary.json"},
-            "readiness": {"movement_intelligence": sign["video_status"], "character": sign["character_status"], "context": sign["context_status"], "hand_pose": sign["hand_pose_status"], "content": sign["content_status"], "flashcard": sign["flashcard_status"], "library": "BLOCKED"},
+            "readiness": {"movement_intelligence": sign["video_status"], "character": sign["character_status"], "context": sign["context_status"], "hand_pose": sign["hand_pose_status"], "content": sign["content_status"], "flashcard": sign["flashcard_status"], "library": "BLOCKED_BY_HAND_REVIEW" if sign["sign_id"] == "more" else "BLOCKED"},
             "content_review": "PENDING", "flashcard_handoff": "BLOCKED_UNTIL_CONTENT_APPROVAL",
         })
     return {"schema_version": "1.0", "operation": "GENERATE_CONTENT_PACK", "results": results}

@@ -21,6 +21,10 @@
           "school_use": {
             "en": "Used during snack time and repeated play routines.",
             "es": "Se usa durante la merienda y en rutinas de juego repetidas."
+          },
+          "family_use": {
+            "en": "Continue the same cue naturally during familiar routines at home.",
+            "es": "Continúa la misma señal de forma natural durante rutinas habituales en casa."
           }
         },
         "requested_outputs": [
@@ -33,10 +37,14 @@
       },
       "candidate_output": {
         "schema_version": "1.0",
+        "run_id": "content_dry_run_preview_more",
         "sign_id": "more",
         "source_context_id": "ctx_more_v1",
+        "source_reference": "ctx_more_v1",
+        "prompt_version": "kinder_signs_content_pack_v1",
         "generation_method": "llm_assisted",
         "generation_mode": "DRY_RUN",
+        "language": "bilingual",
         "family_guidance": {
           "en": "Use it when your child asks for more food, more play or another turn.",
           "es": "Úsalo cuando tu hijo pida más comida, más juego u otro turno."
@@ -86,12 +94,12 @@
       },
       "readiness": {
         "movement_intelligence": "technical_evidence_available",
-        "character": "needs_selection",
-        "context": "needs_export",
+        "character": "candidates_ready_for_founder_review",
+        "context": "manual_export_identified",
         "hand_pose": "needs_review",
         "content": "ready_for_review",
-        "flashcard": "needs_artwork",
-        "library": "BLOCKED"
+        "flashcard": "preview_ready_with_placeholder",
+        "library": "BLOCKED_BY_HAND_REVIEW"
       },
       "content_review": "PENDING",
       "flashcard_handoff": "BLOCKED_UNTIL_CONTENT_APPROVAL"
@@ -115,6 +123,10 @@
           "school_use": {
             "en": "Used when a familiar meal begins.",
             "es": "Se usa al comenzar una comida habitual."
+          },
+          "family_use": {
+            "en": "Repeat the same cue when a familiar meal begins at home.",
+            "es": "Repite la misma señal al comenzar una comida habitual en casa."
           }
         },
         "requested_outputs": [
@@ -127,10 +139,14 @@
       },
       "candidate_output": {
         "schema_version": "1.0",
+        "run_id": "content_dry_run_preview_eat",
         "sign_id": "eat",
         "source_context_id": "ctx_eat_v1",
+        "source_reference": "ctx_eat_v1",
+        "prompt_version": "kinder_signs_content_pack_v1",
         "generation_method": "llm_assisted",
         "generation_mode": "DRY_RUN",
+        "language": "bilingual",
         "family_guidance": {
           "en": "Use it when food is offered or when a familiar meal begins.",
           "es": "Úsalo al ofrecer comida o al comenzar una comida habitual."
@@ -180,8 +196,8 @@
       },
       "readiness": {
         "movement_intelligence": "needs_reference_review",
-        "character": "needs_selection",
-        "context": "needs_export",
+        "character": "candidates_ready_for_founder_review",
+        "context": "manual_export_identified",
         "hand_pose": "needs_review",
         "content": "ready_for_review",
         "flashcard": "needs_artwork",
@@ -209,6 +225,10 @@
           "school_use": {
             "en": "Used when water is offered during a familiar routine.",
             "es": "Se usa al ofrecer agua durante una rutina habitual."
+          },
+          "family_use": {
+            "en": "Repeat the same cue when offering water at home.",
+            "es": "Repite la misma señal al ofrecer agua en casa."
           }
         },
         "requested_outputs": [
@@ -221,10 +241,14 @@
       },
       "candidate_output": {
         "schema_version": "1.0",
+        "run_id": "content_dry_run_preview_water",
         "sign_id": "water",
         "source_context_id": "ctx_water_v1",
+        "source_reference": "ctx_water_v1",
+        "prompt_version": "kinder_signs_content_pack_v1",
         "generation_method": "llm_assisted",
         "generation_mode": "DRY_RUN",
+        "language": "bilingual",
         "family_guidance": {
           "en": "Use it when offering water during a familiar school or home routine.",
           "es": "Úsalo al ofrecer agua durante una rutina habitual en la escuela o en casa."
@@ -274,8 +298,8 @@
       },
       "readiness": {
         "movement_intelligence": "needs_reference_review",
-        "character": "needs_selection",
-        "context": "needs_export",
+        "character": "candidates_ready_for_founder_review",
+        "context": "manual_export_identified",
         "hand_pose": "needs_review",
         "content": "ready_for_review",
         "flashcard": "needs_artwork",
@@ -303,6 +327,10 @@
           "school_use": {
             "en": "Used as a familiar meal or activity comes to an end.",
             "es": "Se usa cuando termina una comida o actividad habitual."
+          },
+          "family_use": {
+            "en": "Repeat the same cue as a familiar home routine ends.",
+            "es": "Repite la misma señal cuando termina una rutina habitual en casa."
           }
         },
         "requested_outputs": [
@@ -315,10 +343,14 @@
       },
       "candidate_output": {
         "schema_version": "1.0",
+        "run_id": "content_dry_run_preview_all_done",
         "sign_id": "all_done",
         "source_context_id": "ctx_all_done_v1",
+        "source_reference": "ctx_all_done_v1",
+        "prompt_version": "kinder_signs_content_pack_v1",
         "generation_method": "llm_assisted",
         "generation_mode": "DRY_RUN",
+        "language": "bilingual",
         "family_guidance": {
           "en": "Use it when a familiar meal or activity is coming to an end.",
           "es": "Úsalo cuando una comida o actividad habitual esté terminando."
@@ -368,8 +400,8 @@
       },
       "readiness": {
         "movement_intelligence": "needs_reference_review",
-        "character": "needs_selection",
-        "context": "needs_export",
+        "character": "candidates_ready_for_founder_review",
+        "context": "manual_export_identified",
         "hand_pose": "needs_review",
         "content": "ready_for_review",
         "flashcard": "needs_artwork",
@@ -397,6 +429,10 @@
           "school_use": {
             "en": "Used when help is offered or requested during a familiar task.",
             "es": "Se usa al ofrecer o pedir ayuda durante una tarea habitual."
+          },
+          "family_use": {
+            "en": "Repeat the same cue when help is offered or requested at home.",
+            "es": "Repite la misma señal al ofrecer o pedir ayuda en casa."
           }
         },
         "requested_outputs": [
@@ -409,10 +445,14 @@
       },
       "candidate_output": {
         "schema_version": "1.0",
+        "run_id": "content_dry_run_preview_help",
         "sign_id": "help",
         "source_context_id": "ctx_help_v1",
+        "source_reference": "ctx_help_v1",
+        "prompt_version": "kinder_signs_content_pack_v1",
         "generation_method": "llm_assisted",
         "generation_mode": "DRY_RUN",
+        "language": "bilingual",
         "family_guidance": {
           "en": "Use it when offering or asking for help during a familiar task.",
           "es": "Úsalo al ofrecer o pedir ayuda durante una tarea habitual."
@@ -462,8 +502,8 @@
       },
       "readiness": {
         "movement_intelligence": "needs_reference_review",
-        "character": "needs_selection",
-        "context": "needs_export",
+        "character": "candidates_ready_for_founder_review",
+        "context": "manual_export_identified",
         "hand_pose": "needs_review",
         "content": "ready_for_review",
         "flashcard": "needs_artwork",

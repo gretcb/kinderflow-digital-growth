@@ -48,7 +48,7 @@ const renderOperationsTable = () => {
     button.type = "button";
     button.className = "text-link-button";
     button.dataset.reviewSign = item.sign_id;
-    button.textContent = "Review";
+    button.textContent = `Review ${item.display_name}`;
     detailCell.append(button);
     row.append(detailCell);
     return row;

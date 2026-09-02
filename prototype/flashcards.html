@@ -3,67 +3,71 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Kinder Signs Flashcard Studio for reusable, print-ready family materials from published signs.">
-    <title>Master Content Studio | Flashcard Studio</title>
+    <meta name="description" content="KinderFlow Flashcard Studio for creating consistent cards from reviewed sign assets.">
+    <title>Create a flashcard | KinderFlow Admin</title>
     <link rel="icon" href="data:,">
     <link rel="stylesheet" href="styles.css">
     <script src="flashcards.js" defer></script>
   </head>
   <body class="flashcard-page">
     <header class="site-header admin-header builder-header">
-      <a class="brand" href="content-studio.html" aria-label="Back to Master Content Studio"><span class="brand-mark" aria-hidden="true">K</span><span>Master Content Studio</span></a>
+      <a class="brand" href="content-studio.html" aria-label="Back to Master Content Studio"><span class="brand-mark" aria-hidden="true">K</span><span>KinderFlow Admin</span></a>
       <nav aria-label="Master Content Studio navigation"><a href="content-studio.html">Studio overview</a><a href="create-sign.html">Create sign</a><a href="flashcards.html" aria-current="page">Create flashcard</a><a href="create-story.html">Create story</a><a href="create-song.html">Create song</a></nav>
-      <a class="prototype-label page-switch" href="library.html">Master Library</a>
+      <a class="prototype-label page-switch" href="library.html">Master Content Library</a>
     </header>
 
     <main class="builder-main">
-      <section class="builder-intro section-shell" aria-labelledby="builder-title">
-        <div><p class="eyebrow">Master Content Studio · Internal operations</p><h1 id="builder-title">Flashcard Studio</h1><p>Prepare one consistent family flashcard from structured published-sign content. Educators receive the finished asset; they do not design it.</p></div>
-        <ol class="builder-flow" aria-label="Flashcard production flow"><li>Published sign data</li><li>Reusable template</li><li>Character + hand assets</li><li>Preview</li><li>Print / PDF</li><li>Signs &amp; Flashcards Library</li></ol>
+      <section class="builder-intro builder-intro-studio section-shell" aria-labelledby="builder-title">
+        <p class="studio-breadcrumb"><a href="admin.html">KinderFlow Admin</a><span aria-hidden="true">/</span><a href="content-studio.html">Master Content Studio</a><span aria-hidden="true">/</span><span>Flashcard Studio</span></p>
+        <div class="builder-purpose"><div><p class="eyebrow">Internal content operations</p><h1 id="builder-title">Create a flashcard</h1><p>Turn a reviewed sign into a consistent printable or digital card.</p></div><p class="builder-ownership"><strong>KinderFlow creates the asset.</strong> Schools receive ready-to-use content and decide where to assign it.</p></div>
       </section>
 
       <section class="builder-workspace section-shell" aria-label="Flashcard Studio workspace">
         <aside class="builder-controls" aria-labelledby="settings-title">
-          <div class="builder-controls-heading"><p class="card-label">Configuration</p><h2 id="settings-title">Build a flashcard</h2><p>Select controlled content and format. The underlying sign and movement cannot be edited here.</p></div>
-          <div class="form-field builder-sign-select"><label for="published-sign">Published sign</label><select id="published-sign" disabled><option>Loading sign library…</option></select><small id="sign-source-help">Only published signs can enter the Flashcard Studio.</small></div>
-          <div class="source-description" aria-live="polite"><span>Family guidance source</span><p id="source-description">Loading structured sign content…</p></div>
-          <dl class="builder-asset-summary" aria-label="Selected sign asset readiness"><div><dt>Illustration</dt><dd id="illustration-status">Waiting</dd></div><div><dt>Hand pose</dt><dd id="hand-pose-status">Waiting</dd></div><div><dt>Print readiness</dt><dd id="print-readiness">Waiting</dd></div></dl>
+          <div class="builder-controls-heading"><p class="card-label">Card settings</p><h2 id="settings-title">Configure the asset</h2><p>The sign content and movement cannot be edited here.</p></div>
 
-          <fieldset class="builder-choice"><legend>Language</legend><div class="builder-segments builder-segments-two"><label><input type="radio" name="language" value="es" checked><span>Español</span></label><label><input type="radio" name="language" value="en"><span>English</span></label></div></fieldset>
-          <fieldset class="builder-choice"><legend>Card type</legend><div class="builder-segments builder-segments-two"><label><input type="radio" name="card_type" value="flashcard" checked><span>Flashcard<small>Visual reinforcement</small></span></label><label><input type="radio" name="card_type" value="routine"><span>Routine card<small>Guidance in context</small></span></label></div></fieldset>
+          <section class="builder-step" aria-labelledby="choose-sign-title">
+            <div class="builder-step-heading"><span aria-hidden="true">1</span><h3 id="choose-sign-title">Choose a sign</h3></div>
+            <div class="form-field builder-sign-select"><label for="published-sign">Reviewed sign</label><select id="published-sign" disabled><option>Loading sign library…</option></select><small id="sign-source-help">Checking which signs have an eligible visual proof…</small></div>
+          </section>
 
-          <div class="builder-actions builder-actions-studio"><button class="button button-secondary" id="preview-card" type="button">Preview</button><button class="button button-primary" id="review-flashcard" type="button">Mark layout reviewed</button><button class="button button-secondary" id="print-flashcard" type="button" disabled>Print proof / Save as PDF</button><button class="button button-secondary" id="export-image" type="button" disabled>PNG export · Next step</button></div>
-          <p class="builder-status" id="builder-status" aria-live="polite">Loading the sign library…</p>
-          <p class="prototype-boundary">Static internal prototype. Layout review is local only. Pending artwork cannot be published as a production flashcard.</p>
+          <section class="builder-step" aria-labelledby="choose-card-title">
+            <div class="builder-step-heading"><span aria-hidden="true">2</span><h3 id="choose-card-title">Choose the card</h3></div>
+            <fieldset class="builder-choice"><legend>Language</legend><div class="builder-segments builder-segments-two"><label><input type="radio" name="language" value="en" checked><span>English</span></label><label><input type="radio" name="language" value="es"><span>Spanish</span></label></div></fieldset>
+            <fieldset class="builder-choice"><legend>Card type</legend><div class="builder-segments builder-segments-two"><label><input type="radio" name="card_type" value="flashcard" checked><span>Flashcard<small>Recognition</small></span></label><label><input type="radio" name="card_type" value="routine"><span>Routine Card<small>Guidance in context</small></span></label></div></fieldset>
+          </section>
+
+          <section class="builder-step builder-review-step" aria-labelledby="review-export-title">
+            <div class="builder-step-heading"><span aria-hidden="true">3</span><h3 id="review-export-title">Review and export</h3></div>
+            <div class="builder-review-summary"><span>Review state</span><strong id="review-state-text">Internal preview</strong><small>Check hierarchy, legibility and hand visibility before approval.</small></div>
+            <div class="builder-actions builder-actions-studio" id="pre-approval-actions"><button class="button button-primary" id="review-flashcard" type="button">Approve flashcard</button><a class="button button-secondary" href="content-studio.html">Return to Master Content Studio</a></div>
+            <div class="builder-actions builder-actions-studio" id="post-approval-actions" hidden><button class="button button-primary" id="print-flashcard" type="button">Print as PDF</button><button class="button button-secondary" id="export-image" type="button" disabled aria-describedby="png-help">PNG export — prototype</button><button class="text-link-button" id="create-another" type="button">Create another flashcard</button><a class="text-link" href="content-studio.html">Return to Master Content Studio</a></div>
+            <p class="builder-status" id="builder-status" role="status" aria-live="polite">Loading the sign library…</p>
+            <p class="export-help" id="png-help">PNG export is unavailable in this MVP because a faithful browser-only export is not implemented.</p>
+            <p class="prototype-boundary">Approval is simulated locally. Production would require reviewer identity and an audit record; it would not publish the sign automatically.</p>
+          </section>
         </aside>
 
-        <section class="builder-preview" id="builder-preview" aria-labelledby="preview-title" tabindex="-1">
-          <div class="preview-toolbar"><div><p class="card-label">Browser preview</p><h2 id="preview-title">Flashcard · Español</h2></div><span class="status-pill status-review" id="flashcard-state">Needs artwork</span></div>
+        <section class="builder-preview" id="builder-preview" aria-labelledby="preview-title">
+          <div class="preview-toolbar"><div><p class="card-label">Live preview</p><h2 id="preview-title">Flashcard · English</h2></div><span class="status-pill status-review" id="flashcard-state">Internal preview</span></div>
           <div class="print-sheet" id="print-sheet">
-            <article class="flashcard-output" data-card-type="flashcard" aria-label="Kinder Signs flashcard preview">
+            <article class="flashcard-output" data-card-type="flashcard" aria-label="Kinder Signs internal flashcard preview" hidden>
               <header class="flashcard-output-header"><strong>KINDER SIGNS</strong><span data-card-kind>FLASHCARD</span></header>
               <div class="flashcard-visual-unit">
-                <div class="flashcard-visual" role="img" aria-label="Illustration asset pending"><span class="illustration-placeholder-mark" aria-hidden="true">ASSET</span><strong>Open Peeps character + Kinder Signs hand pose pending</strong><small>Illustration placeholder · not final artwork</small></div>
-                <div class="flashcard-sign-lockup"><h3 data-card-sign>MORE</h3><p data-card-spanish>MÁS</p></div>
+                <div class="flashcard-visual" role="img" aria-label="Internal illustration placeholder for MORE"><span class="illustration-placeholder-mark" aria-hidden="true">VISUAL</span><strong>Character and reviewed hand pose go here</strong><small>Internal placeholder · not final artwork</small></div>
+                <div class="flashcard-sign-lockup"><h3 data-card-sign>MORE</h3><p data-card-spanish hidden>MÁS</p></div>
               </div>
-              <div class="flashcard-routine"><span data-card-label="routine">Rutina</span><p data-card-routine>Merienda / juego</p></div>
-              <div class="flashcard-guidance"><span data-card-label="guidance">Guía para la familia</span><p data-card-guidance>Úsalo cuando tu hijo pida más comida, más juego u otro turno.</p></div>
-              <div class="flashcard-try"><span data-card-label="try">Pruébalo durante…</span><p data-card-try>Pruébalo durante la merienda.</p></div>
-              <footer class="flashcard-output-footer"><span data-card-footer>El vídeo enseña el movimiento. Esta tarjeta refuerza el signo y su rutina.</span><small>KINDER SIGNS · FAMILY MATERIAL</small></footer>
+              <div class="flashcard-routine"><span data-card-label="routine">Routine</span><p data-card-routine>Snack time</p></div>
+              <div class="flashcard-guidance"><span data-card-label="guidance">How to use it</span><p data-card-guidance>Use the sign naturally just before offering more food.</p></div>
             </article>
+            <div class="preview-empty" id="preview-empty">
+              <p class="card-label">Getting started</p><h3>Choose a reviewed sign to begin.</h3><p>The live card will appear here when an eligible sign is selected.</p><a class="button button-secondary" href="content-studio.html">Return to Master Content Studio</a>
+            </div>
           </div>
-          <p class="builder-print-note" id="output-help">Review the layout to enable a browser print proof. Use Print → Save as PDF; the placeholder remains visibly marked until final artwork is inserted.</p>
+          <p class="builder-print-note" id="output-help">Changes appear immediately. Approve the internal proof to enable browser Print / Save as PDF.</p>
         </section>
       </section>
-
-      <section class="workspace-section section-tint flashcard-library-section" aria-labelledby="flashcard-library-title">
-        <div class="section-shell">
-          <div class="workspace-heading"><div><p class="eyebrow">Kinder Signs</p><h2 id="flashcard-library-title">Signs &amp; Flashcards Library readiness</h2></div><p>One source model drives the builder and this operational view.</p></div>
-          <div class="table-scroll"><table class="flashcard-library-table"><thead><tr><th scope="col">Sign</th><th scope="col">Routine</th><th scope="col">Video</th><th scope="col">Flashcard</th><th scope="col">Publication</th><th scope="col">School visibility</th><th scope="col">Preview</th></tr></thead><tbody id="flashcard-library-body"><tr><td colspan="7">Loading sign library…</td></tr></tbody></table></div>
-          <p class="prototype-boundary"><strong>Pack rule:</strong> when the Flashcards pack is active for a group or child, a reviewed matching flashcard is included automatically in prepared family output. If inactive, it remains available to school administrators but is not sent to families. No billing is implemented.</p>
-        </div>
-      </section>
     </main>
-    <footer class="builder-footer"><span>Master Content Studio · Flashcard Studio</span><span>The video teaches the movement. The flashcard reinforces the sign and its routine.</span></footer>
+    <footer class="builder-footer"><span>Master Content Studio · Flashcard Studio</span><a href="library.html">Open Master Content Library</a></footer>
   </body>
 </html>

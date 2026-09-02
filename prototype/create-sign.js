@@ -178,7 +178,7 @@ const pollRun = async (runId) => {
     }
     state.polling = window.setTimeout(() => pollRun(runId), 900);
   } catch (error) {
-    processingNote.textContent = `${error.message} Try again.`;
+    processingNote.textContent = `${error.message} Select another reference video.`;
     retryButton.hidden = false;
     retryButton.disabled = false;
   }
@@ -298,20 +298,20 @@ const finishRun = (run) => {
 
 document.querySelector("#approve-sign").addEventListener("click", (event) => {
   event.currentTarget.disabled = true;
-  event.currentTarget.textContent = "Published";
+  event.currentTarget.textContent = "Review recorded";
   document.querySelector("#use-another-reference").hidden = true;
   const reviewState = document.querySelector("#review-state");
-  reviewState.textContent = "Published";
+  reviewState.textContent = "Approved locally";
   reviewState.className = "status-pill status-ready";
-  setText("#content-status", "Published");
-  setText("#result-kicker", "Published sign");
-  setText("#result-title", "Published sign");
-  setText("#review-title", "Published");
-  setText("#review-guidance", "This sign is now a reusable library asset in this local demo.");
-  setText("#review-message", "Published locally for this browser session. No production record was created.");
+  setText("#content-status", "Ready for content preparation");
+  setText("#result-kicker", "Human review recorded locally");
+  setText("#result-title", "Ready for content preparation");
+  setText("#review-title", "Movement review recorded");
+  setText("#review-guidance", "Continue to the Content Engine. Final library publication remains a separate controlled decision.");
+  setText("#review-message", "Local browser state only. No production approval or publication record was created.");
   const sign = state.run.sign;
   const query = `?sign=${escapeQuery(sign.name)}&routine=${escapeQuery(sign.routine_context)}&source_run=${escapeQuery(state.run.run_id)}`;
-  document.querySelector("#create-flashcard-link").href = `flashcards.html${query}`;
+  document.querySelector("#continue-content-engine-link").href = `library.html${query}#content-engine-title`;
   document.querySelector("#create-story-link").href = `create-story.html${query}`;
   downstreamSection.hidden = false;
   downstreamSection.scrollIntoView({ behavior: "smooth", block: "start" });

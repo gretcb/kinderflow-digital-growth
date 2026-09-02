@@ -31,8 +31,10 @@ Browser
   → isolated mvp/runs/<run_id>/ artifacts
   → run-specific JSON response
   → reference / landmark preview + technical summary
-  → local demo review and publication state
-  → Flashcard Builder link
+  → local movement review
+  → Content Pack generation and deterministic checks
+  → local content review
+  → Flashcard Studio proof
 ~~~
 
 Each run stores:
@@ -61,9 +63,12 @@ Technical status is mapped conservatively from the existing POC:
 Content status is separate:
 
 - Draft;
-- Published after an explicit local approval action.
+- Ready for human review; and
+- Approved locally for the limited prototype handoff.
 
 Computer Vision never sets **Published**.
+
+The local Content Pack service supports human source copy and LLM-assisted copy. It uses one strict input/output contract for all five signs, records isolated run metadata, and keeps deterministic checks separate from optional LangSmith tracing. Missing provider credentials produce an explicit `DRY_RUN`; human copy records LangSmith as `NOT_APPLICABLE`. Local content approval does not publish a library item, and unreviewed output cannot populate the Flashcard Studio handoff.
 
 Pass exposes **Approve**. Review needed exposes **Approve anyway** and **Use another reference video**, with reasons shown in plain language. Fail exposes only **Use another reference video**.
 
@@ -75,7 +80,7 @@ Pass exposes **Approve**. Review needed exposes **Approve anyway** and **Use ano
 - Real technical coverage, missing-data and motion metrics can be surfaced in plain language.
 - An operator can compare the reference with its generated landmark overlay.
 - The result can be routed to an explicit human-review gate.
-- A demo-published asset can pass sign and routine metadata to the existing Flashcard Builder.
+- Locally reviewed content can pass bounded sign, routine and family wording to the existing Flashcard Studio proof.
 
 ## What the MVP does not prove
 

@@ -166,6 +166,27 @@ class ContentEngineTests(unittest.TestCase):
         self.assertFalse(result["passed"])
         self.assertIn("unsupported_claim", {item["check"] for item in result["failed_checks"]})
 
+    def test_sign_correctness_claim_is_rejected(self) -> None:
+        candidate = build_dry_run_candidate(self.sign)
+        candidate["family_message"]["en"] = "This proves the sign is correct."
+        _, result = validate_generated_output(candidate, self.source)
+        self.assertFalse(result["passed"])
+        self.assertIn("sign_correctness_claim", {item["check"] for item in result["failed_checks"]})
+
+    def test_input_biomechanics_are_rejected(self) -> None:
+        source = copy.deepcopy(self.source)
+        source["approved_context"]["family_use"]["en"] = "Rotate both hands."
+        result = validate_content_input(source)
+        self.assertFalse(result["passed"])
+        self.assertIn("input_biomechanics", {item["check"] for item in result["failed_checks"]})
+
+    def test_extra_output_field_is_rejected(self) -> None:
+        candidate = build_dry_run_candidate(self.sign)
+        candidate["confidence"] = 0.99
+        _, result = validate_generated_output(candidate, self.source)
+        self.assertFalse(result["passed"])
+        self.assertIn("unsupported_fields", {item["check"] for item in result["failed_checks"]})
+
     def test_gate_is_deterministic_and_dry_run_is_not_live(self) -> None:
         candidate = build_dry_run_candidate(self.sign)
         first = validate_generated_output(candidate, self.source)[1]
@@ -204,10 +225,13 @@ class FlashcardIntegrationTests(unittest.TestCase):
 
     def test_candidate_inventory_is_valid_and_not_runtime_enabled(self) -> None:
         inventory = load_json(self.repo / "assets/flashcards/open_peeps/candidates.json")
+        modular = load_json(self.repo / "assets/flashcards/open_peeps/modular_inventory.json")
         self.assertEqual(inventory["licence_status"], "LICENCE_VERIFICATION_NEEDED")
         self.assertFalse(inventory["source_library_runtime_use"])
         self.assertLessEqual(len(inventory["candidates"]), 3)
         self.assertTrue(all(item["status"] == "CANDIDATE_ONLY" for item in inventory["candidates"]))
+        self.assertFalse(modular["compatibility_findings"]["direct_interchangeability"])
+        self.assertFalse(modular["runtime_dependency"])
 
     def test_runtime_does_not_reference_ignored_source_library(self) -> None:
         runtime_files = list((self.repo / "prototype").glob("*.html")) + list((self.repo / "prototype").glob("*.js")) + list((self.repo / "prototype").glob("*.css"))
@@ -221,6 +245,16 @@ class FlashcardIntegrationTests(unittest.TestCase):
         self.assertIn('class="flashcard-sign-lockup"', html)
         js = (self.repo / "prototype/flashcards.js").read_text(encoding="utf-8")
         self.assertIn("window.print()", js)
+
+    def test_all_five_signs_have_one_bilingual_print_contract(self) -> None:
+        signs = load_json(self.repo / "prototype/data/signs.json")["signs"]
+        self.assertEqual(len(signs), 5)
+        self.assertEqual({item["sign_id"] for item in signs}, {"more", "eat", "water", "all_done", "help"})
+        for sign in signs:
+            for field in ("routine", "short_family_guidance", "try_it_during"):
+                self.assertTrue(sign[field]["en"].strip())
+                self.assertTrue(sign[field]["es"].strip())
+            self.assertIn("print_readiness", sign)
 
     def test_family_card_never_receives_governance_metadata(self) -> None:
         approved = approve_content_locally(build_dry_run_candidate(load_json(self.repo / "prototype/data/signs.json")["signs"][0]), "explicit_demo_approval")

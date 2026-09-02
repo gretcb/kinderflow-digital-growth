@@ -1,6 +1,6 @@
 # KinderFlow Create a Sign MVP
 
-This local MVP turns a validated adult reference sign video into isolated MediaPipe landmarks, body-relative motion diagnostics and a reviewable movement preview. It reuses the Round 1 POC code; it does not duplicate the Computer Vision method.
+This local MVP serves two connected internal capabilities: the existing Create a Sign movement workflow and a governed Content Pack service. It reuses the Round 1 POC and the shared `content_ops` contracts rather than duplicating either method.
 
 ## Requirements
 
@@ -28,6 +28,29 @@ Open [http://127.0.0.1:8000/create-sign.html](http://127.0.0.1:8000/create-sign.
 
 The service also serves the existing prototype routes, including the Flashcard Builder.
 
+## Generate Content Pack API
+
+`POST /api/content-packs/generate` accepts one `GENERATE_CONTENT_PACK` request containing canonical structured sign context and `generation_method` set to `human` or `llm_assisted`.
+
+- Human mode packages the existing human-authored source and marks LangSmith `NOT_APPLICABLE`.
+- LLM-assisted mode calls the configured OpenAI model when provider credentials and the optional dependency are available.
+- Without provider credentials, the same request runs as deterministic `DRY_RUN`.
+- Every attempt is stored under an isolated ignored `mvp/runs/content_packs/content_.../` directory.
+- Deterministic checks run before review. They are not replaced by LangSmith.
+
+Review endpoints:
+
+```text
+POST /api/content-packs/<run_id>/approve
+POST /api/content-packs/<run_id>/request-changes
+POST /api/content-packs/<run_id>/restore
+GET  /api/content-packs/<run_id>
+```
+
+Approval records the generic actor type `human_reviewer`, creates a reviewed content version and enables the limited Flashcard Studio handoff. It does not publish anything. Repeated approval of the same run is idempotent.
+
+The server loads only allowlisted provider settings from the ignored repository `.env` when present. No key is returned, printed or written into a run. `OPENAI_MODEL` controls the model configuration.
+
 ## Demonstration paths
 
 - **Demo reference:** choose **Use demo reference video**, then run the movement check. This processes the existing private local reference through the real pipeline.
@@ -51,7 +74,7 @@ Actions are deliberately bounded:
 - Review needed → **Approve anyway** or **Use another reference video**;
 - Fail → **Use another reference video** only.
 
-Approval publishes only in the current local browser session and unlocks the downstream Flashcard link.
+Movement approval is local browser state and continues to the Content Engine. It does not publish the asset.
 
 For live presentations, keep a short screen recording of the completed demo flow as a fallback. The recording should show the input, stage progression, visual comparison, metrics and review boundary without including private filesystem paths.
 
@@ -72,4 +95,4 @@ KINDERFLOW_RUN_INTEGRATION=1 python -m unittest mvp.tests.test_mvp.DemoIntegrati
 
 ## Boundaries
 
-The technical result answers whether the captured movement produced usable structured evidence for review. It does not certify linguistic sign correctness. Human review remains the publication gate. Publication controls are local demo state only; no authentication, audit log, database, cloud storage, external API, automatic publication, production avatar or child-video processing is implemented.
+The technical result answers whether the captured movement produced usable structured evidence for review. It does not certify linguistic sign correctness. Movement review and content review remain separate, and human review remains the publication gate. LangSmith can trace only LLM wording; it does not evaluate MediaPipe or movement. Local review controls are demo state only; no authentication, database, cloud storage, automatic publication, production avatar or child-video processing is implemented.

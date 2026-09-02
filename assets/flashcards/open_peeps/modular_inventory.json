@@ -1,0 +1,34 @@
+{
+  "audit_date": "2026-09-02",
+  "source_root": "assets/flashcards/source_libraries/Flat Assets/Separate Atoms",
+  "licence_status": "LICENCE_VERIFICATION_NEEDED",
+  "runtime_dependency": false,
+  "categories": {
+    "base_person": {"count": 3, "examples": ["bust.svg", "standing.svg", "sitting.svg"]},
+    "faces": {"count": 30, "shortlist": ["Calm.svg", "Smile.svg", "Cute.svg"]},
+    "heads_and_hair": {"count": 46, "shortlist": ["Bun.svg", "Afro.svg", "Bangs.svg"]},
+    "bodies_and_clothing": {"count": 30, "shortlist": ["Sweater.svg", "Tee 1.svg", "Striped Tee.svg"]},
+    "accessories": {"count": 9, "shortlist": ["* None.svg"]},
+    "facial_hair": {"count": 17, "shortlist": ["* None.svg"]}
+  },
+  "compatibility_findings": {
+    "stroke_width": "Inspected shortlist roots use stroke-width 1, but full visual review is still required.",
+    "viewboxes": {
+      "bust_base": "0 0 1136 1533",
+      "face": "0 0 289 293",
+      "head": "0 0 473 567",
+      "body": "0 0 818 733"
+    },
+    "direct_interchangeability": false,
+    "reason": "Category viewBoxes and dimensions differ. A controlled composition needs per-category scale, translation, stacking order and attachment anchors.",
+    "flattened_templates": "Composed Bust, Standing and Sitting template files are useful as references but may be harder to separate safely than the atom files.",
+    "arm_rule": "Any generic body arms must be replaced by a Kinder Signs custom reviewed arm/hand layer. Open Peeps is not the movement source."
+  },
+  "excluded_from_shortlist": [
+    "eye patches",
+    "opaque eyewear",
+    "distracting accessories",
+    "obscured faces",
+    "generic pointing or sign-like hand poses"
+  ]
+}

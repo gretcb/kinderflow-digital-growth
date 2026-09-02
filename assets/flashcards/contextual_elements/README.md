@@ -10,7 +10,8 @@ The local Miroodles files are design sources, not web-ready runtime assets. Thei
 4. Remove unrelated layers and confirm the object remains secondary to the character hands.
 5. Export an editable SVG and a PNG review copy with transparent background.
 6. Name both files with the same owned identifier, for example `snack_bowl_v1.svg` and `snack_bowl_v1.png`.
-7. Add a sidecar source record with origin, licence, export date and any edits.
-8. Review at card size, in grayscale and in browser print preview before marking the context asset ready.
+7. Use an SVG viewBox sized around the selected artwork; export the PNG review copy at approximately 800 × 800 px so it can be inspected without becoming the main card visual.
+8. Add a sidecar source record with origin, licence, export date and any edits.
+9. Review at card size, in grayscale and in browser print preview before marking the context asset ready.
 
 Current status: **LICENCE VERIFICATION NEEDED / MANUAL EXPORT REQUIRED**.
