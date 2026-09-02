@@ -1,0 +1,156 @@
+{
+  "schema_version": "1.0",
+  "content_note": "Prototype content only. Movement instructions must come from validated sign references and expert review.",
+  "signs": [
+    {
+      "id": "ks-more",
+      "display_name": "MORE",
+      "spanish_label": "MÁS",
+      "routine": {
+        "en": "Snack time / playtime",
+        "es": "Merienda / juego"
+      },
+      "short_family_guidance": {
+        "en": "Use it when your child asks for more food, more play or another turn.",
+        "es": "Úsalo cuando tu hijo pida más comida, más juego u otro turno."
+      },
+      "try_it_during": {
+        "en": "Try it during snack time.",
+        "es": "Pruébalo durante la merienda."
+      },
+      "publication_status": "published",
+      "school_visibility": "visible",
+      "flashcard_status": "needs_artwork",
+      "video_asset": "ready",
+      "character_asset": "pending",
+      "hand_pose_asset": "pending",
+      "movement_reference": "validated_reference_record",
+      "school_pack_required": "Flashcards",
+      "printable": true,
+      "image_export_available": false,
+      "last_reviewed": null,
+      "review_status": "needs_artwork",
+      "illustration_status": "waiting_for_asset"
+    },
+    {
+      "id": "ks-eat",
+      "display_name": "EAT",
+      "spanish_label": "COMER",
+      "routine": {
+        "en": "Mealtime",
+        "es": "Hora de comer"
+      },
+      "short_family_guidance": {
+        "en": "Use it when food is offered or when a familiar meal begins.",
+        "es": "Úsalo al ofrecer comida o al comenzar una comida habitual."
+      },
+      "try_it_during": {
+        "en": "Try it during a familiar meal.",
+        "es": "Pruébalo durante una comida habitual."
+      },
+      "publication_status": "draft",
+      "school_visibility": "hidden",
+      "flashcard_status": "needs_artwork",
+      "video_asset": "needs_review",
+      "character_asset": "pending",
+      "hand_pose_asset": "pending",
+      "movement_reference": "validated_reference_required",
+      "school_pack_required": "Flashcards",
+      "printable": false,
+      "image_export_available": false,
+      "last_reviewed": null,
+      "review_status": "needs_review",
+      "illustration_status": "waiting_for_asset"
+    },
+    {
+      "id": "ks-water",
+      "display_name": "WATER",
+      "spanish_label": "AGUA",
+      "routine": {
+        "en": "Drinks / mealtime",
+        "es": "Bebidas / hora de comer"
+      },
+      "short_family_guidance": {
+        "en": "Use it when offering water during a familiar school or home routine.",
+        "es": "Úsalo al ofrecer agua durante una rutina habitual en la escuela o en casa."
+      },
+      "try_it_during": {
+        "en": "Try it when drinks are offered.",
+        "es": "Pruébalo al ofrecer una bebida."
+      },
+      "publication_status": "draft",
+      "school_visibility": "hidden",
+      "flashcard_status": "needs_artwork",
+      "video_asset": "needs_review",
+      "character_asset": "pending",
+      "hand_pose_asset": "pending",
+      "movement_reference": "validated_reference_required",
+      "school_pack_required": "Flashcards",
+      "printable": false,
+      "image_export_available": false,
+      "last_reviewed": null,
+      "review_status": "needs_review",
+      "illustration_status": "waiting_for_asset"
+    },
+    {
+      "id": "ks-all-done",
+      "display_name": "ALL DONE",
+      "spanish_label": "TERMINADO",
+      "routine": {
+        "en": "End of a meal / activity",
+        "es": "Fin de una comida / actividad"
+      },
+      "short_family_guidance": {
+        "en": "Use it when a familiar meal or activity is coming to an end.",
+        "es": "Úsalo cuando una comida o actividad habitual esté terminando."
+      },
+      "try_it_during": {
+        "en": "Try it at the end of playtime.",
+        "es": "Pruébalo al terminar el juego."
+      },
+      "publication_status": "draft",
+      "school_visibility": "hidden",
+      "flashcard_status": "needs_artwork",
+      "video_asset": "needs_review",
+      "character_asset": "pending",
+      "hand_pose_asset": "pending",
+      "movement_reference": "validated_reference_required",
+      "school_pack_required": "Flashcards",
+      "printable": false,
+      "image_export_available": false,
+      "last_reviewed": null,
+      "review_status": "needs_review",
+      "illustration_status": "waiting_for_asset"
+    },
+    {
+      "id": "ks-help",
+      "display_name": "HELP",
+      "spanish_label": "AYUDA",
+      "routine": {
+        "en": "Playtime / getting dressed",
+        "es": "Juego / vestirse"
+      },
+      "short_family_guidance": {
+        "en": "Use it when offering or asking for help during a familiar task.",
+        "es": "Úsalo al ofrecer o pedir ayuda durante una tarea habitual."
+      },
+      "try_it_during": {
+        "en": "Try it while getting dressed.",
+        "es": "Pruébalo al vestirse."
+      },
+      "publication_status": "draft",
+      "school_visibility": "hidden",
+      "flashcard_status": "needs_artwork",
+      "video_asset": "needs_review",
+      "character_asset": "pending",
+      "hand_pose_asset": "pending",
+      "movement_reference": "validated_reference_required",
+      "school_pack_required": "Flashcards",
+      "printable": false,
+      "image_export_available": false,
+      "last_reviewed": null,
+      "review_status": "needs_review",
+      "illustration_status": "waiting_for_asset"
+    }
+  ]
+}

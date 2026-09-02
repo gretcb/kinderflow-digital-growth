@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Kinder Signs privacy-minimised pilot event",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["event_id", "timestamp", "event_type", "actor_type", "school_id", "metadata"],
+  "properties": {
+    "event_id": {"type": "string", "pattern": "^evt_[A-Za-z0-9_-]+$"},
+    "timestamp": {"type": "string", "format": "date-time"},
+    "event_type": {
+      "enum": [
+        "SIGN_ASSIGNED_TO_GROUP",
+        "FAMILY_OUTPUT_PREPARED",
+        "FLASHCARD_VIEWED",
+        "FLASHCARD_PRINT_REQUESTED",
+        "VIDEO_VIEWED",
+        "PACK_INCLUDED",
+        "TEACHER_ASSIGNMENT_COMPLETED",
+        "CONTENT_REVIEW_STARTED",
+        "CONTENT_REVIEW_COMPLETED"
+      ]
+    },
+    "actor_type": {"enum": ["system", "educator", "family", "reviewer"]},
+    "school_id": {"type": "string", "description": "Synthetic or pseudonymous pilot identifier."},
+    "group_id": {"type": ["string", "null"]},
+    "family_id": {"type": ["string", "null"]},
+    "sign_id": {"type": ["string", "null"]},
+    "content_type": {"type": ["string", "null"]},
+    "duration_ms": {"type": ["integer", "null"], "minimum": 0},
+    "metadata": {"type": "object"}
+  }
+}

@@ -1,0 +1,27 @@
+# Kinder Signs component explainer
+
+Status labels in this document mean **functional**, **prototype/local**, or **planned**. “Functional” means the repository contains executable behaviour; it does not mean production-ready.
+
+| Component | Purpose | Input | Output | Why it exists | Current status | Round 2 relevance |
+|---|---|---|---|---|---|---|
+| Reference sign video | Supply the source movement | Validated adult reference MP4 | Local video for one run | Movement must come from a controlled source | Functional upload; publishable source status still unconfirmed | Stronger POC, MVP, governance |
+| MediaPipe / Computer Vision | Extract hand and body points | Reference video frames | Raw hand and pose landmarks | Make movement measurable and reviewable | Functional locally | Stronger POC, Working MVP |
+| Skeleton / movement representation | Show structured movement over time | Landmarks | Overlay video, normalized data, plots | Let a person compare source and extracted movement | Functional locally | Stronger POC, Working MVP |
+| Technical status | Summarise capture usability | Coverage, gaps and motion diagnostics | Pass, review needed or fail | Separate processing evidence from content approval | Functional locally | MVP, Risk |
+| Avatar layer | Apply a visual character while preserving source movement | Reviewed movement data + visual assets | Future avatar preview | Family material needs a consistent visual layer | Planned; no final avatar | MVP limitation, Strategic Plan |
+| Flashcard Studio | Produce printable family material | Published-sign data + static translations + template choice | A6/A5 preview and browser print | Reuse approved content without manual layout work | Functional locally; artwork placeholders remain | Working MVP |
+| Open Peeps integration point | Define where a controlled character asset could be added | Approved/owned SVG asset | Character layer for template | Avoid hardwiring an unreviewed visual | Contract/placeholder only; no artwork downloaded | MVP gap, IP risk |
+| Custom hand-pose assets | Represent the sign-specific hand pose in the visual | Reviewed hand SVG | Hand layer in family asset | Generic character hands may not match the sign | Planned; reviewed MORE asset missing | MVP gap, professional review |
+| `signs.json` | Hold structured sign and bilingual family copy | Local authored JSON | Flashcard source records | Keep content separate from layout code | Functional local data | MVP, regression evidence |
+| Content Operations | Coordinate source, evidence, content, visual, review and publication readiness | Manifests and local artifacts | Readiness report and package | Prevent separate parts from being mistaken for one approval | Functional local module | Working MVP, governance |
+| State machine | Limit allowed status changes | Current and requested state | Accepted transition or controlled error | Block shortcuts such as Draft → Published | Functional and tested | Risk, governance |
+| Deterministic quality gate | Check objective rules | Structured package or LLM output | Pass/fail reasons | Use normal code for facts with clear answers | Functional and tested | POC, MVP, Risk |
+| LLM | Optionally draft family wording | Approved structured source + bounded CV context | JSON family draft | Reduce repetitive wording work when needed | Optional run exists; not used by current human content manifests | POC/workflow evidence |
+| LangSmith | Trace and evaluate LLM-assisted copy | Prompt, model output and criteria | Trace/evaluation evidence | Make optional LLM behaviour inspectable | Dry-run functional; live trace not evidenced | POC/workflow, AI governance |
+| n8n | Orchestrate defined content workflow steps | Structured sign and CV summary | Routed draft/review package | Make a repeatable low-code workflow | Importable design/export; content-ops adapter documented, runtime execution not evidenced | POC/workflow, strategic readiness |
+| Human review | Control content approval and publication | Source, technical evidence, content and visual | Approval, changes request or rejection | Technical systems cannot certify professional correctness | Required in policy; UI action is local simulation | Risk, governance |
+| Publication package | Bind exact component versions and status | Sign, content, visual, review and hashes | Versioned JSON package | Stop approved content changing silently | Functional local package; currently blocked/draft | MVP, governance |
+| Signs & Flashcards Library | Hold published Kinder Signs material | Human-approved publication package | Entitled library item | Reuse one controlled asset across schools | Prototype UI; no approved five-sign production library | MVP, business model |
+| School/group assignment | Distribute an available item | School, group/child and sign choice | Local assignment confirmation | Keep school work operational and simple | Static/client-side prototype | Strategic Plan, pilot |
+| Family output | Give caregivers matching routine guidance | Published sign/family material | Family card and printable output | Deliver school-home continuity | Functional display/print prototype | MVP, pilot proposition |
+| Pilot instrumentation | Define minimum events for future measurement | Product actions with synthetic IDs | Event records and future metrics | Test use, effort and commercial assumptions | Schema/measurement plan only | ROI & Risk, Strategic Plan |

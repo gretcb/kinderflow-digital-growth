@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0",
+  "controls": [
+    {
+      "component": "Computer Vision",
+      "does": ["Extract movement structure from validated reference material"],
+      "does_not": ["Certify linguistic sign correctness", "Evaluate child performance"]
+    },
+    {
+      "component": "LLM",
+      "does": ["Assist concise family-facing wording from supplied structured context"],
+      "does_not": ["Invent or validate biomechanics", "Approve publication", "Replace expert review"]
+    },
+    {
+      "component": "LangSmith",
+      "does": ["Trace and evaluate LLM-assisted content transformation"],
+      "does_not": ["Evaluate sign movement", "Evaluate MediaPipe quality", "Certify professional validity"]
+    },
+    {
+      "component": "n8n",
+      "does": ["Orchestrate controlled content-preparation steps"],
+      "does_not": ["Approve or publish content autonomously"]
+    },
+    {
+      "component": "Human review",
+      "does": ["Control final approval and publication"],
+      "does_not": ["Delegate accountability to an automated score"]
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "content_version": "v1",
+  "family_guidance": {
+    "en": "Use it when your child asks for more food, more play or another turn.",
+    "es": "Úsalo cuando tu hijo pida más comida, más juego u otro turno."
+  },
+  "generation_method": "human",
+  "langsmith_evaluation": "not_applicable",
+  "language": "bilingual",
+  "state": "READY_FOR_REVIEW",
+  "try_it_during": {
+    "en": "Try it during snack time.",
+    "es": "Pruébalo durante la merienda."
+  }
+}

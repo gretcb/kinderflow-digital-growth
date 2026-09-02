@@ -39,3 +39,8 @@ workflow/generated_llm_output.json
 # Local Create a Sign MVP run artifacts and uploaded reference media
 mvp/runs/*
 !mvp/runs/.gitkeep
+
+# Local avatar reference media
+assets/avatar/*.mp4
+assets/avatar/*.jpg
+assets/avatar/*.jpeg

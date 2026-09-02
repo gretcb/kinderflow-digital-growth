@@ -103,3 +103,18 @@ A candidate model/prompt combination can proceed to professional content review 
 - a professional reviewer judges the family-facing text clear and faithful to the approved source
 
 This decision permits controlled drafting only. It does not approve sign content or publication.
+
+## Content-operations evaluation dimensions
+
+For LLM-assisted wording, retain criterion-level evidence for:
+
+- clarity;
+- brevity;
+- age/family appropriateness of wording;
+- consistency with the supplied routine/context;
+- unsupported-claim risk; and
+- hallucination against the supplied structured source.
+
+Use deterministic checks for fields, length limits, preserved identifiers and prohibited claims. Use an evaluator or professional rubric only for qualities such as clarity and contextual fit. Do not create a general “correctness” score.
+
+Human-authored approved copy is not regenerated merely to create a trace. In that case the content manifest records `generation_method: human` and `langsmith_evaluation: not_applicable`.

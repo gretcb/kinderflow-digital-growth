@@ -1,0 +1,199 @@
+{
+  "schema_version": "1.0",
+  "set_name": "kinder_signs_golden_mvp_v1",
+  "purpose": "Engineering and product regression; not linguistic sign certification.",
+  "results": [
+    {
+      "sign_id": "more",
+      "display_name": "MORE",
+      "schema": "PASS",
+      "provenance": "PASS",
+      "provenance_checks": [
+        {
+          "artifact": "sign_data",
+          "reference": "prototype/data/signs.json",
+          "matched": true
+        },
+        {
+          "artifact": "technical_evidence",
+          "reference": "poc/output/diagnostics/sign_reference_motion_summary.json",
+          "matched": true
+        }
+      ],
+      "source": "Review Needed",
+      "source_reference": "KS_MORE_REFERENCE_PENDING_CONFIRMATION",
+      "technical": "Review Needed",
+      "content": "Ready For Review",
+      "artwork": "Needs Artwork",
+      "hand_review": "Needs Review",
+      "quality_gate": "Blocked",
+      "human_review": "Pending",
+      "library": "Blocked",
+      "llm": "Not used",
+      "publication": "Draft",
+      "blocking_reasons": [
+        "Illustration artwork is not ready.",
+        "Character asset is missing.",
+        "Sign-specific hand-pose asset is missing.",
+        "Sign-specific hand pose has not completed human review.",
+        "Family content is not approved.",
+        "Visual package is not ready.",
+        "Hand-pose review is incomplete.",
+        "Explicit human publication approval is missing.",
+        "Publication package has not reached APPROVED."
+      ]
+    },
+    {
+      "sign_id": "eat",
+      "display_name": "EAT",
+      "schema": "PASS",
+      "provenance": "PASS",
+      "provenance_checks": [
+        {
+          "artifact": "sign_data",
+          "reference": "prototype/data/signs.json",
+          "matched": true
+        }
+      ],
+      "source": "Missing",
+      "source_reference": null,
+      "technical": "Not Run",
+      "content": "Ready For Review",
+      "artwork": "Needs Artwork",
+      "hand_review": "Needs Review",
+      "quality_gate": "Blocked",
+      "human_review": "Pending",
+      "library": "Blocked",
+      "llm": "Not used",
+      "publication": "Draft",
+      "blocking_reasons": [
+        "Validated source reference is missing.",
+        "Technical evidence reference is missing.",
+        "Illustration artwork is not ready.",
+        "Character asset is missing.",
+        "Sign-specific hand-pose asset is missing.",
+        "Sign-specific hand pose has not completed human review.",
+        "Technical state is not acceptable for human publication review.",
+        "Family content is not approved.",
+        "Visual package is not ready.",
+        "Hand-pose review is incomplete.",
+        "Explicit human publication approval is missing.",
+        "Publication package has not reached APPROVED."
+      ]
+    },
+    {
+      "sign_id": "water",
+      "display_name": "WATER",
+      "schema": "PASS",
+      "provenance": "PASS",
+      "provenance_checks": [
+        {
+          "artifact": "sign_data",
+          "reference": "prototype/data/signs.json",
+          "matched": true
+        }
+      ],
+      "source": "Missing",
+      "source_reference": null,
+      "technical": "Not Run",
+      "content": "Ready For Review",
+      "artwork": "Needs Artwork",
+      "hand_review": "Needs Review",
+      "quality_gate": "Blocked",
+      "human_review": "Pending",
+      "library": "Blocked",
+      "llm": "Not used",
+      "publication": "Draft",
+      "blocking_reasons": [
+        "Validated source reference is missing.",
+        "Technical evidence reference is missing.",
+        "Illustration artwork is not ready.",
+        "Character asset is missing.",
+        "Sign-specific hand-pose asset is missing.",
+        "Sign-specific hand pose has not completed human review.",
+        "Technical state is not acceptable for human publication review.",
+        "Family content is not approved.",
+        "Visual package is not ready.",
+        "Hand-pose review is incomplete.",
+        "Explicit human publication approval is missing.",
+        "Publication package has not reached APPROVED."
+      ]
+    },
+    {
+      "sign_id": "all_done",
+      "display_name": "ALL DONE",
+      "schema": "PASS",
+      "provenance": "PASS",
+      "provenance_checks": [
+        {
+          "artifact": "sign_data",
+          "reference": "prototype/data/signs.json",
+          "matched": true
+        }
+      ],
+      "source": "Missing",
+      "source_reference": null,
+      "technical": "Not Run",
+      "content": "Ready For Review",
+      "artwork": "Needs Artwork",
+      "hand_review": "Needs Review",
+      "quality_gate": "Blocked",
+      "human_review": "Pending",
+      "library": "Blocked",
+      "llm": "Not used",
+      "publication": "Draft",
+      "blocking_reasons": [
+        "Validated source reference is missing.",
+        "Technical evidence reference is missing.",
+        "Illustration artwork is not ready.",
+        "Character asset is missing.",
+        "Sign-specific hand-pose asset is missing.",
+        "Sign-specific hand pose has not completed human review.",
+        "Technical state is not acceptable for human publication review.",
+        "Family content is not approved.",
+        "Visual package is not ready.",
+        "Hand-pose review is incomplete.",
+        "Explicit human publication approval is missing.",
+        "Publication package has not reached APPROVED."
+      ]
+    },
+    {
+      "sign_id": "help",
+      "display_name": "HELP",
+      "schema": "PASS",
+      "provenance": "PASS",
+      "provenance_checks": [
+        {
+          "artifact": "sign_data",
+          "reference": "prototype/data/signs.json",
+          "matched": true
+        }
+      ],
+      "source": "Missing",
+      "source_reference": null,
+      "technical": "Not Run",
+      "content": "Ready For Review",
+      "artwork": "Needs Artwork",
+      "hand_review": "Needs Review",
+      "quality_gate": "Blocked",
+      "human_review": "Pending",
+      "library": "Blocked",
+      "llm": "Not used",
+      "publication": "Draft",
+      "blocking_reasons": [
+        "Validated source reference is missing.",
+        "Technical evidence reference is missing.",
+        "Illustration artwork is not ready.",
+        "Character asset is missing.",
+        "Sign-specific hand-pose asset is missing.",
+        "Sign-specific hand pose has not completed human review.",
+        "Technical state is not acceptable for human publication review.",
+        "Family content is not approved.",
+        "Visual package is not ready.",
+        "Hand-pose review is incomplete.",
+        "Explicit human publication approval is missing.",
+        "Publication package has not reached APPROVED."
+      ]
+    }
+  ]
+}

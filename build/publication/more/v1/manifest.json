@@ -1,0 +1,23 @@
+{
+  "deterministic_gates_passed": false,
+  "document_hashes": {
+    "content.json": "3fcc9dcb0c06f0f7c3bbfab1ed08bebd5250649fdb22ea22f1c24887b3202fad",
+    "library_item.json": "8742595a431862a24c5d9cfc58f34a7acb6f0071c41b7bc3ee291b5d59733fed",
+    "review.json": "c688e810b2b981f2e15da17d9ec0c26562b82a86079d62edee0c55adf6ea9394",
+    "visual.json": "e554476052a745cdbf67c5c71a3d38c2f93cf4a26405173ea425cd8403c4f1ba"
+  },
+  "human_review_status": "PENDING",
+  "input_sha256": "6836d1f38617eb47c6b7e5bb348179713ae51b18f3c9e1a331af497538ff8c1e",
+  "langsmith_evaluation": "not_applicable",
+  "llm_assistance_used": false,
+  "package_id": "pkg_more_v1_6836d1f38617",
+  "published_at": null,
+  "published_version": null,
+  "schema_version": "1.0",
+  "sign_data_sha256": "58d7f24debf0cc9785250bef1d170cf9ec68cd38f7157924c0f8675527ff5c22",
+  "sign_id": "more",
+  "sign_version": "v1",
+  "source_reference": "KS_MORE_REFERENCE_PENDING_CONFIRMATION",
+  "technical_evidence_reference": "poc/output/diagnostics/sign_reference_motion_summary.json",
+  "technical_evidence_sha256": "feb413fc233610f95f6dc962c9f6d6a6dd44412479ea78dd9345f084bfc6fef3"
+}

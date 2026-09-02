@@ -155,3 +155,36 @@ A passing workflow produces:
 ```
 
 That state is a queue for professional review, not an approval decision.
+
+## Content-operations adapter contract
+
+The existing family-draft workflow remains the working n8n example. The stable adapter contract for the broader content-operations layer is documented in `content_ops/contracts/n8n_content_operations_contract.json`.
+
+Input:
+
+```json
+{
+  "sign_id": "more",
+  "sign_version": "v1",
+  "operation": "prepare_for_review"
+}
+```
+
+Controlled orchestration:
+
+```text
+receive sign/version
+→ load structured source and manifest
+→ validate schema
+→ inspect technical state
+→ inspect visual readiness
+→ preserve approved human copy or prepare constrained draft
+→ deterministic content gate
+→ optional LangSmith evaluation for LLM-assisted wording only
+→ build/reuse review package
+→ READY_FOR_HUMAN_REVIEW or BLOCKED
+```
+
+After an explicit recorded human approval, a separate `build_approved_package` operation may build the versioned package. n8n must not set `PUBLISHED` autonomously.
+
+The operation key is `sign_id:sign_version:operation`. Repeating the same operation must reuse or update the same review package rather than create a duplicate content version. The local Python content-operations harness demonstrates the idempotent package behavior; the imported n8n example does not claim production persistence.

@@ -1,0 +1,9 @@
+{
+  "schema_version": "1.0", "sign_id": "help", "version": "v1", "created_at": "2026-09-02T00:00:00Z",
+  "source_reference": null, "source_status": "MISSING", "technical_state": "NOT_RUN", "technical_evidence_reference": null, "technical_evidence_sha256": null,
+  "sign_data_reference": "prototype/data/signs.json", "sign_data_sha256": "58d7f24debf0cc9785250bef1d170cf9ec68cd38f7157924c0f8675527ff5c22",
+  "content_version": "v1", "content_state": "READY_FOR_REVIEW", "generation_method": "human", "langsmith_evaluation": "not_applicable",
+  "visual_version": "v0", "visual_state": "NEEDS_ARTWORK", "character_asset": null, "hand_pose_asset": null, "illustration_status": "NEEDS_ARTWORK", "hand_review_status": "NEEDS_REVIEW",
+  "reviewer_type": null, "review_status": "PENDING", "reviewed_at": null, "review_notes": null,
+  "publication_status": "DRAFT", "library_readiness": "BLOCKED", "published_version": null, "published_at": null
+}

@@ -1,0 +1,2 @@
+{"actor_type":"system","event_id":"evt_more_v1_sign_created","event_type":"SIGN_CREATED","metadata":{"source_status":"REVIEW_NEEDED"},"sign_id":"more","timestamp":"2026-09-02T00:00:00Z","version":"v1"}
+{"actor_type":"system","event_id":"evt_more_v1_content_prepared","event_type":"CONTENT_PREPARED","metadata":{"generation_method":"human","state":"READY_FOR_REVIEW"},"sign_id":"more","timestamp":"2026-09-02T00:01:00Z","version":"v1"}

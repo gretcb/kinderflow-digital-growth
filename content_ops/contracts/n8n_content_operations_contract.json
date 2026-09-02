@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0",
+  "input": {
+    "sign_id": "more",
+    "sign_version": "v1",
+    "operation": "prepare_for_review"
+  },
+  "allowed_operations": ["prepare_for_review", "build_approved_package"],
+  "output": {
+    "sign_id": "more",
+    "sign_version": "v1",
+    "operation": "prepare_for_review",
+    "operation_key": "more:v1:prepare_for_review",
+    "technical_state": "REVIEW_NEEDED",
+    "content_state": "READY_FOR_REVIEW",
+    "visual_state": "NEEDS_ARTWORK",
+    "quality_gate_passed": false,
+    "workflow_state": "BLOCKED",
+    "requires_human_review": true,
+    "automatic_publication": false
+  },
+  "idempotency": "operation_key is stable for the same sign version and operation; a repeated run must update/reuse the review package rather than create a new content version.",
+  "publication_boundary": "build_approved_package requires an explicit recorded human approval. n8n must never set PUBLISHED autonomously."
+}

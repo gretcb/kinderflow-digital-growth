@@ -113,30 +113,73 @@ Then open [http://127.0.0.1:8000/create-sign.html](http://127.0.0.1:8000/create-
 
 No child video is required. Files remain local, every run is isolated under *mvp/runs/*, and canonical Round 1 evidence is not overwritten. Technical metrics are movement-processing signals, not linguistic correctness certification or system-wide accuracy. Human review remains the publication gate. Production-ready avatar generation is not complete.
 
-## Internal Flashcard Builder
+## Kinder Signs Flashcard Studio
 
-The Flashcard Builder belongs exclusively to KinderFlow internal content operations. Schools and families receive published flashcards but do not design them.
+The Flashcard Studio belongs exclusively to KinderFlow internal content operations. Schools and families receive reviewed flashcards but do not design them. It is a reusable content system rather than five separate cards:
 
-The flow is:
+```text
+structured published-sign data
+→ deterministic template
+→ modular character asset
+→ Kinder Signs hand-pose asset
+→ preview
+→ browser print / Save as PDF
+→ Signs & Flashcards Library
+```
 
-`Published sign → approved sign text → create flashcard → human review → published asset → print / export`
+The source model is `prototype/data/signs.json`. It contains initial records for MORE, EAT, WATER, ALL DONE and HELP, including publication, artwork, hand-pose, review, visibility and export readiness. MORE is the first selectable published-source target. The other records remain visible as readiness examples and cannot be selected for production output.
 
-Controls are intentionally limited to:
+The asset contract is documented under `assets/flashcards/`. It reserves separate locations for:
+
+- untouched official Open Peeps monochrome SVG source files;
+- a selected modular character base;
+- sign-specific reference, landmark, arm/hand SVG and review files;
+- optional owned or licensed contextual elements;
+- template assets; and
+- local exports.
+
+No external illustration library or substitute artwork is included. The preview deliberately says **Open Peeps character + Kinder Signs hand pose pending**. Open Peeps will define the modular character look; it will not provide or validate sign-specific hand biomechanics.
+
+The visual rule is:
+
+`illustration + attached sign label → routine → one guidance sentence → Try it during…`
+
+The sign name is part of the same visual unit as the illustration, not a detached page heading. Spanish is the default preview language; English uses the same component and structured content.
+
+The operating flow is:
+
+`Published sign → reviewed sign content → create flashcard → human review → published asset → print / export`
+
+Controls remain intentionally limited to:
 
 - published sign;
-- output language: English or Spanish;
+- output language: Spanish or English;
 - card type: Flashcard or Routine card; and
-- output format: PDF or Image.
+- browser preview and print proof.
 
-The application interface stays in English. Spanish appears only inside the printable preview when Spanish is selected.
+Browser-native Print → Save as PDF is the working export path. Print CSS places one 105 × 148 mm card on an A4 page, removes interface chrome, preserves selectable text and avoids splitting important card sections. PNG export is disabled and labelled as a next step; the prototype does not simulate an image file. The next implementation step is to compose the reviewed character and hand layers as inline SVG, serialize that controlled SVG at a fixed output size, render it to a browser canvas and download the resulting PNG with `canvas.toBlob()`. This should be added only after the official SVG source and reviewed MORE hand asset exist.
 
-A basic Flashcard contains the sign word and visual placeholder. A Routine card adds routine context and concise usage guidance. PDF uses browser-native print and Save as PDF. Image export is labelled illustrative and does not create a file. No freeform editor, page-packing controls, server-side PDF service or persistence is included.
+When a school/group or child has the Flashcards pack active, the matching reviewed flashcard is included automatically in prepared family output. When the pack is inactive, the item can remain visible to the school as available content but is not sent to families. No billing, manual educator design, freeform editor, server-side PDF service or persistence is included.
+
+Because the Studio loads its structured JSON source at runtime, use the local HTTP option rather than opening `flashcards.html` directly from the filesystem.
 
 ## Story prototype
 
 The story route accepts only a published sign and produces a short original English prototype draft. It demonstrates explicit deterministic checks, evaluator-style review dimensions, LangSmith observability boundaries and human review actions.
 
 No live LLM, n8n or LangSmith call runs from the static page. LangSmith represents traceability for the content-transformation step; it does not validate sign biomechanics, MediaPipe output or linguistic sign correctness.
+
+## Content operations readiness
+
+The Master Content Library includes a five-sign readiness matrix generated by the local `content_ops` package. It keeps source, CV, content, artwork, hand review, deterministic quality gate, human review and library state separate.
+
+Run:
+
+```bash
+python -m content_ops
+```
+
+Then serve the prototype and open `library.html`. MORE exposes the furthest available review package, including honest blocking reasons. Approval cannot bypass missing artwork, missing hand review, unapproved content or missing human publication approval. Review-screen actions are illustrative and do not persist.
 
 ## School Admin
 
