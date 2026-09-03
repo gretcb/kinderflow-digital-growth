@@ -2,17 +2,31 @@
 
 from __future__ import annotations
 
+import ipaddress
 import json
+import queue
 import re
 import shutil
+import socket
 import subprocess
 import sys
+import threading
 import time
 import traceback
 from datetime import datetime, timezone
+from http.client import HTTPConnection, HTTPSConnection, HTTPException
 from pathlib import Path
 from typing import Callable, Dict, Optional
-from urllib.parse import urlparse
+from urllib.error import HTTPError, URLError
+from urllib.parse import urljoin, urlparse, urlunparse
+from urllib.request import (
+    HTTPHandler,
+    HTTPRedirectHandler,
+    HTTPSHandler,
+    ProxyHandler,
+    Request,
+    build_opener,
+)
 from uuid import uuid4
 
 import cv2
@@ -24,6 +38,11 @@ DEMO_SIGN_ID = "more"
 DEMO_SIGN_NAME = "MORE"
 SUPPORTED_EXTENSIONS = {".mp4"}
 MAX_UPLOAD_BYTES = 100 * 1024 * 1024
+REMOTE_VIDEO_TIMEOUT_SECONDS = 12.0
+REMOTE_VIDEO_REDIRECT_LIMIT = 3
+REMOTE_VIDEO_CHUNK_BYTES = 64 * 1024
+DIRECT_VIDEO_CONTENT_TYPES = {"video/mp4", "application/mp4"}
+REDIRECT_STATUS_CODES = {301, 302, 303, 307, 308}
 STAGE_KEYS = (
     "video_received",
     "video_validation",
@@ -52,6 +71,13 @@ class InsufficientCoverageError(RuntimeError):
 
 class PreviewEncodingError(RuntimeError):
     """The real overlay exists but a browser-compatible preview could not be made."""
+
+
+class NoRemoteRedirectHandler(HTTPRedirectHandler):
+    """Expose redirects to the validator instead of following them implicitly."""
+
+    def redirect_request(self, request, file_pointer, code, message, headers, new_url):
+        return None
 
 
 def utc_now() -> str:
@@ -92,6 +118,467 @@ def validate_reference_source_url(value: str) -> Optional[str]:
     if parsed.scheme not in {"http", "https"} or not parsed.netloc:
         raise InputError("Reference source URL must be a complete http:// or https:// webpage URL.")
     return cleaned
+
+
+def _resolve_public_addresses(
+    hostname: str,
+    port: int,
+    timeout_seconds: float,
+    resolver: Optional[Callable[..., object]] = None,
+) -> list:
+    """Resolve a host within a deadline and reject every non-public result."""
+    result_queue = queue.Queue(maxsize=1)
+    resolver = resolver or socket.getaddrinfo
+
+    def resolve() -> None:
+        try:
+            result_queue.put((resolver(hostname, port, type=socket.SOCK_STREAM), None))
+        except Exception as error:  # the caller maps resolver details to safe copy
+            result_queue.put((None, error))
+
+    threading.Thread(target=resolve, daemon=True).start()
+    try:
+        results, error = result_queue.get(timeout=max(0.01, timeout_seconds))
+    except queue.Empty as error:
+        raise InputError(
+            "The video URL took too long to respond. Upload the video instead."
+        ) from error
+    if error or not results:
+        raise InputError(
+            "This video URL could not be reached. Upload the video instead."
+        ) from error
+
+    addresses = []
+    for result in results:
+        try:
+            address_text = str(result[4][0]).split("%", 1)[0]
+            address = ipaddress.ip_address(address_text)
+        except (IndexError, TypeError, ValueError) as error:
+            raise InputError(
+                "This video URL could not be verified. Upload the video instead."
+            ) from error
+        if not address.is_global:
+            raise InputError(
+                "This video URL cannot be used. Upload the video instead."
+            )
+        addresses.append(address)
+    return addresses
+
+
+def validate_direct_video_url_syntax(value: str) -> str:
+    """Reject unsafe URL structure before anything is stored or resolved."""
+    cleaned = (value or "").strip()
+    if not cleaned or re.search(r"[\x00-\x20\x7f]", cleaned):
+        raise InputError("Enter a complete http:// or https:// direct video URL.")
+    if re.search(r"%(?:00|0a|0d)", cleaned, flags=re.IGNORECASE):
+        raise InputError("This video URL cannot be used. Upload the video instead.")
+    try:
+        parsed = urlparse(cleaned)
+        port = parsed.port
+    except ValueError as error:
+        raise InputError("Enter a valid direct video URL.") from error
+    if parsed.scheme not in {"http", "https"} or not parsed.hostname:
+        raise InputError("Enter a complete http:// or https:// direct video URL.")
+    if parsed.username is not None or parsed.password is not None:
+        raise InputError(
+            "This video URL cannot include a username or password. Upload the video instead."
+        )
+    if parsed.fragment:
+        raise InputError(
+            "Remove the link fragment and try the direct video URL again."
+        )
+    hostname = parsed.hostname.rstrip(".").casefold()
+    if hostname == "localhost" or hostname.endswith((".localhost", ".local", ".internal")):
+        raise InputError("This video URL cannot be used. Upload the video instead.")
+    expected_port = 443 if parsed.scheme == "https" else 80
+    if port is not None and port != expected_port:
+        raise InputError(
+            "This video URL uses an unsupported network port. Upload the video instead."
+        )
+    try:
+        literal_address = ipaddress.ip_address(hostname)
+    except ValueError:
+        literal_address = None
+    if literal_address is not None and not literal_address.is_global:
+        raise InputError("This video URL cannot be used. Upload the video instead.")
+    return cleaned
+
+
+def _validated_direct_video_target(
+    value: str,
+    *,
+    timeout_seconds: float = REMOTE_VIDEO_TIMEOUT_SECONDS,
+    resolver: Optional[Callable[..., object]] = None,
+) -> tuple:
+    cleaned = validate_direct_video_url_syntax(value)
+    parsed = urlparse(cleaned)
+    expected_port = 443 if parsed.scheme == "https" else 80
+    addresses = _resolve_public_addresses(
+        parsed.hostname.rstrip(".").casefold(),
+        parsed.port or expected_port,
+        timeout_seconds,
+        resolver,
+    )
+    return cleaned, addresses
+
+
+def validate_direct_video_url(
+    value: str,
+    *,
+    timeout_seconds: float = REMOTE_VIDEO_TIMEOUT_SECONDS,
+    resolver: Optional[Callable[..., object]] = None,
+) -> str:
+    """Validate one public HTTP(S) video URL before a backend-only fetch."""
+    cleaned, _addresses = _validated_direct_video_target(
+        value,
+        timeout_seconds=timeout_seconds,
+        resolver=resolver,
+    )
+    return cleaned
+
+
+def redact_direct_video_url(value: str) -> str:
+    """Keep useful provenance while omitting credentials and query tokens."""
+    parsed = urlparse(value)
+    hostname = parsed.hostname or ""
+    if ":" in hostname and not hostname.startswith("["):
+        hostname = f"[{hostname}]"
+    netloc = hostname
+    if parsed.port is not None:
+        netloc = f"{netloc}:{parsed.port}"
+    return urlunparse((parsed.scheme, netloc, parsed.path, "", "", ""))
+
+
+def _connect_to_pinned_address(
+    addresses: list,
+    port: int,
+    timeout,
+    source_address=None,
+):
+    """Connect only to an address returned by the completed public-DNS check."""
+    last_error = None
+    for address in addresses:
+        family = socket.AF_INET6 if address.version == 6 else socket.AF_INET
+        connection = socket.socket(family, socket.SOCK_STREAM)
+        try:
+            if timeout is not socket._GLOBAL_DEFAULT_TIMEOUT:
+                connection.settimeout(timeout)
+            if source_address:
+                connection.bind(source_address)
+            destination = (
+                (str(address), port, 0, 0)
+                if family == socket.AF_INET6
+                else (str(address), port)
+            )
+            connection.connect(destination)
+            return connection
+        except OSError as error:
+            last_error = error
+            connection.close()
+    if last_error:
+        raise last_error
+    raise OSError("No validated address is available for this video URL.")
+
+
+class PinnedHTTPConnection(HTTPConnection):
+    def __init__(self, host, *, pinned_addresses: list, **kwargs):
+        self.pinned_addresses = pinned_addresses
+        super().__init__(host, **kwargs)
+        self._create_connection = self._create_pinned_connection
+
+    def _create_pinned_connection(
+        self,
+        address,
+        timeout=socket._GLOBAL_DEFAULT_TIMEOUT,
+        source_address=None,
+    ):
+        return _connect_to_pinned_address(
+            self.pinned_addresses,
+            address[1],
+            timeout,
+            source_address,
+        )
+
+
+class PinnedHTTPSConnection(HTTPSConnection):
+    def __init__(self, host, *, pinned_addresses: list, **kwargs):
+        self.pinned_addresses = pinned_addresses
+        super().__init__(host, **kwargs)
+        self._create_connection = self._create_pinned_connection
+
+    def _create_pinned_connection(
+        self,
+        address,
+        timeout=socket._GLOBAL_DEFAULT_TIMEOUT,
+        source_address=None,
+    ):
+        return _connect_to_pinned_address(
+            self.pinned_addresses,
+            address[1],
+            timeout,
+            source_address,
+        )
+
+
+class PinnedHTTPHandler(HTTPHandler):
+    def __init__(self, addresses: list):
+        super().__init__()
+        self.addresses = addresses
+
+    def http_open(self, request):
+        def connection(host, **kwargs):
+            return PinnedHTTPConnection(
+                host,
+                pinned_addresses=self.addresses,
+                **kwargs,
+            )
+
+        return self.do_open(connection, request)
+
+
+class PinnedHTTPSHandler(HTTPSHandler):
+    def __init__(self, addresses: list):
+        super().__init__()
+        self.addresses = addresses
+
+    def https_open(self, request):
+        def connection(host, **kwargs):
+            return PinnedHTTPSConnection(
+                host,
+                pinned_addresses=self.addresses,
+                **kwargs,
+            )
+
+        return self.do_open(
+            connection,
+            request,
+            context=self._context,
+            check_hostname=self._check_hostname,
+        )
+
+
+def build_remote_video_opener(addresses: list):
+    """Build a no-proxy opener pinned to the validated public addresses."""
+    return build_opener(
+        ProxyHandler({}),
+        PinnedHTTPHandler(addresses),
+        PinnedHTTPSHandler(addresses),
+        NoRemoteRedirectHandler(),
+    )
+
+
+def _response_content_type(response) -> str:
+    headers = response.headers
+    if hasattr(headers, "get_content_type"):
+        return str(headers.get_content_type()).casefold()
+    return str(headers.get("Content-Type", "")).split(";", 1)[0].strip().casefold()
+
+
+def _set_response_socket_timeout(response, timeout_seconds: float) -> None:
+    """Tighten each blocking read to the time left on the total deadline."""
+    file_pointer = getattr(response, "fp", None)
+    raw_socket_file = getattr(file_pointer, "raw", None)
+    response_socket = getattr(raw_socket_file, "_sock", None)
+    if response_socket is not None:
+        response_socket.settimeout(max(0.01, timeout_seconds))
+
+
+def store_direct_video_url(
+    run_dir: Path,
+    direct_video_url: str,
+    *,
+    opener=None,
+    resolver: Optional[Callable[..., object]] = None,
+    clock: Callable[[], float] = time.monotonic,
+) -> Path:
+    """Fetch one direct MP4 into the isolated run without trusting remote names."""
+    deadline = clock() + REMOTE_VIDEO_TIMEOUT_SECONDS
+    current_url, pinned_addresses = _validated_direct_video_target(
+        direct_video_url,
+        timeout_seconds=REMOTE_VIDEO_TIMEOUT_SECONDS,
+        resolver=resolver,
+    )
+    if clock() >= deadline:
+        raise InputError(
+            "The video URL took too long to respond. Upload the video instead."
+        )
+
+    input_dir = run_dir / "input"
+    input_dir.mkdir(parents=True, exist_ok=True)
+    staging = input_dir / "incoming-{0}.mp4".format(uuid4().hex)
+    destination = input_dir / "reference.mp4"
+    redirect_count = 0
+    previous_scheme = urlparse(current_url).scheme
+
+    try:
+        while True:
+            remaining = deadline - clock()
+            if remaining <= 0:
+                raise InputError(
+                    "The video URL took too long to respond. Upload the video instead."
+                )
+            request = Request(
+                current_url,
+                headers={
+                    "Accept": "video/mp4",
+                    "Accept-Encoding": "identity",
+                    "User-Agent": "KinderFlowLocalMVP/1.0",
+                },
+                method="GET",
+            )
+            remote_opener = opener or build_remote_video_opener(pinned_addresses)
+            try:
+                response = remote_opener.open(request, timeout=remaining)
+            except HTTPError as error:
+                if clock() >= deadline:
+                    error.close()
+                    raise InputError(
+                        "The video URL took too long to respond. Upload the video instead."
+                    ) from error
+                if error.code not in REDIRECT_STATUS_CODES:
+                    error.close()
+                    raise InputError(
+                        "This video URL could not be reached. Upload the video instead."
+                    ) from error
+                location = error.headers.get("Location")
+                error.close()
+                if not location:
+                    raise InputError(
+                        "This video URL redirected without a usable destination. Upload the video instead."
+                    )
+                if redirect_count >= REMOTE_VIDEO_REDIRECT_LIMIT:
+                    raise InputError(
+                        "This video URL redirected too many times. Upload the video instead."
+                    )
+                redirected_url = urljoin(current_url, location)
+                redirected_scheme = urlparse(redirected_url).scheme
+                if previous_scheme == "https" and redirected_scheme == "http":
+                    raise InputError(
+                        "This video URL redirected to an unsafe destination. Upload the video instead."
+                    )
+                remaining = deadline - clock()
+                current_url, pinned_addresses = _validated_direct_video_target(
+                    redirected_url,
+                    timeout_seconds=max(0.01, remaining),
+                    resolver=resolver,
+                )
+                previous_scheme = redirected_scheme
+                redirect_count += 1
+                continue
+            except (TimeoutError, socket.timeout) as error:
+                raise InputError(
+                    "The video URL took too long to respond. Upload the video instead."
+                ) from error
+            except URLError as error:
+                raise InputError(
+                    "This video URL could not be reached. Upload the video instead."
+                ) from error
+            except (HTTPException, OSError) as error:
+                raise InputError(
+                    "This video URL could not be reached. Upload the video instead."
+                ) from error
+
+            with response:
+                if clock() >= deadline:
+                    raise InputError(
+                        "The video URL took too long to respond. Upload the video instead."
+                    )
+                final_url = response.geturl() or current_url
+                final_scheme = urlparse(final_url).scheme
+                if previous_scheme == "https" and final_scheme == "http":
+                    raise InputError(
+                        "This video URL redirected to an unsafe destination. Upload the video instead."
+                    )
+                validate_direct_video_url_syntax(final_url)
+                if final_url != current_url:
+                    raise InputError(
+                        "This video URL redirected to an unsafe destination. Upload the video instead."
+                    )
+                status = getattr(response, "status", None) or response.getcode()
+                if status != 200:
+                    raise InputError(
+                        "This video URL could not be reached. Upload the video instead."
+                    )
+                content_type = _response_content_type(response)
+                if content_type not in DIRECT_VIDEO_CONTENT_TYPES:
+                    raise InputError(
+                        "This page cannot be used as a reference video. Use a direct video URL or upload the video file."
+                    )
+                content_length = response.headers.get("Content-Length")
+                declared_size = None
+                if content_length:
+                    try:
+                        declared_size = int(content_length)
+                    except (TypeError, ValueError) as error:
+                        raise InputError(
+                            "The video response was invalid. Upload the video instead."
+                        ) from error
+                    if declared_size <= 0:
+                        raise InputError(
+                            "The video response was empty. Upload the video instead."
+                        )
+                    if declared_size > MAX_UPLOAD_BYTES:
+                        raise InputError(
+                            "The video at this URL is larger than the 100 MB demo limit. Upload a smaller video instead."
+                        )
+
+                total = 0
+                with staging.open("wb") as target:
+                    while True:
+                        remaining = deadline - clock()
+                        if remaining <= 0:
+                            raise InputError(
+                                "The video URL took too long to respond. Upload the video instead."
+                            )
+                        _set_response_socket_timeout(response, remaining)
+                        try:
+                            chunk = response.read(REMOTE_VIDEO_CHUNK_BYTES)
+                        except (TimeoutError, socket.timeout) as error:
+                            raise InputError(
+                                "The video URL took too long to respond. Upload the video instead."
+                            ) from error
+                        except (HTTPException, OSError) as error:
+                            raise InputError(
+                                "The video URL response ended unexpectedly. Upload the video instead."
+                            ) from error
+                        if clock() >= deadline:
+                            raise InputError(
+                                "The video URL took too long to respond. Upload the video instead."
+                            )
+                        if not chunk:
+                            break
+                        total += len(chunk)
+                        if total > MAX_UPLOAD_BYTES:
+                            raise InputError(
+                                "The video at this URL is larger than the 100 MB demo limit. Upload a smaller video instead."
+                            )
+                        target.write(chunk)
+                if declared_size is not None and total != declared_size:
+                    raise InputError(
+                        "The video URL response ended unexpectedly. Upload the video instead."
+                    )
+            break
+
+        if not staging.exists() or staging.stat().st_size == 0:
+            raise InputError("The video response was empty. Upload the video instead.")
+        inspect_video(staging)
+        staging.replace(destination)
+        return destination
+    except InputError:
+        raise
+    except OSError as error:
+        raise InputError(
+            "The video URL could not be saved. Upload the video instead."
+        ) from error
+    except Exception as error:
+        raise InputError(
+            "The video URL could not be processed. Upload the video instead."
+        ) from error
+    finally:
+        try:
+            staging.unlink(missing_ok=True)
+        except OSError:
+            pass
 
 
 def inspect_video(video_path: Path) -> Dict[str, object]:
@@ -348,7 +835,12 @@ def prepare_run(
         raise InputError("Enter a routine or context before reviewing the reference.")
     if reference_status != "Validated reference":
         raise InputError("Select Validated reference before processing.")
-    source_url = validate_reference_source_url(reference_source_url)
+    if source_kind == "direct_video_url":
+        source_url = redact_direct_video_url(
+            validate_direct_video_url_syntax(reference_source_url)
+        )
+    else:
+        source_url = validate_reference_source_url(reference_source_url)
     run_id = create_run_id()
     run_dir = RUNS_ROOT / run_id
     (run_dir / "input").mkdir(parents=True, exist_ok=False)
@@ -367,12 +859,24 @@ def prepare_run(
             "reference_id": (
                 "demo_{0}_reference".format(DEMO_SIGN_ID)
                 if source_kind == "demo_reference"
+                else "direct_video_reference"
+                if source_kind == "direct_video_url"
                 else Path(safe_filename(original_filename)).stem
             ),
-            "display_filename": safe_filename(original_filename),
+            "display_filename": (
+                "Direct video URL"
+                if source_kind == "direct_video_url"
+                else safe_filename(original_filename)
+            ),
             "child_video_used": False,
             "reference_source_url": source_url,
-            "reference_source_url_role": "Provenance only; not processed as video" if source_url else None,
+            "reference_source_url_role": (
+                "Direct video input fetched by the local backend"
+                if source_kind == "direct_video_url" and source_url
+                else "Provenance only; not processed as video"
+                if source_url
+                else None
+            ),
         },
         "stages": initial_stages(),
         "technical_status": "Waiting",

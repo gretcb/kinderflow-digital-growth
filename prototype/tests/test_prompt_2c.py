@@ -224,7 +224,7 @@ class Element {
     if (name === "src") this.src = "";
     if (name === "href") this.href = "";
   }
-  pause() {}
+  pause() { this.pauseCount = (this.pauseCount || 0) + 1; }
   load() {}
   focus() { this.focused = true; }
   scrollIntoView() {}
@@ -241,11 +241,16 @@ const evidenceInputs = [
   Object.assign(new Element("frames", "input"), { value: "HUMAN_SELECTED_FRAME" }),
   Object.assign(new Element("reviewed", "input"), { value: "KNOWLEDGE_REFERENCE_FALLBACK" })
 ];
+const referenceModeInputs = [
+  Object.assign(new Element("input-upload", "input"), { value: "upload", checked: true }),
+  Object.assign(new Element("input-url", "input"), { value: "url" })
+];
 const storage = new Map();
 const document = {
   querySelector: element,
   querySelectorAll(selector) {
     if (selector === 'input[name="evidence_route"]') return evidenceInputs;
+    if (selector === 'input[name="reference_input_mode"]') return referenceModeInputs;
     if (selector === 'input[name="visual_candidate"]') return [];
     if (selector === "[data-active-sign]") return [element("[data-active-sign]")];
     if (selector === ".visual-candidate-card") return [];
@@ -259,6 +264,7 @@ const windowObject = {
   clearTimeout() {},
   location: { search: "", assign() {} }
 };
+let fetchCount = 0;
 const context = {
   document,
   window: windowObject,
@@ -267,8 +273,9 @@ const context = {
     getItem(key) { return storage.has(key) ? storage.get(key) : null; },
     removeItem(key) { storage.delete(key); }
   },
-  fetch: () => new Promise(() => {}),
+  fetch: () => { fetchCount += 1; return new Promise(() => {}); },
   FormData: class { append() {} },
+  URL,
   URLSearchParams,
   encodeURIComponent,
   console
@@ -282,7 +289,10 @@ vm.runInContext(script + `
   updateEvidenceRouteUi,
   renderSuggestedFrames,
   trackedPosesAreAvailable,
-  restoreWorkflowFromSession
+  restoreWorkflowFromSession,
+  syncReferenceInputMode,
+  renderIllustrativeVideo,
+  clearReference
 };`, context);
 
 const contract = context.__contract;
@@ -320,6 +330,40 @@ const signPackage = {
   }
 };
 contract.state.visualPackages = [signPackage];
+contract.state.illustrativeCatalog = {
+  more: {
+    sign_id: "more",
+    label: "MORE",
+    available: true,
+    url: "/api/illustrative-videos/more",
+    provider: "Google Labs FX / Gemini FX",
+    usage_status: "GOOGLE_LABS_FX_OUTPUT_USAGE_CONFIRMATION_NEEDED"
+  },
+  water: { sign_id: "water", label: "WATER", available: false, url: null }
+};
+referenceModeInputs[1].dispatch("change");
+element("#direct-video-url").value = "https://example.com/more.mp4";
+element("#direct-video-url").dispatch("input");
+const urlMode = {
+  source: contract.state.source,
+  inputMode: contract.state.inputMode,
+  uploadHidden: element("#upload-source-panel").hidden,
+  uploadDisabled: element("#reference-video").disabled,
+  urlHidden: element("#url-source-panel").hidden,
+  urlDisabled: element("#direct-video-url").disabled,
+  runDisabled: element("#run-movement-check").disabled
+};
+element("#use-demo-video").dispatch("click");
+const demoShortcut = {
+  source: contract.state.source,
+  inputMode: contract.state.inputMode,
+  sign: element("#sign-name").value,
+  signDisabled: element("#sign-name").disabled,
+  directUrl: element("#direct-video-url").value,
+  uploadHidden: element("#upload-source-panel").hidden,
+  urlHidden: element("#url-source-panel").hidden
+};
+contract.syncReferenceInputMode("upload");
 const frames = ["a", "b", "c"].map((id, index) => ({
   id: `pose-${id}`,
   label: `Pose ${String.fromCharCode(65 + index)}`,
@@ -341,7 +385,13 @@ const makeRun = (technicalStatus) => ({
   },
   warnings: ["4 unresolved frames (4.0%) remain."],
   technical_details: {},
-  artifacts: { suggested_reference_frames: frames },
+  artifacts: {
+    suggested_reference_frames: frames,
+    reference_video_url: "/runs/test/input/reference.mp4",
+    movement_preview_url: "/runs/test/output/reference_landmarks.mp4",
+    detection_timeline_url: "/runs/test/output/detection.png",
+    wrist_trajectory_url: "/runs/test/output/wrist.png"
+  },
   processing: { duration_seconds: 1.2 }
 });
 
@@ -428,6 +478,18 @@ const preparation = {
 };
 
 const completedRunId = contract.state.run.run_id;
+const evidenceBeforePoseReset = {
+  fetchCount,
+  referenceVideo: element("#reference-video-preview").src,
+  movementVideo: element("#movement-video-preview").src,
+  timeline: element("#detection-timeline").src,
+  wrist: element("#wrist-trajectory").src,
+  frames: element("#metric-frames").textContent,
+  hand: element("#metric-hand").textContent,
+  storedRun: JSON.parse(storage.get("kinderflowReferenceReview")).run_id,
+  illustrativeSrc: element("#illustrative-video").src,
+  illustrativeAvailable: !element("#illustrative-video-available").hidden
+};
 element("#choose-different-evidence").dispatch("click");
 const poseReset = {
   runId: contract.state.run.run_id,
@@ -439,8 +501,32 @@ const poseReset = {
   approvedVisual: storage.get("kinderflowApprovedVisual") || null,
   routesUnlocked: evidenceInputs.some((input) => !input.disabled),
   framesUnlocked: frameInputs.every((input) => !input.disabled),
-  rationaleUnlocked: !element("#technical-review-rationale").disabled
+  rationaleUnlocked: !element("#technical-review-rationale").disabled,
+  fetchCount,
+  resultVisible: !element("#result-section").hidden,
+  reviewVisible: !element("#review-section").hidden,
+  referenceVideo: element("#reference-video-preview").src,
+  movementVideo: element("#movement-video-preview").src,
+  timeline: element("#detection-timeline").src,
+  wrist: element("#wrist-trajectory").src,
+  frames: element("#metric-frames").textContent,
+  hand: element("#metric-hand").textContent,
+  storedRun: JSON.parse(storage.get("kinderflowReferenceReview")).run_id,
+  illustrativeHidden: element("#illustrative-motion-section").hidden,
+  illustrativeSrc: element("#illustrative-video").src
 };
+contract.state.activePackage = { ...signPackage, sign_id: "water" };
+element("#visual-preparation-section").hidden = false;
+contract.renderIllustrativeVideo();
+const missingIllustrative = {
+  videoSrc: element("#illustrative-video").src,
+  availableHidden: element("#illustrative-video-available").hidden,
+  missingVisible: !element("#illustrative-video-missing").hidden,
+  disclosureHidden: element("#illustrative-primary-disclosure").hidden,
+  technicalHidden: element("#illustrative-technical-details").hidden,
+  visualPreparationStillAvailable: !element("#visual-preparation-section").hidden
+};
+contract.state.activePackage = signPackage;
 
 finish("Pass");
 const pass = {
@@ -555,15 +641,44 @@ storage.set("kinderflowReferenceReview", JSON.stringify(restoreRun));
     selectedCandidate: contract.state.selectedCandidate?.id || null,
     runId: contract.state.run?.run_id || null
   };
+  const previewBeforeFullReset = {
+    src: element("#illustrative-video").src,
+    pauseCount: element("#illustrative-video").pauseCount || 0
+  };
   element("#reset-sign-run").dispatch("click");
   const fullReset = {
     rationaleDisabled: element("#technical-review-rationale").disabled,
     referenceReview: storage.get("kinderflowReferenceReview") || null,
     workflow: storage.get("kinderflowVisualWorkflow") || null,
-    approval: storage.get("kinderflowApprovedVisual") || null
+    approval: storage.get("kinderflowApprovedVisual") || null,
+    illustrativeSrc: element("#illustrative-video").src,
+    illustrativePaused: (element("#illustrative-video").pauseCount || 0) > previewBeforeFullReset.pauseCount
   };
 
-  process.stdout.write(JSON.stringify({ review, one, two, max, preparation, workflow, approvedVisual, decisionLocks, lockedMutation, completedRunId, poseReset, pass, threshold, unknownStatus, missingStatus, missingPackageRestore, wrongActionRestore, zeroFrameRestore, threeFrameRestore, rejectedRestore, approvedRestore, fullReset }));
+  element("#sign-name").value = "HELP";
+  element("#routine-context").value = "Playtime";
+  referenceModeInputs[1].dispatch("change");
+  element("#direct-video-url").value = "https://example.com/help.mp4";
+  element("#direct-video-url").dispatch("input");
+  const fetchesBeforeSubmit = fetchCount;
+  element("#sign-run-form").dispatch("submit");
+  element("#sign-run-form").dispatch("submit");
+  referenceModeInputs[0].dispatch("change");
+  element("#use-demo-video").dispatch("click");
+  const inFlightGuard = {
+    fetchDelta: fetchCount - fetchesBeforeSubmit,
+    pending: contract.state.submissionPending,
+    source: contract.state.source,
+    inputMode: contract.state.inputMode,
+    sign: element("#sign-name").value,
+    modeControlsLocked: referenceModeInputs.every((input) => input.disabled),
+    signLocked: element("#sign-name").disabled,
+    routineLocked: element("#routine-context").disabled,
+    urlLocked: element("#direct-video-url").disabled,
+    demoLocked: element("#use-demo-video").disabled
+  };
+
+  process.stdout.write(JSON.stringify({ urlMode, demoShortcut, review, one, two, max, preparation, workflow, approvedVisual, decisionLocks, lockedMutation, completedRunId, evidenceBeforePoseReset, poseReset, missingIllustrative, pass, threshold, unknownStatus, missingStatus, missingPackageRestore, wrongActionRestore, zeroFrameRestore, threeFrameRestore, rejectedRestore, approvedRestore, fullReset, inFlightGuard }));
 })().catch((error) => {
   process.stderr.write(error.stack || String(error));
   process.exitCode = 1;
@@ -1240,6 +1355,16 @@ class Prompt2CReviewUxTests(unittest.TestCase):
         self.assertTrue(reset["routesUnlocked"])
         self.assertTrue(reset["framesUnlocked"])
         self.assertTrue(reset["rationaleUnlocked"])
+        before = self.runtime["evidenceBeforePoseReset"]
+        self.assertEqual(reset["fetchCount"], before["fetchCount"])
+        self.assertTrue(reset["resultVisible"])
+        self.assertTrue(reset["reviewVisible"])
+        for field in ("referenceVideo", "movementVideo", "timeline", "wrist", "frames", "hand", "storedRun"):
+            self.assertEqual(reset[field], before[field], field)
+        self.assertTrue(before["illustrativeAvailable"])
+        self.assertEqual(before["illustrativeSrc"], "/api/illustrative-videos/more")
+        self.assertTrue(reset["illustrativeHidden"])
+        self.assertEqual(reset["illustrativeSrc"], "")
 
     def test_restore_requires_the_exact_approved_visual_state(self) -> None:
         missing_package = self.runtime["missingPackageRestore"]

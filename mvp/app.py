@@ -7,12 +7,14 @@ import hashlib
 import json
 import mimetypes
 import re
+import shutil
 import threading
 from email import policy
 from email.parser import BytesParser
 from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
+from typing import Optional
 from urllib.parse import unquote, urlparse
 
 from content_packs import (
@@ -34,6 +36,7 @@ from pipeline import (
     public_run,
     run_pipeline,
     store_demo,
+    store_direct_video_url,
     store_upload,
     validate_extension,
     write_manifest,
@@ -43,7 +46,78 @@ from pipeline import (
 PROTOTYPE_ROOT = REPO_ROOT / "prototype"
 CHARACTER_CANDIDATES_PATH = REPO_ROOT / "assets/flashcards/open_peeps/candidates.json"
 VISUAL_PACKAGES_PATH = PROTOTYPE_ROOT / "data/visual_sign_packages.json"
+SIGN_ASSET_REGISTRY_PATH = REPO_ROOT / "assets/registry/sign_asset_registry.json"
+ILLUSTRATIVE_VIDEO_ROOT = (REPO_ROOT.parent / "resources/video_output").resolve()
+ILLUSTRATIVE_PROVIDER = "Google Labs FX / Gemini FX"
+ILLUSTRATIVE_STATUS = "AVAILABLE_PREGENERATED_DEMO_ONLY"
+ILLUSTRATIVE_USAGE_STATUS = "GOOGLE_LABS_FX_OUTPUT_USAGE_CONFIRMATION_NEEDED"
 PROCESSING_LOCK = threading.Lock()
+
+
+def load_sign_asset_registry() -> dict:
+    try:
+        return json.loads(SIGN_ASSET_REGISTRY_PATH.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as error:
+        raise InputError("Illustrative video information is unavailable.") from error
+
+
+def registered_illustrative_video(sign_id: str, registry: Optional[dict] = None) -> Optional[dict]:
+    """Return one integrity-checked pre-generated output without exposing its path."""
+    normalized = re.sub(r"[^a-z0-9]+", "_", (sign_id or "").strip().lower()).strip("_")
+    if not normalized:
+        return None
+    registry = registry if registry is not None else load_sign_asset_registry()
+    sign = next(
+        (item for item in registry.get("signs", []) if item.get("sign_id") == normalized),
+        None,
+    )
+    if not sign:
+        return None
+    asset_id = sign.get("gemini_demo_video")
+    asset = registry.get("assets", {}).get(asset_id) if asset_id else None
+    if not asset:
+        return None
+    try:
+        candidate = (REPO_ROOT / asset["path"]).resolve()
+    except (KeyError, TypeError):
+        return None
+    if (
+        asset.get("asset_class") != "PREGENERATED_DEMO_OUTPUT"
+        or asset.get("sign_mapping") != [normalized]
+        or asset.get("file_type") != "video/mp4"
+        or sign.get("gemini_demo_status") != ILLUSTRATIVE_STATUS
+        or sign.get("gemini_demo_provider") != ILLUSTRATIVE_PROVIDER
+        or asset.get("licence_or_provenance_status") != ILLUSTRATIVE_USAGE_STATUS
+        or "demo_display_allowed" not in asset
+        or asset.get("demo_display_allowed") is False
+        or asset.get("printable_allowed") is not False
+        or ILLUSTRATIVE_VIDEO_ROOT not in candidate.parents
+        or not candidate.is_file()
+        or candidate.stat().st_size != asset.get("byte_size")
+        or hashlib.sha256(candidate.read_bytes()).hexdigest() != asset.get("sha256")
+    ):
+        return None
+    return {"sign": sign, "asset": asset, "path": candidate}
+
+
+def illustrative_video_catalog() -> dict:
+    """Project the canonical registry into a browser-safe, path-free catalog."""
+    registry = load_sign_asset_registry()
+    catalog = {}
+    for sign in registry.get("signs", []):
+        sign_id = sign.get("sign_id", "")
+        verified = registered_illustrative_video(sign_id, registry)
+        catalog[sign_id] = {
+            "sign_id": sign_id,
+            "label": sign.get("label_en", sign_id.upper()),
+            "status": sign.get("gemini_demo_status", "NOT_AVAILABLE_STATIC_FLOW_ALLOWED"),
+            "available": verified is not None,
+            "url": f"/api/illustrative-videos/{sign_id}" if verified else None,
+            "provider": sign.get("gemini_demo_provider"),
+            "registry_disclosure": sign.get("gemini_demo_disclosure"),
+            "usage_status": verified["asset"].get("licence_or_provenance_status") if verified else None,
+        }
+    return {"schema_version": "1.0", "signs": catalog}
 
 
 def response_schema_ok(payload: dict) -> bool:
@@ -164,7 +238,25 @@ class KinderFlowHandler(BaseHTTPRequestHandler):
     def do_GET(self) -> None:  # noqa: N802
         route = unquote(urlparse(self.path).path)
         if route == "/api/health":
-            self.send_json({"status": "ok", "service": "kinderflow-local-mvp", "capabilities": ["create_sign", "generate_content_pack", "regenerate_visual_candidate"]})
+            self.send_json({"status": "ok", "service": "kinderflow-local-mvp", "capabilities": ["create_sign", "direct_video_url", "illustrative_video_preview", "generate_content_pack", "regenerate_visual_candidate"]})
+            return
+        if route == "/api/illustrative-videos":
+            try:
+                self.send_json(illustrative_video_catalog())
+            except InputError as error:
+                self.send_json({"error": str(error)}, HTTPStatus.SERVICE_UNAVAILABLE)
+            return
+        illustrative_video = re.fullmatch(r"/api/illustrative-videos/([a-z0-9_-]+)", route)
+        if illustrative_video:
+            try:
+                verified = registered_illustrative_video(illustrative_video.group(1))
+            except InputError:
+                self.send_error(HTTPStatus.SERVICE_UNAVAILABLE)
+                return
+            if not verified:
+                self.send_error(HTTPStatus.NOT_FOUND)
+                return
+            self.send_file(verified["path"])
             return
         if route == "/api/visual-assets/open-peeps":
             try:
@@ -244,6 +336,25 @@ class KinderFlowHandler(BaseHTTPRequestHandler):
                     fields.get("reference_source_url", ""),
                 )
                 video_path = store_upload(run_dir, filename, video_bytes)
+            elif route == "/api/runs/url":
+                payload = self.read_json()
+                run_dir, manifest = prepare_run(
+                    payload.get("sign_name", ""),
+                    payload.get("routine_context", ""),
+                    payload.get("reference_status", ""),
+                    "direct-video.mp4",
+                    "direct_video_url",
+                    payload.get("direct_video_url", ""),
+                )
+                try:
+                    video_path = store_direct_video_url(
+                        run_dir,
+                        payload.get("direct_video_url", ""),
+                    )
+                except InputError:
+                    if run_dir.is_dir() and RUNS_ROOT.resolve() in run_dir.resolve().parents:
+                        shutil.rmtree(run_dir, ignore_errors=True)
+                    raise
             else:
                 self.send_error(HTTPStatus.NOT_FOUND)
                 return
@@ -272,13 +383,36 @@ class KinderFlowHandler(BaseHTTPRequestHandler):
             run_pipeline(run_dir, manifest)
 
     def read_json(self) -> dict:
-        length = int(self.headers.get("Content-Length", "0"))
+        content_type = self.headers.get("Content-Type", "").split(";", 1)[0].strip().casefold()
+        if content_type != "application/json":
+            raise InputError("Request must use application/json.")
+        origin = self.headers.get("Origin")
+        if origin:
+            parsed_origin = urlparse(origin)
+            request_host = self.headers.get("Host", "").casefold()
+            if (
+                parsed_origin.scheme != "http"
+                or parsed_origin.netloc.casefold() != request_host
+                or bool(parsed_origin.path)
+                or bool(parsed_origin.query)
+                or bool(parsed_origin.fragment)
+            ):
+                raise InputError("Cross-origin requests are not allowed.")
+        try:
+            length = int(self.headers.get("Content-Length", "0"))
+        except (TypeError, ValueError) as error:
+            raise InputError("Request length is invalid.") from error
+        if length < 0:
+            raise InputError("Request length is invalid.")
         if length > 64 * 1024:
             raise InputError("Request is too large.")
         try:
-            return json.loads(self.rfile.read(length) or b"{}")
+            payload = json.loads(self.rfile.read(length) or b"{}")
         except json.JSONDecodeError as error:
             raise InputError("Request must contain valid JSON.") from error
+        if not isinstance(payload, dict):
+            raise InputError("Request must contain a JSON object.")
+        return payload
 
     def read_multipart(self) -> tuple:
         content_length = int(self.headers.get("Content-Length", "0"))

@@ -39,20 +39,31 @@
                 <div class="form-field"><label for="sign-name">Sign</label><select id="sign-name" name="sign_name" required><option value="MORE" selected>MORE</option><option value="HELP">HELP</option><option value="EAT">EAT</option><option value="SLEEP">SLEEP</option><option value="MILK">MILK</option><option value="WATER">WATER</option></select><small>Choose the sign shown in the reference video.</small></div>
                 <div class="form-field"><label for="routine-context">Routine / context</label><input id="routine-context" name="routine_context" value="Snack time, mealtime, playtime" maxlength="180" required><small>Describe where families and schools may use the sign.</small></div>
                 <div class="reference-source-summary" aria-label="Reference source"><span>Reference source</span><strong>Reviewed reference</strong></div>
-                <div class="form-field"><label for="reference-source-url">Reference webpage <span class="optional-label">Optional</span></label><input id="reference-source-url" name="reference_source_url" type="url" inputmode="url" placeholder="https://example.org/sign-reference" aria-describedby="reference-source-help"><small id="reference-source-help">Saved with the reference details only. This webpage is not used as the video.</small></div>
               </fieldset>
 
-              <fieldset>
-                <legend><span>2</span> Reference video</legend>
-                <div class="upload-zone" id="upload-zone">
-                  <input class="sr-only" id="reference-video" name="reference_video" type="file" accept="video/mp4,.mp4">
-                  <label class="button button-secondary" for="reference-video">Select reference video</label>
-                  <strong id="selected-file-name">No video selected</strong>
-                  <span id="selected-file-meta">MP4 · maximum 100 MB</span>
+              <fieldset class="reference-input-fieldset">
+                <legend><span>2</span> Add the reference</legend>
+                <div class="reference-input-choice" role="radiogroup" aria-label="Reference video source">
+                  <label><input type="radio" name="reference_input_mode" value="upload" checked><span><strong>Upload a video</strong><small>Choose an MP4 from this computer.</small></span></label>
+                  <label><input type="radio" name="reference_input_mode" value="url"><span><strong>Use a direct video URL</strong><small>Use a public link to the MP4 itself.</small></span></label>
                 </div>
-                <div class="demo-reference-row"><div><strong>Included demo reference</strong><span>Use the MORE reference video for a consistent walkthrough.</span></div><button class="text-link-button" id="use-demo-video" type="button">Use demo reference</button></div>
+                <div class="reference-input-panel" id="upload-source-panel">
+                  <div class="upload-zone" id="upload-zone">
+                    <span class="input-panel-label">Reference video</span>
+                    <input class="sr-only" id="reference-video" name="reference_video" type="file" accept="video/mp4,.mp4">
+                    <label class="button button-secondary" for="reference-video">Select reference video</label>
+                    <strong id="selected-file-name">No video selected</strong>
+                    <span id="selected-file-meta">MP4 · maximum 100 MB</span>
+                  </div>
+                </div>
+                <div class="reference-input-panel direct-url-panel" id="url-source-panel" hidden>
+                  <div class="form-field"><label for="direct-video-url">Reference video URL</label><input id="direct-video-url" name="direct_video_url" type="url" inputmode="url" autocomplete="off" placeholder="https://media.example.org/reference.mp4" aria-describedby="direct-video-url-help" disabled><small id="direct-video-url-help">Use a public, direct MP4 link. A normal webpage cannot be processed as the video.</small></div>
+                  <p class="input-panel-meta" id="direct-video-meta">Maximum 100 MB · fetched by the local KinderFlow service</p>
+                  <button class="button button-secondary" id="url-upload-recovery" type="button" hidden>Upload a video instead</button>
+                </div>
+                <div class="demo-reference-row"><div><strong>Included demo reference</strong><span>Use the registered MORE reference as a shortcut through the same review.</span></div><button class="text-link-button" id="use-demo-video" type="button">Use demo reference</button></div>
                 <div class="button-row sign-run-actions"><button class="button button-primary" id="run-movement-check" type="submit" disabled>Review the sign reference</button><button class="button button-secondary" id="reset-sign-run" type="button" hidden>Use another reference</button></div>
-                <p class="form-message" id="sign-form-message" role="status" aria-live="polite">Select an MP4 or use the demo reference.</p>
+                <p class="form-message" id="sign-form-message" role="status" aria-live="polite">Upload an MP4, use a direct video URL, or choose the demo reference.</p>
               </fieldset>
             </form>
 
@@ -119,6 +130,44 @@
             <div class="form-field fallback-rationale" id="fallback-rationale-field" hidden><label for="technical-review-rationale">Why are reviewed references the best option?</label><textarea id="technical-review-rationale" rows="3" maxlength="400" placeholder="For example: the approach and mouth contact are clear in the trusted reference, although part of the hand movement is hidden near the face."></textarea><small>Required when reviewed references are selected.</small></div>
             <button class="button button-primary" id="approve-sign" type="button" disabled>Create family materials</button><button class="button button-secondary" id="use-another-reference" type="button">Use another reference</button><p id="review-message" class="form-message" aria-live="polite">Choose how to continue.</p>
             <details class="source-details"><summary>Technical and source details</summary><dl><div><dt>Pose source</dt><dd id="source-detail-route">Not selected</dd></div><div><dt>Selected reference frames</dt><dd id="source-detail-frames">Not selected</dd></div><div><dt>Reference source</dt><dd id="source-detail-url">Not provided</dd></div><div><dt>Reviewed source</dt><dd>Reviewed reference</dd></div><div><dt>Sources and permissions</dt><dd>Open Peeps · CC0 recorded</dd></div></dl><details class="advanced-run-details"><summary>Advanced run details</summary><dl><div><dt>Run ID</dt><dd id="source-detail-run">—</dd></div></dl></details></details>
+          </div>
+        </div>
+      </section>
+
+      <section class="workspace-section section-tint illustrative-motion-section" id="illustrative-motion-section" aria-labelledby="illustrative-motion-title" hidden>
+        <div class="section-shell">
+          <div class="workspace-heading"><div><p class="eyebrow">Optional motion preview</p><h2 id="illustrative-motion-title">Preview the future motion experience</h2></div><p>This optional preview sits after pose selection and never replaces the reviewed reference.</p></div>
+          <div class="illustrative-motion-card">
+            <div class="illustrative-media" id="illustrative-video-available" hidden>
+              <span class="status-pill status-neutral">Illustrative video preview</span>
+              <video id="illustrative-video" controls muted playsinline preload="metadata" aria-describedby="illustrative-primary-disclosure"></video>
+              <p id="illustrative-video-status" role="status" aria-live="polite">Preparing the illustrative preview…</p>
+            </div>
+            <div class="illustrative-missing" id="illustrative-video-missing" hidden>
+              <span class="status-pill status-neutral">Illustrative video preview</span>
+              <h3>Video preview not available for this sign yet.</h3>
+              <p>Continue with the reviewed illustration and family materials.</p>
+            </div>
+            <div class="illustrative-copy">
+              <p id="illustrative-primary-disclosure">This preview was prepared separately to demonstrate the intended motion experience. It is not generated automatically from this reference review.</p>
+              <p>The reference review helps KinderFlow preserve clear poses and movement cues for the materials created next.</p>
+              <details id="illustrative-technical-details">
+                <summary>Technical demo details</summary>
+                <dl>
+                  <div><dt>Provider</dt><dd id="illustrative-provider">Google Labs FX / Gemini FX</dd></div>
+                  <div><dt>Asset</dt><dd>Pre-generated demo asset</dd></div>
+                  <div><dt>Preparation</dt><dd>Prepared separately from this reference review</dd></div>
+                  <div><dt>Current run</dt><dd>Not generated by this MediaPipe run</dd></div>
+                  <div><dt>Movement data</dt><dd>Not automatically driven by current landmark coordinates</dd></div>
+                  <div><dt>Purpose</dt><dd>Demo only</dd></div>
+                  <div><dt>Review</dt><dd>Human review required</dd></div>
+                  <div><dt>Certification</dt><dd>Not linguistically certified</dd></div>
+                  <div><dt>Usage</dt><dd id="illustrative-usage">Usage confirmation needed</dd></div>
+                </dl>
+              </details>
+              <p class="research-milestone"><strong>Next R&amp;D milestone:</strong> connect reviewed movement data to a controlled avatar/video pipeline and validate motion fidelity with specialist support.</p>
+              <button class="button button-primary" id="continue-to-family-materials" type="button">Continue to family materials</button>
+            </div>
           </div>
         </div>
       </section>

@@ -100,9 +100,11 @@ The internal MVP flow is:
 
 `Choose the sign → add the reference → review the sign reference → choose one or two poses → create and approve a visual → family materials → Bilingual / Spanish → Print / Save as PDF`
 
-The Create a Sign route becomes functional when it is served by the local MVP service. An operator can use the existing demo reference or select another MP4. Each run uses the real POC pipeline, produces its own movement overlay and diagnostics, and reports only metrics calculated for that input.
+The Create a Sign route becomes functional when it is served by the local MVP service. An operator chooses exactly one reference source: upload an MP4 or enter a direct public MP4 URL. Switching modes hides and disables the other field. **Use demo reference** is a shortcut to the registered MORE input, not a third source mode. Each successful run uses the real POC pipeline, produces its own movement overlay and diagnostics, and reports only metrics calculated for that input.
 
 The browser preview is an H.264 MP4 created from the real OpenCV/MediaPipe overlay through a local ffmpeg transcode. Operator-facing outcomes are **Pass**, **Review needed**, or **Fail**. Evidence routing is explicit: landmark key poses, one or two operator-selected reference frames, or a knowledge/sign-reference fallback with a required rationale. EAT is sign-aware: partial hand tracking near the face does not automatically create a dead end.
+
+After pose approval, a separate optional card can preview a pre-generated illustrative motion file for MORE, HELP or MILK. It clearly distinguishes that file from the current MediaPipe run and its landmarks. EAT, SLEEP and WATER show an honest unavailable state while the ordinary visual-review and family-material paths remain usable. The preview is a local R&D demonstration only; its source rights, motion fidelity and professional suitability still require confirmation.
 
 MORE, HELP, EAT, SLEEP, MILK and WATER each have a controlled visual package grounded in the exact founder-selected Open Peeps bust plus the reviewed arm and hand-style references. Sign-specific arms, hands and restrained movement accents are custom layers. Local regeneration returns a different prebuilt vector composition with a new ID, path, version and verified hash; it never reorders the original options and calls no paid API.
 
@@ -115,7 +117,7 @@ python mvp/app.py
 
 Then open [http://127.0.0.1:8000/create-sign.html](http://127.0.0.1:8000/create-sign.html).
 
-Files remain local, every run is isolated under *mvp/runs/*, and canonical Round 1 evidence is not overwritten. Technical metrics are movement-processing signals, not linguistic correctness certification or system-wide accuracy. Reference review, visual approval and publication remain separate decisions. Production-ready avatar generation is not complete.
+Files remain local, every run is isolated under *mvp/runs/*, and canonical Round 1 evidence is not overwritten. Direct URLs are fetched by the backend with a public-network-only, timeout, redirect, MP4 MIME and 100 MB boundary; stored provenance omits query strings. Technical metrics are movement-processing signals, not linguistic correctness certification or system-wide accuracy. Reference review, illustrative preview, visual approval and publication remain separate decisions. Production-ready avatar generation is not complete.
 
 ## Kinder Signs Flashcard Studio
 

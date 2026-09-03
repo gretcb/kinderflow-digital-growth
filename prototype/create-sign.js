@@ -30,21 +30,32 @@ const RUN_STATE_COPY = {
 };
 
 const state = {
+  inputMode: "upload",
   source: null,
   file: null,
   run: null,
   polling: null,
+  submissionPending: false,
+  runGeneration: 0,
   visualPackages: [],
   activePackage: null,
   selectedCandidate: null,
   currentCandidates: [],
   evidenceRoute: null,
   selectedFrames: [],
-  workflowRecord: null
+  workflowRecord: null,
+  illustrativeCatalog: {}
 };
 const form = document.querySelector("#sign-run-form");
 const fileInput = document.querySelector("#reference-video");
+const directVideoInput = document.querySelector("#direct-video-url");
+const uploadSourcePanel = document.querySelector("#upload-source-panel");
+const urlSourcePanel = document.querySelector("#url-source-panel");
+const urlUploadRecovery = document.querySelector("#url-upload-recovery");
 const signControl = document.querySelector("#sign-name");
+const routineControl = document.querySelector("#routine-context");
+const referenceModeInputs = [...document.querySelectorAll('input[name="reference_input_mode"]')];
+const demoButton = document.querySelector("#use-demo-video");
 const fileName = document.querySelector("#selected-file-name");
 const fileMeta = document.querySelector("#selected-file-meta");
 const runButton = document.querySelector("#run-movement-check");
@@ -55,6 +66,7 @@ const processingNote = document.querySelector("#processing-note");
 const stageList = document.querySelector("#processing-stages");
 const resultSection = document.querySelector("#result-section");
 const reviewSection = document.querySelector("#review-section");
+const illustrativeMotionSection = document.querySelector("#illustrative-motion-section");
 const visualPreparationSection = document.querySelector("#visual-preparation-section");
 const visualReviewSection = document.querySelector("#visual-review-section");
 const downstreamSection = document.querySelector("#downstream-section");
@@ -80,26 +92,100 @@ const renderStages = (stages = STAGES.map(([key, label]) => ({ key, label, statu
   }));
 };
 
+const sourceInstruction = (mode = state.inputMode) => mode === "url"
+  ? "Enter a direct MP4 video URL."
+  : "Select an MP4 from this computer.";
+
+const syncReferenceInputMode = (mode, { clearSelection = true } = {}) => {
+  if (state.submissionPending) return;
+  state.inputMode = mode === "url" ? "url" : "upload";
+  referenceModeInputs.forEach((input) => {
+    input.checked = input.value === state.inputMode;
+  });
+  uploadSourcePanel.hidden = state.inputMode !== "upload";
+  urlSourcePanel.hidden = state.inputMode !== "url";
+  fileInput.disabled = state.inputMode !== "upload";
+  directVideoInput.disabled = state.inputMode !== "url";
+  urlUploadRecovery.hidden = true;
+  if (clearSelection) {
+    state.source = null;
+    state.file = null;
+    fileInput.value = "";
+    directVideoInput.value = "";
+    signControl.disabled = false;
+    runButton.disabled = true;
+    fileName.textContent = "No video selected";
+    fileMeta.textContent = "MP4 · maximum 100 MB";
+    document.querySelector("#direct-video-meta").textContent = "Maximum 100 MB · fetched by the local KinderFlow service";
+    formMessage.textContent = sourceInstruction();
+  } else {
+    signControl.disabled = state.source === "demo";
+    runButton.disabled = !state.source;
+  }
+};
+
 const setSelectedSource = (source, selectedFile = null) => {
+  if (state.submissionPending) return;
   state.source = source;
   state.file = selectedFile;
+  state.inputMode = source === "url" ? "url" : "upload";
+  referenceModeInputs.forEach((input) => {
+    input.checked = input.value === state.inputMode;
+  });
+  uploadSourcePanel.hidden = state.inputMode !== "upload";
+  urlSourcePanel.hidden = state.inputMode !== "url";
+  fileInput.disabled = state.inputMode !== "upload";
+  directVideoInput.disabled = state.inputMode !== "url";
+  urlUploadRecovery.hidden = true;
   runButton.disabled = false;
   if (source === "demo") {
+    fileInput.value = "";
+    directVideoInput.value = "";
     signControl.value = "MORE";
     signControl.disabled = true;
     fileName.textContent = "Included MORE reference";
     fileMeta.textContent = "Demo reference · stored on this computer";
     formMessage.textContent = "MORE reference video selected. Ready for review.";
+  } else if (source === "upload") {
+    signControl.disabled = false;
+    directVideoInput.value = "";
   } else {
     signControl.disabled = false;
+    state.file = null;
+    fileInput.value = "";
+    document.querySelector("#direct-video-meta").textContent = "Direct MP4 selected · maximum 100 MB";
+    formMessage.textContent = "Direct video URL selected. Ready for review.";
   }
+};
+
+const setReferenceControlsLocked = (locked) => {
+  referenceModeInputs.forEach((input) => { input.disabled = locked; });
+  routineControl.disabled = locked;
+  demoButton.disabled = locked;
+  urlUploadRecovery.disabled = locked;
+  if (locked) {
+    signControl.disabled = true;
+    fileInput.disabled = true;
+    directVideoInput.disabled = true;
+    runButton.disabled = true;
+    return;
+  }
+  signControl.disabled = state.source === "demo";
+  fileInput.disabled = state.inputMode !== "upload";
+  directVideoInput.disabled = state.inputMode !== "url";
+  runButton.disabled = !state.source;
 };
 
 const resetRun = () => {
   if (state.polling) window.clearTimeout(state.polling);
+  state.polling = null;
+  state.submissionPending = false;
+  state.runGeneration += 1;
   state.run = null;
   resultSection.hidden = true;
   reviewSection.hidden = true;
+  illustrativeMotionSection.hidden = true;
+  clearIllustrativeVideo();
   visualPreparationSection.hidden = true;
   visualReviewSection.hidden = true;
   downstreamSection.hidden = true;
@@ -139,8 +225,7 @@ const resetRun = () => {
   document.querySelector("#technical-review-rationale").disabled = false;
   document.querySelector("#suggested-reference-frames").replaceChildren();
   form.querySelectorAll("input, select, button").forEach((control) => { control.disabled = false; });
-  signControl.disabled = state.source === "demo";
-  runButton.disabled = !state.source;
+  syncReferenceInputMode(state.inputMode, { clearSelection: false });
   renderStages();
   processingNote.textContent = state.source ? "Reference selected. Ready to run." : "Waiting for a reference video.";
   formMessage.textContent = state.source ? "Ready to review the reference." : "Select an MP4 or use the demo reference.";
@@ -151,11 +236,12 @@ const clearReference = () => {
   state.source = null;
   state.file = null;
   fileInput.value = "";
+  directVideoInput.value = "";
   fileName.textContent = "No video selected";
   fileMeta.textContent = "MP4 · maximum 100 MB";
   signControl.disabled = false;
   runButton.disabled = true;
-  formMessage.textContent = "Select an MP4 or use the demo reference.";
+  syncReferenceInputMode(state.inputMode, { clearSelection: true });
   scrollToSection(document.querySelector(".create-sign-setup"));
 };
 
@@ -164,6 +250,7 @@ const formatBytes = (bytes) => bytes < 1024 * 1024
   : `${(bytes / 1024 / 1024).toFixed(1)} MB`;
 
 fileInput.addEventListener("change", () => {
+  if (state.submissionPending) return;
   const selected = fileInput.files[0];
   if (!selected) return;
   if (!selected.name.toLowerCase().endsWith(".mp4")) {
@@ -181,41 +268,91 @@ fileInput.addEventListener("change", () => {
   formMessage.textContent = "Reference video selected. Ready for review.";
 });
 
-document.querySelector("#use-demo-video").addEventListener("click", () => setSelectedSource("demo"));
+directVideoInput.addEventListener("input", () => {
+  if (state.submissionPending) return;
+  const value = directVideoInput.value.trim();
+  state.file = null;
+  state.source = value ? "url" : null;
+  signControl.disabled = false;
+  runButton.disabled = !value;
+  urlUploadRecovery.hidden = true;
+  document.querySelector("#direct-video-meta").textContent = value
+    ? "Direct MP4 selected · maximum 100 MB"
+    : "Maximum 100 MB · fetched by the local KinderFlow service";
+  formMessage.textContent = value
+    ? "Direct video URL selected. Ready for review."
+    : "Enter a direct MP4 video URL.";
+});
+
+referenceModeInputs.forEach((input) => {
+  input.addEventListener("change", () => syncReferenceInputMode(input.value));
+});
+
+demoButton.addEventListener("click", () => setSelectedSource("demo"));
+urlUploadRecovery.addEventListener("click", () => {
+  syncReferenceInputMode("upload");
+  fileInput.focus();
+});
 retryButton.addEventListener("click", clearReference);
 
-const requestRun = async () => {
-  const signName = document.querySelector("#sign-name").value.trim();
-  const routineContext = document.querySelector("#routine-context").value.trim();
+const requestRun = async (selection) => {
+  const { source, signName, routineContext, directVideoUrl, file } = selection;
   const referenceStatus = INTERNAL_REFERENCE_STATUS;
-  const referenceSourceUrl = document.querySelector("#reference-source-url").value.trim();
   if (!signName || !routineContext) throw new Error("Complete the sign name and routine before processing.");
-  if (!state.source) throw new Error("Select an MP4 or use the demo reference.");
+  if (!source) throw new Error(sourceInstruction());
 
-  if (state.source === "demo") {
+  if (source === "demo") {
     return fetch("/api/runs/demo", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ sign_name: signName, routine_context: routineContext, reference_status: referenceStatus, reference_source_url: referenceSourceUrl })
+      body: JSON.stringify({ sign_name: signName, routine_context: routineContext, reference_status: referenceStatus })
+    });
+  }
+  if (source === "url") {
+    let parsed;
+    try {
+      parsed = new URL(directVideoUrl);
+    } catch (_error) {
+      throw new Error("Enter a complete http:// or https:// direct video URL.");
+    }
+    if (!["http:", "https:"].includes(parsed.protocol)) {
+      throw new Error("Enter a complete http:// or https:// direct video URL.");
+    }
+    return fetch("/api/runs/url", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ sign_name: signName, routine_context: routineContext, reference_status: referenceStatus, direct_video_url: directVideoUrl })
     });
   }
   const payload = new FormData();
   payload.append("sign_name", signName);
   payload.append("routine_context", routineContext);
   payload.append("reference_status", referenceStatus);
-  payload.append("reference_source_url", referenceSourceUrl);
-  payload.append("reference_video", state.file);
+  payload.append("reference_video", file);
   return fetch("/api/runs/upload", { method: "POST", body: payload });
 };
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
+  if (state.submissionPending) return;
+  const selection = {
+    source: state.source,
+    signName: signControl.value.trim(),
+    routineContext: routineControl.value.trim(),
+    directVideoUrl: directVideoInput.value.trim(),
+    file: state.file
+  };
+  const generation = state.runGeneration + 1;
+  state.runGeneration = generation;
+  state.submissionPending = true;
+  setReferenceControlsLocked(true);
   sessionStorage.removeItem("kinderflowApprovedVisual");
   sessionStorage.removeItem("kinderflowPrintableApproval");
-  runButton.disabled = true;
   retryButton.hidden = true;
   resultSection.hidden = true;
   reviewSection.hidden = true;
+  illustrativeMotionSection.hidden = true;
+  clearIllustrativeVideo();
   visualPreparationSection.hidden = true;
   visualReviewSection.hidden = true;
   downstreamSection.hidden = true;
@@ -224,27 +361,40 @@ form.addEventListener("submit", async (event) => {
   renderStages(STAGES.map(([key, label], index) => ({ key, label, status: index === 0 ? "Running" : "Waiting" })));
   scrollToSection(document.querySelector("#processing-section"));
   try {
-    const response = await requestRun();
+    const response = await requestRun(selection);
+    if (generation !== state.runGeneration) return;
     const payload = await response.json();
+    if (generation !== state.runGeneration) return;
     if (!response.ok) throw new Error(payload.error || "The reference review could not be started.");
     state.run = payload;
-    form.querySelectorAll("input, select, button").forEach((control) => { control.disabled = true; });
+    if (selection.source === "url") {
+      directVideoInput.value = payload.source?.reference_source_url || "";
+    }
+    state.submissionPending = false;
+    setReferenceControlsLocked(true);
     retryButton.disabled = false;
     formMessage.textContent = "Reference review started.";
-    pollRun(payload.run_id);
+    pollRun(payload.run_id, generation);
   } catch (error) {
+    if (generation !== state.runGeneration) return;
+    state.submissionPending = false;
+    setReferenceControlsLocked(false);
+    syncReferenceInputMode(state.inputMode, { clearSelection: false });
     formMessage.textContent = error.message;
     processingNote.textContent = "The reference review could not be started.";
+    urlUploadRecovery.hidden = selection.source !== "url";
     retryButton.hidden = false;
     retryButton.disabled = false;
   }
 });
 
-const pollRun = async (runId) => {
+const pollRun = async (runId, generation = state.runGeneration) => {
   try {
     const response = await fetch(`/api/runs/${encodeURIComponent(runId)}`, { cache: "no-store" });
+    if (generation !== state.runGeneration) return;
     if (!response.ok) throw new Error("Run status is unavailable.");
     const run = await response.json();
+    if (generation !== state.runGeneration) return;
     state.run = run;
     renderStages(run.stages);
     const active = run.stages.find((stage) => stage.status === "Running");
@@ -253,8 +403,9 @@ const pollRun = async (runId) => {
       finishRun(run);
       return;
     }
-    state.polling = window.setTimeout(() => pollRun(runId), 900);
+    state.polling = window.setTimeout(() => pollRun(runId, generation), 900);
   } catch (error) {
+    if (generation !== state.runGeneration) return;
     processingNote.textContent = `${error.message} Select another reference video.`;
     retryButton.hidden = false;
     retryButton.disabled = false;
@@ -328,6 +479,71 @@ const loadVisualPackages = async () => {
   const payload = await response.json();
   if (!Array.isArray(payload.signs)) throw new Error("Sign visuals could not be read.");
   state.visualPackages = payload.signs;
+};
+
+const loadIllustrativeVideoCatalog = async () => {
+  const response = await fetch("/api/illustrative-videos", { cache: "no-store" });
+  if (!response.ok) throw new Error("Illustrative video information is unavailable.");
+  const payload = await response.json();
+  if (!payload.signs || typeof payload.signs !== "object") {
+    throw new Error("Illustrative video information could not be read.");
+  }
+  state.illustrativeCatalog = payload.signs;
+};
+
+const clearIllustrativeVideo = () => {
+  const video = document.querySelector("#illustrative-video");
+  video.onloadedmetadata = null;
+  video.onerror = null;
+  video.pause();
+  video.removeAttribute("src");
+  video.load();
+};
+
+const showIllustrativeVideoMissing = () => {
+  clearIllustrativeVideo();
+  document.querySelector("#illustrative-video-available").hidden = true;
+  document.querySelector("#illustrative-video-missing").hidden = false;
+  document.querySelector("#illustrative-primary-disclosure").hidden = true;
+  document.querySelector("#illustrative-technical-details").hidden = true;
+};
+
+const renderIllustrativeVideo = () => {
+  const signId = state.activePackage?.sign_id || normalizeSignId(state.run?.sign?.sign_id || state.run?.sign?.name);
+  const entry = state.illustrativeCatalog[signId];
+  illustrativeMotionSection.hidden = false;
+  clearIllustrativeVideo();
+  document.querySelector("#illustrative-video-missing").hidden = true;
+  document.querySelector("#illustrative-primary-disclosure").hidden = false;
+  document.querySelector("#illustrative-technical-details").hidden = false;
+  if (!entry || entry.available !== true || !entry.url) {
+    showIllustrativeVideoMissing();
+    return;
+  }
+
+  const video = document.querySelector("#illustrative-video");
+  const available = document.querySelector("#illustrative-video-available");
+  const status = document.querySelector("#illustrative-video-status");
+  available.hidden = false;
+  video.setAttribute("aria-label", `${entry.label || signId.toUpperCase()} illustrative video preview`);
+  setText("#illustrative-provider", entry.provider || "Google Labs FX / Gemini FX");
+  setText(
+    "#illustrative-usage",
+    entry.usage_status === "GOOGLE_LABS_FX_OUTPUT_USAGE_CONFIRMATION_NEEDED"
+      ? "Local demo; external usage confirmation needed"
+      : "Usage status unavailable; do not display externally"
+  );
+  status.textContent = "Loading illustrative video…";
+  video.onloadedmetadata = () => {
+    status.textContent = Number.isFinite(video.duration) && video.duration > 0
+      ? `Ready · ${video.duration.toFixed(1)} seconds`
+      : "The illustrative preview metadata is incomplete.";
+  };
+  video.onerror = () => {
+    showIllustrativeVideoMissing();
+  };
+  video.src = entry.url;
+  video.load();
 };
 
 const ROUTE_COPY = {
@@ -571,7 +787,11 @@ const finishRun = (run, { scroll = true } = {}) => {
     link.textContent = "View source";
     sourceDetail.append(link);
   } else {
-    sourceDetail.textContent = "Not provided";
+    sourceDetail.textContent = run.source?.kind === "demo_reference"
+      ? "Included MORE reference"
+      : run.source?.kind === "operator_upload"
+        ? "Uploaded video"
+        : "Not provided";
   }
   document.querySelector("#movement-comparison").hidden = !hasArtifacts;
   document.querySelector("#technical-details").hidden = !hasMetrics;
@@ -766,9 +986,11 @@ document.querySelector("#approve-sign").addEventListener("click", (event) => {
   event.currentTarget.textContent = "Family materials ready";
   document.querySelector("#use-another-reference").hidden = true;
   markReferenceReviewComplete();
+  renderIllustrativeVideo();
   renderVisualPreparation();
+  illustrativeMotionSection.hidden = false;
   visualPreparationSection.hidden = false;
-  scrollToSection(visualPreparationSection);
+  scrollToSection(illustrativeMotionSection);
 });
 
 const createCandidateCard = (candidate, index) => {
@@ -971,6 +1193,8 @@ const resetToPoseSelection = () => {
     : availableRouteForRun(state.run, state.activePackage);
   state.selectedCandidate = null;
   state.currentCandidates = [];
+  illustrativeMotionSection.hidden = true;
+  clearIllustrativeVideo();
   visualReviewSection.hidden = true;
   visualPreparationSection.hidden = true;
   downstreamSection.hidden = true;
@@ -1054,14 +1278,21 @@ const restoreWorkflowFromSession = async () => {
     || !["complete", "failed", "insufficient_coverage"].includes(run.state)) {
     throw new Error("The saved sign work does not match this reference review.");
   }
-  state.source = run.source?.kind === "demo_reference" ? "demo" : "upload";
+  state.source = run.source?.kind === "demo_reference"
+    ? "demo"
+    : run.source?.kind === "direct_video_url"
+      ? "url"
+      : "upload";
+  state.inputMode = state.source === "url" ? "url" : "upload";
   state.run = run;
   signControl.value = run.sign.name;
   signControl.disabled = true;
   document.querySelector("#routine-context").value = run.sign.routine_context;
-  document.querySelector("#reference-source-url").value = run.source?.reference_source_url || "";
+  directVideoInput.value = state.source === "url" ? run.source?.reference_source_url || "" : "";
   fileName.textContent = run.source?.display_filename || `${run.sign.name} reference video`;
   fileMeta.textContent = "Saved reference review";
+  document.querySelector("#direct-video-meta").textContent = "Saved direct-video reference review";
+  syncReferenceInputMode(state.inputMode, { clearSelection: false });
   form.querySelectorAll("input, select, button").forEach((control) => { control.disabled = true; });
   retryButton.disabled = false;
   state.workflowRecord = workflow;
@@ -1130,7 +1361,9 @@ const restoreWorkflowFromSession = async () => {
   document.querySelector("#approve-sign").disabled = true;
   document.querySelector("#approve-sign").textContent = "Family materials ready";
   document.querySelector("#use-another-reference").hidden = true;
+  renderIllustrativeVideo();
   renderVisualPreparation();
+  illustrativeMotionSection.hidden = false;
   visualPreparationSection.hidden = false;
   const visualWasGenerated = ["REVIEW_REQUIRED", "REJECTED", "APPROVED_FOR_INTERNAL_PRINTABLE"].includes(
     workflow.visual_review_status
@@ -1179,7 +1412,13 @@ const restoreWorkflowFromSession = async () => {
   return true;
 };
 
-Promise.allSettled([loadVisualPackages(), checkService()]).then(async (results) => {
+document.querySelector("#continue-to-family-materials").addEventListener("click", () => {
+  scrollToSection(visualPreparationSection);
+});
+
+syncReferenceInputMode("upload", { clearSelection: false });
+
+Promise.allSettled([loadVisualPackages(), loadIllustrativeVideoCatalog(), checkService()]).then(async (results) => {
   const packageResult = results[0];
   if (packageResult.status === "rejected") {
     formMessage.textContent = `${packageResult.reason.message} Reload this page to try again.`;

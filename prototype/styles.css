@@ -4552,10 +4552,92 @@ footer {
 
 .sign-input-card .form-field:first-of-type,
 .sign-input-card fieldset:nth-of-type(2) .upload-zone,
+.sign-input-card fieldset:nth-of-type(2) .reference-input-choice,
+.sign-input-card fieldset:nth-of-type(2) .reference-input-panel,
 .sign-input-card fieldset:nth-of-type(2) .demo-reference-row,
 .sign-input-card fieldset:nth-of-type(2) .sign-run-actions,
 .sign-input-card fieldset:nth-of-type(2) .form-message {
   grid-column: 1 / -1;
+}
+
+.reference-input-choice {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.reference-input-choice label {
+  display: grid;
+  min-height: 72px;
+  grid-template-columns: 24px 1fr;
+  gap: 12px;
+  align-items: center;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--white);
+  cursor: pointer;
+}
+
+.reference-input-choice label:has(input:checked) {
+  border-color: var(--primary);
+  background: var(--surface);
+  box-shadow: 0 0 0 2px rgba(31, 111, 107, 0.12);
+}
+
+.reference-input-choice label:has(input:focus-visible) {
+  outline: 3px solid rgba(31, 111, 107, 0.24);
+  outline-offset: 3px;
+}
+
+.reference-input-choice input {
+  width: 22px;
+  height: 22px;
+  accent-color: var(--primary);
+}
+
+.reference-input-choice span {
+  display: grid;
+  gap: 3px;
+}
+
+.reference-input-choice small,
+.input-panel-meta {
+  color: var(--muted);
+  font-size: 0.76rem;
+}
+
+.reference-input-panel {
+  min-width: 0;
+}
+
+.direct-url-panel {
+  display: grid;
+  gap: 12px;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+}
+
+.direct-url-panel .form-field {
+  margin: 0;
+}
+
+.input-panel-label {
+  color: var(--text) !important;
+  font-size: 0.74rem !important;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.input-panel-meta {
+  margin: 0;
+}
+
+.direct-url-panel .button {
+  justify-self: start;
 }
 
 .sign-input-card .form-field small {
@@ -4963,8 +5045,149 @@ footer {
 }
 
 .visual-preparation-section,
+.illustrative-motion-section,
 .visual-review-section {
   scroll-margin-top: 88px;
+}
+
+.illustrative-motion-card {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(320px, 1.05fr);
+  gap: clamp(22px, 4vw, 48px);
+  align-items: stretch;
+  padding: clamp(22px, 4vw, 38px);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--white);
+  box-shadow: 0 16px 40px rgba(31, 63, 61, 0.06);
+}
+
+.illustrative-media,
+.illustrative-missing,
+.illustrative-copy {
+  min-width: 0;
+}
+
+.illustrative-media {
+  display: grid;
+  gap: 12px;
+  align-content: start;
+}
+
+.illustrative-media .status-pill,
+.illustrative-missing .status-pill {
+  justify-self: start;
+}
+
+.illustrative-media video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 10px;
+  background: #182422;
+  object-fit: contain;
+}
+
+.illustrative-media > p {
+  margin: 0;
+  color: var(--primary-dark);
+  font-size: 0.8rem;
+  font-weight: 750;
+}
+
+.illustrative-missing {
+  display: grid;
+  min-height: 280px;
+  gap: 10px;
+  align-content: center;
+  padding: clamp(22px, 4vw, 34px);
+  border: 1px dashed #aeb9b8;
+  border-radius: 12px;
+  background: var(--surface);
+}
+
+.illustrative-missing h3,
+.illustrative-missing p {
+  margin: 0;
+}
+
+.illustrative-missing p,
+.illustrative-copy > p {
+  color: var(--muted);
+}
+
+.illustrative-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.illustrative-copy > p {
+  margin: 0;
+}
+
+.illustrative-copy > p:first-child {
+  padding: 16px 18px;
+  border-left: 3px solid var(--accent);
+  background: var(--surface);
+  color: var(--text);
+}
+
+.illustrative-copy details {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.illustrative-copy summary {
+  display: flex;
+  min-height: 48px;
+  align-items: center;
+  padding: 10px 16px;
+  color: var(--primary-dark);
+  cursor: pointer;
+  font-weight: 780;
+}
+
+.illustrative-copy details[open] summary {
+  border-bottom: 1px solid var(--border);
+}
+
+.illustrative-copy dl {
+  display: grid;
+  margin: 0;
+  padding: 8px 16px 14px;
+}
+
+.illustrative-copy dl div {
+  display: grid;
+  grid-template-columns: minmax(110px, 0.38fr) 1fr;
+  gap: 14px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.illustrative-copy dl div:last-child {
+  border-bottom: 0;
+}
+
+.illustrative-copy dt {
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 750;
+}
+
+.illustrative-copy dd {
+  margin: 0;
+  font-size: 0.78rem;
+}
+
+.illustrative-copy .research-milestone {
+  font-size: 0.8rem;
+}
+
+.illustrative-copy .button {
+  align-self: flex-start;
+  margin-top: auto;
 }
 
 .grounding-summary {
@@ -5325,6 +5548,7 @@ footer {
   }
 
   .sign-input-card fieldset,
+  .reference-input-choice,
   .technical-detail-grid,
   .movement-comparison,
   .diagnostic-evidence,
@@ -5332,6 +5556,10 @@ footer {
   .visual-brief-card,
   .visual-candidates,
   .downstream-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .illustrative-motion-card {
     grid-template-columns: 1fr;
   }
 

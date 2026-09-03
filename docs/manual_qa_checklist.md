@@ -4,7 +4,12 @@ Use `poc_env/bin/python mvp/app.py`, then open `http://127.0.0.1:8000/create-sig
 
 ## Create a Sign
 
-- [ ] Select the demo reference and confirm its selected state.
+- [ ] Confirm `Upload a video` and `Use a direct video URL` are the only two source modes; only the selected field is visible, enabled and submitted.
+- [ ] Switch between both modes and confirm a stale file or URL cannot leak into the other request.
+- [ ] Select the demo reference and confirm it remains a MORE shortcut, not a third source mode.
+- [ ] Submit a valid public direct MP4 URL; confirm it runs through the same review flow, retains the explicit selected sign and stores no query string in displayed/restored provenance.
+- [ ] Submit a normal webpage URL; confirm the controlled error explains that a direct MP4 is required and offers `Upload a video instead` without clearing the selected sign.
+- [ ] Try `file:`, credential-bearing, localhost/private-address and oversized URL cases; confirm they fail closed without a partial or orphaned run.
 - [ ] Run the reference review and watch all seven processing stages.
 - [ ] Play the reference and skeleton/landmark previews side by side.
 - [ ] Confirm frames, pose coverage, hand coverage and missing frames describe capture—not sign accuracy.
@@ -12,7 +17,10 @@ Use `poc_env/bin/python mvp/app.py`, then open `http://127.0.0.1:8000/create-sig
 - [ ] Confirm the practical value statement, the two decision charts and the collapsed technical/source details.
 - [ ] Confirm tracked poses are offered at 90% tracked-hand coverage and disabled with a clear reason below 90%.
 - [ ] Save one or two poses, create/approve a visual and open family materials.
-- [ ] Choose `Different pose`; confirm the completed reference review remains and MediaPipe does not rerun.
+- [ ] After pose approval, confirm MORE, HELP and MILK show only their registered illustrative video, and EAT, SLEEP and WATER show `Video preview not available for this sign yet.` with `Continue to family materials`.
+- [ ] Confirm the available preview says it was prepared separately and the collapsed technical details identify Google Labs FX / Gemini FX, pre-generated status, no current-run or landmark control, demo-only use, human review and no certification.
+- [ ] Confirm an unavailable or failed illustrative video clears any stale video/source and never blocks the ordinary visual preparation or family-material handoff.
+- [ ] Choose `Different pose`; confirm the completed reference review, chart evidence, result state and run identity remain, MediaPipe does not rerun, and the illustrative preview resets until pose approval.
 
 ## Content Engine
 

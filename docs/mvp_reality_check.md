@@ -6,7 +6,7 @@ This classification is based on repository evidence on 3 September 2026. “Func
 
 | Capability | Evidence and boundary |
 |---|---|
-| Local reference-video intake | `mvp/app.py` accepts a demo reference or an uploaded MP4. Extension, empty-file and filename-safety cases are tested. |
+| Local reference-video intake | `mvp/app.py` accepts the registered MORE demo shortcut, an uploaded MP4, or a public direct MP4 URL. Upload safety plus URL scheme, credentials, DNS/address, redirects, timeout, MIME, byte cap, generated filename, cleanup and provenance-redaction cases are tested. This remains a local control rather than a production fetch service. |
 | MediaPipe processing | The MVP calls the existing `poc/src` extraction, normalization and analysis functions. It does not duplicate the CV implementation. |
 | Run isolation | Each run uses a generated ID under ignored `mvp/runs/`; upload filenames do not determine filesystem paths. |
 | Landmark/skeleton preview | The pipeline writes a run-specific landmark-overlay video and browser-facing H.264 copy when ffmpeg is available. |
@@ -15,6 +15,7 @@ This classification is based on repository evidence on 3 September 2026. “Func
 | POC evidence | The current app demo is the registered MORE reference. The committed Round 1 WATER run remains supporting evidence with 332 frames, 100% pose coverage, 93.98% dominant-hand coverage, 20 missing hand frames and a partial motion-representation result. |
 | Grounded visual review | MORE, HELP, EAT, SLEEP, MILK and WATER use the unchanged registered Open Peeps bust as the sole character base and a shared upper-limb grammar. Sign mechanics come from each sign’s functional reference and curated knowledge; video/frame/landmark data is supporting geometry. Human review controls printable-proof readiness. |
 | Sign-aware EAT fallback | The observed EAT run remains reviewable at 76.57% hand coverage and explicitly routes to knowledge/sign-reference fallback with a required operator rationale. It is not sign certification. |
+| Separate illustrative motion demo | After pose approval, the local UI can stream hash-verified registered Google Labs FX / Gemini FX outputs for MORE, HELP and MILK. The service exposes safe sign routes rather than filesystem paths. EAT, SLEEP and WATER fail closed to an honest unavailable state, and the preview never replaces current-run evidence or blocks visual preparation. |
 | Flashcard Studio | Internal KinderFlow tool with English/Spanish output, distinct Flashcard and Routine Card layouts, deterministic preview and human-controlled local proof approval. Routine guidance occupies its own row. |
 | Browser print | The builder opens a dedicated A5 portrait route. That route validates the exact local approval, waits for images, renders one card and then enables Print / Save as PDF. Final saved-PDF visual QA remains pending. No PNG action is exposed. |
 | Structured sign source | `prototype/data/signs.json` supplies five local bilingual records for rendering/regression. It is not a professionally approved library. |
@@ -50,6 +51,7 @@ Environment note: the validated local prototype uses the existing `poc_env` with
 | Capability | Missing evidence or work |
 |---|---|
 | Professionally approved reference library | Source rights, sign identity and professional suitability are not confirmed for the current local reference. |
+| Approved illustrative-motion rights and fidelity | The three registered Gemini FX demonstration files are pre-generated and separate from the current reference run. Display/redistribution permission, landmark-driven provenance, motion fidelity and qualified human approval are not established. |
 | Production-approved sign artwork | Source-grounded Open Peeps-derived vectors exist for all six canonical visual signs, but every option remains a draft requiring qualified human review; none is professionally certified or published by this implementation. |
 | Professional hand-pose review | Candidate review is operator-controlled local state; professional sign-language review evidence remains outside this prototype. |
 | Production avatar | No validated retargeting, generation or movement-fidelity result exists. |
