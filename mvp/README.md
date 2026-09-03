@@ -4,11 +4,13 @@ This local MVP serves two connected internal capabilities: the existing Create a
 
 ## Requirements
 
-- Python 3.11 or 3.12;
+- Python 3.11 or 3.12 as the target/recommended clean environment; this exact clean setup has not yet been revalidated in the current evidence pass;
 - MediaPipe legacy Solutions API (MediaPipe 0.10);
 - ffmpeg with an H.264 encoder available on PATH;
 - an MP4 reference video; and
 - the existing local demo file at *poc/input/sign_reference.mp4* for the demo-reference path.
+
+The currently evidenced local `poc_env` uses Python 3.9.6 with MediaPipe 0.10.14 and passes the non-integration suites. The machine's default Python 3.13 environment is not equivalent: its MediaPipe 1.0.1 package does not expose the legacy `solutions` API.
 
 Create and activate a virtual environment, then install:
 

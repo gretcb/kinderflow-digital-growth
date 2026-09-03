@@ -10,7 +10,16 @@ const STAGES = [
   ["results_ready", "Results ready"]
 ];
 
-const state = { source: null, file: null, run: null, polling: null };
+const state = {
+  source: null,
+  file: null,
+  run: null,
+  polling: null,
+  visualPackages: [],
+  activePackage: null,
+  selectedCandidate: null,
+  generationRevision: 0
+};
 const form = document.querySelector("#sign-run-form");
 const fileInput = document.querySelector("#reference-video");
 const fileName = document.querySelector("#selected-file-name");
@@ -23,6 +32,8 @@ const processingNote = document.querySelector("#processing-note");
 const stageList = document.querySelector("#processing-stages");
 const resultSection = document.querySelector("#result-section");
 const reviewSection = document.querySelector("#review-section");
+const visualPreparationSection = document.querySelector("#visual-preparation-section");
+const visualReviewSection = document.querySelector("#visual-review-section");
 const downstreamSection = document.querySelector("#downstream-section");
 
 const escapeQuery = (value) => encodeURIComponent(value || "");
@@ -58,17 +69,31 @@ const resetRun = () => {
   state.run = null;
   resultSection.hidden = true;
   reviewSection.hidden = true;
+  visualPreparationSection.hidden = true;
+  visualReviewSection.hidden = true;
   downstreamSection.hidden = true;
+  state.activePackage = null;
+  state.selectedCandidate = null;
+  state.generationRevision = 0;
+  document.querySelector("#visual-candidates").replaceChildren();
+  const generateButton = document.querySelector("#generate-visual-candidates");
+  generateButton.disabled = false;
+  generateButton.textContent = "Generate visual candidates";
+  const regenerateButton = document.querySelector("#regenerate-candidate");
+  regenerateButton.disabled = false;
+  const approveVisualButton = document.querySelector("#approve-visual");
+  approveVisualButton.disabled = true;
+  approveVisualButton.textContent = "Approve visual";
   retryButton.hidden = true;
   const approve = document.querySelector("#approve-sign");
   approve.hidden = false;
   approve.disabled = false;
-  approve.textContent = "Approve";
+  approve.textContent = "Prepare visual";
   document.querySelector("#use-another-reference").hidden = false;
   const reviewState = document.querySelector("#review-state");
-  reviewState.textContent = "Draft";
+  reviewState.textContent = "Technical review needed";
   reviewState.className = "status-pill status-review";
-  setText("#review-message", "No approval action recorded.");
+  setText("#review-message", "No technical review action recorded.");
   form.querySelectorAll("input, select, button").forEach((control) => { control.disabled = false; });
   runButton.disabled = !state.source;
   renderStages();
@@ -141,6 +166,8 @@ form.addEventListener("submit", async (event) => {
   retryButton.hidden = true;
   resultSection.hidden = true;
   reviewSection.hidden = true;
+  visualPreparationSection.hidden = true;
+  visualReviewSection.hidden = true;
   downstreamSection.hidden = true;
   formMessage.textContent = "Sending the local reference to the movement pipeline…";
   processingNote.textContent = "Starting the movement check. Processing may take about a minute.";
@@ -186,6 +213,41 @@ const pollRun = async (runId) => {
 
 const setText = (selector, value) => { document.querySelector(selector).textContent = value; };
 
+const normalizeSignId = (value) => (value || "")
+  .trim()
+  .toLowerCase()
+  .replaceAll(/[^a-z0-9]+/g, "_")
+  .replaceAll(/^_+|_+$/g, "");
+
+const loadVisualPackages = async () => {
+  const response = await fetch("data/visual_sign_packages.json", { cache: "no-store" });
+  if (!response.ok) throw new Error("Visual sign packages are unavailable.");
+  const payload = await response.json();
+  if (!Array.isArray(payload.signs)) throw new Error("Visual sign packages are invalid.");
+  state.visualPackages = payload.signs;
+};
+
+const evidenceRouteFor = (technicalStatus) => {
+  if (technicalStatus === "Pass") return {
+    level: 1,
+    title: "MediaPipe key poses",
+    note: "Curated sign knowledge + MediaPipe key poses from this run.",
+    status: "Usable"
+  };
+  if (technicalStatus === "Review needed") return {
+    level: 2,
+    title: "Representative reference frames",
+    note: "Curated sign knowledge + representative frames because landmark evidence has conditions.",
+    status: "With conditions"
+  };
+  return {
+    level: 3,
+    title: "Reference-guided fallback",
+    note: "Curated sign knowledge + visual reference notes because landmarks are not useful.",
+    status: "Review needed"
+  };
+};
+
 const loadRunVideo = (video, status, url, runId) => {
   video.pause();
   video.removeAttribute("src");
@@ -210,15 +272,16 @@ const loadRunVideo = (video, status, url, runId) => {
 const finishRun = (run) => {
   retryButton.hidden = false;
   retryButton.disabled = false;
-  formMessage.textContent = run.state === "complete" ? "Movement check complete." : run.error.message;
+  formMessage.textContent = run.state === "complete" ? "Movement check complete." : run.error?.message || "Movement check finished with limited evidence.";
   const isComplete = run.state === "complete";
-  const canApprove = isComplete && ["Pass", "Review needed"].includes(run.technical_status);
+  state.activePackage = state.visualPackages.find((item) => item.sign_id === normalizeSignId(run.sign?.name));
+  const canPrepare = Boolean(state.activePackage);
   const hasMetrics = Boolean(run.metrics);
   const hasArtifacts = Boolean(run.artifacts && run.artifacts.reference_video_url);
   const explanations = {
-    "Pass": "Technical capture is sufficient for review.",
-    "Review needed": "The run produced usable movement data, but technical issues should be reviewed before approval.",
-    "Fail": "The reference does not provide sufficient technical movement data."
+    "Pass": "Technical capture is sufficient to prepare a review candidate.",
+    "Review needed": "The run produced usable evidence with conditions. Review it before preparing the visual.",
+    "Fail": "Landmark evidence is not useful. The visual workflow can continue through a reference-guided fallback."
   };
   setText("#result-kicker", "Movement check complete");
   setText("#result-title", run.technical_status);
@@ -227,7 +290,7 @@ const finishRun = (run) => {
     ? "Results ready. Review the summary and visual evidence below."
     : run.error?.message || "The movement check could not be completed.";
   setText("#technical-status", run.technical_status);
-  setText("#content-status", run.content_status);
+  setText("#content-status", run.technical_status === "Fail" ? "Review needed" : "Ready for human review");
   setText("#run-identifier", `Run ${run.run_id}`);
   document.querySelector("#movement-comparison").hidden = !hasArtifacts;
   document.querySelector("#technical-details").hidden = !hasMetrics;
@@ -277,42 +340,168 @@ const finishRun = (run) => {
   }));
   reviewReasons.hidden = run.technical_status === "Pass";
   const approveButton = document.querySelector("#approve-sign");
-  approveButton.hidden = !canApprove;
-  approveButton.textContent = run.technical_status === "Review needed" ? "Approve anyway" : "Approve";
+  approveButton.hidden = !canPrepare;
+  approveButton.textContent = state.activePackage ? `Prepare ${state.activePackage.labels.en} visual` : "Prepare visual";
   const reviewHeadings = {
-    "Pass": "Approve this sign",
-    "Review needed": "Review technical notes",
-    "Fail": "Use another reference video"
+    "Pass": "Ready to prepare visual",
+    "Review needed": "Technical review needed",
+    "Fail": "Movement evidence needs fallback"
   };
   const reviewGuidance = {
-    "Pass": "The technical capture is sufficient. Human approval remains the publication decision.",
-    "Review needed": "Review the reasons below, then approve anyway or use another reference.",
-    "Fail": "Approval is unavailable because the technical capture failed."
+    "Pass": "Review the movement evidence, then prepare a grounded visual candidate.",
+    "Review needed": "Review the conditions below, then prepare the visual or use another reference.",
+    "Fail": "The system will use the sign package and reference notes to create a review-needed pose guide instead of stopping."
   };
-  setText("#review-title", reviewHeadings[run.technical_status] || "Movement check could not be completed");
-  setText("#review-guidance", reviewGuidance[run.technical_status] || "Use another reference video.");
+  setText("#review-title", reviewHeadings[run.technical_status] || "Review movement evidence");
+  setText("#review-guidance", canPrepare
+    ? reviewGuidance[run.technical_status] || "Review the evidence before preparing a visual."
+    : "No local visual package matches this sign yet. Use another sign or add a reviewed package.");
+  const reviewState = document.querySelector("#review-state");
+  reviewState.textContent = run.technical_status === "Pass" ? "Ready to prepare visual" : "Technical review needed";
+  reviewState.className = `status-pill ${run.technical_status === "Pass" ? "status-ready" : "status-review"}`;
   resultSection.hidden = false;
   reviewSection.hidden = false;
   resultSection.scrollIntoView({ behavior: "smooth", block: "start" });
 };
 
+const renderVisualPreparation = () => {
+  const signPackage = state.activePackage;
+  const route = evidenceRouteFor(state.run.technical_status);
+  document.querySelectorAll("[data-active-sign]").forEach((element) => { element.textContent = signPackage.labels.en; });
+  setText("#grounding-source", signPackage.grounding_sources[0].label);
+  setText("#grounding-source-note", signPackage.grounding_sources[0].role);
+  setText("#grounding-source-status", signPackage.grounding_sources[0].status === "Applied" ? "Applied" : "Review");
+  setText("#grounding-motion", route.title);
+  setText("#grounding-motion-note", route.note);
+  setText("#grounding-motion-status", route.status);
+  document.querySelector("#grounding-motion-status").className = `grounding-status ${route.level === 1 ? "status-ready" : "status-review"}`;
+  setText("#grounding-character", signPackage.visual_identity.base_system);
+  setText("#grounding-character-note", `${signPackage.visual_identity.face} · ${signPackage.visual_identity.hair} · ${signPackage.visual_identity.body} · ${signPackage.visual_identity.mood.toLowerCase()}`);
+  setText("#visual-brief-title", `${signPackage.movement.hands} hands · ${signPackage.movement.body_location.toLowerCase()} · repeated inward movement`);
+  setText("#visual-brief-description", `${signPackage.movement.description} ${signPackage.movement.presentation}`);
+  setText("#fallback-title", `Evidence route ${route.level}`);
+  setText("#fallback-description", route.note);
+  setText("#visual-preparation-status", "Ready to create two grounded, static candidates.");
+};
+
 document.querySelector("#approve-sign").addEventListener("click", (event) => {
+  if (!state.activePackage) return;
   event.currentTarget.disabled = true;
-  event.currentTarget.textContent = "Review recorded";
+  event.currentTarget.textContent = "Evidence reviewed";
   document.querySelector("#use-another-reference").hidden = true;
   const reviewState = document.querySelector("#review-state");
-  reviewState.textContent = "Approved locally";
+  reviewState.textContent = "Ready to prepare visual";
   reviewState.className = "status-pill status-ready";
-  setText("#content-status", "Ready for content preparation");
-  setText("#result-kicker", "Human review recorded locally");
-  setText("#result-title", "Ready for content preparation");
+  setText("#content-status", "Ready to prepare visual");
+  setText("#result-kicker", "Technical review recorded locally");
+  setText("#result-title", "Ready to prepare visual");
   setText("#review-title", "Movement review recorded");
-  setText("#review-guidance", "Continue to the Content Engine. Final library publication remains a separate controlled decision.");
-  setText("#review-message", "Local browser state only. No production approval or publication record was created.");
+  setText("#review-guidance", "The evidence route is resolved. Prepare the visual using the grounded sign package.");
+  setText("#review-message", "Local browser state only. No linguistic certification or publication record was created.");
+  renderVisualPreparation();
+  visualPreparationSection.hidden = false;
+  visualPreparationSection.scrollIntoView({ behavior: "smooth", block: "start" });
+});
+
+const createCandidateCard = (candidate, index) => {
+  const label = document.createElement("label");
+  label.className = "visual-candidate-card";
+  const input = document.createElement("input");
+  input.type = "radio";
+  input.name = "visual_candidate";
+  input.value = candidate.id;
+  input.addEventListener("change", () => {
+    state.selectedCandidate = candidate;
+    document.querySelectorAll(".visual-candidate-card").forEach((card) => card.classList.remove("is-selected"));
+    label.classList.add("is-selected");
+    document.querySelector("#approve-visual").disabled = false;
+    setText("#visual-review-status", `${candidate.label} selected. Check the hands and movement cue, then approve the visual.`);
+  });
+  const imageFrame = document.createElement("div");
+  imageFrame.className = "candidate-image-frame";
+  const image = document.createElement("img");
+  image.src = `${candidate.asset}?revision=${state.generationRevision}`;
+  image.alt = `${candidate.title} for the ${state.activePackage.labels.en} sign`;
+  imageFrame.append(image);
+  const body = document.createElement("div");
+  body.className = "candidate-card-body";
+  const top = document.createElement("div");
+  const badge = document.createElement("span");
+  badge.className = "candidate-label";
+  badge.textContent = candidate.label;
+  const recommendation = document.createElement("span");
+  recommendation.className = "candidate-recommendation";
+  recommendation.textContent = candidate.recommended ? "Recommended" : "Alternative";
+  top.append(badge, recommendation);
+  const title = document.createElement("h3");
+  title.textContent = candidate.title;
+  const note = document.createElement("p");
+  note.textContent = candidate.review_note;
+  const checks = document.createElement("ul");
+  ["Two hands visible", "Upper-chest location", index === 0 ? "Repeat cue visible" : "Start and contact poses"].forEach((copy) => {
+    const item = document.createElement("li");
+    item.textContent = copy;
+    checks.append(item);
+  });
+  body.append(top, title, note, checks);
+  label.append(input, imageFrame, body);
+  return label;
+};
+
+const renderVisualCandidates = () => {
+  state.selectedCandidate = null;
+  document.querySelector("#approve-visual").disabled = true;
+  const candidates = [...state.activePackage.candidates];
+  if (state.generationRevision % 2 === 1) candidates.reverse();
+  document.querySelector("#visual-candidates").replaceChildren(...candidates.map(createCandidateCard));
+  setText("#visual-review-status", "Select one candidate to continue.");
+};
+
+document.querySelector("#generate-visual-candidates").addEventListener("click", (event) => {
+  event.currentTarget.disabled = true;
+  event.currentTarget.textContent = "Generating visual…";
+  setText("#visual-preparation-status", "Generating visual candidates from the resolved sign package…");
+  window.setTimeout(() => {
+    renderVisualCandidates();
+    visualReviewSection.hidden = false;
+    setText("#visual-preparation-status", "Two controlled candidates are ready for visual review.");
+    event.currentTarget.textContent = "Candidates generated";
+    const visualState = document.querySelector("#visual-review-state");
+    visualState.textContent = "Visual review";
+    visualState.className = "status-pill status-review";
+    visualReviewSection.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, 550);
+});
+
+document.querySelector("#regenerate-candidate").addEventListener("click", () => {
+  state.generationRevision += 1;
+  renderVisualCandidates();
+  setText("#visual-review-status", "Controlled alternatives refreshed from the same grounded brief. Select one to continue.");
+});
+
+document.querySelector("#approve-visual").addEventListener("click", (event) => {
+  if (!state.selectedCandidate) return;
+  event.currentTarget.disabled = true;
+  event.currentTarget.textContent = "Visual approved";
+  document.querySelector("#regenerate-candidate").disabled = true;
+  document.querySelectorAll('input[name="visual_candidate"]').forEach((input) => { input.disabled = true; });
+  const visualState = document.querySelector("#visual-review-state");
+  visualState.textContent = "Approved for printable";
+  visualState.className = "status-pill status-ready";
+  setText("#visual-review-status", `${state.selectedCandidate.label} approved locally for printable creation.`);
+  setText("#content-status", "Approved for printable");
+  sessionStorage.setItem("kinderflowApprovedVisual", JSON.stringify({
+    sign_id: state.activePackage.sign_id,
+    candidate_id: state.selectedCandidate.id,
+    asset: state.selectedCandidate.asset,
+    status: "APPROVED_FOR_PRINTABLE",
+    source_run: state.run.run_id
+  }));
   const sign = state.run.sign;
   const query = `?sign=${escapeQuery(sign.name)}&routine=${escapeQuery(sign.routine_context)}&source_run=${escapeQuery(state.run.run_id)}`;
   document.querySelector("#continue-content-engine-link").href = `library.html${query}#content-engine-title`;
   document.querySelector("#create-story-link").href = `create-story.html${query}`;
+  document.querySelector("#create-printable-link").href = `flashcards.html?sign=${escapeQuery(sign.name)}&visual=${escapeQuery(state.selectedCandidate.id)}&approved=1`;
   downstreamSection.hidden = false;
   downstreamSection.scrollIntoView({ behavior: "smooth", block: "start" });
 });
@@ -331,4 +520,9 @@ const checkService = async () => {
   }
 };
 
-checkService();
+Promise.allSettled([loadVisualPackages(), checkService()]).then((results) => {
+  const packageResult = results[0];
+  if (packageResult.status === "rejected") {
+    formMessage.textContent = `${packageResult.reason.message} Serve the prototype through the local MVP service and reload.`;
+  }
+});

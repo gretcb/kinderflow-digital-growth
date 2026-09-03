@@ -14,7 +14,7 @@ These are inputs for later analysis, not an ROI conclusion.
 | Kinder Signs prepares the master content. Schools select and assign available items. | `feedback/round1_decision.md`; prototype role separation |
 | The prototype represents flashcards, stories and songs as potential service/content access. No billing exists. | `prototype/admin.html`; `prototype/school.html`; `prototype/content-studio.html` |
 | Round 1 estimated an 8–9 week validation period. | `cost_timeline/estimate.md` |
-| Round 1 estimated a validation budget of €5.5k–€17.8k. | `cost_timeline/estimate.md` |
+| The reconciled Round 1 line items estimate a validation budget of €5.5k–€17.3k. | `cost_timeline/estimate.md` |
 | That estimate is a validation budget, not a launch budget. | `cost_timeline/estimate.md` |
 | The largest listed cost drivers are expert review, user research, original content production, educator testing and multi-sign technical refinement. | `cost_timeline/estimate.md` |
 | No real pilot results exist in the repository. | Evidence review; pilot files define future events only |
@@ -43,4 +43,4 @@ These are inputs for later analysis, not an ROI conclusion.
 - Retention and expansion after an initial pilot.
 - Pilot economics and any credible return calculation.
 
-Do not turn the €5.5k–€17.8k validation estimate into a product price or ROI result.
+Do not turn the €5.5k–€17.3k validation estimate into a product price or ROI result.

@@ -94,11 +94,11 @@
       },
       "readiness": {
         "movement_intelligence": "technical_evidence_available",
-        "character": "candidates_ready_for_founder_review",
-        "context": "manual_export_identified",
-        "hand_pose": "needs_review",
+        "character": "controlled_vector_proof_ready",
+        "context": "context_asset_ready",
+        "hand_pose": "ready_for_human_review",
         "content": "ready_for_review",
-        "flashcard": "preview_ready_with_placeholder",
+        "flashcard": "preview_ready_with_controlled_visual",
         "library": "BLOCKED_BY_HAND_REVIEW"
       },
       "content_review": "PENDING",

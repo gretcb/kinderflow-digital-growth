@@ -6,11 +6,11 @@ This folder contains the smallest credible workflow layer for transforming appro
 approved sign content + CV motion summary
 → LLM-generated family draft
 → deterministic quality checks
-→ LangSmith trace/evaluation
+→ optional LangSmith trace/evaluation for the LLM step
 → draft pending professional approval
 ```
 
-The LLM transforms approved content into a draft. The quality gate checks unsupported claims, traceability, review status, and movement-note adherence. LangSmith traces the LLM content-transformation step.
+The LLM path can transform approved content into a draft. The quality gate checks unsupported claims, traceability, review status, and movement-note adherence. The repository evidences a LangSmith dry-run only; LIVE external execution and a LIVE trace/evaluation are not yet evidenced.
 
 Nothing in this workflow validates sign correctness or publishes content automatically.
 

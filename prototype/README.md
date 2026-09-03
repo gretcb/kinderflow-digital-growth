@@ -95,13 +95,13 @@ Not every problem needs generative AI.
 
 ## Create a sign
 
-The internal flow remains:
+The internal MVP flow is:
 
-`Validated reference sign video → MediaPipe processing → landmarks → movement preview → technical metrics → human review → publish`
+`Validated reference sign video → MediaPipe processing → movement evidence → technical review → grounded visual preparation → candidate review → approved printable → Flashcard / Routine Card → EN / ES → Print as PDF`
 
 The Create a Sign route becomes functional when it is served by the local MVP service. An operator can use the existing demo reference or select another MP4. Each run uses the real POC pipeline, produces its own movement overlay and diagnostics, and reports only metrics calculated for that input.
 
-The browser preview is an H.264 MP4 created from the real OpenCV/MediaPipe overlay through a local ffmpeg transcode. Operator-facing outcomes are **Pass**, **Review needed**, or **Fail**. Only Pass and Review needed may be approved; Fail requires another reference.
+The browser preview is an H.264 MP4 created from the real OpenCV/MediaPipe overlay through a local ffmpeg transcode. Operator-facing outcomes are **Pass**, **Review needed**, or **Fail**. Pass uses MediaPipe key poses, Review needed uses representative reference frames, and Fail can still create a controlled review-needed pose guide from the local sign package instead of ending in an empty state.
 
 Start it from the repository root:
 
@@ -111,7 +111,7 @@ python mvp/app.py
 
 Then open [http://127.0.0.1:8000/create-sign.html](http://127.0.0.1:8000/create-sign.html).
 
-No child video is required. Files remain local, every run is isolated under *mvp/runs/*, and canonical Round 1 evidence is not overwritten. Technical metrics are movement-processing signals, not linguistic correctness certification or system-wide accuracy. Human review remains the publication gate. Production-ready avatar generation is not complete.
+No child video is required. Files remain local, every run is isolated under *mvp/runs/*, and canonical Round 1 evidence is not overwritten. Technical metrics are movement-processing signals, not linguistic correctness certification or system-wide accuracy. Technical review, visual approval and publication remain separate decisions. Production-ready avatar generation is not complete.
 
 ## Kinder Signs Flashcard Studio
 
@@ -127,7 +127,7 @@ reviewed sign data
 → Signs & Flashcards Library
 ```
 
-The source model is `prototype/data/signs.json`. It contains initial records for MORE, EAT, WATER, ALL DONE and HELP, including publication, artwork, hand-pose, review, visibility and export readiness. MORE is the only eligible internal visual proof, but final library release is still blocked by the custom hand review. Selecting another record shows why it is not ready instead of rendering a misleading card.
+The source model is `prototype/data/signs.json`, and `prototype/data/visual_sign_packages.json` provides the deterministic visual-preparation package resolved by `sign_id`. It contains the bilingual copy, movement brief, evidence route, character identity, candidate assets, context image and routine icon semantics needed by the renderer. MORE is the only complete end-to-end printable proof; final library release is still blocked by qualified hand review and publication approval. Selecting another record shows why it is not ready instead of rendering a misleading card.
 
 The asset contract is documented under `assets/flashcards/`. It reserves separate locations for:
 
@@ -138,7 +138,7 @@ The asset contract is documented under `assets/flashcards/`. It reserves separat
 - template assets; and
 - local exports.
 
-Local Open Peeps and Miroodles source libraries have been audited but remain ignored, unmodified working sources. No licence or attribution record was found beside them, so no vendor asset has been copied into the runtime. Three clean modular Open Peeps recipes are recorded for founder review; their use remains blocked by licence verification. The preview deliberately says **Open Peeps character + Kinder Signs hand pose pending**. Open Peeps will define the modular character look; it will not provide or validate sign-specific hand biomechanics.
+Local Open Peeps and Miroodles source libraries remain unmodified working references. The runtime candidates are original controlled SVG proofs that apply the approved character direction (smile, bun2 and mid-2) without treating a generic Open Peeps pose as sign evidence. The MORE hand relationship and movement cue remain explicitly reviewable and do not claim linguistic certification.
 
 The two controlled visual rules are:
 
@@ -151,7 +151,7 @@ The intended production flow is:
 
 `Reviewed sign → controlled template → approve visual proof → published asset → print / export`
 
-The current MORE demo stops earlier: `reviewed sign content → Flashcard Studio proof → blocked by hand review`. Browser printing produces a marked review proof, not a published family asset.
+The current MORE demo completes the local operator path: `movement evidence → controlled visual candidates → local visual approval → Flashcard or Routine Card → EN or ES → browser Print / Save as PDF`. This creates a printable proof, not a published family asset.
 
 Controls remain intentionally limited to:
 
@@ -160,7 +160,7 @@ Controls remain intentionally limited to:
 - card type: Flashcard or Routine Card; and
 - local proof approval followed by browser print / Save as PDF.
 
-Browser-native Print → Save as PDF is the working export path. Print CSS places one 105 × 148 mm card on an A4 page, removes interface chrome, preserves selectable text and avoids splitting important card sections. PNG export is disabled and labelled `PNG export — prototype`; the interface does not simulate an image file. A real export should be added only after the official visual source and reviewed MORE hand asset exist, using a controlled renderer that can reproduce the preview reliably.
+The Flashcard uses a calm, realistic snack-time context image plus the sign illustration; the sign remains the primary educational element. The Routine Card uses the same sign illustration, a KinderFlow-style snack icon, a routine label and one guidance sentence, with no contextual photo. Browser-native Print → Save as PDF is the working export path. Print CSS places one 105 × 148 mm card on an A4 page, removes interface chrome, preserves selectable text and avoids splitting important card sections. PNG export remains disabled and honestly labelled.
 
 When a school/group or child has the Flashcards pack active, the matching reviewed flashcard is included automatically in prepared family output. When the pack is inactive, the item can remain visible to the school as available content but is not sent to families. No billing, manual educator design, freeform editor, server-side PDF service or persistence is included.
 

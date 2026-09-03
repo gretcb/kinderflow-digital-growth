@@ -13,8 +13,8 @@ This classification is based on repository evidence on 2 September 2026. “Func
 | Real movement metrics | Run responses contain calculated frames, pose/hand coverage, missing frames, gaps and technical status. |
 | Controlled CV result states | The service distinguishes pass, review needed, insufficient coverage and processing failure. |
 | POC evidence | One reference has 332 frames, 100% pose coverage, 93.98% dominant-hand coverage, 20 missing hand frames and a partial motion-representation result. |
-| Flashcard Studio | Local sign selection, Spanish/English switch, three templates, A6/A5 sizing, routine/tips controls and immediate preview are implemented. |
-| Browser print | Print actions call `window.print()` and print CSS isolates the selected output. This is not server-side PDF generation. |
+| Flashcard Studio | Internal KinderFlow tool with local sign selection, English/Spanish output, Flashcard and Routine Card types, deterministic immediate preview and local proof approval. MORE is the only internal proof; other signs can be ineligible. There is no Family Guide, A5/A6 selector or tips toggle. |
+| Browser print | Print actions call `window.print()` and print CSS isolates the selected output. The browser Print / Save as PDF path is implemented, but final saved-PDF visual QA remains pending. This is not server-side PDF generation. PNG export is disabled and labelled prototype. |
 | Structured sign source | `prototype/data/signs.json` supplies five local bilingual records for rendering/regression. It is not a professionally approved library. |
 | Content-operations rules | Separate technical, content, visual and publication states are implemented in Python. Invalid status jumps are rejected. |
 | Deterministic readiness checks | Required content, visual assets, hand review, technical state and explicit human approval are checked with specific blocking reasons. |
@@ -32,8 +32,8 @@ Environment note: the non-integration MVP tests pass in the existing `poc_env` w
 
 | Capability | Evidence and boundary |
 |---|---|
-| Human approval controls | Buttons can move a browser session through review/publication states. No reviewer identity, signature or persistent approval exists. |
-| Demo publication | Prototype pages can show “Published” or “Published demo.” This is UI state, not evidence that professional approval occurred. |
+| Human approval controls | Buttons can record a local browser proof-approval state. A logical publication gate exists in Content Operations, but no reviewer identity, signature or persistent production approval exists. |
+| Demo publication | A local publication package and UI concepts exist, but MORE remains Draft/Blocked. No current sign is evidenced as published or available to schools. |
 | Master Content Library | The UI demonstrates scope and filtering. It is not backed by a production content database. |
 | School entitlements | Example access for School A/B/C is static and uses fictional names. No permission engine exists. |
 | Group/child assignment | Client-side controls show the intended hierarchy and confirmation. Nothing is sent or saved. |

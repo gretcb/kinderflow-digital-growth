@@ -8,11 +8,11 @@ This workflow transforms approved Kinder Signs content into a structured family-
 approved sign content + CV motion summary
 → LLM-generated family draft
 → deterministic quality checks
-→ LangSmith trace/evaluation
+→ optional LangSmith trace/evaluation for the LLM step
 → draft pending professional approval
 ```
 
-There is no automatic publication.
+There is no automatic publication. The current repository evidences the deterministic dry-run, not execution of this workflow in the target n8n runtime and not a live external LangSmith trace.
 
 ## Node design
 

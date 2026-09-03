@@ -4,7 +4,7 @@ This local, single-video experiment tests whether a validated adult reference vi
 
 ## Setup
 
-Use Python 3.11 or 3.12 with the MediaPipe 0.10 legacy Solutions API. From the repository root:
+Python 3.11 or 3.12 with the MediaPipe 0.10 legacy Solutions API is the target/recommended clean environment, but that exact setup has not yet been revalidated in the current evidence pass. The currently evidenced local `poc_env` uses Python 3.9.6 with MediaPipe 0.10.14; the machine's default Python 3.13/MediaPipe 1.0.1 environment is incompatible with the legacy `solutions` API. From the repository root:
 
 ```bash
 python -m venv poc_env

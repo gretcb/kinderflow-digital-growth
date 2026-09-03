@@ -23,9 +23,9 @@
       </section>
 
       <section class="sign-flow-shell section-shell" aria-labelledby="workflow-title">
-        <div class="workspace-heading compact-heading"><div><p class="eyebrow">Guided production</p><h2 id="workflow-title">From reference to review</h2></div><p>Computer Vision preserves and represents movement. A human reviewer controls publication.</p></div>
+        <div class="workspace-heading compact-heading"><div><p class="eyebrow">Guided production</p><h2 id="workflow-title">From reference to printable</h2></div><p>Each stage has one review decision and one clear next action.</p></div>
         <ol class="sign-production-flow" aria-label="Create a Sign production stages">
-          <li><span>01</span>Sign details</li><li><span>02</span>Reference video</li><li><span>03</span>Movement check</li><li><span>04</span>Human review</li><li><span>05</span>Content preparation</li>
+          <li><span>01</span>Reference</li><li><span>02</span>Processing</li><li><span>03</span>Technical review</li><li><span>04</span>Prepare visual</li><li><span>05</span>Visual review</li><li><span>06</span>Printable</li>
         </ol>
       </section>
 
@@ -74,7 +74,7 @@
         <div class="section-shell">
           <div class="result-summary">
             <div><p class="eyebrow" id="result-kicker">Movement check complete</p><h2 id="result-title">Technical result</h2><p id="result-explanation">Technical processing does not certify sign-language correctness.</p></div>
-            <dl class="status-separation"><div><dt>Technical status</dt><dd id="technical-status">—</dd></div><div><dt>Publication status</dt><dd id="content-status">—</dd></div></dl>
+            <dl class="status-separation"><div><dt>Technical status</dt><dd id="technical-status">—</dd></div><div><dt>Content status</dt><dd id="content-status">—</dd></div></dl>
           </div>
 
           <div class="movement-comparison" id="movement-comparison" aria-labelledby="movement-evidence-title">
@@ -101,19 +101,44 @@
 
       <section class="workspace-section section-shell review-section" id="review-section" aria-labelledby="review-title" hidden>
         <div class="review-gate-card">
-          <div><p class="eyebrow">Step 4</p><h2 id="review-title">Human approval is the publication gate</h2><p id="review-guidance">Review the technical evidence before publication.</p><ul class="review-reasons" id="review-reasons"></ul><p class="prototype-boundary">Demo/local controls only. No reviewer identity, audit trail or production persistence is implemented.</p></div>
-          <div class="review-controls"><span class="status-pill status-review" id="review-state">Draft</span><button class="button button-primary" id="approve-sign" type="button">Approve</button><button class="button button-secondary" id="use-another-reference" type="button">Use another reference video</button><p id="review-message" class="form-message" aria-live="polite">No approval action recorded.</p></div>
+          <div><p class="eyebrow">Step 4 · Technical review</p><h2 id="review-title">Review movement evidence</h2><p id="review-guidance">Confirm that the evidence is useful enough to prepare a visual.</p><ul class="review-reasons" id="review-reasons"></ul><p class="prototype-boundary"><span class="sr-only">Human approval is the publication gate. </span>This decision accepts the evidence for visual preparation only; it does not certify the sign or publish content.</p></div>
+          <div class="review-controls"><span class="status-pill status-review" id="review-state">Technical review needed</span><button class="button button-primary" id="approve-sign" type="button">Prepare visual</button><button class="button button-secondary" id="use-another-reference" type="button">Use another reference video</button><p id="review-message" class="form-message" aria-live="polite">No technical review action recorded.</p></div>
         </div>
+      </section>
+
+      <section class="workspace-section section-tint visual-preparation-section" id="visual-preparation-section" aria-labelledby="visual-preparation-title" hidden>
+        <div class="section-shell">
+          <div class="workspace-heading"><div><p class="eyebrow">Step 5 · Ready to prepare visual</p><h2 id="visual-preparation-title">Prepare <span data-active-sign>MORE</span> visual</h2></div><p>The sign package resolves the approved inputs automatically. No file hunting is required.</p></div>
+          <div class="grounding-summary" aria-label="Resolved visual grounding">
+            <article><span class="grounding-number">01</span><div><small>Sign knowledge</small><h3 id="grounding-source">Validated reference</h3><p id="grounding-source-note">Sign mechanics and meaning are ready for human confirmation.</p></div><span class="grounding-status status-review" id="grounding-source-status">Review</span></article>
+            <article><span class="grounding-number">02</span><div><small>Movement geometry</small><h3 id="grounding-motion">MediaPipe key poses</h3><p id="grounding-motion-note">Relative hand and upper-body positioning from this run.</p></div><span class="grounding-status status-ready" id="grounding-motion-status">Usable</span></article>
+            <article><span class="grounding-number">03</span><div><small>Character identity</small><h3 id="grounding-character">KinderFlow character</h3><p id="grounding-character-note">Smile · bun2 · mid-2 · calm visual language.</p></div><span class="grounding-status status-ready">Applied</span></article>
+          </div>
+          <div class="visual-brief-card">
+            <div><p class="card-label">Resolved visual brief</p><h3 id="visual-brief-title">Two hands · upper chest · repeated inward movement</h3><p id="visual-brief-description">A simplified educational illustration prioritising hand relationship, body location and a readable movement cue.</p></div>
+            <div class="fallback-note"><strong id="fallback-title">Evidence route 1</strong><span id="fallback-description">Curated sign knowledge + MediaPipe key poses</span></div>
+          </div>
+          <div class="visual-stage-actions"><button class="button button-primary" id="generate-visual-candidates" type="button">Generate visual candidates</button><p id="visual-preparation-status" role="status" aria-live="polite">Ready to create two grounded, static candidates.</p></div>
+        </div>
+      </section>
+
+      <section class="workspace-section section-shell visual-review-section" id="visual-review-section" aria-labelledby="visual-review-title" hidden>
+        <div class="workspace-heading"><div><p class="eyebrow">Step 6 · Visual review</p><h2 id="visual-review-title">Choose the clearest candidate</h2></div><p>Review hand relationship, body location and movement clarity. Visual approval remains a human decision.</p></div>
+        <div class="visual-candidates" id="visual-candidates" role="radiogroup" aria-label="Visual candidates"></div>
+        <div class="visual-review-actions">
+          <div><span class="status-pill status-review" id="visual-review-state">Visual review</span><p id="visual-review-status" role="status" aria-live="polite">Select one candidate to continue.</p></div>
+          <div class="button-row"><button class="button button-secondary" id="regenerate-candidate" type="button">Regenerate candidate</button><button class="button button-primary" id="approve-visual" type="button" disabled>Approve visual</button></div>
+        </div>
+        <p class="prototype-boundary">The candidates are controlled local SVG proofs. They are grounded in the resolved package and require human review; no autonomous visual generation or linguistic certification is claimed.</p>
       </section>
 
       <section class="workspace-section section-tint downstream-section" id="downstream-section" aria-labelledby="downstream-title" hidden>
         <div class="section-shell">
-          <div class="workspace-heading"><div><p class="eyebrow">Step 5 · Next production task</p><h2 id="downstream-title">Local movement review complete</h2></div><p>The technical evidence can now support content preparation. This local action is not final library publication.</p></div>
+          <div class="workspace-heading"><div><p class="eyebrow">Step 7 · Approved for printable</p><h2 id="downstream-title">Create the educational card</h2></div><p>The selected illustration is approved for a local printable proof. Library publication remains a separate controlled decision.</p></div>
           <div class="downstream-grid">
-            <article><span class="content-type-tag">Next step</span><h3>Content Engine</h3><p>Prepare structured school and family wording, run checks and complete human content review.</p><a class="button button-primary" id="continue-content-engine-link" href="library.html#content-engine-title">Prepare family content</a></article>
-            <article><span class="content-type-tag">Can be created</span><h3>Story</h3><p>Prepare an original contextual draft through the governed story workflow.</p><a class="button button-secondary" id="create-story-link" href="create-story.html">Create story</a></article>
-            <article><span class="content-type-tag">Future capability</span><h3>Song</h3><p>Future original content capability; no music generation is implemented.</p><a class="text-link" href="create-song.html">Explore concept</a></article>
-            <article><span class="content-type-tag">After school access is set</span><h3>School distribution</h3><p>Make the library asset available to schools without requiring them to operate Computer Vision.</p><a class="text-link" href="library.html">Review library readiness</a></article>
+            <article class="primary-downstream"><span class="content-type-tag">Printable ready</span><h3>Flashcard or Routine Card</h3><p>Choose English or Spanish, review the live A6 proof, then print or save it as a PDF.</p><a class="button button-primary" id="create-printable-link" href="flashcards.html">Create printable</a></article>
+            <article><span class="content-type-tag">Optional content step</span><h3>Content Engine</h3><p>Prepare and review structured school and family wording before a future publication decision.</p><a class="button button-secondary" id="continue-content-engine-link" href="library.html#content-engine-title">Prepare family content</a></article>
+            <article><span class="content-type-tag">Separate workflow</span><h3>Story</h3><p>Prepare an original contextual draft using the reviewed sign package.</p><a class="text-link" id="create-story-link" href="create-story.html">Create story</a></article>
           </div>
         </div>
       </section>

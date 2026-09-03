@@ -21,7 +21,7 @@ const MORE_ROUTINE_COPY = {
 
 const builder = {
   signs: [], selectedId: null, language: "en", cardType: "flashcard",
-  layoutReviewed: false, reviewedHandoff: null
+  layoutReviewed: false, reviewedHandoff: null, visualPackages: [], approvedVisual: null
 };
 
 const card = document.querySelector(".flashcard-output");
@@ -52,10 +52,21 @@ const validateSignData = (payload) => {
 };
 
 const selectedSign = () => builder.signs.find((sign) => sign.id === builder.selectedId);
-const isEligible = (sign) => Boolean(sign && (sign.flashcard_status === "preview_ready_with_placeholder" || sign.publication_status === "published"));
+const visualPackageFor = (sign) => builder.visualPackages.find((item) => item.sign_id === sign?.sign_id);
+const isEligible = (sign) => Boolean(sign && visualPackageFor(sign) && (sign.flashcard_status === "preview_ready_with_controlled_visual" || sign.publication_status === "published"));
 const signOptionLabel = (sign) => isEligible(sign)
-  ? `${sign.display_name} — Internal visual proof available`
+  ? `${sign.display_name} — Printable proof available`
   : `${sign.display_name} — Not ready`;
+
+const loadApprovedVisual = () => {
+  if (new URLSearchParams(window.location.search).get("approved") !== "1") return null;
+  try {
+    const payload = JSON.parse(sessionStorage.getItem("kinderflowApprovedVisual") || "null");
+    return payload?.status === "APPROVED_FOR_PRINTABLE" && payload.sign_id && payload.asset ? payload : null;
+  } catch (_error) {
+    return null;
+  }
+};
 
 const loadReviewedHandoff = () => {
   if (new URLSearchParams(window.location.search).get("reviewed") !== "1") return null;
@@ -84,7 +95,7 @@ const resetApproval = ({ eligible = true } = {}) => {
   preApprovalActions.hidden = !eligible;
   postApprovalActions.hidden = true;
   reviewButton.disabled = !eligible;
-  reviewButton.textContent = "Approve flashcard";
+  reviewButton.textContent = "Approve printable";
   reviewStateText.textContent = eligible ? "Internal preview" : "Not ready";
   state.textContent = eligible ? "Internal preview" : "Not ready";
   state.className = eligible ? "status-pill status-review" : "status-pill status-fail";
@@ -102,6 +113,7 @@ const render = () => {
   const sign = selectedSign();
   if (!sign) return;
   const eligible = isEligible(sign);
+  const visualPackage = visualPackageFor(sign);
   resetApproval({ eligible });
   card.hidden = !eligible;
   previewEmpty.hidden = eligible;
@@ -109,16 +121,20 @@ const render = () => {
   if (!eligible) {
     previewTitle.textContent = `${sign.display_name} · Not ready`;
     previewEmpty.querySelector(".card-label").textContent = "Not ready";
-    previewEmpty.querySelector("h3").textContent = "This sign is not ready for Flashcard creation yet.";
-    previewEmpty.querySelector("p:not(.card-label)").textContent = "Its visual and hand-pose review must be completed in Master Content Studio first.";
-    document.querySelector("#sign-source-help").textContent = `${sign.display_name} does not yet have an eligible visual and hand-pose proof.`;
-    status.textContent = "Choose MORE to review the available internal visual proof, or return to Master Content Studio.";
+    previewEmpty.querySelector("h3").textContent = "This sign is not ready for printable creation yet.";
+    previewEmpty.querySelector("p:not(.card-label)").textContent = "Its grounded visual package and human review must be completed first.";
+    document.querySelector("#sign-source-help").textContent = `${sign.display_name} does not yet have an eligible visual package.`;
+    status.textContent = "Choose MORE to review the available printable proof, or return to Create a Sign.";
     return;
   }
 
   const copy = OUTPUT_COPY[builder.language];
   const output = outputFor(sign);
   const word = builder.language === "es" ? sign.spanish_label : sign.display_name;
+  const approvedVisual = builder.approvedVisual?.sign_id === sign.sign_id ? builder.approvedVisual : null;
+  const candidate = visualPackage.candidates.find((item) => item.id === approvedVisual?.candidate_id)
+    || visualPackage.candidates.find((item) => item.recommended)
+    || visualPackage.candidates[0];
   card.dataset.cardType = builder.cardType;
   card.querySelector("[data-card-sign]").textContent = word;
   card.querySelector("[data-card-spanish]").textContent = sign.spanish_label;
@@ -127,13 +143,22 @@ const render = () => {
   card.querySelector("[data-card-routine]").textContent = output.routine;
   card.querySelector("[data-card-guidance]").textContent = output.guidance;
   card.querySelector("[data-card-kind]").textContent = builder.cardType === "flashcard" ? "FLASHCARD" : "ROUTINE CARD";
-  card.querySelector(".flashcard-visual").setAttribute("aria-label", `Internal illustration placeholder for ${word}; final hand pose is not approved`);
+  const signIllustration = card.querySelector("[data-sign-illustration]");
+  signIllustration.src = candidate.asset;
+  signIllustration.alt = `${word} sign illustration, ${candidate.title.toLowerCase()}`;
+  const contextImage = card.querySelector("[data-context-image]");
+  contextImage.src = visualPackage.contextual_image.asset;
+  contextImage.alt = visualPackage.contextual_image.alt;
+  card.querySelector("[data-context-panel]").hidden = builder.cardType !== "flashcard";
+  card.querySelector("[data-routine-icon]").hidden = builder.cardType !== "routine";
+  card.querySelector("[data-routine-icon] span").textContent = output.routine;
+  card.querySelector(".flashcard-visual").setAttribute("aria-label", `${word} approved sign illustration${builder.cardType === "flashcard" ? " with a supporting early-childhood context" : " with a routine icon"}`);
   card.setAttribute("aria-label", `Kinder Signs ${builder.cardType === "flashcard" ? "flashcard" : "routine card"} internal preview for ${word}`);
   previewTitle.textContent = `${builder.cardType === "flashcard" ? "Flashcard" : "Routine Card"} · ${copy.language}`;
-  document.querySelector("#sign-source-help").textContent = builder.reviewedHandoff?.sign_id === sign.sign_id
-    ? `${sign.display_name} uses the locally reviewed Content Pack. Visual and hand-pose approval remain separate.`
-    : `${sign.display_name} has an internal visual proof. Final hand and visual review still block publication.`;
-  status.textContent = `${copy.language} ${builder.cardType === "flashcard" ? "Flashcard" : "Routine Card"} preview ready. Changes appear immediately.`;
+  document.querySelector("#sign-source-help").textContent = approvedVisual
+    ? `${sign.display_name} uses the visual approved in this local workflow.`
+    : `${sign.display_name} uses the recommended controlled proof; approve it locally before printing.`;
+  status.textContent = `${copy.language} ${builder.cardType === "flashcard" ? "Flashcard" : "Routine Card"} preview ready. ${builder.cardType === "flashcard" ? "Context image included." : "No contextual photo is used."}`;
 };
 
 const populateSignSelect = () => {
@@ -157,9 +182,17 @@ const populateSignSelect = () => {
 
 const loadSigns = async () => {
   try {
-    const response = await fetch("data/signs.json", { cache: "no-store" });
-    if (!response.ok) throw new Error("The sign library could not be loaded.");
-    builder.signs = validateSignData(await response.json());
+    const [signResponse, visualResponse] = await Promise.all([
+      fetch("data/signs.json", { cache: "no-store" }),
+      fetch("data/visual_sign_packages.json", { cache: "no-store" })
+    ]);
+    if (!signResponse.ok) throw new Error("The sign library could not be loaded.");
+    if (!visualResponse.ok) throw new Error("The visual sign packages could not be loaded.");
+    builder.signs = validateSignData(await signResponse.json());
+    const visualPayload = await visualResponse.json();
+    if (!Array.isArray(visualPayload.signs)) throw new Error("The visual sign packages are invalid.");
+    builder.visualPackages = visualPayload.signs;
+    builder.approvedVisual = loadApprovedVisual();
     applyReviewedHandoff();
     populateSignSelect();
     render();
@@ -188,11 +221,13 @@ reviewButton.addEventListener("click", () => {
   postApprovalActions.hidden = false;
   state.textContent = "Approved locally";
   state.className = "status-pill status-ready";
-  reviewStateText.textContent = "Approved locally";
+  reviewStateText.textContent = "Printable ready";
+  state.textContent = "Printable ready";
+  reviewButton.textContent = "Printable approved";
   printButton.disabled = !sign.printable || typeof window.print !== "function";
   status.textContent = printButton.disabled
     ? "The proof is approved locally, but browser printing is not available."
-    : "Local proof approved. Print / Save as PDF is now available; library publication remains blocked.";
+    : "Printable ready. Print / Save as PDF is now available; library publication remains a separate decision.";
 });
 
 printButton.addEventListener("click", () => {

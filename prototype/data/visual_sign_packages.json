@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.0",
+  "purpose": "Local, deterministic retrieval packages for the Kinder Signs visual-preparation MVP.",
+  "governance_note": "These packages support visual preparation and human review. They do not certify linguistic correctness or publish content.",
+  "signs": [
+    {
+      "sign_id": "more",
+      "labels": {"en": "MORE", "es": "MÁS"},
+      "usage": {
+        "en": "Use during a familiar routine when a child asks for another portion, turn or repetition.",
+        "es": "Úsalo durante una rutina habitual cuando un niño pida otra porción, turno o repetición."
+      },
+      "routine": {"en": "Snack time", "es": "Hora de la merienda"},
+      "routine_guidance": {
+        "en": "Use the sign naturally just before offering more food.",
+        "es": "Haz el signo de forma natural justo antes de ofrecer más comida."
+      },
+      "movement": {
+        "hands": 2,
+        "body_location": "Upper chest",
+        "description": "Both hands meet at the fingertips in a small repeated inward movement.",
+        "presentation": "One clear central pose with a small repeat indicator; a two-pose sequence is also suitable.",
+        "technical_evidence": "Real local MediaPipe run available",
+        "evidence_quality": "Proceed with conditions"
+      },
+      "visual_identity": {
+        "base_system": "Open Peeps-derived KinderFlow character",
+        "face": "smile",
+        "hair": "bun2",
+        "body": "mid-2",
+        "mood": "Calm, warm and child-friendly"
+      },
+      "grounding_sources": [
+        {"label": "Validated sign reference", "role": "Sign meaning and mechanics", "status": "Human confirmation required"},
+        {"label": "MediaPipe evidence", "role": "Relative hand and body positioning", "status": "Usable with conditions"},
+        {"label": "KinderFlow character system", "role": "Character identity and visual language", "status": "Applied"}
+      ],
+      "fallback": {
+        "preferred_level": 1,
+        "low_confidence_level": 2,
+        "no_landmarks_level": 3,
+        "final_level": 4,
+        "final_label": "Controlled pose guide · review needed"
+      },
+      "candidates": [
+        {
+          "id": "more-a",
+          "label": "Candidate A",
+          "title": "Single-pose teaching view",
+          "asset": "assets/signs/more-candidate-a.svg",
+          "review_note": "Largest hand area and clearest chest-level placement.",
+          "recommended": true
+        },
+        {
+          "id": "more-b",
+          "label": "Candidate B",
+          "title": "Two-pose movement view",
+          "asset": "assets/signs/more-candidate-b.svg",
+          "review_note": "Start and contact positions are shown as a compact sequence.",
+          "recommended": false
+        }
+      ],
+      "contextual_image": {
+        "asset": "assets/context/more-snack-time.png",
+        "alt": "A toddler reaching for another berry during a calm snack routine",
+        "scope": "Flashcard only"
+      },
+      "routine_icon": "snack",
+      "review_status": "READY_FOR_HUMAN_REVIEW"
+    }
+  ]
+}

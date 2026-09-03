@@ -22,6 +22,10 @@ No child video is required. The service processes validated adult reference mate
 
 The bundled local demo path is technical fallback evidence. Its source rights, sign identity and external-presentation permission must be confirmed before it is treated as a publishable asset. A production pilot should use owned or appropriately licensed validated adult reference material with explicit provenance.
 
+## Evidenced runtime
+
+The current working local `poc_env` uses Python 3.9.6 and MediaPipe 0.10.14. Python 3.11/3.12 is the target/recommended clean environment, but that exact setup has not yet been revalidated in this evidence pass. The machine's current default Python 3.13 environment uses MediaPipe 1.0.1 and is not compatible with the legacy `mediapipe.solutions` API used by this MVP.
+
 ## Functional architecture
 
 ~~~text

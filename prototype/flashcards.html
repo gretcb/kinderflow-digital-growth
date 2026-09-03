@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="KinderFlow Flashcard Studio for creating consistent cards from reviewed sign assets.">
-    <title>Create a flashcard | KinderFlow Admin</title>
+    <meta name="description" content="KinderFlow Printable Studio for creating Flashcards and Routine Cards from reviewed sign assets.">
+    <title>Create a printable | KinderFlow Admin</title>
     <link rel="icon" href="data:,">
     <link rel="stylesheet" href="styles.css">
     <script src="flashcards.js" defer></script>
@@ -19,7 +19,7 @@
     <main class="builder-main">
       <section class="builder-intro builder-intro-studio section-shell" aria-labelledby="builder-title">
         <p class="studio-breadcrumb"><a href="admin.html">KinderFlow Admin</a><span aria-hidden="true">/</span><a href="content-studio.html">Master Content Studio</a><span aria-hidden="true">/</span><span>Flashcard Studio</span></p>
-        <div class="builder-purpose"><div><p class="eyebrow">Internal content operations</p><h1 id="builder-title">Create a flashcard</h1><p>Turn a reviewed sign into a consistent printable or digital card.</p></div><p class="builder-ownership"><strong>KinderFlow creates the asset.</strong> Schools receive ready-to-use content and decide where to assign it.</p></div>
+        <div class="builder-purpose"><div><p class="eyebrow">Internal content operations</p><h1 id="builder-title">Create a printable</h1><p>Turn an approved sign visual into a Flashcard or Routine Card.</p></div><p class="builder-ownership"><strong>KinderFlow creates the asset.</strong> Schools receive ready-to-use content and decide where to assign it.</p></div>
       </section>
 
       <section class="builder-workspace section-shell" aria-label="Flashcard Studio workspace">
@@ -40,8 +40,8 @@
           <section class="builder-step builder-review-step" aria-labelledby="review-export-title">
             <div class="builder-step-heading"><span aria-hidden="true">3</span><h3 id="review-export-title">Review and export</h3></div>
             <div class="builder-review-summary"><span>Review state</span><strong id="review-state-text">Internal preview</strong><small>Check hierarchy, legibility and hand visibility before approval.</small></div>
-            <div class="builder-actions builder-actions-studio" id="pre-approval-actions"><button class="button button-primary" id="review-flashcard" type="button">Approve flashcard</button><a class="button button-secondary" href="content-studio.html">Return to Master Content Studio</a></div>
-            <div class="builder-actions builder-actions-studio" id="post-approval-actions" hidden><button class="button button-primary" id="print-flashcard" type="button">Print as PDF</button><button class="button button-secondary" id="export-image" type="button" disabled aria-describedby="png-help">PNG export — prototype</button><button class="text-link-button" id="create-another" type="button">Create another flashcard</button><a class="text-link" href="content-studio.html">Return to Master Content Studio</a></div>
+            <div class="builder-actions builder-actions-studio" id="pre-approval-actions"><button class="button button-primary" id="review-flashcard" type="button">Approve printable</button><a class="button button-secondary" href="create-sign.html">Return to visual review</a></div>
+            <div class="builder-actions builder-actions-studio" id="post-approval-actions" hidden><button class="button button-primary" id="print-flashcard" type="button">Print as PDF</button><button class="button button-secondary" id="export-image" type="button" disabled aria-describedby="png-help">PNG export — prototype</button><button class="text-link-button" id="create-another" type="button">Create another printable</button><a class="text-link" href="content-studio.html">Return to Master Content Studio</a></div>
             <p class="builder-status" id="builder-status" role="status" aria-live="polite">Loading the sign library…</p>
             <p class="export-help" id="png-help">PNG export is unavailable in this MVP because a faithful browser-only export is not implemented.</p>
             <p class="prototype-boundary">Approval is simulated locally. Production would require reviewer identity and an audit record; it would not publish the sign automatically.</p>
@@ -54,7 +54,14 @@
             <article class="flashcard-output" data-card-type="flashcard" aria-label="Kinder Signs internal flashcard preview" hidden>
               <header class="flashcard-output-header"><strong>KINDER SIGNS</strong><span data-card-kind>FLASHCARD</span></header>
               <div class="flashcard-visual-unit">
-                <div class="flashcard-visual" role="img" aria-label="Internal illustration placeholder for MORE"><span class="illustration-placeholder-mark" aria-hidden="true">VISUAL</span><strong>Character and reviewed hand pose go here</strong><small>Internal placeholder · not final artwork</small></div>
+                <div class="flashcard-visual" role="group" aria-label="Approved sign illustration with supporting context">
+                  <figure class="flashcard-context" data-context-panel><img data-context-image alt=""><figcaption>Everyday context</figcaption></figure>
+                  <figure class="flashcard-sign-art"><img data-sign-illustration alt=""><figcaption><span aria-hidden="true">↔</span> Repeat the small inward movement</figcaption></figure>
+                  <div class="routine-card-icon" data-routine-icon hidden aria-label="Snack time routine icon">
+                    <svg viewBox="0 0 120 120" aria-hidden="true"><path d="M22 58h76c-3 27-17 42-38 42S25 85 22 58Z" fill="#afc8b0" stroke="#1f6f6b" stroke-width="5"/><path d="M31 57c5-16 16-24 29-24s24 8 29 24" fill="#fffdf7" stroke="#1f6f6b" stroke-width="5"/><circle cx="45" cy="47" r="7" fill="#c97855"/><circle cx="62" cy="41" r="8" fill="#ddb7b7"/><circle cx="77" cy="49" r="6" fill="#afc3d3"/></svg>
+                    <span>Snack time</span>
+                  </div>
+                </div>
                 <div class="flashcard-sign-lockup"><h3 data-card-sign>MORE</h3><p data-card-spanish hidden>MÁS</p></div>
               </div>
               <div class="flashcard-routine"><span data-card-label="routine">Routine</span><p data-card-routine>Snack time</p></div>
@@ -64,7 +71,7 @@
               <p class="card-label">Getting started</p><h3>Choose a reviewed sign to begin.</h3><p>The live card will appear here when an eligible sign is selected.</p><a class="button button-secondary" href="content-studio.html">Return to Master Content Studio</a>
             </div>
           </div>
-          <p class="builder-print-note" id="output-help">Changes appear immediately. Approve the internal proof to enable browser Print / Save as PDF.</p>
+          <p class="builder-print-note" id="output-help">Changes appear immediately. Approve the printable to enable browser Print / Save as PDF.</p>
         </section>
       </section>
     </main>

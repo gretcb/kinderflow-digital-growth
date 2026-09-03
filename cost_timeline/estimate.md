@@ -31,7 +31,7 @@ The current recommendation is:
 | **Technical feasibility** | 1 week | CV motion-representation POC |
 | **Governed content workflow** | 1 week | n8n + LangSmith workflow |
 | **Concept validation** | 2 weeks | Parent and educator feedback |
-| **Controlled service test** | 3-4 weeks | 3-5 approved signs tested in real routines |
+| **Controlled service test** | 3–4 weeks | 3–5 proposed pilot signs tested in real routines, subject to review and rights clearance |
 | **Decision review** | 1 week | Continue / change / stop recommendation |
 
 ### Estimated validation timeline
@@ -42,19 +42,21 @@ The current recommendation is:
 
 ## 4. Estimated budget
 
-| Cost area | Low estimate | High estimate | Notes |
-|---|---:|---:|---|
-| Technical POC refinement | €1,000 | €3,000 | CV pipeline, diagnostics and documentation |
-| Expert review | €800 | €2,500 | Review of signs and parent-facing content |
-| Workflow automation | €500 | €1,500 | n8n workflow and quality gate |
-| LangSmith / evaluation setup | €200 | €800 | Small tracing and evaluation setup |
-| User research | €1,000 | €3,000 | Parent and educator interviews |
-| Visual/content production test | €1,000 | €4,000 | Original demo assets, not a full library |
-| Project coordination | €1,000 | €2,500 | Planning, synthesis and decision review |
+| Cost area | Low estimate | High estimate | Proposed accountable owner | Notes |
+|---|---:|---:|---|---|
+| Technical POC refinement | €1,000 | €3,000 | KinderFlow Technical Owner | CV pipeline, diagnostics and documentation |
+| Expert review | €800 | €2,500 | Qualified Content / Sign Reviewer | Review of signs and parent-facing content |
+| Workflow automation | €500 | €1,500 | KinderFlow Technical Owner | n8n workflow and quality gate |
+| LangSmith / evaluation setup | €200 | €800 | KinderFlow Technical Owner | Small tracing and evaluation setup |
+| User research | €1,000 | €3,000 | KinderFlow Product Owner + School Pilot Lead | Parent and educator interviews |
+| Visual/content production test | €1,000 | €4,000 | KinderFlow Content Operations | Original demo assets, not a full library |
+| Project coordination | €1,000 | €2,500 | KinderFlow Product Owner | Planning, synthesis and decision review |
 
 ### Estimated validation budget
 
-> **€5.5k-€17.8k**
+> **€5.5k–€17.3k**
+
+The range is the arithmetic total of the line items above. It is a planning estimate, not an approved pilot spend.
 
 ---
 
