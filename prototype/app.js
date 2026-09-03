@@ -11,15 +11,15 @@ const FALLBACK_SIGN_DATA = {
     delivery: "existing school-family channel"
   },
   family_access: {
-    included: "2 main tutors included",
-    extra_caregiver: "Optional paid add-on",
+    included: "2 main caregivers included",
+    extra_caregiver: "Optional extra caregiver access",
     examples: ["Grandparent", "Nanny", "Second home"]
   },
   add_ons: ["printed flashcards", "original mini stories", "original short songs"],
   boundaries: [
-    "No child video required",
-    "Family guidance, not clinical advice",
-    "Internal content production is managed by KinderFlow"
+    "Reviewed reference source",
+    "Family guidance for familiar routines",
+    "Content is prepared and reviewed by KinderFlow"
   ]
 };
 

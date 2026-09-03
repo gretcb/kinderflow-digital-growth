@@ -40,6 +40,9 @@ workflow/generated_llm_output.json
 mvp/runs/*
 !mvp/runs/.gitkeep
 
+# Local preview and inspection artifacts (historical tracked files are unchanged)
+/tmp/
+
 # Local avatar reference media
 assets/avatar/*.mp4
 assets/avatar/*.jpg

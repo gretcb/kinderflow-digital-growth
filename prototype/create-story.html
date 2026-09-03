@@ -2,28 +2,29 @@
 <html lang="en">
   <head>
     <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="A governed KinderFlow story-creation prototype with structured input, explicit evaluation and human review.">
+    <meta name="description" content="Create and review a short KinderFlow story in English or Spanish.">
     <title>Master Content Studio | Create a story</title><link rel="icon" href="data:,"><link rel="stylesheet" href="styles.css"><script src="story.js" defer></script>
   </head>
   <body class="admin-page story-page">
-    <header class="site-header admin-header"><a class="brand" href="content-studio.html" aria-label="Back to Master Content Studio"><span class="brand-mark" aria-hidden="true">K</span><span>Master Content Studio</span></a><nav aria-label="Master Content Studio navigation"><a href="content-studio.html">Studio overview</a><a href="create-sign.html">Create sign</a><a href="flashcards.html">Create flashcard</a><a href="create-story.html" aria-current="page">Create story</a><a href="create-song.html">Create song</a></nav><a class="prototype-label page-switch" href="admin.html">KinderFlow Admin</a></header>
+    <header class="site-header admin-header"><a class="brand" href="content-studio.html" aria-label="Back to Master Content Studio"><span class="brand-mark" aria-hidden="true">K</span><span>Master Content Studio</span></a><nav aria-label="Master Content Studio navigation"><a href="content-studio.html">Studio overview</a><a href="create-sign.html">Create sign</a><a href="library.html">Master Library</a><a href="school.html">Schools</a></nav><a class="prototype-label page-switch" href="admin.html">KinderFlow Admin</a></header>
     <main>
-      <section class="workspace-hero section-shell" aria-labelledby="story-title"><div><p class="eyebrow">Master Content Studio · Prototype</p><h1 id="story-title">Create a story</h1><p>Use a published sign in a small structured brief, inspect explicit checks and send the original micro-story draft to human review.</p></div><span class="status-pill status-review">Illustrative generation</span></section>
+      <section class="workspace-hero section-shell" aria-labelledby="story-title"><div><p class="eyebrow">Family materials</p><h1 id="story-title">Turn a reviewed sign into a simple story</h1><p>Create a short story that helps families practise a sign already introduced at nursery through a familiar everyday routine.</p></div><span class="status-pill status-review">Story</span></section>
 
       <section class="story-workspace section-shell" aria-label="Story creation workspace">
         <form class="story-brief workspace-card" id="story-form">
-          <div class="card-topline"><div><p class="card-label">01 · Story brief</p><h2>Constrain the draft</h2></div><span class="technology-label">Structured prompt</span></div>
+          <div class="card-topline"><div><p class="card-label">01 · Story details</p><h2>Choose what the story needs</h2></div><span class="technology-label">Short story</span></div>
           <div class="form-grid">
-            <div class="form-field"><label for="story-sign">Published sign</label><select id="story-sign" name="sign"><option value="more">MORE</option></select><small>Only published signs can be used as story inputs.</small></div>
+            <div class="form-field"><label for="story-sign">Reviewed sign</label><select id="story-sign" name="sign"><option value="more">MORE</option></select><small>Only reviewed signs can be used in a story.</small></div>
             <div class="form-field"><label for="story-routine">Routine / context</label><select id="story-routine" name="routine"><option value="snack">Snack time</option><option value="bedtime">Bedtime</option><option value="dressing">Getting dressed</option><option value="playtime">Playtime</option></select></div>
             <div class="form-field"><label for="story-age">Age range</label><select id="story-age" name="age"><option>0–1</option><option selected>1–2</option><option>2–3</option></select></div>
-            <div class="form-field"><label for="story-language">Language</label><select id="story-language" name="language"><option value="en" selected>English</option></select></div>
+            <div class="form-field"><label for="story-language">Story language</label><select id="story-language" name="language"><option value="en" selected>English</option><option value="es">Spanish</option></select></div>
             <div class="form-field"><label for="story-length">Length</label><select id="story-length" name="length"><option value="very-short">Very short</option><option value="short" selected>Short</option></select></div>
             <div class="form-field"><label for="story-tone">Tone</label><select id="story-tone" name="tone"><option value="calm" selected>Calm</option><option value="playful">Playful</option><option value="reassuring">Reassuring</option></select></div>
           </div>
-          <div class="brief-boundaries"><strong>Fixed boundaries</strong><span>Original Kinder Signs content</span><span>No third-party characters or licensed IP</span><span>No medical or developmental claims</span></div>
-          <button class="button button-primary button-wide" type="submit">Generate illustrative draft</button>
-          <p class="prototype-boundary">This static prototype uses local story variants. It does not call an LLM, n8n or LangSmith.</p>
+          <div class="brief-boundaries"><strong>Story guidelines</strong><span>Original Kinder Signs content</span><span>No third-party characters</span><span>No medical or developmental claims</span></div>
+          <button class="button button-primary button-wide" type="submit">Create story draft</button>
+          <a class="text-link story-family-return" id="back-to-family-materials-story" href="create-sign.html">Back to family materials</a>
+          <p class="prototype-boundary">Story drafts remain private until a reviewer approves them.</p>
         </form>
 
         <section class="story-output workspace-card" aria-labelledby="draft-title">
@@ -32,46 +33,48 @@
             <p class="story-meta" id="story-meta">MORE · Snack time · 1–2 · English</p>
             <h3 id="story-heading">A little more?</h3>
             <p id="story-body">Lina finished her pieces of pear. She looked at Dad and used the MORE sign. “Would you like more?” Dad asked. Lina smiled. Dad continued snack time and repeated the MORE sign. They finished the routine without rushing.</p>
-            <small>Original Kinder Signs prototype draft · Caregiver-supported reading</small>
+            <small id="story-attribution">Story for shared reading</small>
           </article>
-          <div class="review-state-track" aria-label="Story publication states"><span data-story-step="draft" class="is-complete">Draft</span><span data-story-step="evaluation" class="is-complete">Evaluation complete</span><span data-story-step="review" class="is-current">Ready for human review</span><span data-story-step="published">Published</span></div>
+          <div class="review-state-track" aria-label="Story review states"><span data-story-step="draft" class="is-complete">Draft</span><span data-story-step="evaluation" class="is-complete">Checks complete</span><span data-story-step="review" class="is-current">Ready for human review</span><span data-story-step="published">Approved locally</span></div>
         </section>
       </section>
 
       <section class="workspace-section section-tint" aria-labelledby="evaluation-title">
         <div class="section-shell evaluation-layout">
           <div>
-            <div class="workspace-heading evaluation-heading"><div><p class="eyebrow">03 · Quality control</p><h2 id="evaluation-title">Content evaluation</h2></div><p>Checks are attached to explicit dimensions. There is no generic “correctness” score.</p></div>
+            <div class="workspace-heading evaluation-heading"><div><p class="eyebrow">03 · Story checks</p><h2 id="evaluation-title">Review the story</h2></div><p>These checks support the review decision; they do not approve the story automatically.</p></div>
             <div class="evaluation-list" id="evaluation-list" aria-live="polite">
-              <div><span>Target sign included</span><b class="check-result pass">PASS</b><small>Exact local string check</small></div>
-              <div><span>Routine alignment</span><b class="check-result pass">PASS</b><small>Requested context appears</small></div>
-              <div><span>Language correct</span><b class="check-result pass">PASS</b><small>Matches brief</small></div>
-              <div><span>Length requirement</span><b class="check-result pass">PASS</b><small id="word-count">38 words · short limit met</small></div>
-              <div><span>Original-content constraint</span><b class="check-result pass">PASS</b><small>No blocked third-party names</small></div>
-              <div><span>Safety/content boundary</span><b class="check-result pass">PASS</b><small>No medical or developmental claim</small></div>
-              <div><span>Age/context appropriateness</span><b class="check-result review">REVIEW</b><small>Evaluator judgment · confirm during review</small></div>
-              <div><span>Instruction adherence</span><b class="check-result review">0.94</b><small>Illustrative evaluator measure, not content correctness</small></div>
+              <div><span>Target sign included</span><b class="check-result pass">PASS</b><small id="story-sign-check">The selected sign appears</small></div>
+              <div><span>Routine matched</span><b class="check-result pass">PASS</b><small id="story-routine-check">The selected routine appears</small></div>
+              <div><span>Story language</span><b class="check-result pass">PASS</b><small id="story-language-check">Matches English selection</small></div>
+              <div><span>Length</span><b class="check-result pass">PASS</b><small id="word-count">38 words · short limit met</small></div>
+              <div><span>Original content</span><b class="check-result pass">PASS</b><small>No third-party characters or licensed content</small></div>
+              <div><span>Safety</span><b class="check-result pass">PASS</b><small>No medical or developmental claim</small></div>
+              <div><span>Age and context</span><b class="check-result review">REVIEW</b><small>Confirm during human review</small></div>
+              <div><span>Story brief</span><b class="check-result review">REVIEW</b><small>Confirm tone and simplicity during review</small></div>
             </div>
           </div>
           <aside class="review-panel" aria-labelledby="human-review-title">
-            <p class="card-label">04 · Human in the loop</p><h3 id="human-review-title">Ready for human review</h3><p>A reviewer decides whether the draft is suitable. Evaluation does not publish it automatically.</p>
+            <p class="card-label">04 · Human review</p><h3 id="human-review-title">Ready for human review</h3><p>A reviewer decides whether the draft is suitable. Checks do not add it to the library automatically.</p>
             <div class="review-actions"><button class="button button-primary" id="approve-story" type="button">Approve</button><button class="button button-secondary" id="request-story-changes" type="button">Request changes</button><button class="button button-secondary" id="keep-story-draft" type="button">Keep as draft</button></div>
-            <p class="action-status" id="story-review-status" aria-live="polite">Evaluation complete. No review action recorded.</p>
+            <p class="action-status" id="story-review-status" aria-live="polite">Checks complete. No review action recorded.</p>
           </aside>
         </div>
       </section>
 
       <section class="workspace-section section-shell" aria-labelledby="trace-title">
-        <div class="workspace-heading"><div><p class="eyebrow">Evaluation architecture</p><h2 id="trace-title">Trace the content transformation</h2></div><p>Architecture-ready for the existing n8n and LangSmith workflow; this page does not execute or trace it live.</p></div>
-        <ol class="inline-flow architecture-flow"><li>Story brief</li><li>LLM draft</li><li>Deterministic checks</li><li>Evaluator checks</li><li>LangSmith trace</li><li>Human review</li><li>Publish</li></ol>
-        <div class="evaluation-boundaries">
-          <article><h3>Deterministic checks</h3><p>Required sign, language, length, fields, requested context and blocked/licensed keywords.</p></article>
-          <article><h3>Evaluator checks</h3><p>Instruction adherence, contextual relevance, tone alignment and age-appropriate simplicity.</p></article>
-          <article><h3>LangSmith observability</h3><p>Prompt/output visibility, evaluation evidence, debugging and monitoring for the LLM content step.</p></article>
-        </div>
-        <p class="boundary-note">LangSmith does not validate sign biomechanics, MediaPipe output or linguistic sign correctness.</p>
+        <div class="workspace-heading"><div><p class="eyebrow">Story safeguards</p><h2 id="trace-title">How each draft is checked</h2></div><p>The selected sign, routine, language, length and safety boundaries are checked before human review.</p></div>
+        <details class="technical-details story-technical-details"><summary>Technical and source details</summary><div class="story-technical-content">
+          <ol class="inline-flow architecture-flow"><li>Story brief</li><li>LLM draft</li><li>Deterministic checks</li><li>Evaluator checks</li><li>LangSmith trace</li><li>Human review</li><li>Library decision</li></ol>
+          <div class="evaluation-boundaries">
+            <article><h3>Deterministic checks</h3><p>Required sign, language, length, fields, requested context and blocked or licensed keywords.</p></article>
+            <article><h3>Evaluator checks</h3><p>Instruction adherence, contextual relevance, tone alignment and age-appropriate simplicity.</p></article>
+            <article><h3>LangSmith observability</h3><p>Prompt and output visibility, evaluation evidence, debugging and monitoring for the LLM content step.</p></article>
+          </div>
+          <p class="boundary-note">LangSmith does not validate sign biomechanics, MediaPipe output or linguistic sign correctness.</p>
+        </div></details>
       </section>
     </main>
-    <footer><span>Master Content Studio · Create a story</span><span>Illustrative local generation · Human review required</span></footer>
+    <footer><span>Master Content Studio · Create a story</span><span>Original Kinder Signs content</span></footer>
   </body>
 </html>

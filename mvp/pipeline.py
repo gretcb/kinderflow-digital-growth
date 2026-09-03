@@ -19,7 +19,9 @@ import cv2
 REPO_ROOT = Path(__file__).resolve().parents[1]
 POC_SRC = REPO_ROOT / "poc" / "src"
 RUNS_ROOT = REPO_ROOT / "mvp" / "runs"
-DEMO_VIDEO = REPO_ROOT / "poc" / "input" / "sign_reference.mp4"
+DEMO_VIDEO = REPO_ROOT.parent / "resources" / "video_input" / "more.mp4"
+DEMO_SIGN_ID = "more"
+DEMO_SIGN_NAME = "MORE"
 SUPPORTED_EXTENSIONS = {".mp4"}
 MAX_UPLOAD_BYTES = 100 * 1024 * 1024
 STAGE_KEYS = (
@@ -67,6 +69,11 @@ def safe_filename(filename: str) -> str:
     stem = re.sub(r"[^A-Za-z0-9._-]+", "_", Path(name).stem).strip("._-")
     extension = Path(name).suffix.lower()
     return f"{stem or 'reference'}{extension}"
+
+
+def normalize_sign_id(value: str) -> str:
+    """Keep operator-selected identity explicit without classifying the video."""
+    return re.sub(r"[^a-z0-9]+", "_", (value or "").strip().lower()).strip("_")
 
 
 def validate_extension(filename: str) -> str:
@@ -248,21 +255,21 @@ def map_technical_status(summary: Dict[str, object], sign_name: str = "") -> tup
     if extraction_status != "EXTRACTION_PASS":
         hand_rate = summary["extraction"]["hand_detection_rate_percent"]
         reasons.append(
-            f"Dominant-hand landmarks were detected in {hand_rate:.2f}% of frames."
+            f"The main hand was visible in {hand_rate:.2f}% of frames."
         )
     if eat_occlusion_review:
         reasons.insert(
             0,
-            "Important EAT movement evidence is available, but hand tracking is incomplete near the face; grounded fallback is available.",
+            "Important EAT movement is visible, but the hand is partly hidden near the face; reviewed references are available.",
         )
     if unresolved:
         reasons.append(
-            f"{unresolved} unresolved frames ({unresolved_percent:.2f}%) remain."
+            f"{unresolved} frames ({unresolved_percent:.2f}%) need review."
         )
     dimension_messages = {
-        "C. Short-gap recoverability": "Long or edge movement gaps remain unresolved.",
-        "D. Body-relative stability": "The body reference was not available consistently.",
-        "E. Temporal smoothness": "Abrupt movement transitions need technical inspection.",
+        "C. Short-gap recoverability": "Some longer gaps in the movement need review.",
+        "D. Body-relative stability": "The upper-body reference was not visible consistently.",
+        "E. Temporal smoothness": "Abrupt movement changes need review.",
     }
     for dimension in automated_dimensions:
         if dimension["status"] in {"PARTIAL", "FAIL"}:
@@ -270,9 +277,9 @@ def map_technical_status(summary: Dict[str, object], sign_name: str = "") -> tup
             if message and message not in reasons:
                 reasons.append(message)
     if status == "Pass":
-        reasons = ["Technical capture is sufficient for review."]
+        reasons = ["The reference movement is clear enough for review."]
     elif not reasons:
-        reasons = ["Technical issues should be reviewed before approval."]
+        reasons = ["The reference needs review before continuing."]
 
     return status, reasons, unresolved_percent
 
@@ -336,9 +343,9 @@ def prepare_run(
     sign_name = (sign_name or "").strip().upper()
     routine_context = (routine_context or "").strip()
     if not sign_name:
-        raise InputError("Enter a sign name before running the movement check.")
+        raise InputError("Choose a sign before reviewing the reference.")
     if not routine_context:
-        raise InputError("Enter a routine or context before running the movement check.")
+        raise InputError("Enter a routine or context before reviewing the reference.")
     if reference_status != "Validated reference":
         raise InputError("Select Validated reference before processing.")
     source_url = validate_reference_source_url(reference_source_url)
@@ -350,6 +357,7 @@ def prepare_run(
         "state": "selected",
         "created_at": utc_now(),
         "sign": {
+            "sign_id": normalize_sign_id(sign_name),
             "name": sign_name,
             "routine_context": routine_context,
             "reference_status": reference_status,
@@ -357,7 +365,7 @@ def prepare_run(
         "source": {
             "kind": source_kind,
             "reference_id": (
-                "demo_sign_reference"
+                "demo_{0}_reference".format(DEMO_SIGN_ID)
                 if source_kind == "demo_reference"
                 else Path(safe_filename(original_filename)).stem
             ),
@@ -540,7 +548,7 @@ def run_pipeline(
         manifest["error"] = {
             "code": "preview_unavailable",
             "message": (
-                "The movement check completed, but the movement preview could not "
+                "The reference review completed, but the pose preview could not "
                 "be prepared for this browser. Install ffmpeg and try again."
             ),
         }
@@ -567,7 +575,7 @@ def run_pipeline(
             manifest["technical_status"] = "Fail"
             manifest["error"] = {
                 "code": "processing_error",
-                "message": "The movement check could not be completed.",
+                "message": "The reference review could not be completed.",
             }
         for stage in manifest["stages"]:
             if stage["status"] == "Running":
@@ -577,7 +585,7 @@ def run_pipeline(
         manifest["technical_status"] = "Fail"
         manifest["error"] = {
             "code": "processing_error",
-            "message": "The movement check could not be completed.",
+            "message": "The reference review could not be completed.",
         }
         (run_dir / "error.log").write_text(
             traceback.format_exc(), encoding="utf-8"

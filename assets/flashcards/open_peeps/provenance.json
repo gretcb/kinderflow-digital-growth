@@ -1,83 +1,363 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "3.0",
+  "scope": "Six-sign KinderFlow Open Peeps upper-limb illustration grammar",
   "library_name": "Open Peeps",
   "creator": "Pablo Stanley / Pabs Stanley",
   "official_source_url": "https://www.openpeeps.com/",
   "licence": "CC0",
   "verification_basis": "Founder-verified official CC0 reference",
   "date_recorded": "2026-09-03",
+  "source_hierarchy": [
+    "FUNCTIONAL_SIGN_ILLUSTRATION",
+    "CURATED_SIGN_KNOWLEDGE",
+    "REFERENCE_VIDEO_FRAME_LANDMARKS",
+    "OPEN_PEEPS_VISUAL_GRAMMAR",
+    "HUMAN_REVIEW"
+  ],
   "selected_components": [
     {
-      "role": "face",
-      "path": "assets/flashcards/source_libraries/Flat Assets/Separate Atoms/face/Smile.svg",
-      "sha256": "b58792cfb55fcdbb02092c1ba6f81f647f79ade99748e7502d5787bca3887021"
+      "role": "base_character",
+      "asset_id": "open_peeps_bust_base",
+      "path": "../resources/Flat Assets/Separate Atoms/a person/bust.svg",
+      "sha256": "b631d9ab4a7bb7d0f632ffb42185825d4cf208853eb2c07338a15cc4999601df"
     },
     {
-      "role": "hair",
-      "path": "assets/flashcards/source_libraries/Flat Assets/Separate Atoms/head/Bun 2.svg",
-      "sha256": "d2cee9def8228715fc0aa632871643842a95a0b7feb6de6329560cc24d06f7ab"
+      "role": "hand_finger_style_grammar",
+      "asset_id": "open_peeps_pointing_finger_reference",
+      "path": "../resources/Flat Assets/Separate Atoms/pose/standing/pointing_finger-1.svg",
+      "sha256": "b5fc22a9f2f5b2229b789e49587c6998564fa7b524f4b1107e3c25b640c12fd0"
     },
     {
-      "role": "body",
-      "path": "assets/flashcards/source_libraries/Flat Assets/Separate Atoms/pose/sitting/mid-2.svg",
-      "sha256": "a127d4f40cb66276f73d3c2769237b256fab09b7a23d478ff4e4da1314bb085f"
+      "role": "shoulder_arm_style_grammar",
+      "asset_id": "open_peeps_arm_reference",
+      "path": "../resources/Flat Assets/Templates/Bust/peep-4.svg",
+      "sha256": "2e354cb71804158d4b5fa9ab8a6721c5cff1b74461990e911e1b2a2cf2e79ef0"
+    },
+    {
+      "role": "functional_pose_mechanics",
+      "scope": "one registered source per canonical sign",
+      "asset_ids": [
+        "functional_more",
+        "functional_help",
+        "functional_eat",
+        "functional_sleep",
+        "functional_milk",
+        "functional_water"
+      ],
+      "paths": [
+        "../resources/ilustraciones/more.jpg",
+        "../resources/ilustraciones/help.jpg",
+        "../resources/ilustraciones/eat.jpg",
+        "../resources/ilustraciones/sleep.jpg",
+        "../resources/ilustraciones/milk.jpg",
+        "../resources/ilustraciones/water.jpg"
+      ]
+    },
+    {
+      "role": "supplementary_hand_configuration",
+      "asset_id": "functional_hand_sheet_jpg",
+      "path": "../resources/ilustraciones/illustraciones_signos.jpg",
+      "sha256": "315bdee7269e14711ca0290283a4afdc34569026914d3db900af8a38516351da"
+    },
+    {
+      "role": "movement_reference",
+      "scope": "one registered source per canonical sign",
+      "asset_ids": [
+        "input_more",
+        "input_help",
+        "input_eat",
+        "input_sleep",
+        "input_milk",
+        "input_water"
+      ],
+      "paths": [
+        "../resources/video_input/more.mp4",
+        "../resources/video_input/help.mp4",
+        "../resources/video_input/eat.mp4",
+        "../resources/video_input/sleep.mp4",
+        "../resources/video_input/milk.mp4",
+        "../resources/video_input/water.mp4"
+      ]
+    },
+    {
+      "role": "landmark_support",
+      "asset_id": "water_landmark_summary",
+      "path": "poc/output/diagnostics/sign_reference_motion_summary.json",
+      "sha256": "feb413fc233610f95f6dc962c9f6d6a6dd44412479ea78dd9345f084bfc6fef3",
+      "sign_id": "water"
     }
   ],
-  "pose_reference_pool": [
-    25,
-    34,
-    38,
-    42,
-    43,
-    44,
-    45,
-    46,
-    52,
-    57,
-    60,
-    62,
-    64,
-    67,
-    68,
-    71,
-    74,
-    77,
-    78,
-    90
+  "supplementary_configuration_sources": [
+    {
+      "asset_id": "functional_hand_sheet_jpg",
+      "path": "../resources/ilustraciones/illustraciones_signos.jpg",
+      "sha256": "315bdee7269e14711ca0290283a4afdc34569026914d3db900af8a38516351da"
+    },
+    {
+      "asset_id": "functional_hand_sheet_eps",
+      "path": "../resources/ilustraciones/vectores_illustraciones.eps",
+      "sha256": "617281bfbdcb342183cd4eb2de55297304cebdbc428127e49a10371314cff01b"
+    }
   ],
+  "sign_sources": {
+    "more": [
+      {
+        "asset_id": "functional_more",
+        "path": "../resources/ilustraciones/more.jpg",
+        "sha256": "b11d125a41b4ee5ea180361c7dc0f359d72ae366517128ae8a25664a3083408c"
+      },
+      {
+        "asset_id": "input_more",
+        "path": "../resources/video_input/more.mp4",
+        "sha256": "9b3fe8f0880fef85f64264f34509aa70fb5c188a316be135cf5230af0009b594"
+      },
+      {
+        "asset_id": "flashcard_more_reference",
+        "path": "../resources/flashcards/more-flash-card.pdf",
+        "sha256": "92e41f7e68c44ec99c6f0c80537e089a0a02413672007bd3d1c2cd99252fcf89"
+      }
+    ],
+    "help": [
+      {
+        "asset_id": "functional_help",
+        "path": "../resources/ilustraciones/help.jpg",
+        "sha256": "079370a2bd6e301c64d29cc16a99ca09ec15af304330e3a77a30b7d351f4ee28"
+      },
+      {
+        "asset_id": "input_help",
+        "path": "../resources/video_input/help.mp4",
+        "sha256": "344bfa462eb5d3eb5438b9c8981554e925a89d89aa4ffa3ac946a00b42cc3002"
+      },
+      {
+        "asset_id": "flashcard_help_reference",
+        "path": "../resources/flashcards/help-flash-card.pdf",
+        "sha256": "a28c72750a1e58aede191aa00ca18f509c47411c6755421245c4430a2010f6d0"
+      }
+    ],
+    "eat": [
+      {
+        "asset_id": "functional_eat",
+        "path": "../resources/ilustraciones/eat.jpg",
+        "sha256": "9dac1ea686fc24a33b2ab3c088191cdc26ac1b8bed52e0e17d3f37b0b979a120"
+      },
+      {
+        "asset_id": "input_eat",
+        "path": "../resources/video_input/eat.mp4",
+        "sha256": "90432a597ea75a02bdbb1cc903c1c09e64646565ab48394cd67d4da3f7477822"
+      },
+      {
+        "asset_id": "flashcard_eat_reference",
+        "path": "../resources/flashcards/eat-flash-card.pdf",
+        "sha256": "2037609b3e510e937be803efaf0db007c9ab4bcb836f9b73745a6a0b4e2759dc"
+      }
+    ],
+    "sleep": [
+      {
+        "asset_id": "functional_sleep",
+        "path": "../resources/ilustraciones/sleep.jpg",
+        "sha256": "7fbdd8145fa0524d86c2d9c6c1bce57e148c24c01f2e501486f1c592248ce6bc"
+      },
+      {
+        "asset_id": "input_sleep",
+        "path": "../resources/video_input/sleep.mp4",
+        "sha256": "e423863518bcfc1e937d5207f98057976a089689987d52603f3fbf97355f0610"
+      },
+      {
+        "asset_id": "flashcard_sleep_reference",
+        "path": "../resources/flashcards/sleep-flash-card.pdf",
+        "sha256": "f03467890345dd1fef060b226c9350a5559100176a49626438f1c2bc09aeb82f"
+      }
+    ],
+    "milk": [
+      {
+        "asset_id": "functional_milk",
+        "path": "../resources/ilustraciones/milk.jpg",
+        "sha256": "e6e815f0f03fb83a99ecba03d8f4d3fb920ac1b85174b3739a7152817a9d9801"
+      },
+      {
+        "asset_id": "input_milk",
+        "path": "../resources/video_input/milk.mp4",
+        "sha256": "1a525a1685cbf9aad9006168ca59f3df43856bdc5916764e8cc6555ea95c5760"
+      },
+      {
+        "asset_id": "flashcard_milk_reference",
+        "path": "../resources/flashcards/milk-flash-card.pdf",
+        "sha256": "026f09787ec453b72da11969e4c69f937566a707b4a0d79673c565e8fd6427ad"
+      }
+    ],
+    "water": [
+      {
+        "asset_id": "functional_water",
+        "path": "../resources/ilustraciones/water.jpg",
+        "sha256": "aa56ca59a37f2e3b5cf188e34d7b747bc0855ddc85b2712bc13e8a760606fbbc"
+      },
+      {
+        "asset_id": "input_water",
+        "path": "../resources/video_input/water.mp4",
+        "sha256": "28f844d5af72ef1bcd351048ba57d74b2ad32bb6584fed919e27d3e59f8f44ea"
+      },
+      {
+        "asset_id": "flashcard_water_reference",
+        "path": "../resources/flashcards/water-flash-card.pdf",
+        "sha256": "af80d56706b4110ac1378f428806478b17669ace8a612a278cdee3a15729cbd9"
+      },
+      {
+        "asset_id": "water_landmark_summary",
+        "path": "poc/output/diagnostics/sign_reference_motion_summary.json",
+        "sha256": "feb413fc233610f95f6dc962c9f6d6a6dd44412479ea78dd9345f084bfc6fef3"
+      }
+    ]
+  },
   "derivatives": [
     {
       "derivative_asset_id": "more-a",
+      "sign_id": "more",
+      "version": 4,
       "path": "prototype/assets/signs/more-a.svg",
-      "sha256": "2e99c084eaa833c2b7df04c9e93f9b63eb7ef27faae9a0d2f16fef71869b7fca"
+      "sha256": "cb138b8a2a626462098b3c015cfdf76ae062a52a267bf218b6ef9a84fbb82900",
+      "publication_status": "DRAFT"
     },
     {
       "derivative_asset_id": "more-b",
+      "sign_id": "more",
+      "version": 4,
       "path": "prototype/assets/signs/more-b.svg",
-      "sha256": "30bee014949f667cc1dc3ea68725c377ccfaff9b89c0d6b8c796b1ca4339a06b"
+      "sha256": "b3229ed4d8828c573d08db8432be5083518e26d5fa145617f75ec6af646b832c",
+      "publication_status": "DRAFT"
     },
     {
-      "derivative_asset_id": "more-c-v3",
+      "derivative_asset_id": "more-c-v4",
+      "sign_id": "more",
+      "version": 4,
       "path": "prototype/assets/signs/more-c.svg",
-      "sha256": "78e185f873f60bf9bebc02b9d6094f7f752fc175f8cc40053031de0fcce83d41"
+      "sha256": "76783fb92c6c7aafdef36ffa3280bbd5e19c5c61998fecf99bad8ba6804b381f",
+      "publication_status": "DRAFT"
+    },
+    {
+      "derivative_asset_id": "help-a",
+      "sign_id": "help",
+      "version": 1,
+      "path": "prototype/assets/signs/help-a.svg",
+      "sha256": "97554ab2bf5e47f7c3b25e7eb64d9f114e3fe488362dd5b906e4c41c348c7aac",
+      "publication_status": "DRAFT"
+    },
+    {
+      "derivative_asset_id": "help-b",
+      "sign_id": "help",
+      "version": 1,
+      "path": "prototype/assets/signs/help-b.svg",
+      "sha256": "e7e44db0f71b7420e81b1bbe6cd08faa43445c19316551b9f5c0c2889aa4ea16",
+      "publication_status": "DRAFT"
+    },
+    {
+      "derivative_asset_id": "help-c-v2",
+      "sign_id": "help",
+      "version": 2,
+      "path": "prototype/assets/signs/help-c.svg",
+      "sha256": "b3d9c6da7636084fcf8df9827323a2bfd63e002c9fbe9c03579a6b08e69745b4",
+      "publication_status": "DRAFT"
     },
     {
       "derivative_asset_id": "eat-a",
+      "sign_id": "eat",
+      "version": 2,
       "path": "prototype/assets/signs/eat-a.svg",
-      "sha256": "50b8e62c616c34f425e05717f5dda10c93171246fe4bc6fa27e5db0711b065ab"
+      "sha256": "92747ef417eaccade25ea8c845b6d865e130509e233fdd9073528e6c404932a9",
+      "publication_status": "DRAFT"
     },
     {
       "derivative_asset_id": "eat-b",
+      "sign_id": "eat",
+      "version": 2,
       "path": "prototype/assets/signs/eat-b.svg",
-      "sha256": "b6682219bb058858235175ab7656c0a74d1d6463f75096e5035253aef9249cff"
+      "sha256": "c131cbb16db8fc4c0c388d7bf71a13350d4fc2e7fd830afce068b731d0319edc",
+      "publication_status": "DRAFT"
     },
     {
       "derivative_asset_id": "eat-c-v2",
+      "sign_id": "eat",
+      "version": 2,
       "path": "prototype/assets/signs/eat-c.svg",
-      "sha256": "7110098c86736c9466de74649a98322ae02e21c1c17a6298f90a8fe29edb10c4"
+      "sha256": "7157ea6018632a6561288a45bdeb7be36b357a01c1309c7163e2daded8de917f",
+      "publication_status": "DRAFT"
+    },
+    {
+      "derivative_asset_id": "sleep-a",
+      "sign_id": "sleep",
+      "version": 1,
+      "path": "prototype/assets/signs/sleep-a.svg",
+      "sha256": "08509011ec42593621473c96c5600d599f415a562841c774ef60245598da3a48",
+      "publication_status": "DRAFT"
+    },
+    {
+      "derivative_asset_id": "sleep-b",
+      "sign_id": "sleep",
+      "version": 1,
+      "path": "prototype/assets/signs/sleep-b.svg",
+      "sha256": "fd02fea1c890ef3dec52f8646b1394f1a49b63aae83c161c7d53721038e8b8f5",
+      "publication_status": "DRAFT"
+    },
+    {
+      "derivative_asset_id": "sleep-c-v2",
+      "sign_id": "sleep",
+      "version": 2,
+      "path": "prototype/assets/signs/sleep-c.svg",
+      "sha256": "206e064a359d43dbd65eb2dd17b0fa7f3275f88ebf147927ddc609fb4cc6f457",
+      "publication_status": "DRAFT"
+    },
+    {
+      "derivative_asset_id": "milk-a",
+      "sign_id": "milk",
+      "version": 1,
+      "path": "prototype/assets/signs/milk-a.svg",
+      "sha256": "b33f99a2c4b0000be73509048f9cb76e5df5024394537a151a4fb05bcc580bd5",
+      "publication_status": "DRAFT"
+    },
+    {
+      "derivative_asset_id": "milk-b",
+      "sign_id": "milk",
+      "version": 1,
+      "path": "prototype/assets/signs/milk-b.svg",
+      "sha256": "8c2d7928647dc8134d4aa5e48ce1051d93f54cfe76980dc6b05f10bace855030",
+      "publication_status": "DRAFT"
+    },
+    {
+      "derivative_asset_id": "milk-c-v2",
+      "sign_id": "milk",
+      "version": 2,
+      "path": "prototype/assets/signs/milk-c.svg",
+      "sha256": "2675f2f7b37c63f9076c2a4e81db4f264b58d97d159de3b42027c61134252f0e",
+      "publication_status": "DRAFT"
+    },
+    {
+      "derivative_asset_id": "water-a",
+      "sign_id": "water",
+      "version": 1,
+      "path": "prototype/assets/signs/water-a.svg",
+      "sha256": "eead4af19ff8fcb83aa8e692b124f86a9b54020f483c8c0355a99d7cfccb4e4c",
+      "publication_status": "DRAFT"
+    },
+    {
+      "derivative_asset_id": "water-b",
+      "sign_id": "water",
+      "version": 1,
+      "path": "prototype/assets/signs/water-b.svg",
+      "sha256": "11a25cb3f24e070b1cb824c9ba854849996f138ae5b95493f2bcd2ec0e06f354",
+      "publication_status": "DRAFT"
+    },
+    {
+      "derivative_asset_id": "water-c-v2",
+      "sign_id": "water",
+      "version": 2,
+      "path": "prototype/assets/signs/water-c.svg",
+      "sha256": "c2fdbbcd4fe912abfa37257702429fe27d5c8b796c69fd21bac2b440482ecaef",
+      "publication_status": "DRAFT"
     }
   ],
-  "composition": "Exact selected SVG atom geometry embedded in a reusable character symbol; only sign arms/hands and accents are custom.",
+  "composition": "Exact bust.svg inner geometry is embedded as the sole character base. Reusable KinderFlow layers add sign-specific shoulder-to-finger anatomy; the two Open Peeps pose files supply line grammar only.",
+  "mechanics": "Each sign uses its own registered functional image, reference video and flashcard. WATER diagnostics are recorded only under WATER and are not MORE evidence.",
+  "colour_treatment": "Monochrome character with coral, mint and muted ochre restricted to peripheral and motion accents outside the gesture zone.",
   "voluntary_credit": "Character foundation: Open Peeps by Pablo Stanley.",
+  "review_status": "READY_FOR_HUMAN_REVIEW",
   "publication_status": "DRAFT"
 }

@@ -2639,6 +2639,415 @@ footer {
   }
 }
 
+/* Final product UX patch */
+.reference-source-summary {
+  display: grid;
+  gap: 0.2rem;
+  min-height: 4.5rem;
+  align-content: center;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--line, #d8d8d2);
+  border-radius: 0.8rem;
+  background: var(--surface, #fff);
+}
+
+.reference-source-summary span {
+  color: var(--muted, #5f625e);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.035em;
+  text-transform: uppercase;
+}
+
+.reference-source-summary strong {
+  color: var(--ink, #1f2922);
+  font-size: 1rem;
+}
+
+.decision-charts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.decision-chart {
+  display: grid;
+  align-content: start;
+  gap: 0.65rem;
+  padding: 1rem;
+  border: 1px solid var(--line, #d8d8d2);
+  border-radius: 1rem;
+  background: var(--surface, #fff);
+}
+
+.decision-chart h3,
+.decision-chart p {
+  margin: 0;
+}
+
+.decision-chart img {
+  width: 100%;
+  height: auto;
+  border-radius: 0.7rem;
+  background: #f6f4ef;
+}
+
+.decision-chart .why-it-matters {
+  padding-top: 0.65rem;
+  border-top: 1px solid var(--line, #d8d8d2);
+  color: var(--ink, #1f2922);
+  font-size: 0.92rem;
+}
+
+.advanced-run-details {
+  margin-top: 0.75rem;
+  border-top: 1px solid var(--line, #d8d8d2);
+}
+
+.advanced-run-details summary,
+.demo-details summary {
+  display: flex;
+  min-height: 44px;
+  align-items: center;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.advanced-run-details code {
+  overflow-wrap: anywhere;
+}
+
+.family-material-options {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.9rem;
+  margin-top: 1rem;
+}
+
+.family-material-option {
+  display: flex;
+  min-height: 13rem;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: 1rem;
+  border: 1px solid var(--line, #d8d8d2);
+  border-radius: 1rem;
+  background: var(--surface, #fff);
+}
+
+.family-material-option h3,
+.family-material-option p {
+  margin: 0;
+}
+
+.family-material-option .button,
+.family-material-option .text-link-button {
+  width: 100%;
+  min-height: 44px;
+  margin-top: auto;
+  justify-content: center;
+}
+
+.family-material-option.coming-soon,
+.family-material-option.is-coming-soon {
+  background: #f6f4ef;
+}
+
+.family-material-option.coming-soon .status-chip,
+.family-material-option.is-coming-soon .status-pill {
+  margin-top: auto;
+}
+
+.family-material-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.story-family-return,
+.school-page .text-link-button {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  padding: 0.65rem 0.8rem;
+}
+
+.cv-boundary > div:last-child p,
+.cv-boundary > div:last-child small {
+  display: block;
+  margin: 0;
+}
+
+.school-library-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.school-library-card {
+  display: flex;
+  min-width: 0;
+  min-height: 25rem;
+  flex-direction: column;
+  gap: 0.8rem;
+  padding: 1rem;
+  border: 1px solid var(--line, #d8d8d2);
+  border-radius: 1.15rem;
+  background: var(--surface, #fff);
+  box-shadow: 0 0.55rem 1.5rem rgba(31, 41, 34, 0.07);
+}
+
+.school-library-card img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: contain;
+  border-radius: 0.85rem;
+  background: #f6f4ef;
+}
+
+.school-library-card h3,
+.school-library-card p {
+  margin: 0;
+}
+
+.school-library-card .button,
+.school-library-card .text-link-button {
+  width: 100%;
+  margin-top: auto;
+}
+
+.school-sign-label {
+  display: grid;
+  gap: 0.12rem;
+}
+
+.school-sign-label strong {
+  font-size: 1.22rem;
+}
+
+.school-sign-label span {
+  color: var(--muted, #5f625e);
+  font-size: 0.92rem;
+}
+
+.material-chip-list,
+.active-material-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.material-chip-list li,
+.active-material-list li {
+  padding: 0.28rem 0.62rem;
+  border-radius: 999px;
+  background: #eef3eb;
+  color: var(--ink, #1f2922);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.assignment-fields-four {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.assignment-decision {
+  min-width: 0;
+  margin: 0;
+  padding: 1rem;
+  border: 1px solid var(--line, #d8d8d2);
+  border-radius: 1rem;
+}
+
+.assignment-decision legend {
+  padding: 0 0.35rem;
+  font-weight: 800;
+}
+
+.assignment-decision select {
+  width: 100%;
+  min-height: 48px;
+}
+
+.material-choice-list,
+.assignment-audience-options {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.assignment-audience-options {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.material-choice-list label,
+.assignment-audience-options label {
+  position: relative;
+  display: block;
+  cursor: pointer;
+}
+
+.material-choice-list input,
+.assignment-audience-options input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.material-choice-list label > span,
+.assignment-audience-options label > span {
+  display: flex;
+  min-height: 48px;
+  align-items: center;
+  padding: 0.65rem 0.8rem;
+  border: 1px solid var(--line, #d8d8d2);
+  border-radius: 0.75rem;
+  background: var(--surface, #fff);
+  font-weight: 700;
+}
+
+.material-choice-list input:checked + span,
+.assignment-audience-options input:checked + span {
+  border-color: #3d704c;
+  background: #eef6ee;
+  box-shadow: inset 0 0 0 1px #3d704c;
+}
+
+.material-choice-list input:focus-visible + span,
+.assignment-audience-options input:focus-visible + span {
+  outline: 3px solid #f2b84b;
+  outline-offset: 2px;
+}
+
+.assignment-child-panel {
+  display: grid;
+  gap: 0.45rem;
+  margin-top: 0.75rem;
+}
+
+.assignment-child-panel[hidden] {
+  display: none;
+}
+
+.assignment-child-panel select {
+  min-height: 48px;
+}
+
+.assignment-review-block,
+.duplicate-assignment-panel {
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 1rem;
+  background: #f6f4ef;
+}
+
+.assignment-review-block h3,
+.assignment-review-block p,
+.duplicate-assignment-panel h3,
+.duplicate-assignment-panel p {
+  margin-top: 0;
+}
+
+.assignment-material-summary {
+  color: var(--muted, #5f625e);
+}
+
+.assignment-validation {
+  color: #8a2d2d;
+  font-weight: 700;
+}
+
+.assignment-validation:empty {
+  display: none;
+}
+
+.duplicate-assignment-actions,
+.active-assignment-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.active-assignment-list {
+  display: grid;
+  gap: 0.8rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.active-assignment-card {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--line, #d8d8d2);
+  border-radius: 1rem;
+  background: var(--surface, #fff);
+}
+
+.active-assignment-card h3,
+.active-assignment-card p {
+  margin-top: 0;
+}
+
+.active-assignment-details {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: 0.3rem 0.75rem;
+  margin: 0.7rem 0;
+}
+
+.active-assignment-details dt {
+  color: var(--muted, #5f625e);
+  font-weight: 700;
+}
+
+.active-assignment-details dd {
+  margin: 0;
+}
+
+.demo-details {
+  margin-top: 1rem;
+  border-top: 1px solid var(--line, #d8d8d2);
+}
+
+@media (max-width: 1000px) {
+  .school-library-grid,
+  .family-material-options {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .decision-charts,
+  .school-library-grid,
+  .family-material-options,
+  .assignment-fields-four,
+  .assignment-audience-options {
+    grid-template-columns: 1fr;
+  }
+
+  .active-assignment-card {
+    flex-direction: column;
+  }
+
+  .active-assignment-actions,
+  .active-assignment-actions .button,
+  .active-assignment-actions .text-link-button {
+    width: 100%;
+  }
+}
+
 @media print {
   body.flashcard-page {
     overflow: visible;
@@ -2673,7 +3082,7 @@ footer {
     margin: 0;
   }
 
-  body.flashcard-page .print-sheet .flashcard-output {
+  body.flashcard-page .print-sheet .flashcard-output:not([hidden]) {
     display: flex !important;
     aspect-ratio: auto;
     break-inside: avoid;
@@ -2707,6 +3116,10 @@ footer {
   }
 
   body.flashcard-page [hidden] {
+    display: none !important;
+  }
+
+  body.flashcard-page .print-sheet .flashcard-output[hidden] {
     display: none !important;
   }
 }
@@ -3125,7 +3538,7 @@ footer {
     display: none !important;
   }
 
-  body.print-card-page .a5-print-card {
+  body.print-card-page .a5-print-card:not([hidden]) {
     display: grid !important;
     width: 148mm;
     height: 210mm;
@@ -3140,6 +3553,10 @@ footer {
     break-inside: avoid-page;
     print-color-adjust: exact;
     -webkit-print-color-adjust: exact;
+  }
+
+  body.print-card-page .print-card-stage .a5-print-card[hidden] {
+    display: none !important;
   }
 }
 
@@ -4042,7 +4459,8 @@ footer {
 
 .sign-production-flow {
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-columns: repeat(9, minmax(0, 1fr));
+  gap: 8px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -4053,13 +4471,14 @@ footer {
   min-height: 106px;
   padding: 18px;
   border: 1px solid var(--border);
+  border-radius: 10px;
   background: var(--white);
   font-size: 0.84rem;
   font-weight: 750;
 }
 
 .sign-production-flow li + li {
-  border-left: 0;
+  border-left: 1px solid var(--border);
 }
 
 .sign-production-flow li:not(:last-child)::after {
@@ -4411,6 +4830,25 @@ footer {
   border-bottom: 1px solid var(--border);
 }
 
+.technical-details summary:focus-visible {
+  border-radius: 10px;
+  outline: 3px solid rgba(31, 111, 107, 0.24);
+  outline-offset: 2px;
+}
+
+.content-output-technical,
+.library-technical-content,
+.story-technical-content {
+  display: grid;
+  gap: 18px;
+  padding: 20px;
+}
+
+.library-technical-details .content-readiness-strip,
+.studio-technical-details .table-scroll {
+  margin: 20px;
+}
+
 .technical-detail-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -4744,6 +5182,49 @@ footer {
   font-weight: 700;
 }
 
+.visual-review-criteria {
+  margin-top: 18px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--white);
+}
+
+.visual-review-criteria summary {
+  padding: 18px 22px;
+  color: var(--primary-dark);
+  font-size: 0.84rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.visual-review-criteria > div {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(260px, 0.8fr);
+  gap: 28px;
+  padding: 0 22px 22px;
+}
+
+.visual-review-criteria h3 {
+  margin: 0 0 10px;
+  font-size: 0.94rem;
+}
+
+.visual-review-criteria ul {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px 20px;
+  margin: 0;
+  padding-left: 18px;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.visual-review-criteria p {
+  margin: 0 0 10px;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
 .visual-review-actions {
   display: flex;
   gap: 24px;
@@ -4816,6 +5297,14 @@ footer {
     grid-template-columns: repeat(7, 145px);
   }
 
+  .sign-production-flow {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .sign-production-flow li::after {
+    display: none;
+  }
+
   .grounding-summary,
   .downstream-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -4832,9 +5321,7 @@ footer {
   }
 
   .sign-production-flow {
-    grid-template-columns: repeat(6, 150px);
-    overflow-x: auto;
-    padding-bottom: 8px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .sign-input-card fieldset,
@@ -4856,6 +5343,11 @@ footer {
   .visual-review-actions {
     align-items: stretch;
     flex-direction: column;
+  }
+
+  .visual-review-criteria > div,
+  .visual-review-criteria ul {
+    grid-template-columns: 1fr;
   }
 
   .visual-review-actions .button-row {
@@ -6393,6 +6885,10 @@ blockquote {
 }
 
 @media (max-width: 520px) {
+  .sign-production-flow {
+    grid-template-columns: 1fr;
+  }
+
   .platform-header,
   .admin-header,
   .school-header,
@@ -7182,4 +7678,358 @@ blockquote {
   position: static;
   z-index: 1;
   margin-top: 0;
+}
+
+/* Prompt 2C: integrated, stateful printable preview without changing sign artwork. */
+
+.flashcard-page .print-sheet .flashcard-output {
+  height: auto;
+  aspect-ratio: auto;
+  overflow: hidden;
+}
+
+.flashcard-page .flashcard-output .flashcard-visual-unit {
+  flex: 0 0 auto;
+  grid-template-rows: auto auto;
+  align-content: start;
+}
+
+.flashcard-page .flashcard-output[data-card-type="routine"] {
+  grid-template-rows: auto auto auto auto;
+}
+
+.flashcard-page .flashcard-sign-lockup {
+  display: grid;
+  min-height: 96px;
+  grid-template-columns: 1fr;
+  gap: 5px;
+  place-content: center;
+  place-items: center;
+  padding: 12px 16px 14px;
+}
+
+.flashcard-page .flashcard-sign-lockup h3,
+.flashcard-page .flashcard-sign-lockup p,
+.a5-print-card > h2 {
+  width: 100%;
+  text-align: center;
+}
+
+.flashcard-page .flashcard-sign-lockup h3,
+.flashcard-page .flashcard-sign-lockup p {
+  align-self: center;
+  justify-self: center;
+}
+
+.flashcard-context-placeholder,
+.a5-context-placeholder {
+  display: grid;
+  height: 100%;
+  place-content: center;
+  place-items: center;
+  padding: 28px 18px 48px;
+  background: #eef0ec;
+  color: #5f6f69;
+  font-size: 0.78rem;
+  line-height: 1.35;
+  text-align: center;
+}
+
+.flashcard-context-placeholder {
+  min-height: 410px;
+}
+
+.flashcard-context-placeholder > span {
+  margin-bottom: 8px;
+  color: #789389;
+  font-size: 1.25rem;
+}
+
+.flashcard-context-placeholder[hidden],
+.a5-context-placeholder[hidden],
+.flashcard-context > img[hidden],
+.a5-context-panel > img[hidden] {
+  display: none;
+}
+
+.flashcard-sign-art,
+.a5-sign-panel {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+}
+
+.flashcard-sign-art figcaption,
+.a5-sign-panel figcaption {
+  position: static;
+  margin: 0 8px 8px;
+}
+
+.flashcard-sign-art img,
+.a5-sign-panel img {
+  min-height: 0;
+}
+
+.a5-context-placeholder {
+  min-height: 0;
+  font-size: 10pt;
+  font-weight: 750;
+}
+
+.a5-print-card > h2 {
+  display: grid;
+  min-height: 22mm;
+  place-items: center;
+  margin: 4mm 0;
+  line-height: 1;
+}
+
+.a5-print-card > h2 small {
+  margin-top: 1.5mm;
+  color: #52635d;
+  font-size: 0.28em;
+  font-weight: 750;
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+
+.a5-print-card > h2 small[hidden] {
+  display: none;
+}
+
+.flashcard-routine p,
+.flashcard-guidance p,
+.routine-card-icon span,
+.a5-routine-row strong,
+.a5-guidance-row p {
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+
+.a5-routine-row strong {
+  font-size: clamp(12pt, 3.8vw, 17pt);
+  line-height: 1.15;
+}
+
+@media (max-width: 650px) {
+  .flashcard-page .flashcard-sign-lockup {
+    min-height: 78px;
+    padding-block: 10px 12px;
+  }
+
+  .flashcard-context-placeholder {
+    min-height: 276px;
+    padding-inline: 12px;
+  }
+}
+
+@media print {
+  body.print-card-page .a5-sign-panel figcaption {
+    margin: 0 2mm 2mm;
+  }
+}
+
+.flashcard-sign-lockup {
+  display: grid;
+  place-items: center;
+  text-align: center;
+}
+
+/* Prompt 2C: Create Sign pose-choice clarity and compact preparation cards. */
+
+.create-sign-page .evidence-availability-note {
+  margin: -2px 0 4px;
+  color: var(--muted);
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.create-sign-page .reference-frame-picker > h3 {
+  margin: 0 0 4px;
+  font-size: 0.9rem;
+}
+
+.create-sign-page .reference-frame-picker > p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.create-sign-page .suggested-reference-frames label:has(input:focus-visible) {
+  outline: 3px solid rgba(31, 111, 107, 0.24);
+  outline-offset: 3px;
+}
+
+.create-sign-page .suggested-reference-frames label:has(input:disabled) {
+  cursor: not-allowed;
+  opacity: 0.58;
+}
+
+.create-sign-page .text-link-button,
+.create-sign-page .source-details summary {
+  min-height: 44px;
+}
+
+.create-sign-page .source-details summary {
+  display: flex;
+  align-items: center;
+}
+
+.create-sign-page .grounding-summary article {
+  min-height: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .create-sign-page .visual-candidate-card {
+    transition: none;
+  }
+
+  .create-sign-page .visual-candidate-card:hover {
+    transform: none;
+  }
+}
+
+/* Keep final product grids responsive after the legacy workspace cascade. */
+@media (max-width: 1000px) and (min-width: 761px) {
+  .school-library-grid,
+  .family-material-options {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .decision-charts,
+  .school-library-grid,
+  .family-material-options,
+  .assignment-fields-four,
+  .assignment-audience-options {
+    grid-template-columns: 1fr;
+  }
+}
+
+.assignment-fields.assignment-fields-four {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.assignment-fields-four .assignment-step {
+  min-width: 0;
+  margin: 0;
+  padding: 1rem 1rem 1rem 3.75rem;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  background: var(--white);
+}
+
+.assignment-fields-four .assignment-step-number {
+  top: 1rem;
+  left: 1rem;
+}
+
+.assignment-fields-four fieldset > legend {
+  padding: 0 0.35rem;
+  font-weight: 800;
+}
+
+.assignment-fields-four .assignment-step:last-child {
+  grid-column: auto;
+}
+
+.assignment-review-block .assignment-summary {
+  padding: 0 0 0 1rem;
+  background: transparent;
+}
+
+.assignment-action {
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.duplicate-assignment {
+  padding: 1rem;
+  border: 1px solid #d8b865;
+  border-radius: 1rem;
+  background: #fff8e6;
+}
+
+.duplicate-assignment[hidden] {
+  display: none;
+}
+
+.duplicate-assignment > p {
+  margin-top: 0;
+  font-weight: 750;
+}
+
+.active-assignment-details > div {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: 0.75rem;
+}
+
+.active-assignment-details {
+  grid-template-columns: 1fr;
+}
+
+.active-material-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.material-chip {
+  display: inline-flex;
+  min-height: 28px;
+  align-items: center;
+  padding: 0.25rem 0.55rem;
+  border-radius: 999px;
+  background: var(--surface-strong);
+  color: var(--primary-dark);
+  font-size: 0.76rem;
+  font-weight: 750;
+}
+
+.school-sign-copy h3,
+.school-sign-copy p {
+  margin: 0;
+}
+
+.school-sign-copy {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.school-sign-translation {
+  color: var(--primary-dark);
+  font-weight: 780;
+}
+
+.school-sign-routine {
+  color: var(--muted);
+}
+
+.school-demo-details {
+  border-top: 1px solid var(--border);
+}
+
+.school-demo-details summary {
+  display: flex;
+  min-height: 44px;
+  align-items: center;
+  cursor: pointer;
+  font-weight: 750;
+}
+
+@media (max-width: 760px) {
+  .assignment-fields.assignment-fields-four {
+    grid-template-columns: 1fr;
+  }
+
+  .assignment-action,
+  .assignment-action .button {
+    width: 100%;
+  }
+
+  .active-assignment-details > div {
+    grid-template-columns: 1fr;
+    gap: 0.2rem;
+  }
 }

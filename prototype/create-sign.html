@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="KinderFlow Create a Sign working MVP for local, governed movement processing and human-controlled publication.">
+    <meta name="description" content="Create and review a KinderFlow sign visual from a trusted reference movement.">
     <title>Master Content Studio | Create a Sign</title>
     <link rel="icon" href="data:,">
     <link rel="stylesheet" href="styles.css">
@@ -12,34 +12,34 @@
   <body class="admin-page create-sign-page">
     <header class="site-header admin-header">
       <a class="brand" href="content-studio.html" aria-label="Back to Master Content Studio"><span class="brand-mark" aria-hidden="true">K</span><span>Master Content Studio</span></a>
-      <nav aria-label="Master Content Studio navigation"><a href="content-studio.html">Studio overview</a><a href="create-sign.html" aria-current="page">Create sign</a><a href="flashcards.html">Create flashcard</a><a href="create-story.html">Create story</a><a href="create-song.html">Create song</a></nav>
+      <nav aria-label="Master Content Studio navigation"><a href="content-studio.html">Studio overview</a><a href="create-sign.html" aria-current="page">Create sign</a><a href="library.html">Master Library</a><a href="school.html">Schools</a></nav>
       <a class="prototype-label page-switch" href="admin.html">KinderFlow Admin</a>
     </header>
 
     <main>
       <section class="workspace-hero section-shell create-sign-hero" aria-labelledby="create-sign-title">
-        <div><p class="eyebrow">Master Content Studio · Working MVP</p><h1 id="create-sign-title">Create a Sign</h1><p>Turn one validated reference movement into a governed, reusable KinderFlow content asset.</p></div>
-        <div class="principle-card"><span>Product principle</span><strong>The character defines the look.<br>The validated reference movement defines the sign.</strong></div>
+        <div><p class="eyebrow">Master Content Studio</p><h1 id="create-sign-title">Create a sign</h1><p>Turn a clear reference video into a reviewed sign and useful family materials.</p></div>
+        <div class="principle-card"><span>Product principle</span><strong>The character defines the look.<br>The reference video defines the sign.</strong></div>
       </section>
 
       <section class="sign-flow-shell section-shell" aria-labelledby="workflow-title">
-        <div class="workspace-heading compact-heading"><div><p class="eyebrow">Guided production</p><h2 id="workflow-title">From reference to printable</h2></div><p>Each stage has one review decision and one clear next action.</p></div>
+        <div class="workspace-heading compact-heading"><div><p class="eyebrow">Guided steps</p><h2 id="workflow-title">From reference to family materials</h2></div><p>Each stage has one clear task and preserves the decisions already made.</p></div>
         <ol class="sign-production-flow" aria-label="Create a Sign production stages">
-          <li><span>01</span>Reference</li><li><span>02</span>Processing</li><li><span>03</span>Technical review</li><li><span>04</span>Prepare visual</li><li><span>05</span>Visual review</li><li><span>06</span>Printable</li>
+          <li><span>01</span>Choose the sign</li><li><span>02</span>Add the reference</li><li><span>03</span>Review the sign reference</li><li><span>04</span>Choose the clearest poses</li><li><span>05</span>Create family materials</li><li><span>06</span>Create visual options</li><li><span>07</span>Approve the clearest visual</li><li><span>08</span>Create family materials</li><li><span>09</span>Add to library / use later</li>
         </ol>
       </section>
 
       <section class="workspace-section section-tint" aria-labelledby="setup-title">
         <div class="section-shell create-sign-setup">
-          <div class="workspace-heading"><div><p class="eyebrow">Steps 1–2</p><h2 id="setup-title">Prepare the reference</h2></div><p>Processing stays on this computer. No child video or external upload is required.</p></div>
+          <div class="workspace-heading"><div><p class="eyebrow">Steps 1–2</p><h2 id="setup-title">Choose the sign and add a reference</h2></div><p>Add a clear reference video for the sign you want to prepare.</p></div>
           <div class="create-sign-grid">
             <form class="sign-input-card" id="sign-run-form" novalidate>
               <fieldset>
                 <legend><span>1</span> Sign details</legend>
-                <div class="form-field"><label for="sign-name">Sign name</label><input id="sign-name" name="sign_name" value="MORE" maxlength="60" required><small>Use the library name, for example MORE.</small></div>
+                <div class="form-field"><label for="sign-name">Sign</label><select id="sign-name" name="sign_name" required><option value="MORE" selected>MORE</option><option value="HELP">HELP</option><option value="EAT">EAT</option><option value="SLEEP">SLEEP</option><option value="MILK">MILK</option><option value="WATER">WATER</option></select><small>Choose the sign shown in the reference video.</small></div>
                 <div class="form-field"><label for="routine-context">Routine / context</label><input id="routine-context" name="routine_context" value="Snack time, mealtime, playtime" maxlength="180" required><small>Describe where families and schools may use the sign.</small></div>
-                <div class="form-field"><label for="reference-status">Reference status</label><select id="reference-status" name="reference_status"><option selected>Validated reference</option></select><small>Use validated adult reference material only.</small></div>
-                <div class="form-field"><label for="reference-source-url">Reference source URL <span class="optional-label">Optional</span></label><input id="reference-source-url" name="reference_source_url" type="url" inputmode="url" placeholder="https://example.org/sign-reference" aria-describedby="reference-source-help"><small id="reference-source-help">Stored as provenance only. This webpage is not processed as video.</small></div>
+                <div class="reference-source-summary" aria-label="Reference source"><span>Reference source</span><strong>Reviewed reference</strong></div>
+                <div class="form-field"><label for="reference-source-url">Reference webpage <span class="optional-label">Optional</span></label><input id="reference-source-url" name="reference_source_url" type="url" inputmode="url" placeholder="https://example.org/sign-reference" aria-describedby="reference-source-help"><small id="reference-source-help">Saved with the reference details only. This webpage is not used as the video.</small></div>
               </fieldset>
 
               <fieldset>
@@ -50,43 +50,44 @@
                   <strong id="selected-file-name">No video selected</strong>
                   <span id="selected-file-meta">MP4 · maximum 100 MB</span>
                 </div>
-                <div class="demo-reference-row"><div><strong>Reliable demo path</strong><span>Use the existing local POC reference for a reproducible presentation.</span></div><button class="text-link-button" id="use-demo-video" type="button">Use demo reference</button></div>
-                <div class="button-row sign-run-actions"><button class="button button-primary" id="run-movement-check" type="submit" disabled>Run movement check</button><button class="button button-secondary" id="reset-sign-run" type="button" hidden>Use another reference video</button></div>
+                <div class="demo-reference-row"><div><strong>Included demo reference</strong><span>Use the MORE reference video for a consistent walkthrough.</span></div><button class="text-link-button" id="use-demo-video" type="button">Use demo reference</button></div>
+                <div class="button-row sign-run-actions"><button class="button button-primary" id="run-movement-check" type="submit" disabled>Review the sign reference</button><button class="button button-secondary" id="reset-sign-run" type="button" hidden>Use another reference</button></div>
                 <p class="form-message" id="sign-form-message" role="status" aria-live="polite">Select an MP4 or use the demo reference.</p>
               </fieldset>
             </form>
 
             <aside class="reference-checklist" aria-labelledby="checklist-title">
               <p class="card-label">Capture quality</p><h3 id="checklist-title">Reference video checklist</h3>
-              <ul class="check-list"><li>Adult validated reference</li><li>Hands remain visible</li><li>Upper body is visible</li><li>Stable camera</li><li>Good lighting</li><li>Minimal obstruction</li></ul>
-              <p>This checklist improves movement capture. It does not assess linguistic correctness.</p>
+              <ul class="check-list"><li>Clear reference video</li><li>Hands remain visible</li><li>Upper body is visible</li><li>Stable camera</li><li>Good lighting</li><li>Minimal obstruction</li></ul>
+              <p>Clear framing makes it easier to choose useful poses.</p>
             </aside>
           </div>
         </div>
       </section>
 
       <section class="workspace-section section-shell processing-section" id="processing-section" aria-labelledby="processing-title">
-        <div class="workspace-heading"><div><p class="eyebrow">Step 3</p><h2 id="processing-title">Movement check</h2></div><p id="service-state">Checking the local processing service…</p></div>
-        <ol class="processing-stages" id="processing-stages" aria-label="Movement processing status"></ol>
+        <div class="workspace-heading"><div><p class="eyebrow">Step 3</p><h2 id="processing-title">Review the sign reference</h2></div><p id="service-state">Preparing the reference review…</p></div>
+        <ol class="processing-stages" id="processing-stages" aria-label="Reference review progress"></ol>
         <p class="processing-note" id="processing-note" role="status" aria-live="polite">Waiting for a reference video.</p>
       </section>
 
       <section class="workspace-section section-tint result-section" id="result-section" aria-labelledby="result-title" hidden>
         <div class="section-shell">
           <div class="result-summary">
-            <div><p class="eyebrow" id="result-kicker">Movement check complete</p><h2 id="result-title">Technical result</h2><p id="result-explanation">Technical processing does not certify sign-language correctness.</p></div>
-            <dl class="status-separation"><div><dt>Technical status</dt><dd id="technical-status">—</dd></div><div><dt>Content status</dt><dd id="content-status">—</dd></div></dl>
+            <div><p class="eyebrow" id="result-kicker">Reference review</p><h2 id="result-title">Reference review complete</h2><p id="result-explanation">We found a few moments worth checking before creating the family materials.</p></div>
+            <dl class="status-separation"><div><dt>Reference review</dt><dd id="technical-status">—</dd></div><div><dt>Next step</dt><dd id="content-status">—</dd></div></dl>
           </div>
 
           <div class="movement-comparison" id="movement-comparison" aria-labelledby="movement-evidence-title">
-            <div class="comparison-heading"><div><p class="card-label">Visual evidence</p><h3 id="movement-evidence-title">Original movement → structured movement representation</h3></div><span class="run-identifier" id="run-identifier"></span></div>
-            <article><h4>Reference video</h4><video id="reference-video-preview" controls muted playsinline preload="metadata"></video><p id="reference-playback-status" role="status">Loading video metadata…</p><p>Validated reference supplied for this run.</p></article>
-            <article><h4>Movement representation</h4><video id="movement-video-preview" controls muted playsinline preload="metadata"></video><p id="movement-playback-status" role="status">Loading video metadata…</p><p>Real MediaPipe overlay generated from this run. This is not a family-facing avatar.</p></article>
+            <div class="comparison-heading"><div><p class="card-label">Reference preview</p><h3 id="movement-evidence-title">Compare the video and pose preview</h3></div><span class="run-identifier" id="run-identifier"></span></div>
+            <article><h4>Reference video</h4><video id="reference-video-preview" controls muted playsinline preload="metadata"></video><p id="reference-playback-status" role="status">Loading video details…</p><p>The source video for this sign reference.</p></article>
+            <article id="movement-preview-panel"><h4>Pose preview</h4><video id="movement-video-preview" controls muted playsinline preload="metadata"></video><p id="movement-playback-status" role="status">Loading video details…</p><p>A review view that helps you find clear moments in the sign.</p></article>
           </div>
 
           <details class="technical-details" id="technical-details">
-            <summary>View technical details</summary>
+            <summary>Technical and source details</summary>
             <div class="technical-detail-grid">
+              <div class="metric-panel"><span>Technical status</span><strong id="raw-technical-status">—</strong><small>Internal processing state</small></div>
               <div class="metric-panel"><span>Frames analysed</span><strong id="metric-frames">—</strong><small>Video frames processed in this run</small></div>
               <div class="metric-panel"><span>Pose detection coverage</span><strong id="metric-pose">—</strong><small>Frames with complete pose landmarks</small></div>
               <div class="metric-panel"><span>Dominant-hand detection coverage</span><strong id="metric-hand">—</strong><small>Frames with dominant-hand landmarks; not sign accuracy</small></div>
@@ -94,7 +95,10 @@
               <div class="metric-panel"><span>Unresolved frames</span><strong id="metric-unresolved">—</strong><small>Frames deliberately left missing after conservative gap handling</small></div>
               <div class="metric-panel"><span>Processing duration</span><strong id="metric-duration">—</strong><small>Measured local pipeline runtime</small></div>
             </div>
-            <div class="diagnostic-evidence"><a id="detection-timeline-link" href="#" target="_blank" rel="noopener"><img id="detection-timeline" alt="Detection and gap-handling timeline generated from this run"></a><a id="wrist-trajectory-link" href="#" target="_blank" rel="noopener"><img id="wrist-trajectory" alt="Body-relative wrist trajectory generated from this run"></a></div>
+            <div class="diagnostic-evidence decision-charts">
+              <article class="decision-chart" aria-labelledby="tracking-coverage-title"><div><h3 id="tracking-coverage-title">Tracking coverage</h3><p>Shows where the reference pose and main hand were visible across the video.</p></div><a id="detection-timeline-link" href="#" target="_blank" rel="noopener"><img id="detection-timeline" alt="Tracking coverage across the reference video"></a><p class="why-it-matters"><strong>Why it matters</strong> Gaps help you decide whether to use tracked poses or choose clearer reference frames.</p></article>
+              <article class="decision-chart" aria-labelledby="hand-path-title"><div><h3 id="hand-path-title">Hand movement path</h3><p>Shows how the main hand moved relative to the body.</p></div><a id="wrist-trajectory-link" href="#" target="_blank" rel="noopener"><img id="wrist-trajectory" alt="Main hand movement path relative to the body"></a><p class="why-it-matters"><strong>Why it matters</strong> Use it to compare movement direction and identify stable moments for visual preparation.</p></article>
+            </div>
             <div class="warning-panel"><strong>Technical notes</strong><ul id="technical-warnings"></ul><p id="raw-technical-statuses"></p></div>
           </details>
         </div>
@@ -102,61 +106,68 @@
 
       <section class="workspace-section section-shell review-section" id="review-section" aria-labelledby="review-title" hidden>
         <div class="review-gate-card">
-          <div><p class="eyebrow">Step 4 · Technical review</p><h2 id="review-title">Review movement evidence</h2><p id="review-guidance">Confirm that the evidence is useful enough to prepare a visual.</p><ul class="review-reasons" id="review-reasons"></ul><p class="prototype-boundary"><span class="sr-only">Human approval is the publication gate. </span>This decision accepts the evidence for visual preparation only; it does not certify the sign or publish content.</p></div>
+          <div><p class="eyebrow">Steps 4–5 · Reference review</p><h2 id="review-title">Choose one or two reference poses</h2><p id="review-guidance">Select the clearest moments to guide the visual.</p><ul class="review-reasons" id="review-reasons"></ul></div>
           <div class="review-controls">
-            <span class="status-pill status-review" id="review-state">Technical review needed</span>
-            <fieldset class="evidence-route-options" id="evidence-route-options"><legend>Choose evidence route</legend>
-              <label><input type="radio" name="evidence_route" value="LANDMARK_KEY_POSE"><span><strong>Landmark key poses</strong><small>Use when automatic geometry is sufficiently clear.</small></span></label>
-              <label><input type="radio" name="evidence_route" value="HUMAN_SELECTED_FRAME"><span><strong>Choose reference frames</strong><small>Select one or two suggested poses without entering frame numbers.</small></span></label>
-              <label><input type="radio" name="evidence_route" value="KNOWLEDGE_REFERENCE_FALLBACK"><span><strong>Grounded fallback</strong><small>Use curated mechanics and the functional sign reference with available movement evidence.</small></span></label>
+            <span class="status-pill status-review" id="review-state">Review recommended</span>
+            <fieldset class="evidence-route-options" id="evidence-route-options"><legend>Choose how to continue</legend>
+              <label><input type="radio" name="evidence_route" value="LANDMARK_KEY_POSE" aria-describedby="tracked-pose-help tracked-pose-availability"><span><strong>Use tracked poses</strong><small id="tracked-pose-help">Use when the movement preview is clear.</small></span></label>
+              <p class="evidence-availability-note" id="tracked-pose-availability" hidden>Tracked poses aren’t clear enough for this reference. Choose one or two reference frames instead.</p>
+              <label><input type="radio" name="evidence_route" value="HUMAN_SELECTED_FRAME"><span><strong>Choose reference frames</strong><small>Select one or two clear poses from the reference.</small></span></label>
+              <label><input type="radio" name="evidence_route" value="KNOWLEDGE_REFERENCE_FALLBACK"><span><strong>Use reviewed references</strong><small>Continue with the reviewed sign guidance and available movement information.</small></span></label>
             </fieldset>
-            <div class="reference-frame-picker" id="reference-frame-picker" hidden><strong>Choose Pose A and optionally Pose B</strong><div id="suggested-reference-frames" class="suggested-reference-frames" role="group" aria-label="Suggested reference frames"></div><p id="frame-picker-help">Select at least one frame.</p></div>
-            <div class="form-field fallback-rationale" id="fallback-rationale-field" hidden><label for="technical-review-rationale">Why is grounded fallback appropriate?</label><textarea id="technical-review-rationale" rows="3" maxlength="400" placeholder="For example: the approach and mouth contact are clear in the validated reference, although tracking is incomplete near the face."></textarea><small>Required when grounded fallback is selected.</small></div>
-            <button class="button button-primary" id="approve-sign" type="button">Prepare visual</button><button class="button button-secondary" id="use-another-reference" type="button">Use another reference video</button><p id="review-message" class="form-message" aria-live="polite">No technical review action recorded.</p>
-            <details class="source-details"><summary>Technical and source details</summary><dl><div><dt>Run</dt><dd id="source-detail-run">—</dd></div><div><dt>Evidence route</dt><dd id="source-detail-route">Not selected</dd></div><div><dt>Reference source</dt><dd id="source-detail-url">Not provided</dd></div><div><dt>Character provenance</dt><dd>Open Peeps · founder-verified CC0 record</dd></div></dl></details>
+            <div class="reference-frame-picker" id="reference-frame-picker" hidden><h3>Choose one or two reference poses</h3><p id="frame-picker-instructions">Select the clearest moments to guide the visual.</p><div id="suggested-reference-frames" class="suggested-reference-frames" role="group" aria-label="Suggested reference poses" aria-describedby="frame-picker-instructions frame-picker-help"></div><p id="frame-picker-help" role="status" aria-live="polite">Select at least one pose to continue.</p></div>
+            <div class="form-field fallback-rationale" id="fallback-rationale-field" hidden><label for="technical-review-rationale">Why are reviewed references the best option?</label><textarea id="technical-review-rationale" rows="3" maxlength="400" placeholder="For example: the approach and mouth contact are clear in the trusted reference, although part of the hand movement is hidden near the face."></textarea><small>Required when reviewed references are selected.</small></div>
+            <button class="button button-primary" id="approve-sign" type="button" disabled>Create family materials</button><button class="button button-secondary" id="use-another-reference" type="button">Use another reference</button><p id="review-message" class="form-message" aria-live="polite">Choose how to continue.</p>
+            <details class="source-details"><summary>Technical and source details</summary><dl><div><dt>Pose source</dt><dd id="source-detail-route">Not selected</dd></div><div><dt>Selected reference frames</dt><dd id="source-detail-frames">Not selected</dd></div><div><dt>Reference source</dt><dd id="source-detail-url">Not provided</dd></div><div><dt>Reviewed source</dt><dd>Reviewed reference</dd></div><div><dt>Sources and permissions</dt><dd>Open Peeps · CC0 recorded</dd></div></dl><details class="advanced-run-details"><summary>Advanced run details</summary><dl><div><dt>Run ID</dt><dd id="source-detail-run">—</dd></div></dl></details></details>
           </div>
         </div>
       </section>
 
       <section class="workspace-section section-tint visual-preparation-section" id="visual-preparation-section" aria-labelledby="visual-preparation-title" hidden>
         <div class="section-shell">
-          <div class="workspace-heading"><div><p class="eyebrow">Step 5 · Ready to prepare visual</p><h2 id="visual-preparation-title">Prepare <span data-active-sign>MORE</span> visual</h2></div><p>The sign package resolves the approved inputs automatically. No file hunting is required.</p></div>
-          <div class="grounding-summary" aria-label="Resolved visual grounding">
-            <article><span class="grounding-number">01</span><div><small>Sign knowledge</small><h3 id="grounding-source">Validated reference</h3><p id="grounding-source-note">Sign mechanics and meaning are ready for human confirmation.</p></div><span class="grounding-status status-review" id="grounding-source-status">Review</span></article>
-            <article><span class="grounding-number">02</span><div><small>Movement geometry</small><h3 id="grounding-motion">MediaPipe key poses</h3><p id="grounding-motion-note">Relative hand and upper-body positioning from this run.</p></div><span class="grounding-status status-ready" id="grounding-motion-status">Usable</span></article>
-            <article><span class="grounding-number">03</span><div><small>Character identity</small><h3 id="grounding-character">KinderFlow character identity</h3><p id="grounding-character-note">Open Peeps visual system · calm monochrome linework.</p></div><span class="grounding-status status-ready">Applied</span></article>
+          <div class="workspace-heading"><div><p class="eyebrow">Step 6 · Family materials</p><h2 id="visual-preparation-title">Prepare <span data-active-sign>MORE</span> family materials</h2></div><p>KinderFlow combines the reviewed sign guidance and selected poses to prepare reusable family materials.</p></div>
+          <div class="grounding-summary" aria-label="Information used to prepare the sign visual">
+            <article><span class="grounding-number">01</span><div><h3 id="grounding-source">Reviewed sign guidance</h3><p id="grounding-source-note">The reviewed sign information is ready.</p></div><span class="grounding-status status-ready" id="grounding-source-status">Ready</span></article>
+            <article><span class="grounding-number">02</span><div><h3 id="grounding-motion">Reference poses</h3><p id="grounding-motion-note">The clearest movement moments are ready.</p></div><span class="grounding-status status-ready" id="grounding-motion-status">Ready</span></article>
+            <article><span class="grounding-number">03</span><div><h3 id="grounding-character">KinderFlow illustration</h3><p id="grounding-character-note">The consistent family-facing style is ready.</p></div><span class="grounding-status status-ready" id="grounding-character-status">Ready</span></article>
           </div>
           <div class="visual-brief-card">
-            <div><p class="card-label">Resolved visual brief</p><h3 id="visual-brief-title">Two hands · upper chest · repeated inward movement</h3><p id="visual-brief-description">A simplified educational illustration prioritising hand relationship, body location and a readable movement cue.</p></div>
-            <div class="fallback-note"><strong id="fallback-title">Evidence route 1</strong><span id="fallback-description">Curated sign knowledge + MediaPipe key poses</span></div>
+            <div><p class="card-label">Sign visual summary</p><h3 id="visual-brief-title">Two hands · upper chest · repeated inward movement</h3><p id="visual-brief-description">A simple educational illustration that makes hand position, body location and movement easy to understand.</p></div>
+            <div class="fallback-note"><strong id="fallback-title">Routine / context</strong><span id="visual-routine-context">Snack time</span></div>
           </div>
-          <div class="visual-stage-actions"><button class="button button-primary" id="generate-visual-candidates" type="button">Generate visual candidates</button><p id="visual-preparation-status" role="status" aria-live="polite">Ready to create two grounded, static candidates.</p></div>
+          <div class="visual-stage-actions"><button class="button button-primary" id="generate-visual-candidates" type="button">Create visual options</button><p id="visual-preparation-status" role="status" aria-live="polite">Ready to create visual options for review.</p></div>
         </div>
       </section>
 
       <section class="workspace-section section-shell visual-review-section" id="visual-review-section" aria-labelledby="visual-review-title" hidden>
-        <div class="workspace-heading"><div><p class="eyebrow">Step 6 · Visual review</p><h2 id="visual-review-title">Choose the clearest candidate</h2></div><p>Review hand relationship, body location and movement clarity. Visual approval remains a human decision.</p></div>
-        <div class="visual-candidates" id="visual-candidates" role="radiogroup" aria-label="Visual candidates"></div>
+        <div class="workspace-heading"><div><p class="eyebrow">Step 7 · Visual review</p><h2 id="visual-review-title">Choose the clearest visual</h2></div><p>Check that the hands, body position and movement are easy to understand.</p></div>
+        <div class="visual-candidates" id="visual-candidates" role="radiogroup" aria-label="Visual options"></div>
+        <details class="visual-review-criteria">
+          <summary>Technical and source details</summary>
+          <div><div><h3>Visual review checklist</h3><ul><li>Hands are easy to read.</li><li>Body position is clear.</li><li>Movement is understandable.</li><li>Visual matches the reviewed sign reference.</li><li>Arms, wrists, palms and fingers connect naturally.</li><li>No decorative accent hides the sign.</li></ul></div><div><h3>Illustration sources</h3><p>The registered half-body Open Peeps character is preserved as the fixed identity. Separate Open Peeps references guide shoulder, arm, hand and finger grammar; the sign-specific reference defines the pose.</p></div></div>
+        </details>
         <div class="visual-review-actions">
-          <div><span class="status-pill status-review" id="visual-review-state">Visual review</span><p id="visual-review-status" role="status" aria-live="polite">Select one candidate to continue.</p></div>
-          <div class="button-row"><button class="button button-secondary" id="choose-different-evidence" type="button">Choose different pose evidence</button><button class="button button-secondary" id="regenerate-candidate" type="button">Generate another candidate</button><button class="text-link-button" id="reject-visual" type="button">Reject visual</button><button class="button button-primary" id="approve-visual" type="button" disabled>Approve selected visual</button></div>
+          <div><span class="status-pill status-review" id="visual-review-state">Visual review</span><p id="visual-review-status" role="status" aria-live="polite">Select one visual option to continue.</p></div>
+          <div class="button-row"><button class="button button-secondary" id="choose-different-evidence" type="button">Choose different pose</button><button class="button button-secondary" id="regenerate-candidate" type="button">Create another visual option</button><button class="text-link-button" id="reject-visual" type="button">Reject visual</button><button class="button button-primary" id="approve-visual" type="button" disabled>Approve selected visual</button></div>
         </div>
-        <p class="prototype-boundary">The candidates are controlled local SVG proofs. They are grounded in the resolved package and require human review; no autonomous visual generation or linguistic certification is claimed.</p>
+        <p class="prototype-boundary">Review the hands, body position and movement cue before approving the visual.</p>
       </section>
 
       <section class="workspace-section section-tint downstream-section" id="downstream-section" aria-labelledby="downstream-title" hidden>
         <div class="section-shell">
-          <div class="workspace-heading"><div><p class="eyebrow">Step 7 · Approved for internal printable</p><h2 id="downstream-title">Create the educational card</h2></div><p>The selected illustration is approved for a local printable proof. Library publication remains a separate controlled decision.</p></div>
-          <div class="downstream-grid">
-            <article class="primary-downstream"><span class="content-type-tag">Printable ready</span><h3>Flashcard or Routine Card</h3><p>Choose English or Spanish, review the live A5 proof, then print or save it as a PDF.</p><a class="button button-primary" id="create-printable-link" href="flashcards.html">Create printable</a></article>
-            <article><span class="content-type-tag">Optional content step</span><h3>Content Engine</h3><p>Prepare and review structured school and family wording before a future publication decision.</p><a class="button button-secondary" id="continue-content-engine-link" href="library.html#content-engine-title">Prepare family content</a></article>
-            <article><span class="content-type-tag">Separate workflow</span><h3>Story</h3><p>Prepare an original contextual draft using the reviewed sign package.</p><a class="text-link" id="create-story-link" href="create-story.html">Create story</a></article>
+          <div class="workspace-heading"><div><p class="eyebrow">Step 8 · Family materials</p><h2 id="downstream-title">Create family materials</h2></div><p>Turn the reviewed sign into materials families can use at home.</p></div>
+          <div class="downstream-grid family-material-options">
+            <article class="family-material-option"><span class="content-type-tag">Printable</span><h3>Flashcard</h3><p>Recognise the sign and connect it with a familiar context.</p><a class="button button-primary" id="create-printable-link" href="flashcards.html">Create flashcard</a></article>
+            <article class="family-material-option"><span class="content-type-tag">Printable</span><h3>Routine Card</h3><p>Use the sign naturally in one everyday routine.</p><a class="button button-secondary" id="create-routine-link" href="flashcards.html?type=routine">Create routine card</a></article>
+            <article class="family-material-option" id="story-material-option"><span class="content-type-tag">Shared reading</span><h3>Story</h3><p>Reinforce a familiar sign through a short shared-reading story.</p><a class="button button-secondary" id="create-story-link" href="create-story.html">Create story</a><small class="material-availability-note" id="story-availability-note" hidden>Story is currently available for MORE.</small></article>
+            <article class="family-material-option is-coming-soon"><span class="status-pill status-neutral">Coming soon</span><h3>Song</h3><p>Use repetition and rhythm to practise familiar signs.</p></article>
           </div>
+          <div class="family-material-actions"><a class="text-link" id="review-library-link" href="library.html">Add to library or use later</a></div>
         </div>
       </section>
 
-      <section class="workspace-section section-shell cv-boundary" aria-labelledby="boundary-title"><div><p class="eyebrow">Governance boundary</p><h2 id="boundary-title">Movement evidence, not automatic correctness</h2></div><p>Computer Vision quantifies and structures observed movement. It does not invent the sign, certify linguistic correctness or publish content automatically. No child video is required.</p></section>
+      <section class="workspace-section section-shell cv-boundary" aria-labelledby="boundary-title"><div><p class="eyebrow">What the reference review helps with</p><h2 id="boundary-title">Find the clearest moments in the sign</h2></div><div><p>KinderFlow highlights the most useful parts of the reference so you can choose the poses that will guide the family materials.</p><small>Final sign approval remains a human decision.</small></div></section>
     </main>
-    <footer><span>Master Content Studio · Create a Sign</span><span>Local processing · Human-controlled publication</span></footer>
+    <footer><span>Master Content Studio · Create a Sign</span><span>Reference-led sign and family-material workflow</span></footer>
   </body>
 </html>

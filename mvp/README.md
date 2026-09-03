@@ -8,7 +8,7 @@ This local MVP serves two connected internal capabilities: the existing Create a
 - MediaPipe 0.10.14 using the legacy Solutions API;
 - ffmpeg with an H.264 encoder available on PATH;
 - an MP4 reference video; and
-- the existing local demo file at *poc/input/sign_reference.mp4* for the demo-reference path.
+- the local MORE reference at *../resources/video_input/more.mp4* for the current demo-reference path.
 
 Do not upgrade or replace this environment for the current prototype. The machine's default Python/MediaPipe installation is not equivalent to the validated local path.
 
@@ -44,13 +44,13 @@ POST /api/content-packs/<run_id>/restore
 GET  /api/content-packs/<run_id>
 ```
 
-Approval records the generic actor type `human_reviewer`, creates a reviewed content version and enables the limited Flashcard Studio handoff. It does not publish anything. Repeated approval of the same run is idempotent.
+Approval records the generic actor type `human_reviewer` and creates a reviewed content version. Printable creation remains unavailable until the same sign also has an approved visual. It does not publish anything. Repeated approval of the same run is idempotent.
 
 The server loads only allowlisted provider settings from the ignored repository `.env` when present. No key is returned, printed or written into a run. `OPENAI_MODEL` controls the model configuration.
 
 ## Demonstration paths
 
-- **Demo reference:** choose **Use demo reference video**, then run the movement check. This processes the existing private local reference through the real pipeline.
+- **Demo reference:** choose **Use demo reference**, then **Review the sign reference**. This processes the registered MORE reference through the real pipeline and keeps the selected identity fixed to MORE. The product does not infer a sign from the video.
 - **Custom reference:** select another MP4 validated reference. Metrics and artifacts are calculated for that upload.
 
 MP4 is the supported MVP format. Uploads are limited to 100 MB, remain local and are stored under a generated *mvp/runs/run_...* directory. Run artifacts are ignored by Git. The canonical Round 1 files in *poc/output* are not overwritten.
@@ -71,7 +71,7 @@ Visual approval records **Approved for internal printable** in session state. It
 
 For live presentations, keep a short screen recording of the completed demo flow as a fallback. The recording should show the input, stage progression, visual comparison, metrics and review boundary without including private filesystem paths.
 
-The current local sample is technical fallback evidence, not a production library asset. Confirm its source rights, intended sign identity and presentation permission before showing the reference or overlay externally; otherwise replace it with an owned or appropriately licensed validated adult reference.
+The current app sample is MORE reference material, not a production library asset. Its sign identity is confirmed by its byte-for-byte match with the registered MORE input. The committed POC reference and Round 1 diagnostics remain supporting WATER evidence and are never relabelled. Confirm source rights and presentation permission before showing either reference or overlay externally; otherwise replace it with an owned or appropriately licensed reviewed reference.
 
 ## Tests
 

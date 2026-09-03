@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import shutil
@@ -268,24 +269,60 @@ class PipelineStateTests(unittest.TestCase):
         status, reasons, unresolved = pipeline.map_technical_status(summary, "EAT")
         self.assertEqual(status, "Review needed")
         self.assertEqual(unresolved, 19.0)
-        self.assertTrue(any("grounded fallback" in reason for reason in reasons))
+        self.assertTrue(any("reviewed reference" in reason.lower() for reason in reasons))
         self.assertEqual(pipeline.map_technical_status(summary, "MORE")[0], "Fail")
 
     def test_real_regeneration_returns_distinct_verified_candidate(self) -> None:
+        packages = json.loads(
+            (REPO_ROOT / "prototype/data/visual_sign_packages.json").read_text(encoding="utf-8")
+        )["signs"]
+        more = next(item for item in packages if item["sign_id"] == "more")
+        current = more["candidates"]
         result = regenerate_visual_candidate(
-            {"sign_id": "more", "existing_candidate_ids": ["more-a", "more-b"]}
+            {"sign_id": "more", "existing_candidate_ids": [item["id"] for item in current]}
         )
         candidate = result["candidate"]
         self.assertEqual(result["generation_method"], "DETERMINISTIC_LOCAL_VECTOR_RECOMPOSITION")
-        self.assertNotIn(candidate["id"], {"more-a", "more-b"})
-        self.assertNotIn(candidate["asset"], {"assets/signs/more-a.svg", "assets/signs/more-b.svg"})
+        self.assertNotIn(candidate["id"], {item["id"] for item in current})
+        self.assertNotIn(candidate["asset"], {item["asset"] for item in current})
+        asset = REPO_ROOT / "prototype" / candidate["asset"]
+        self.assertEqual(hashlib.sha256(asset.read_bytes()).hexdigest(), candidate["content_hash"])
         self.assertEqual(result["publication_status"], "DRAFT")
 
     def test_regeneration_failure_keeps_existing_candidates_honest(self) -> None:
+        packages = json.loads(
+            (REPO_ROOT / "prototype/data/visual_sign_packages.json").read_text(encoding="utf-8")
+        )["signs"]
+        more = next(item for item in packages if item["sign_id"] == "more")
+        all_ids = [
+            item["id"]
+            for item in more.get("candidates", []) + more.get("regeneration_candidates", [])
+        ]
         with self.assertRaisesRegex(pipeline.InputError, "No additional local candidate"):
             regenerate_visual_candidate(
-                {"sign_id": "more", "existing_candidate_ids": ["more-a", "more-b", "more-c-v3"]}
+                {"sign_id": "more", "existing_candidate_ids": all_ids}
             )
+
+    def test_unknown_sign_never_falls_back_to_more(self) -> None:
+        with self.assertRaisesRegex(pipeline.InputError, "not available|No reviewed visual package"):
+            regenerate_visual_candidate(
+                {"sign_id": "unsupported-sign", "existing_candidate_ids": []}
+            )
+
+    def test_water_regeneration_resolves_only_water_assets(self) -> None:
+        packages = json.loads(
+            (REPO_ROOT / "prototype/data/visual_sign_packages.json").read_text(encoding="utf-8")
+        )["signs"]
+        water = next(item for item in packages if item["sign_id"] == "water")
+        current = water["candidates"]
+        result = regenerate_visual_candidate(
+            {"sign_id": "water", "existing_candidate_ids": [item["id"] for item in current]}
+        )
+        candidate = result["candidate"]
+        self.assertNotIn("more", candidate["id"].lower())
+        self.assertNotIn("more", candidate["asset"].lower())
+        self.assertTrue(candidate["id"].lower().startswith("water"))
+        self.assertEqual(result["publication_status"], "DRAFT")
 
 
 class CreateSignPageTests(unittest.TestCase):
@@ -294,9 +331,49 @@ class CreateSignPageTests(unittest.TestCase):
         parser = IdCollector()
         parser.feed(html)
         self.assertEqual(len(parser.ids), len(set(parser.ids)))
-        self.assertIn("Technical processing does not certify", html)
-        self.assertIn("Human approval is the publication gate", html)
+        self.assertIn("What the reference review helps with", html)
+        self.assertIn("Find the clearest moments in the sign", html)
+        self.assertIn("Final sign approval remains a human decision.", html)
         self.assertIn('src="create-sign.js"', html)
+
+    def test_demo_reference_is_registered_as_more_not_water(self) -> None:
+        registry = json.loads(
+            (REPO_ROOT / "assets/registry/sign_asset_registry.json").read_text(encoding="utf-8")
+        )
+        signs = {item["sign_id"]: item for item in registry["signs"]}
+        assets = registry["assets"]
+        demo_hash = hashlib.sha256(pipeline.DEMO_VIDEO.read_bytes()).hexdigest()
+        self.assertEqual(getattr(pipeline, "DEMO_SIGN_ID", None), "more")
+        self.assertEqual(getattr(pipeline, "DEMO_SIGN_NAME", None), "MORE")
+        self.assertEqual(pipeline.DEMO_VIDEO.name, "more.mp4")
+        self.assertEqual(demo_hash, assets[signs["more"]["reference_video_input"]]["sha256"])
+        self.assertNotEqual(demo_hash, assets[signs["water"]["reference_video_input"]]["sha256"])
+        historical_water = REPO_ROOT / "poc/input/sign_reference.mp4"
+        historical_water_hash = hashlib.sha256(historical_water.read_bytes()).hexdigest()
+        self.assertEqual(
+            historical_water_hash,
+            assets[signs["water"]["reference_video_input"]]["sha256"],
+        )
+        self.assertNotEqual(historical_water_hash, demo_hash)
+        self.assertEqual(signs["more"]["landmark_evidence"], [])
+        self.assertEqual(
+            set(signs["water"]["landmark_evidence"]),
+            {
+                "water_landmark_summary",
+                "water_detection_timeline",
+                "water_validation_summary",
+            },
+        )
+
+        script = (REPO_ROOT / "prototype/create-sign.js").read_text(encoding="utf-8")
+        self.assertRegex(script, r"(?s)source\s*===\s*[\"']demo[\"'].*MORE")
+
+        app_source = (REPO_ROOT / "mvp/app.py").read_text(encoding="utf-8")
+        demo_route = app_source.split('if route == "/api/runs/demo":', 1)[1].split(
+            'elif route == "/api/runs/upload":', 1
+        )[0]
+        self.assertIn("DEMO_SIGN", demo_route)
+        self.assertNotIn('payload.get("sign_name"', demo_route)
 
 
 @unittest.skipUnless(
@@ -306,16 +383,19 @@ class CreateSignPageTests(unittest.TestCase):
 class DemoIntegrationTest(unittest.TestCase):
     def test_demo_reference_runs_through_real_pipeline(self) -> None:
         run_dir, manifest = pipeline.prepare_run(
-            "MORE",
-            "Snack time",
+            pipeline.DEMO_SIGN_NAME,
+            "Snack time / playtime",
             "Validated reference",
-            "sign_reference.mp4",
-            "integration_test",
+            "more.mp4",
+            "demo_reference",
         )
+        self.assertEqual(manifest["sign"]["name"], "MORE")
+        self.assertEqual(manifest["sign"]["sign_id"], pipeline.DEMO_SIGN_ID)
+        self.assertEqual(manifest["source"]["reference_id"], "demo_more_reference")
         pipeline.store_demo(run_dir)
         result = pipeline.run_pipeline(run_dir, manifest)
         self.assertEqual(result["state"], "complete")
-        self.assertEqual(result["metrics"]["frames_analysed"], 332)
+        self.assertEqual(result["metrics"]["frames_analysed"], 285)
         self.assertTrue(
             (run_dir / "output/previews/reference_landmarks.mp4").exists()
         )

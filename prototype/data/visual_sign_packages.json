@@ -1,53 +1,92 @@
 {
-  "schema_version": "2.0",
-  "purpose": "Exact local retrieval packages for the MORE acceptance path and EAT grounded-fallback path.",
-  "governance_note": "These records ground visual preparation and human review. They do not certify linguistic correctness or publish content.",
+  "schema_version": "2.1",
+  "purpose": "Exact local retrieval packages for six source-grounded KinderFlow sign illustration sets.",
+  "governance_note": "These deterministic records support visual preparation and human review. They do not certify linguistic correctness or publish content.",
   "signs": [
     {
       "sign_id": "more",
-      "labels": {"en": "MORE", "es": "MÁS"},
+      "labels": {
+        "en": "MORE",
+        "es": "MÁS"
+      },
       "usage": {
         "en": "Use during a familiar routine when a child asks for another portion, turn or repetition.",
         "es": "Úsalo durante una rutina habitual cuando un niño pida otra porción, turno o repetición."
       },
-      "routine": {"en": "Snack time", "es": "Hora de la merienda"},
+      "routine": {
+        "en": "Snack time",
+        "es": "Hora de la merienda"
+      },
       "routine_guidance": {
         "en": "Use the sign naturally just before offering more food.",
         "es": "Haz el signo de forma natural justo antes de ofrecer más comida."
       },
       "knowledge": {
         "hands_used": 2,
-        "dominant_hand": "Both hands participate symmetrically",
-        "non_dominant_hand": "Both hands participate symmetrically",
-        "broad_handshape": "Fingertips gathered on each hand",
+        "dominant_hand": "Both hands participate independently",
+        "non_dominant_hand": "Both hands participate independently",
+        "broad_handshape": "Two grouped flat-O hands",
         "palm_orientation": "Hands face one another",
         "body_location": "Upper chest",
-        "movement": "Hands move together at the fingertips",
+        "movement": "The two grouped fingertip sets move inward, meet, separate and repeat.",
         "direction": "Inward",
         "repetition": "Small repeated contact",
-        "contact_relationship": "The two gathered fingertip groups meet",
+        "contact_relationship": "The two grouped fingertip sets meet",
         "expected_key_pose_count": 2,
-        "variants": "TBD",
-        "source_conflict": "TBD"
+        "variants": "Human review required",
+        "source_conflict": "No unresolved conflict recorded; human sign review still required"
       },
       "movement": {
         "hands": 2,
         "body_location": "Upper chest",
-        "description": "Both gathered fingertip groups meet at upper-chest height.",
-        "presentation": "A start/contact sequence best preserves the repeated inward relationship.",
-        "technical_evidence": "MediaPipe-based pose and hand landmark tracking",
-        "evidence_quality": "Use sign-aware review"
+        "description": "The two grouped fingertip sets move inward, meet, separate and repeat.",
+        "presentation": "A start/contact sequence preserves the inward meeting and repeated relationship.",
+        "technical_evidence": "Registered local references; technical evidence does not certify linguistic correctness",
+        "evidence_quality": "Use sign-aware human review"
       },
       "visual_identity": {
         "base_system": "Open Peeps visual system",
         "operator_description": "KinderFlow character identity · calm monochrome linework",
         "mood": "Calm, editorial and friendly"
       },
+      "source_hierarchy": [
+        "FUNCTIONAL_SIGN_ILLUSTRATION",
+        "CURATED_SIGN_KNOWLEDGE",
+        "REFERENCE_VIDEO_FRAME_LANDMARKS",
+        "OPEN_PEEPS_VISUAL_GRAMMAR",
+        "HUMAN_REVIEW"
+      ],
       "grounding_sources": [
-        {"label": "Curated sign knowledge", "role": "Canonical mechanics and usage; human confirmation required", "status": "Applied"},
-        {"label": "Functional sign reference", "role": "Local MORE flashcard and reference video define pose sequence", "status": "Applied"},
-        {"label": "Movement evidence", "role": "MediaPipe supports broad geometry and diagnostics where usable", "status": "Condition-dependent"},
-        {"label": "Open Peeps visual system", "role": "Character identity only; not the movement source", "status": "Applied"}
+        {
+          "priority": "1",
+          "label": "Functional sign illustration",
+          "role": "Primary mechanics source for the selected sign",
+          "status": "Applied"
+        },
+        {
+          "priority": "2",
+          "label": "Curated sign knowledge",
+          "role": "Mechanics and usage for human confirmation",
+          "status": "Applied"
+        },
+        {
+          "priority": "3",
+          "label": "Reference geometry",
+          "role": "Reference video, selected frames and landmarks support broad geometry",
+          "status": "Supporting evidence"
+        },
+        {
+          "priority": "4",
+          "label": "Open Peeps visual grammar",
+          "role": "Character identity and line grammar only; never sign mechanics",
+          "status": "Applied"
+        },
+        {
+          "priority": "5",
+          "label": "Human review",
+          "role": "Required before the draft is relied on or shared as approved sign content",
+          "status": "Required"
+        }
       ],
       "evidence_routes": {
         "pass": "LANDMARK_KEY_POSE",
@@ -58,35 +97,59 @@
       "candidates": [
         {
           "id": "more-a",
-          "version": 2,
+          "version": 4,
           "label": "Candidate A",
-          "title": "Single teaching pose",
+          "title": "Clear contact pose",
           "asset": "assets/signs/more-a.svg",
-          "content_hash": "2e99c084eaa833c2b7df04c9e93f9b63eb7ef27faae9a0d2f16fef71869b7fca",
-          "review_note": "Large contact pose with a compact repeat cue.",
-          "recommended_for": "Single-pose readability"
+          "content_hash": "cb138b8a2a626462098b3c015cfdf76ae062a52a267bf218b6ef9a84fbb82900",
+          "review_note": "Both independently drawn flat-O hands are readable at the upper chest.",
+          "recommended_for": "Single-pose handshape readability",
+          "recommended": false,
+          "review_checks": [
+            "Two independent hands",
+            "Grouped flat-O handshape",
+            "Visible wrists, thumbs and four fingers",
+            "Upper-chest location",
+            "Meet, separate and repeat"
+          ]
         },
         {
           "id": "more-b",
-          "version": 2,
+          "version": 4,
           "label": "Candidate B",
-          "title": "Start and contact sequence",
+          "title": "Meet and repeat sequence",
           "asset": "assets/signs/more-b.svg",
-          "content_hash": "30bee014949f667cc1dc3ea68725c377ccfaff9b89c0d6b8c796b1ca4339a06b",
-          "review_note": "Two panels make the together/apart relationship explicit.",
-          "recommended_for": "Two-state movement explanation"
+          "content_hash": "b3229ed4d8828c573d08db8432be5083518e26d5fa145617f75ec6af646b832c",
+          "review_note": "Start and contact panels make the inward meeting relationship explicit.",
+          "recommended_for": "Mechanics and movement readability",
+          "recommended": true,
+          "review_checks": [
+            "Two independent hands",
+            "Grouped flat-O handshape",
+            "Visible wrists, thumbs and four fingers",
+            "Upper-chest location",
+            "Meet, separate and repeat"
+          ]
         }
       ],
       "regeneration_candidates": [
         {
-          "id": "more-c-v3",
-          "version": 3,
+          "id": "more-c-v4",
+          "version": 4,
           "label": "New candidate",
-          "title": "Movement-focused alternate",
+          "title": "Wider movement alternate",
           "asset": "assets/signs/more-c.svg",
-          "content_hash": "78e185f873f60bf9bebc02b9d6094f7f752fc175f8cc40053031de0fcce83d41",
-          "review_note": "A distinct single-pose crop emphasises the inward direction.",
-          "recommended_for": "Alternate arrow placement"
+          "content_hash": "76783fb92c6c7aafdef36ffa3280bbd5e19c5c61998fecf99bad8ba6804b381f",
+          "review_note": "The wider start state gives the inward arrows more separation.",
+          "recommended_for": "Alternate movement emphasis",
+          "recommended": false,
+          "review_checks": [
+            "Two independent hands",
+            "Grouped flat-O handshape",
+            "Visible wrists, thumbs and four fingers",
+            "Upper-chest location",
+            "Meet, separate and repeat"
+          ]
         }
       ],
       "contextual_image": {
@@ -96,16 +159,228 @@
       },
       "routine_icon": "snack",
       "review_status": "READY_FOR_HUMAN_REVIEW",
-      "publication_status": "DRAFT"
+      "publication_status": "DRAFT",
+      "composer": {
+        "method": "DETERMINISTIC_OPEN_PEEPS_UPPER_LIMB_GRAMMAR",
+        "base_character_asset_id": "open_peeps_bust_base",
+        "style_grammar_asset_ids": [
+          "open_peeps_pointing_finger_reference",
+          "open_peeps_arm_reference"
+        ],
+        "mechanics_asset_ids": [
+          "functional_more",
+          "input_more",
+          "flashcard_more_reference",
+          "functional_hand_sheet_jpg",
+          "functional_hand_sheet_eps"
+        ],
+        "anatomy_contract": [
+          "shoulder",
+          "upper arm",
+          "elbow",
+          "forearm",
+          "wrist",
+          "palm",
+          "thumb",
+          "four fingers"
+        ],
+        "gesture_safe_contract": "Decorative accents stay outside the gesture-safe zone; movement arrows declare contour avoidance."
+      }
+    },
+    {
+      "sign_id": "help",
+      "labels": {
+        "en": "HELP",
+        "es": "AYUDA"
+      },
+      "usage": {
+        "en": "Use when offering or asking for help in a familiar activity.",
+        "es": "Úsalo al ofrecer o pedir ayuda en una actividad habitual."
+      },
+      "routine": {
+        "en": "Getting ready",
+        "es": "Prepararse"
+      },
+      "routine_guidance": {
+        "en": "Pair the sign with a calm offer of help.",
+        "es": "Acompaña el signo con una oferta tranquila de ayuda."
+      },
+      "knowledge": {
+        "hands_used": 2,
+        "dominant_hand": "Closed A-like hand",
+        "non_dominant_hand": "Open supporting palm",
+        "broad_handshape": "Asymmetric closed hand supported by an open palm",
+        "palm_orientation": "Supporting palm faces upward",
+        "body_location": "Upper chest",
+        "movement": "The supported hands move upward together.",
+        "direction": "Upward",
+        "repetition": "One clear upward movement",
+        "contact_relationship": "Closed dominant hand rests on supporting open palm",
+        "expected_key_pose_count": 2,
+        "variants": "Human review required",
+        "source_conflict": "No unresolved conflict recorded; human sign review still required"
+      },
+      "movement": {
+        "hands": 2,
+        "body_location": "Upper chest",
+        "description": "The supported hands move upward together.",
+        "presentation": "A start/end sequence makes the support and upward movement explicit.",
+        "technical_evidence": "Registered local references; technical evidence does not certify linguistic correctness",
+        "evidence_quality": "Use sign-aware human review"
+      },
+      "visual_identity": {
+        "base_system": "Open Peeps visual system",
+        "operator_description": "KinderFlow character identity · calm monochrome linework",
+        "mood": "Calm, editorial and friendly"
+      },
+      "source_hierarchy": [
+        "FUNCTIONAL_SIGN_ILLUSTRATION",
+        "CURATED_SIGN_KNOWLEDGE",
+        "REFERENCE_VIDEO_FRAME_LANDMARKS",
+        "OPEN_PEEPS_VISUAL_GRAMMAR",
+        "HUMAN_REVIEW"
+      ],
+      "grounding_sources": [
+        {
+          "priority": "1",
+          "label": "Functional sign illustration",
+          "role": "Primary mechanics source for the selected sign",
+          "status": "Applied"
+        },
+        {
+          "priority": "2",
+          "label": "Curated sign knowledge",
+          "role": "Mechanics and usage for human confirmation",
+          "status": "Applied"
+        },
+        {
+          "priority": "3",
+          "label": "Reference geometry",
+          "role": "Reference video, selected frames and landmarks support broad geometry",
+          "status": "Supporting evidence"
+        },
+        {
+          "priority": "4",
+          "label": "Open Peeps visual grammar",
+          "role": "Character identity and line grammar only; never sign mechanics",
+          "status": "Applied"
+        },
+        {
+          "priority": "5",
+          "label": "Human review",
+          "role": "Required before the draft is relied on or shared as approved sign content",
+          "status": "Required"
+        }
+      ],
+      "evidence_routes": {
+        "pass": "LANDMARK_KEY_POSE",
+        "review": "HUMAN_SELECTED_FRAME",
+        "fallback": "KNOWLEDGE_REFERENCE_FALLBACK",
+        "last_resort": "INTERNAL_POSE_GUIDE"
+      },
+      "candidates": [
+        {
+          "id": "help-a",
+          "version": 1,
+          "label": "Candidate A",
+          "title": "Supported-hand pose",
+          "asset": "assets/signs/help-a.svg",
+          "content_hash": "97554ab2bf5e47f7c3b25e7eb64d9f114e3fe488362dd5b906e4c41c348c7aac",
+          "review_note": "The closed dominant hand and open supporting palm stay visibly asymmetric.",
+          "recommended_for": "Single-pose support relationship",
+          "recommended": false,
+          "review_checks": [
+            "Two asymmetric hands",
+            "Dominant closed-A hand",
+            "Supporting open palm",
+            "Supported contact",
+            "Upward movement"
+          ]
+        },
+        {
+          "id": "help-b",
+          "version": 1,
+          "label": "Candidate B",
+          "title": "Supported upward sequence",
+          "asset": "assets/signs/help-b.svg",
+          "content_hash": "e7e44db0f71b7420e81b1bbe6cd08faa43445c19316551b9f5c0c2889aa4ea16",
+          "review_note": "Start and end panels show both hands rising together.",
+          "recommended_for": "Upward movement readability",
+          "recommended": true,
+          "review_checks": [
+            "Two asymmetric hands",
+            "Dominant closed-A hand",
+            "Supporting open palm",
+            "Supported contact",
+            "Upward movement"
+          ]
+        }
+      ],
+      "regeneration_candidates": [
+        {
+          "id": "help-c-v2",
+          "version": 2,
+          "label": "New candidate",
+          "title": "Higher end alternate",
+          "asset": "assets/signs/help-c.svg",
+          "content_hash": "b3d9c6da7636084fcf8df9827323a2bfd63e002c9fbe9c03579a6b08e69745b4",
+          "review_note": "A higher supported pose tests the clearest final location.",
+          "recommended_for": "Alternate end-state emphasis",
+          "recommended": false,
+          "review_checks": [
+            "Two asymmetric hands",
+            "Dominant closed-A hand",
+            "Supporting open palm",
+            "Supported contact",
+            "Upward movement"
+          ]
+        }
+      ],
+      "contextual_image": null,
+      "routine_icon": "help",
+      "review_status": "READY_FOR_HUMAN_REVIEW",
+      "publication_status": "DRAFT",
+      "composer": {
+        "method": "DETERMINISTIC_OPEN_PEEPS_UPPER_LIMB_GRAMMAR",
+        "base_character_asset_id": "open_peeps_bust_base",
+        "style_grammar_asset_ids": [
+          "open_peeps_pointing_finger_reference",
+          "open_peeps_arm_reference"
+        ],
+        "mechanics_asset_ids": [
+          "functional_help",
+          "input_help",
+          "flashcard_help_reference",
+          "functional_hand_sheet_jpg",
+          "functional_hand_sheet_eps"
+        ],
+        "anatomy_contract": [
+          "shoulder",
+          "upper arm",
+          "elbow",
+          "forearm",
+          "wrist",
+          "palm",
+          "thumb",
+          "four fingers"
+        ],
+        "gesture_safe_contract": "Decorative accents stay outside the gesture-safe zone; movement arrows declare contour avoidance."
+      }
     },
     {
       "sign_id": "eat",
-      "labels": {"en": "EAT", "es": "COMER"},
+      "labels": {
+        "en": "EAT",
+        "es": "COMER"
+      },
       "usage": {
         "en": "Use when food is offered or a familiar meal begins.",
         "es": "Úsalo al ofrecer comida o al comenzar una comida habitual."
       },
-      "routine": {"en": "Mealtime", "es": "Hora de comer"},
+      "routine": {
+        "en": "Mealtime",
+        "es": "Hora de comer"
+      },
       "routine_guidance": {
         "en": "Use the sign naturally when a familiar meal begins.",
         "es": "Haz el signo de forma natural al comenzar una comida habitual."
@@ -114,35 +389,68 @@
         "hands_used": 1,
         "dominant_hand": "One dominant hand",
         "non_dominant_hand": "Not used",
-        "broad_handshape": "Fingertips gathered",
+        "broad_handshape": "Grouped flat-O hand",
         "palm_orientation": "Toward the mouth",
         "body_location": "Mouth",
-        "movement": "Gathered fingertips approach and contact the mouth",
+        "movement": "The grouped fingertips approach and contact the mouth.",
         "direction": "Toward the mouth",
         "repetition": "One tap for this reviewed teaching distinction",
-        "contact_relationship": "Gathered fingertips meet the mouth",
+        "contact_relationship": "Grouped fingertips meet the mouth",
         "expected_key_pose_count": 2,
-        "variants": "TBD",
-        "source_conflict": "TBD"
+        "variants": "Human review required",
+        "source_conflict": "No unresolved conflict recorded; human sign review still required"
       },
       "movement": {
         "hands": 1,
         "body_location": "Mouth",
-        "description": "One gathered dominant hand moves toward the mouth for one reviewed contact.",
-        "presentation": "A start/contact sequence makes the approach and mouth location clear.",
-        "technical_evidence": "Partial MediaPipe-based pose and hand tracking may remain useful despite face occlusion",
-        "evidence_quality": "Technical review needed — usable with grounded fallback"
+        "description": "The grouped fingertips approach and contact the mouth.",
+        "presentation": "A start/contact sequence makes the approach and reviewed one-tap mouth location clear.",
+        "technical_evidence": "Registered local references; technical evidence does not certify linguistic correctness",
+        "evidence_quality": "Use sign-aware human review"
       },
       "visual_identity": {
         "base_system": "Open Peeps visual system",
         "operator_description": "KinderFlow character identity · calm monochrome linework",
         "mood": "Calm, editorial and friendly"
       },
+      "source_hierarchy": [
+        "FUNCTIONAL_SIGN_ILLUSTRATION",
+        "CURATED_SIGN_KNOWLEDGE",
+        "REFERENCE_VIDEO_FRAME_LANDMARKS",
+        "OPEN_PEEPS_VISUAL_GRAMMAR",
+        "HUMAN_REVIEW"
+      ],
       "grounding_sources": [
-        {"label": "Curated sign knowledge", "role": "One-hand mouth approach and one-tap review distinction", "status": "Applied"},
-        {"label": "Functional sign reference", "role": "Local EAT flashcard and reference video define start/contact mechanics", "status": "Applied"},
-        {"label": "Movement evidence", "role": "Available geometry supports review; near-face gaps are expected", "status": "Usable with conditions"},
-        {"label": "Open Peeps visual system", "role": "Character identity only; not the movement source", "status": "Applied"}
+        {
+          "priority": "1",
+          "label": "Functional sign illustration",
+          "role": "Primary mechanics source for the selected sign",
+          "status": "Applied"
+        },
+        {
+          "priority": "2",
+          "label": "Curated sign knowledge",
+          "role": "Mechanics and usage for human confirmation",
+          "status": "Applied"
+        },
+        {
+          "priority": "3",
+          "label": "Reference geometry",
+          "role": "Reviewed reference route supports the critical near-face approach and contact window",
+          "status": "Usable with conditions"
+        },
+        {
+          "priority": "4",
+          "label": "Open Peeps visual grammar",
+          "role": "Character identity and line grammar only; never sign mechanics",
+          "status": "Applied"
+        },
+        {
+          "priority": "5",
+          "label": "Human review",
+          "role": "Required before the draft is relied on or shared as approved sign content",
+          "status": "Required"
+        }
       ],
       "evidence_routes": {
         "pass": "LANDMARK_KEY_POSE",
@@ -150,31 +458,42 @@
         "fallback": "KNOWLEDGE_REFERENCE_FALLBACK",
         "last_resort": "INTERNAL_POSE_GUIDE"
       },
-      "sign_aware_review": {
-        "coverage_floor_percent": 65,
-        "coverage_ceiling_percent": 80,
-        "reason": "Hand-to-face occlusion makes the critical approach/contact window more important than overall hand coverage."
-      },
       "candidates": [
         {
           "id": "eat-a",
-          "version": 1,
+          "version": 2,
           "label": "Candidate A",
-          "title": "Mouth-contact teaching pose",
+          "title": "Mouth-contact pose",
           "asset": "assets/signs/eat-a.svg",
-          "content_hash": "50b8e62c616c34f425e05717f5dda10c93171246fe4bc6fa27e5db0711b065ab",
-          "review_note": "The mouth location and one-hand relationship are dominant.",
-          "recommended_for": "Single-pose readability"
+          "content_hash": "92747ef417eaccade25ea8c845b6d865e130509e233fdd9073528e6c404932a9",
+          "review_note": "The one-hand flat-O contact is clear without covering the face.",
+          "recommended_for": "Single-pose mouth location",
+          "recommended": false,
+          "review_checks": [
+            "One hand",
+            "Grouped flat-O handshape",
+            "Mouth location",
+            "One reviewed tap",
+            "Clear approach path"
+          ]
         },
         {
           "id": "eat-b",
-          "version": 1,
+          "version": 2,
           "label": "Candidate B",
           "title": "Approach and contact sequence",
           "asset": "assets/signs/eat-b.svg",
-          "content_hash": "b6682219bb058858235175ab7656c0a74d1d6463f75096e5035253aef9249cff",
-          "review_note": "Two panels distinguish the approach from the single mouth contact.",
-          "recommended_for": "Start/end movement explanation"
+          "content_hash": "c131cbb16db8fc4c0c388d7bf71a13350d4fc2e7fd830afce068b731d0319edc",
+          "review_note": "Two panels distinguish approach from one reviewed mouth contact.",
+          "recommended_for": "Start/contact explanation",
+          "recommended": true,
+          "review_checks": [
+            "One hand",
+            "Grouped flat-O handshape",
+            "Mouth location",
+            "One reviewed tap",
+            "Clear approach path"
+          ]
         }
       ],
       "regeneration_candidates": [
@@ -184,15 +503,602 @@
           "label": "New candidate",
           "title": "Approach-focused alternate",
           "asset": "assets/signs/eat-c.svg",
-          "content_hash": "7110098c86736c9466de74649a98322ae02e21c1c17a6298f90a8fe29edb10c4",
-          "review_note": "A distinct crop emphasises the hand path toward the mouth.",
-          "recommended_for": "Alternate movement emphasis"
+          "content_hash": "7157ea6018632a6561288a45bdeb7be36b357a01c1309c7163e2daded8de917f",
+          "review_note": "A wider start pose emphasizes the path toward the mouth.",
+          "recommended_for": "Alternate movement emphasis",
+          "recommended": false,
+          "review_checks": [
+            "One hand",
+            "Grouped flat-O handshape",
+            "Mouth location",
+            "One reviewed tap",
+            "Clear approach path"
+          ]
         }
       ],
       "contextual_image": null,
       "routine_icon": "mealtime",
       "review_status": "GROUNDED_FALLBACK_AVAILABLE",
-      "publication_status": "DRAFT"
+      "publication_status": "DRAFT",
+      "composer": {
+        "method": "DETERMINISTIC_OPEN_PEEPS_UPPER_LIMB_GRAMMAR",
+        "base_character_asset_id": "open_peeps_bust_base",
+        "style_grammar_asset_ids": [
+          "open_peeps_pointing_finger_reference",
+          "open_peeps_arm_reference"
+        ],
+        "mechanics_asset_ids": [
+          "functional_eat",
+          "input_eat",
+          "flashcard_eat_reference",
+          "functional_hand_sheet_jpg",
+          "functional_hand_sheet_eps"
+        ],
+        "anatomy_contract": [
+          "shoulder",
+          "upper arm",
+          "elbow",
+          "forearm",
+          "wrist",
+          "palm",
+          "thumb",
+          "four fingers"
+        ],
+        "gesture_safe_contract": "Decorative accents stay outside the gesture-safe zone; movement arrows declare contour avoidance."
+      },
+      "sign_aware_review": {
+        "coverage_floor_percent": 65,
+        "coverage_ceiling_percent": 80,
+        "reason": "Hand-to-face occlusion makes the critical approach/contact window more important than overall hand coverage."
+      }
+    },
+    {
+      "sign_id": "sleep",
+      "labels": {
+        "en": "SLEEP",
+        "es": "DORMIR"
+      },
+      "usage": {
+        "en": "Use while settling into a familiar sleep routine.",
+        "es": "Úsalo al comenzar una rutina habitual para dormir."
+      },
+      "routine": {
+        "en": "Bedtime",
+        "es": "Hora de dormir"
+      },
+      "routine_guidance": {
+        "en": "Show the sign before the next calm bedtime step.",
+        "es": "Haz el signo antes del siguiente paso tranquilo para dormir."
+      },
+      "knowledge": {
+        "hands_used": 1,
+        "dominant_hand": "One dominant hand",
+        "non_dominant_hand": "Not used",
+        "broad_handshape": "Fingers spread, then gathered",
+        "palm_orientation": "Palm faces the signer",
+        "body_location": "In front of the face to below the chin",
+        "movement": "A spread hand moves downward while the fingers gather below the chin.",
+        "direction": "Downward",
+        "repetition": "One downward movement",
+        "contact_relationship": "No sustained face covering",
+        "expected_key_pose_count": 2,
+        "variants": "Human review required",
+        "source_conflict": "No unresolved conflict recorded; human sign review still required"
+      },
+      "movement": {
+        "hands": 1,
+        "body_location": "In front of the face to below the chin",
+        "description": "A spread hand moves downward while the fingers gather below the chin.",
+        "presentation": "Separate start and end states keep the face clear and show the gathering action.",
+        "technical_evidence": "Registered local references; technical evidence does not certify linguistic correctness",
+        "evidence_quality": "Use sign-aware human review"
+      },
+      "visual_identity": {
+        "base_system": "Open Peeps visual system",
+        "operator_description": "KinderFlow character identity · calm monochrome linework",
+        "mood": "Calm, editorial and friendly"
+      },
+      "source_hierarchy": [
+        "FUNCTIONAL_SIGN_ILLUSTRATION",
+        "CURATED_SIGN_KNOWLEDGE",
+        "REFERENCE_VIDEO_FRAME_LANDMARKS",
+        "OPEN_PEEPS_VISUAL_GRAMMAR",
+        "HUMAN_REVIEW"
+      ],
+      "grounding_sources": [
+        {
+          "priority": "1",
+          "label": "Functional sign illustration",
+          "role": "Primary mechanics source for the selected sign",
+          "status": "Applied"
+        },
+        {
+          "priority": "2",
+          "label": "Curated sign knowledge",
+          "role": "Mechanics and usage for human confirmation",
+          "status": "Applied"
+        },
+        {
+          "priority": "3",
+          "label": "Reference geometry",
+          "role": "Reference video, selected frames and landmarks support broad geometry",
+          "status": "Supporting evidence"
+        },
+        {
+          "priority": "4",
+          "label": "Open Peeps visual grammar",
+          "role": "Character identity and line grammar only; never sign mechanics",
+          "status": "Applied"
+        },
+        {
+          "priority": "5",
+          "label": "Human review",
+          "role": "Required before the draft is relied on or shared as approved sign content",
+          "status": "Required"
+        }
+      ],
+      "evidence_routes": {
+        "pass": "LANDMARK_KEY_POSE",
+        "review": "HUMAN_SELECTED_FRAME",
+        "fallback": "KNOWLEDGE_REFERENCE_FALLBACK",
+        "last_resort": "INTERNAL_POSE_GUIDE"
+      },
+      "candidates": [
+        {
+          "id": "sleep-a",
+          "version": 1,
+          "label": "Candidate A",
+          "title": "Gathered end pose",
+          "asset": "assets/signs/sleep-a.svg",
+          "content_hash": "08509011ec42593621473c96c5600d599f415a562841c774ef60245598da3a48",
+          "review_note": "The gathered fingers finish below the chin and clear of the face.",
+          "recommended_for": "Single-pose end-state readability",
+          "recommended": false,
+          "review_checks": [
+            "One hand",
+            "Fingers-spread start",
+            "Fingers-gathered end",
+            "Downward path",
+            "End below chin and clear of face"
+          ]
+        },
+        {
+          "id": "sleep-b",
+          "version": 1,
+          "label": "Candidate B",
+          "title": "Spread-to-gather sequence",
+          "asset": "assets/signs/sleep-b.svg",
+          "content_hash": "fd02fea1c890ef3dec52f8646b1394f1a49b63aae83c161c7d53721038e8b8f5",
+          "review_note": "Separate panels show the spread start and gathered end.",
+          "recommended_for": "Handshape change readability",
+          "recommended": true,
+          "review_checks": [
+            "One hand",
+            "Fingers-spread start",
+            "Fingers-gathered end",
+            "Downward path",
+            "End below chin and clear of face"
+          ]
+        }
+      ],
+      "regeneration_candidates": [
+        {
+          "id": "sleep-c-v2",
+          "version": 2,
+          "label": "New candidate",
+          "title": "Spread-start alternate",
+          "asset": "assets/signs/sleep-c.svg",
+          "content_hash": "206e064a359d43dbd65eb2dd17b0fa7f3275f88ebf147927ddc609fb4cc6f457",
+          "review_note": "The offset start keeps every spread finger away from facial contours.",
+          "recommended_for": "Alternate start-state emphasis",
+          "recommended": false,
+          "review_checks": [
+            "One hand",
+            "Fingers-spread start",
+            "Fingers-gathered end",
+            "Downward path",
+            "End below chin and clear of face"
+          ]
+        }
+      ],
+      "contextual_image": null,
+      "routine_icon": "bedtime",
+      "review_status": "READY_FOR_HUMAN_REVIEW",
+      "publication_status": "DRAFT",
+      "composer": {
+        "method": "DETERMINISTIC_OPEN_PEEPS_UPPER_LIMB_GRAMMAR",
+        "base_character_asset_id": "open_peeps_bust_base",
+        "style_grammar_asset_ids": [
+          "open_peeps_pointing_finger_reference",
+          "open_peeps_arm_reference"
+        ],
+        "mechanics_asset_ids": [
+          "functional_sleep",
+          "input_sleep",
+          "flashcard_sleep_reference",
+          "functional_hand_sheet_jpg",
+          "functional_hand_sheet_eps"
+        ],
+        "anatomy_contract": [
+          "shoulder",
+          "upper arm",
+          "elbow",
+          "forearm",
+          "wrist",
+          "palm",
+          "thumb",
+          "four fingers"
+        ],
+        "gesture_safe_contract": "Decorative accents stay outside the gesture-safe zone; movement arrows declare contour avoidance."
+      }
+    },
+    {
+      "sign_id": "milk",
+      "labels": {
+        "en": "MILK",
+        "es": "LECHE"
+      },
+      "usage": {
+        "en": "Use when milk is offered in a familiar feeding routine.",
+        "es": "Úsalo al ofrecer leche en una rutina habitual de alimentación."
+      },
+      "routine": {
+        "en": "Milk time",
+        "es": "Hora de la leche"
+      },
+      "routine_guidance": {
+        "en": "Pair the sign with the milk choice before serving it.",
+        "es": "Acompaña el signo con la elección de leche antes de servirla."
+      },
+      "knowledge": {
+        "hands_used": 1,
+        "dominant_hand": "One dominant hand",
+        "non_dominant_hand": "Not used",
+        "broad_handshape": "Open hand closes into a fist",
+        "palm_orientation": "Hand remains upright",
+        "body_location": "In front of the upper torso",
+        "movement": "The hand opens and closes in a repeated squeeze-and-release action without vertical travel.",
+        "direction": "Open and closed in place",
+        "repetition": "Repeat squeeze and release",
+        "contact_relationship": "Fingers close into the palm",
+        "expected_key_pose_count": 2,
+        "variants": "Human review required",
+        "source_conflict": "No unresolved conflict recorded; human sign review still required"
+      },
+      "movement": {
+        "hands": 1,
+        "body_location": "In front of the upper torso",
+        "description": "The hand opens and closes in a repeated squeeze-and-release action without vertical travel.",
+        "presentation": "Open/closed states show the squeeze and release without implying a vertical path.",
+        "technical_evidence": "Registered local references; technical evidence does not certify linguistic correctness",
+        "evidence_quality": "Use sign-aware human review"
+      },
+      "visual_identity": {
+        "base_system": "Open Peeps visual system",
+        "operator_description": "KinderFlow character identity · calm monochrome linework",
+        "mood": "Calm, editorial and friendly"
+      },
+      "source_hierarchy": [
+        "FUNCTIONAL_SIGN_ILLUSTRATION",
+        "CURATED_SIGN_KNOWLEDGE",
+        "REFERENCE_VIDEO_FRAME_LANDMARKS",
+        "OPEN_PEEPS_VISUAL_GRAMMAR",
+        "HUMAN_REVIEW"
+      ],
+      "grounding_sources": [
+        {
+          "priority": "1",
+          "label": "Functional sign illustration",
+          "role": "Primary mechanics source for the selected sign",
+          "status": "Applied"
+        },
+        {
+          "priority": "2",
+          "label": "Curated sign knowledge",
+          "role": "Mechanics and usage for human confirmation",
+          "status": "Applied"
+        },
+        {
+          "priority": "3",
+          "label": "Reference geometry",
+          "role": "Reference video, selected frames and landmarks support broad geometry",
+          "status": "Supporting evidence"
+        },
+        {
+          "priority": "4",
+          "label": "Open Peeps visual grammar",
+          "role": "Character identity and line grammar only; never sign mechanics",
+          "status": "Applied"
+        },
+        {
+          "priority": "5",
+          "label": "Human review",
+          "role": "Required before the draft is relied on or shared as approved sign content",
+          "status": "Required"
+        }
+      ],
+      "evidence_routes": {
+        "pass": "LANDMARK_KEY_POSE",
+        "review": "HUMAN_SELECTED_FRAME",
+        "fallback": "KNOWLEDGE_REFERENCE_FALLBACK",
+        "last_resort": "INTERNAL_POSE_GUIDE"
+      },
+      "candidates": [
+        {
+          "id": "milk-a",
+          "version": 1,
+          "label": "Candidate A",
+          "title": "Closed squeeze pose",
+          "asset": "assets/signs/milk-a.svg",
+          "content_hash": "b33f99a2c4b0000be73509048f9cb76e5df5024394537a151a4fb05bcc580bd5",
+          "review_note": "The fist reads as the closed state with no vertical path.",
+          "recommended_for": "Single-pose closed state",
+          "recommended": false,
+          "review_checks": [
+            "One hand",
+            "Open start",
+            "Closed end",
+            "Squeeze and release",
+            "No vertical trajectory"
+          ]
+        },
+        {
+          "id": "milk-b",
+          "version": 1,
+          "label": "Candidate B",
+          "title": "Open and close sequence",
+          "asset": "assets/signs/milk-b.svg",
+          "content_hash": "8c2d7928647dc8134d4aa5e48ce1051d93f54cfe76980dc6b05f10bace855030",
+          "review_note": "Two panels explain squeeze and release in place.",
+          "recommended_for": "Open/closed mechanics",
+          "recommended": true,
+          "review_checks": [
+            "One hand",
+            "Open start",
+            "Closed end",
+            "Squeeze and release",
+            "No vertical trajectory"
+          ]
+        }
+      ],
+      "regeneration_candidates": [
+        {
+          "id": "milk-c-v2",
+          "version": 2,
+          "label": "New candidate",
+          "title": "Open-hand alternate",
+          "asset": "assets/signs/milk-c.svg",
+          "content_hash": "2675f2f7b37c63f9076c2a4e81db4f264b58d97d159de3b42027c61134252f0e",
+          "review_note": "The offset open state keeps all fingers readable.",
+          "recommended_for": "Alternate open-state emphasis",
+          "recommended": false,
+          "review_checks": [
+            "One hand",
+            "Open start",
+            "Closed end",
+            "Squeeze and release",
+            "No vertical trajectory"
+          ]
+        }
+      ],
+      "contextual_image": null,
+      "routine_icon": "milk",
+      "review_status": "READY_FOR_HUMAN_REVIEW",
+      "publication_status": "DRAFT",
+      "composer": {
+        "method": "DETERMINISTIC_OPEN_PEEPS_UPPER_LIMB_GRAMMAR",
+        "base_character_asset_id": "open_peeps_bust_base",
+        "style_grammar_asset_ids": [
+          "open_peeps_pointing_finger_reference",
+          "open_peeps_arm_reference"
+        ],
+        "mechanics_asset_ids": [
+          "functional_milk",
+          "input_milk",
+          "flashcard_milk_reference",
+          "functional_hand_sheet_jpg",
+          "functional_hand_sheet_eps"
+        ],
+        "anatomy_contract": [
+          "shoulder",
+          "upper arm",
+          "elbow",
+          "forearm",
+          "wrist",
+          "palm",
+          "thumb",
+          "four fingers"
+        ],
+        "gesture_safe_contract": "Decorative accents stay outside the gesture-safe zone; movement arrows declare contour avoidance."
+      }
+    },
+    {
+      "sign_id": "water",
+      "labels": {
+        "en": "WATER",
+        "es": "AGUA"
+      },
+      "usage": {
+        "en": "Use when offering or asking for water in a familiar routine.",
+        "es": "Úsalo al ofrecer o pedir agua en una rutina habitual."
+      },
+      "routine": {
+        "en": "Drink break",
+        "es": "Pausa para beber"
+      },
+      "routine_guidance": {
+        "en": "Show the sign just before offering the water choice.",
+        "es": "Haz el signo justo antes de ofrecer la opción de agua."
+      },
+      "knowledge": {
+        "hands_used": 1,
+        "dominant_hand": "One dominant hand",
+        "non_dominant_hand": "Not used",
+        "broad_handshape": "Three fingers extended with little finger and thumb folded",
+        "palm_orientation": "Palm faces across the body",
+        "body_location": "Beside the lower face",
+        "movement": "The three-finger hand moves a short distance to the lower face for contact.",
+        "direction": "Toward the lower face",
+        "repetition": "Short reviewed contact",
+        "contact_relationship": "Extended index area approaches the lower face",
+        "expected_key_pose_count": 2,
+        "variants": "Human review required",
+        "source_conflict": "No unresolved conflict recorded; human sign review still required"
+      },
+      "movement": {
+        "hands": 1,
+        "body_location": "Beside the lower face",
+        "description": "The three-finger hand moves a short distance to the lower face for contact.",
+        "presentation": "A start/contact sequence follows the supplied WATER references and keeps the three-finger shape readable.",
+        "technical_evidence": "Registered local references; technical evidence does not certify linguistic correctness",
+        "evidence_quality": "Use sign-aware human review"
+      },
+      "visual_identity": {
+        "base_system": "Open Peeps visual system",
+        "operator_description": "KinderFlow character identity · calm monochrome linework",
+        "mood": "Calm, editorial and friendly"
+      },
+      "source_hierarchy": [
+        "FUNCTIONAL_SIGN_ILLUSTRATION",
+        "CURATED_SIGN_KNOWLEDGE",
+        "REFERENCE_VIDEO_FRAME_LANDMARKS",
+        "OPEN_PEEPS_VISUAL_GRAMMAR",
+        "HUMAN_REVIEW"
+      ],
+      "grounding_sources": [
+        {
+          "priority": "1",
+          "label": "Functional sign illustration",
+          "role": "Primary mechanics source for the selected sign",
+          "status": "Applied"
+        },
+        {
+          "priority": "2",
+          "label": "Curated sign knowledge",
+          "role": "Mechanics and usage for human confirmation",
+          "status": "Applied"
+        },
+        {
+          "priority": "3",
+          "label": "Reference geometry",
+          "role": "WATER video and committed WATER landmarks support broad geometry only",
+          "status": "Review required"
+        },
+        {
+          "priority": "4",
+          "label": "Open Peeps visual grammar",
+          "role": "Character identity and line grammar only; never sign mechanics",
+          "status": "Applied"
+        },
+        {
+          "priority": "5",
+          "label": "Human review",
+          "role": "Required before the draft is relied on or shared as approved sign content",
+          "status": "Required"
+        }
+      ],
+      "evidence_routes": {
+        "pass": "LANDMARK_KEY_POSE",
+        "review": "HUMAN_SELECTED_FRAME",
+        "fallback": "KNOWLEDGE_REFERENCE_FALLBACK",
+        "last_resort": "INTERNAL_POSE_GUIDE"
+      },
+      "candidates": [
+        {
+          "id": "water-a",
+          "version": 1,
+          "label": "Candidate A",
+          "title": "Lower-face contact pose",
+          "asset": "assets/signs/water-a.svg",
+          "content_hash": "eead4af19ff8fcb83aa8e692b124f86a9b54020f483c8c0355a99d7cfccb4e4c",
+          "review_note": "Three extended fingers remain legible at the reviewed lower-face location.",
+          "recommended_for": "Single-pose reference readability",
+          "recommended": false,
+          "review_checks": [
+            "One hand",
+            "Three extended fingers",
+            "Folded little finger and visible thumb",
+            "Lower-face location",
+            "Short contact path"
+          ]
+        },
+        {
+          "id": "water-b",
+          "version": 1,
+          "label": "Candidate B",
+          "title": "Approach and contact sequence",
+          "asset": "assets/signs/water-b.svg",
+          "content_hash": "11a25cb3f24e070b1cb824c9ba854849996f138ae5b95493f2bcd2ec0e06f354",
+          "review_note": "Two panels retain WATER identity through the short contact path.",
+          "recommended_for": "Reference-grounded movement",
+          "recommended": true,
+          "review_checks": [
+            "One hand",
+            "Three extended fingers",
+            "Folded little finger and visible thumb",
+            "Lower-face location",
+            "Short contact path"
+          ]
+        }
+      ],
+      "regeneration_candidates": [
+        {
+          "id": "water-c-v2",
+          "version": 2,
+          "label": "New candidate",
+          "title": "Three-finger alternate",
+          "asset": "assets/signs/water-c.svg",
+          "content_hash": "c2fdbbcd4fe912abfa37257702429fe27d5c8b796c69fd21bac2b440482ecaef",
+          "review_note": "The wider approach makes the three-finger shape easy to inspect.",
+          "recommended_for": "Alternate handshape emphasis",
+          "recommended": false,
+          "review_checks": [
+            "One hand",
+            "Three extended fingers",
+            "Folded little finger and visible thumb",
+            "Lower-face location",
+            "Short contact path"
+          ]
+        }
+      ],
+      "contextual_image": null,
+      "routine_icon": "water",
+      "review_status": "READY_FOR_HUMAN_REVIEW",
+      "publication_status": "DRAFT",
+      "composer": {
+        "method": "DETERMINISTIC_OPEN_PEEPS_UPPER_LIMB_GRAMMAR",
+        "base_character_asset_id": "open_peeps_bust_base",
+        "style_grammar_asset_ids": [
+          "open_peeps_pointing_finger_reference",
+          "open_peeps_arm_reference"
+        ],
+        "mechanics_asset_ids": [
+          "functional_water",
+          "input_water",
+          "flashcard_water_reference",
+          "functional_hand_sheet_jpg",
+          "functional_hand_sheet_eps"
+        ],
+        "anatomy_contract": [
+          "shoulder",
+          "upper arm",
+          "elbow",
+          "forearm",
+          "wrist",
+          "palm",
+          "thumb",
+          "four fingers"
+        ],
+        "gesture_safe_contract": "Decorative accents stay outside the gesture-safe zone; movement arrows declare contour avoidance.",
+        "landmark_support": "poc/output/diagnostics/sign_reference_motion_summary.json"
+      },
+      "source_identity": {
+        "sign_id": "water",
+        "input_asset_id": "input_water",
+        "functional_asset_id": "functional_water",
+        "flashcard_asset_id": "flashcard_water_reference",
+        "default_substitution": null
+      }
     }
   ]
 }

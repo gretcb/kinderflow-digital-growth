@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 import unittest
+import xml.etree.ElementTree as ET
 from html.parser import HTMLParser
 from pathlib import Path
 from typing import List, Optional, Tuple
@@ -44,15 +45,15 @@ class VisualWorkflowTests(unittest.TestCase):
         html = (PROTOTYPE_ROOT / "create-sign.html").read_text(encoding="utf-8")
         implementation = html + (PROTOTYPE_ROOT / "create-sign.js").read_text(encoding="utf-8")
         for text in (
-            "Technical review needed",
-            "Continue with grounded fallback",
-            "Choose reference frames",
-            "Generate another candidate",
+            "Reference review complete",
+            "Use reviewed references",
+            "Choose one or two reference poses",
+            "Create another visual option",
             "Approve selected visual",
             "Reject visual",
-            "Approved for internal printable",
-            "Create printable",
-            "Reference source URL",
+            "Create family materials",
+            "Add to library or use later",
+            "Sources and permissions",
         ):
             self.assertIn(text, implementation)
 
@@ -60,21 +61,55 @@ class VisualWorkflowTests(unittest.TestCase):
         provenance = json.loads(PROVENANCE_PATH.read_text(encoding="utf-8"))
         self.assertEqual(provenance["licence"], "CC0")
         self.assertEqual(provenance["verification_basis"], "Founder-verified official CC0 reference")
-        paths = [item["path"] for item in provenance["selected_components"]]
-        self.assertTrue(any(path.endswith("/face/Smile.svg") for path in paths))
-        self.assertTrue(any(path.endswith("/head/Bun 2.svg") for path in paths))
-        self.assertTrue(any(path.endswith("/pose/sitting/mid-2.svg") for path in paths))
+        components = {item["role"]: item for item in provenance["selected_components"]}
+        self.assertTrue(components["base_character"]["path"].endswith("/Separate Atoms/a person/bust.svg"))
+        self.assertTrue(components["hand_finger_style_grammar"]["path"].endswith("/pose/standing/pointing_finger-1.svg"))
+        self.assertTrue(components["shoulder_arm_style_grammar"]["path"].endswith("/Templates/Bust/peep-4.svg"))
         output = (PROTOTYPE_ROOT / "assets/signs/more-a.svg").read_text(encoding="utf-8")
-        for path in paths:
-            self.assertIn(path, output)
-        self.assertIn("Actual Open Peeps source geometry", output)
+        for role in ("base_character", "hand_finger_style_grammar", "shoulder_arm_style_grammar"):
+            self.assertIn(components[role]["path"], output)
+        bust_path = REPO_ROOT / components["base_character"]["path"]
+        bust_source = bust_path.read_text(encoding="utf-8")
+        bust_inner = bust_source[bust_source.index(">", bust_source.index("<svg")) + 1:bust_source.rindex("</svg>")].strip()
+        self.assertIn(bust_inner, output)
+        self.assertIn("Exact registered Open Peeps bust geometry", output)
+
+    def test_more_composer_excludes_seated_pose_and_constructs_full_upper_limbs(self) -> None:
+        generator = (REPO_ROOT / "tools/build_sign_vectors.py").read_text(encoding="utf-8")
+        provenance = PROVENANCE_PATH.read_text(encoding="utf-8")
+        outputs = "\n".join(
+            (PROTOTYPE_ROOT / f"assets/signs/more-{suffix}.svg").read_text(encoding="utf-8")
+            for suffix in ("a", "b", "c")
+        )
+        self.assertNotIn("mid-2.svg", generator + provenance + outputs)
+        for token in (
+            "sign-specific-upper-limbs",
+            "complete-upper-limb",
+            "shoulder-arm",
+            "upper-arm",
+            "elbow",
+            "forearm",
+            "wrist",
+            "flat-o-hand",
+            "finger-path",
+            'data-hands="2"',
+            'data-location="upper-chest"',
+        ):
+            self.assertIn(token, outputs)
+        self.assertGreaterEqual(outputs.count('class="finger-path'), 20)
+        for leak in ("stump", "placeholder"):
+            self.assertNotIn(leak, outputs.lower())
+
+    def test_more_svg_candidates_are_valid_xml(self) -> None:
+        for suffix in ("a", "b", "c"):
+            ET.parse(PROTOTYPE_ROOT / f"assets/signs/more-{suffix}.svg")
 
     def test_source_filenames_do_not_appear_in_primary_html(self) -> None:
         primary = "\n".join(
             (PROTOTYPE_ROOT / filename).read_text(encoding="utf-8")
             for filename in ("create-sign.html", "flashcards.html", "print-card.html")
         )
-        for leak in ("Smile.svg", "Bun 2.svg", "mid-2.svg", "visual_sign_packages.json"):
+        for leak in ("bust.svg", "peep-4.svg", "pointing_finger-1.svg", "more.jpg", "mid-2.svg", "visual_sign_packages.json"):
             self.assertNotIn(leak, primary)
 
     def test_more_and_eat_packages_resolve_distinct_assets_and_bilingual_copy(self) -> None:
@@ -112,6 +147,30 @@ class VisualWorkflowTests(unittest.TestCase):
         self.assertNotIn("candidates.reverse()", script)
         self.assertNotIn("generationRevision", script)
 
+    def test_more_recommendation_and_review_criteria_are_honest(self) -> None:
+        package = self.package("more")
+        self.assertFalse(package["candidates"][0]["recommended"])
+        self.assertTrue(package["candidates"][1]["recommended"])
+        self.assertEqual(package["review_status"], "READY_FOR_HUMAN_REVIEW")
+        self.assertEqual(package["publication_status"], "DRAFT")
+        implementation = (PROTOTYPE_ROOT / "create-sign.js").read_text(encoding="utf-8")
+        html = (PROTOTYPE_ROOT / "create-sign.html").read_text(encoding="utf-8")
+        self.assertIn("Recommended for this sign", implementation)
+        for copy in (
+            "Hands are easy to read",
+            "Body position is clear",
+            "Movement is understandable",
+            "Visual matches the reviewed sign reference",
+            "Final sign approval remains a human decision",
+        ):
+            self.assertIn(copy, html)
+
+    def test_local_visual_approval_never_publishes(self) -> None:
+        script = (PROTOTYPE_ROOT / "create-sign.js").read_text(encoding="utf-8")
+        self.assertIn('publication_status: "DRAFT"', script)
+        self.assertIn('visual_review_status: "APPROVED_FOR_INTERNAL_PRINTABLE"', script)
+        self.assertNotIn('publication_status: "PUBLISHED"', script)
+
     def test_print_route_is_one_a5_card_without_ui_chrome(self) -> None:
         html = (PROTOTYPE_ROOT / "print-card.html").read_text(encoding="utf-8")
         css = (PROTOTYPE_ROOT / "styles.css").read_text(encoding="utf-8")
@@ -121,10 +180,18 @@ class VisualWorkflowTests(unittest.TestCase):
         self.assertIn("size: A5 portrait", css)
         self.assertIn("width: 148mm", css)
         self.assertIn("height: 210mm", css)
+        for selector in (
+            "body.flashcard-page .print-sheet .flashcard-output:not([hidden])",
+            "body.flashcard-page .print-sheet .flashcard-output[hidden]",
+            "body.print-card-page .a5-print-card:not([hidden])",
+            "body.print-card-page .print-card-stage .a5-print-card[hidden]",
+        ):
+            self.assertIn(selector, css)
         self.assertIn("routineArea.remove()", script)
         self.assertIn("flashcardArea.remove()", script)
         self.assertIn("await waitForImages()", script)
-        self.assertIn("The approved visual cannot be found", script)
+        self.assertIn("sign visual", script.lower())
+        self.assertIn("cannot be found", script.lower())
         self.assertNotIn("position: absolute", css[css.index(".a5-guidance-row"):css.index(".a5-card-footer")])
 
     def test_flashcard_contract_retains_context_and_routine_icon(self) -> None:

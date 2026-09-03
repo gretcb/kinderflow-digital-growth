@@ -4,8 +4,8 @@ This dependency-free prototype presents KinderFlow as a platform that helps nurs
 
 The product is intentionally role-separated:
 
-- KinderFlow internal teams create, review, publish and control school access to content;
-- schools assign available published content and manage permitted add-ons; and
+- KinderFlow internal teams create, review, add content to the Master Content Library and control school access;
+- schools assign available content and manage permitted add-ons; and
 - families receive only the relevant guidance and assets shared by the school.
 
 ## How to open
@@ -63,24 +63,25 @@ KinderFlow Admin
 
 ## Master Content Studio
 
-Master Content Studio owns all content creation. Its landing page provides four explicit paths:
+Master Content Studio owns all content creation. Its top-level navigation provides three task areas:
 
 - Create a sign;
-- Create a flashcard;
-- Create a story; and
-- Create a song.
+- Master Library; and
+- Schools.
+
+Flashcards, Routine Cards and Stories are derived family materials after visual review. Song is shown only as Coming soon.
 
 Signs are foundational assets. The dependency is:
 
 ```text
 Create a sign
 → Human review
-→ Published sign
 → Master Content Library
-→ Flashcard / Story / Song
+→ Make available to schools
+→ Flashcard / Routine Card / Story
 ```
 
-A Flashcard Studio proof can begin from reviewed sign content, but it cannot become available to schools until the underlying sign and visual asset are published. `MORE` is currently the only item connected to real CV evidence. Other library examples are explicitly illustrative.
+A Flashcard Studio proof requires the exact reviewed visual from the sign journey. It cannot become available to schools until the underlying sign and visual asset are added to the Master Content Library and approved for school use. The current app demo is MORE; the committed Round 1 POC evidence belongs to WATER and must never be relabelled. Other library examples are explicitly illustrative.
 
 ## Technology decisions
 
@@ -88,8 +89,8 @@ A Flashcard Studio proof can begin from reviewed sign content, but it cannot bec
 | --- | --- | --- | --- |
 | Sign | Computer Vision / MediaPipe | Capture and preserve movement from a validated reference video | Existing local POC evidence |
 | Flashcard | Template-based | Turn reviewed sign content into consistent printable proofs and, after publication, reusable cards | Functional internal builder |
-| Story | Generative AI + quality checks + human review | Create original stories from published signs, with evaluation before use | Illustrative local prototype |
-| Song | Future generative capability | Planned content format built from published signs | Concept only |
+| Story | Generative AI + quality checks + human review | Create original stories from signs added to the Master Content Library, with evaluation before use | Illustrative local prototype |
+| Song | Future generative capability | Planned content format built from signs added to the Master Content Library | Concept only |
 
 Not every problem needs generative AI.
 
@@ -97,13 +98,13 @@ Not every problem needs generative AI.
 
 The internal MVP flow is:
 
-`Validated reference sign video → MediaPipe processing → movement evidence → technical review → grounded visual preparation → candidate review → approved printable → Flashcard / Routine Card → EN / ES → Print as PDF`
+`Choose the sign → add the reference → review the sign reference → choose one or two poses → create and approve a visual → family materials → Bilingual / Spanish → Print / Save as PDF`
 
 The Create a Sign route becomes functional when it is served by the local MVP service. An operator can use the existing demo reference or select another MP4. Each run uses the real POC pipeline, produces its own movement overlay and diagnostics, and reports only metrics calculated for that input.
 
 The browser preview is an H.264 MP4 created from the real OpenCV/MediaPipe overlay through a local ffmpeg transcode. Operator-facing outcomes are **Pass**, **Review needed**, or **Fail**. Evidence routing is explicit: landmark key poses, one or two operator-selected reference frames, or a knowledge/sign-reference fallback with a required rationale. EAT is sign-aware: partial hand tracking near the face does not automatically create a dead end.
 
-The MORE and EAT visual candidates embed the exact founder-selected Open Peeps source atoms for face, hair and body. Sign-specific hands/arms and restrained movement accents are custom layers. Local regeneration returns a different prebuilt vector composition with a new ID, path, version and verified hash; it never reorders the original candidates and calls no paid API.
+MORE, HELP, EAT, SLEEP, MILK and WATER each have a controlled visual package grounded in the exact founder-selected Open Peeps bust plus the reviewed arm and hand-style references. Sign-specific arms, hands and restrained movement accents are custom layers. Local regeneration returns a different prebuilt vector composition with a new ID, path, version and verified hash; it never reorders the original options and calls no paid API.
 
 Start it from the repository root:
 
@@ -114,11 +115,11 @@ python mvp/app.py
 
 Then open [http://127.0.0.1:8000/create-sign.html](http://127.0.0.1:8000/create-sign.html).
 
-No child video is required. Files remain local, every run is isolated under *mvp/runs/*, and canonical Round 1 evidence is not overwritten. Technical metrics are movement-processing signals, not linguistic correctness certification or system-wide accuracy. Technical review, internal-printable approval and publication remain separate decisions. Production-ready avatar generation is not complete.
+Files remain local, every run is isolated under *mvp/runs/*, and canonical Round 1 evidence is not overwritten. Technical metrics are movement-processing signals, not linguistic correctness certification or system-wide accuracy. Reference review, visual approval and publication remain separate decisions. Production-ready avatar generation is not complete.
 
 ## Kinder Signs Flashcard Studio
 
-The Flashcard Studio belongs exclusively to KinderFlow internal content operations. Schools and families receive reviewed flashcards but do not design them. It is a reusable content system rather than five separate cards:
+The Flashcard Studio belongs exclusively to KinderFlow internal content operations. Schools and families receive reviewed flashcards but do not design them. It is a reusable content system rather than six separate sign-specific editors:
 
 ```text
 reviewed sign data
@@ -130,7 +131,7 @@ reviewed sign data
 → Signs & Flashcards Library
 ```
 
-The source model is `prototype/data/signs.json`, and `prototype/data/visual_sign_packages.json` provides the deterministic visual-preparation package resolved by `sign_id`. It contains the bilingual copy, movement brief, evidence route, character identity, candidate assets, context image and routine icon semantics needed by the renderer. MORE is the only complete end-to-end printable proof; final library release is still blocked by qualified hand review and publication approval. Selecting another record shows why it is not ready instead of rendering a misleading card.
+The source model is `prototype/data/signs.json`, and `prototype/data/visual_sign_packages.json` provides the deterministic visual-preparation package resolved by `sign_id`. It contains bilingual copy, the movement brief, internal routing data, character identity, candidate assets, context image and routine icon semantics needed by the renderer. Each canonical sign can enter printable creation only after its exact visual is approved; final library release is still blocked by qualified hand review and publication approval. Unknown signs fail closed instead of rendering a misleading card.
 
 The asset contract is documented under `assets/flashcards/`. It reserves separate locations for:
 
@@ -141,7 +142,7 @@ The asset contract is documented under `assets/flashcards/`. It reserves separat
 - template assets; and
 - local exports.
 
-Local Open Peeps and Miroodles source libraries remain unmodified working references. The runtime candidates are original controlled SVG proofs that apply the approved character direction (smile, bun2 and mid-2) without treating a generic Open Peeps pose as sign evidence. The MORE hand relationship and movement cue remain explicitly reviewable and do not claim linguistic certification.
+Local Open Peeps and Miroodles source libraries remain unmodified working references. The runtime candidates embed the unchanged registered `bust.svg` geometry as their sole character base; the registered hand/finger and shoulder/arm examples guide line grammar without supplying sign mechanics or a copied full pose. The sign-specific references define each pose, and every movement cue remains explicitly reviewable without claiming linguistic certification.
 
 The two controlled visual rules are:
 
@@ -152,18 +153,18 @@ The sign name is part of the same visual unit as the illustration, not a detache
 
 The intended production flow is:
 
-`Reviewed sign → controlled template → approve visual proof → published asset → print / export`
+`Reviewed sign → controlled template → approve visual proof → add to Master Content Library → print / export`
 
-The current MORE demo completes the local operator path: `movement evidence → controlled visual candidates → local visual approval → Flashcard or Routine Card → EN or ES → browser Print / Save as PDF`. This creates a printable proof, not a published family asset.
+The current local app demo is explicitly MORE. Historical POC diagnostics remain explicitly WATER supporting evidence. The visual workflow resolves each of the six canonical sign IDs to its own controlled visual options and continues through `local visual approval → Flashcard or Routine Card → Bilingual or Spanish → browser Print / Save as PDF`. This creates a printable proof; it does not add a family asset to the library.
 
 Controls remain intentionally limited to:
 
-- one reviewed-sign selector, with MORE identified as the available internal proof and the other shared records clearly marked as not ready;
-- output language: English or Spanish;
+- one reviewed-sign selector that resolves the six canonical signs by exact ID and shows a controlled unavailable state for unknown signs;
+- output language: Bilingual or Spanish;
 - card type: Flashcard or Routine Card; and
 - local proof approval followed by browser print / Save as PDF.
 
-The Flashcard uses a calm, realistic snack-time context image plus the sign illustration; the sign remains the primary educational element. The Routine Card uses the same sign illustration, a KinderFlow-style snack icon, a routine label and one guidance sentence, with no contextual photo. Browser-native Print → Save as PDF is the working export path. Print CSS places one 105 × 148 mm card on an A4 page, removes interface chrome, preserves selectable text and avoids splitting important card sections. PNG export remains disabled and honestly labelled.
+The Flashcard uses an available routine context image plus the sign illustration; the sign remains the primary educational element. The Routine Card uses the same sign illustration, a KinderFlow-style routine icon, a routine label and one guidance sentence, with no contextual photo. Browser-native Print → Save as PDF is the only exposed export path. The dedicated A5 portrait print route removes interface chrome, preserves selectable text and avoids splitting important card sections.
 
 When a school/group or child has the Flashcards pack active, the matching reviewed flashcard is included automatically in prepared family output. When the pack is inactive, the item can remain visible to the school as available content but is not sent to families. No billing, manual educator design, freeform editor, server-side PDF service or persistence is included.
 
@@ -189,17 +190,17 @@ When served by `python mvp/app.py`, the Content Engine calls the local backend a
 
 LangSmith status is separate from generation mode. A live model call may still show LangSmith dry-run/unavailable if the tracing dependency is absent. LangSmith is relevant only to LLM-assisted wording and does not assess movement or sign correctness. The contracts and deterministic validation live under `content_ops/`; the service is under `mvp/`; and the n8n boundary is documented under `workflow/`.
 
-MORE is the deepest demonstration target. Character candidates are ready for founder review and the optional contextual export path is documented. Final library readiness remains blocked by the custom reviewed hand-pose asset. The other four signs prove the shared data contract and renderer without claiming final visual assets or publication readiness.
+The Content Engine remains a separate five-record wording demo. The six-sign visual system provides controlled options for MORE, HELP, EAT, SLEEP, MILK and WATER without claiming linguistic certification, printable approval or library availability. EAT uses the reviewed-reference route when movement evidence is incomplete, and unknown sign IDs fail closed.
 
 ## Story prototype
 
-The story route accepts only a published sign and produces a short original English prototype draft. It demonstrates explicit deterministic checks, evaluator-style review dimensions, LangSmith observability boundaries and human review actions.
+The story route currently accepts only MORE and produces a short original English or Spanish prototype draft. A non-MORE `?sign=` request shows an unavailable state instead of silently producing a MORE story. The route demonstrates explicit deterministic checks, evaluator-style review dimensions, LangSmith observability boundaries and human review actions.
 
 No live LLM, n8n or LangSmith call runs from the static page. LangSmith represents traceability for the content-transformation step; it does not validate sign biomechanics, MediaPipe output or linguistic sign correctness.
 
 ## Content operations readiness
 
-The Master Content Library includes a five-sign readiness matrix generated by the local `content_ops` package. It keeps source, CV, content, artwork, hand review, deterministic quality gate, human review and library state separate.
+The Master Content Library includes a five-record content-readiness matrix generated by the local `content_ops` package. This wording demo is intentionally separate from the six canonical visual packages. It keeps source, CV, content, artwork, hand review, deterministic quality gate, human review and library state separate.
 
 Run:
 
@@ -211,15 +212,15 @@ Then serve the prototype and open `library.html`. MORE exposes the furthest avai
 
 ## School Admin
 
-The school sees only the content and services made available to it. It can assign available content, manage permitted add-ons and review family access. It does not see source/reference videos, MediaPipe, LangSmith, internal review, or content-production actions.
+The School Admin route is a configured assignment-demo fixture for Little Steps Nursery. It can preview six signs, exercise assignment behavior, manage illustrative add-ons and review synthetic family access. It does not see source/reference videos, MediaPipe, LangSmith, internal review, or content-production actions. Every library card is labelled **Preview** because the canonical registry does not currently evidence any sign as published for school distribution.
 
-The school library overview deliberately stays concise: sign name, available formats and assignment action. Routine guidance and family wording belong in the content detail or family view, not in the library card.
+The responsive school library stays concise: bilingual sign name, routine context, configured preview formats and one assignment action. The format chips model the demo plan; they are not production-availability claims.
 
 The assignment flow is deliberately simple:
 
-`Select content → Select one group → Optionally select one child in that group → Review the assignment summary → Assign`
+`Choose a sign → Choose a group → Choose materials → Choose everyone or one child → Review the summary → Share`
 
-The summary and CTA name the selected sign and destination before the action. The child dropdown is derived from the selected group. Assign another item preserves the group to make repetitive assignment faster.
+The summary and CTA name the selected sign and destination before the action. The child selector appears only for **One child** and is derived from the selected group. Exact duplicate assignments are blocked; a sign can still be shared with another group, child or material set. Active assignment cards show materials and support edit-in-place and removal. **Share another sign** preserves the group to make repetitive assignment faster. Changes persist only in the current browser session and are never sent to families.
 
 The school-facing Family Overview shows broad distribution and engagement indicators plus a fictional child roster with:
 
@@ -235,4 +236,4 @@ The family route is labelled as a preview of what families receive. It contains 
 
 This prototype does not include authentication, billing, payments, databases, APIs, cloud persistence, production CMS capabilities, real school integrations, real child data, tracking, server-side PDF generation, production avatar fidelity or music generation.
 
-KinderFlow controls product and published-asset availability. Schools control assignment and permitted add-ons. Families receive shared materials. Those responsibilities remain separate throughout the prototype.
+KinderFlow controls what is added to the Master Content Library and made available to schools. Schools control assignment and permitted add-ons. Families receive shared materials. Those responsibilities remain separate throughout the prototype.

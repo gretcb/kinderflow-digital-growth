@@ -1,0 +1,201 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kinderflow.local/schemas/sign_asset_registry.schema.json",
+  "title": "Kinder Signs canonical asset registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "registry_purpose",
+    "resource_root",
+    "canonical_sign_ids",
+    "asset_classes",
+    "assets",
+    "signs"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "registry_purpose": {"type": "string", "minLength": 1},
+    "resource_root": {"const": "../resources"},
+    "canonical_sign_ids": {
+      "type": "array",
+      "items": {"enum": ["more", "help", "eat", "sleep", "milk", "water"]},
+      "minItems": 6,
+      "maxItems": 6,
+      "uniqueItems": true
+    },
+    "asset_classes": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/assetClass"},
+      "minItems": 6,
+      "maxItems": 6,
+      "uniqueItems": true
+    },
+    "assets": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {"$ref": "#/$defs/asset"}
+    },
+    "signs": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "items": {"$ref": "#/$defs/sign"}
+    }
+  },
+  "$defs": {
+    "assetClass": {
+      "enum": [
+        "THIRD_PARTY_REFERENCE",
+        "FOUNDER_PROVIDED_REFERENCE",
+        "TECHNICAL_EVIDENCE",
+        "PREGENERATED_DEMO_OUTPUT",
+        "KINDERFLOW_DERIVED_ASSET",
+        "KINDERFLOW_RUNTIME_ASSET"
+      ]
+    },
+    "assetId": {"type": "string", "pattern": "^[a-z0-9][a-z0-9_]*$"},
+    "assetIdOrNull": {
+      "oneOf": [
+        {"$ref": "#/$defs/assetId"},
+        {"type": "null"}
+      ]
+    },
+    "assetIdList": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/assetId"},
+      "uniqueItems": true
+    },
+    "asset": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "exists",
+        "file_type",
+        "byte_size",
+        "sha256",
+        "sign_mapping",
+        "workflow_role",
+        "asset_class",
+        "licence_or_provenance_status",
+        "redistribution_allowed",
+        "demo_display_allowed",
+        "printable_allowed",
+        "known_limitation"
+      ],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "exists": {"type": "boolean"},
+        "file_type": {"type": ["string", "null"]},
+        "byte_size": {"type": ["integer", "null"], "minimum": 0},
+        "sha256": {
+          "oneOf": [
+            {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+            {"type": "null"}
+          ]
+        },
+        "sign_mapping": {
+          "type": "array",
+          "items": {"enum": ["more", "help", "eat", "sleep", "milk", "water"]},
+          "uniqueItems": true
+        },
+        "workflow_role": {"type": "string", "minLength": 1},
+        "asset_class": {"$ref": "#/$defs/assetClass"},
+        "licence_or_provenance_status": {"type": "string", "minLength": 1},
+        "redistribution_allowed": {"type": ["boolean", "null"]},
+        "demo_display_allowed": {"type": ["boolean", "null"]},
+        "printable_allowed": {"type": "boolean"},
+        "known_limitation": {"type": "string", "minLength": 1}
+      }
+    },
+    "sourceUrl": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["url", "role", "status"],
+      "properties": {
+        "url": {"type": "string", "format": "uri"},
+        "role": {"type": "string", "minLength": 1},
+        "status": {"type": "string", "minLength": 1}
+      }
+    },
+    "sign": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sign_id",
+        "label_en",
+        "label_es",
+        "knowledge_sources",
+        "reference_source_urls",
+        "reference_video_input",
+        "reference_video_hash",
+        "reference_flashcard",
+        "functional_sign_illustration",
+        "supplementary_hand_sheet",
+        "open_peeps_base",
+        "open_peeps_hand_style_reference",
+        "open_peeps_arm_reference",
+        "open_peeps_reference_status",
+        "gemini_demo_video",
+        "gemini_demo_status",
+        "gemini_demo_provider",
+        "gemini_demo_disclosure",
+        "contextual_image",
+        "routine_icon_reference",
+        "landmark_evidence",
+        "static_visual_candidates",
+        "reviewed_static_visual",
+        "flashcard_outputs",
+        "routine_card_outputs",
+        "technical_status",
+        "visual_status",
+        "printable_status",
+        "publication_status",
+        "school_availability",
+        "rights_or_provenance_status",
+        "known_gaps"
+      ],
+      "properties": {
+        "sign_id": {"enum": ["more", "help", "eat", "sleep", "milk", "water"]},
+        "label_en": {"type": "string", "minLength": 1},
+        "label_es": {"type": "string", "minLength": 1},
+        "knowledge_sources": {"$ref": "#/$defs/assetIdList"},
+        "reference_source_urls": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/sourceUrl"}
+        },
+        "reference_video_input": {"$ref": "#/$defs/assetId"},
+        "reference_video_hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "reference_flashcard": {"$ref": "#/$defs/assetId"},
+        "functional_sign_illustration": {"$ref": "#/$defs/assetId"},
+        "supplementary_hand_sheet": {"$ref": "#/$defs/assetIdList"},
+        "open_peeps_base": {"$ref": "#/$defs/assetId"},
+        "open_peeps_hand_style_reference": {"$ref": "#/$defs/assetId"},
+        "open_peeps_arm_reference": {"$ref": "#/$defs/assetId"},
+        "open_peeps_reference_status": {"type": "string", "minLength": 1},
+        "gemini_demo_video": {"$ref": "#/$defs/assetIdOrNull"},
+        "gemini_demo_status": {"type": "string", "minLength": 1},
+        "gemini_demo_provider": {"type": ["string", "null"]},
+        "gemini_demo_disclosure": {"type": "string", "minLength": 1},
+        "contextual_image": {"$ref": "#/$defs/assetIdOrNull"},
+        "routine_icon_reference": {"$ref": "#/$defs/assetIdList"},
+        "landmark_evidence": {"$ref": "#/$defs/assetIdList"},
+        "static_visual_candidates": {"$ref": "#/$defs/assetIdList"},
+        "reviewed_static_visual": {"$ref": "#/$defs/assetIdList"},
+        "flashcard_outputs": {"$ref": "#/$defs/assetIdList"},
+        "routine_card_outputs": {"$ref": "#/$defs/assetIdList"},
+        "technical_status": {"type": "string", "minLength": 1},
+        "visual_status": {"type": "string", "minLength": 1},
+        "printable_status": {"type": "string", "minLength": 1},
+        "publication_status": {"type": "string", "minLength": 1},
+        "school_availability": {"type": "string", "minLength": 1},
+        "rights_or_provenance_status": {"type": "string", "minLength": 1},
+        "known_gaps": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1}
+        }
+      }
+    }
+  }
+}

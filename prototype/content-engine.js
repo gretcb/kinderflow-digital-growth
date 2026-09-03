@@ -17,11 +17,60 @@ const contentOutputState = document.querySelector("#content-output-state");
 let contentEngineRecords = [];
 let activeRun = null;
 let backendAvailable = false;
+let requestedRoutineContext = "";
 
-const friendlyState = (value) => String(value || "—").replaceAll("_", " ").toLowerCase().replace(/^./, (letter) => letter.toUpperCase());
+const DISPLAY_LABELS = {
+  technical_evidence_available: "Reference movement available",
+  needs_reference_review: "Reference needs review",
+  controlled_vector_proof_ready: "Illustration ready for review",
+  candidates_ready_for_founder_review: "Illustration options need review",
+  context_asset_ready: "Everyday context ready",
+  manual_export_identified: "Everyday context optional",
+  ready_for_human_review: "Ready for human review",
+  BLOCKED_BY_HAND_REVIEW: "Complete visual review first",
+  BLOCKED: "Not ready",
+  llm_assisted: "AI-assisted draft",
+  human: "Approved source copy",
+  DRY_RUN: "Demo mode",
+  DRY_RUN_ONLY: "Demo check only",
+  NOT_APPLICABLE: "Not used for this step",
+  READY_FOR_REVIEW: "Ready for review",
+  APPROVED_LOCALLY: "Approved locally",
+  CHANGES_REQUESTED: "Changes requested",
+  PENDING: "Pending"
+};
+const friendlyState = (value) => DISPLAY_LABELS[value] || String(value || "—").replaceAll("_", " ").toLowerCase().replace(/^./, (letter) => letter.toUpperCase());
 const setEngineText = (selector, value) => { document.querySelector(selector).textContent = value; };
 const selectedEngineRecord = () => contentEngineRecords.find((item) => item.sign_id === contentPackSign.value);
 const selectedOrigin = () => document.querySelector('input[name="content_origin"]:checked').value;
+const normalizeRequestedSign = (value) => String(value || "")
+  .trim()
+  .toLowerCase()
+  .replaceAll(/[^a-z0-9]+/g, "_")
+  .replaceAll(/^_+|_+$/g, "");
+const requestedSignLabel = (signId) => signId
+  ? signId.replaceAll("_", " ").toUpperCase()
+  : "REQUESTED SIGN";
+const ROUTINE_TRANSLATIONS = new Map([
+  ["snack time", "Hora de la merienda"],
+  ["playtime", "Hora de jugar"],
+  ["mealtime", "Hora de comer"],
+  ["bedtime", "Hora de dormir"],
+  ["getting ready", "Prepararse"],
+  ["milk time", "Hora de la leche"],
+  ["drink break", "Pausa para beber"]
+]);
+const routineForLanguage = (value, language) => {
+  const routine = String(value || "").trim();
+  if (!routine || language === "en") return routine;
+  return routine.split(/(\s*[,/]\s*)/).map((part) => {
+    if (/^[\s,\/]+$/.test(part)) return part;
+    return ROUTINE_TRANSLATIONS.get(part.trim().toLowerCase()) || part.trim();
+  }).join("");
+};
+const resolvedRoutine = (record) => requestedRoutineContext
+  ? { en: requestedRoutineContext, es: routineForLanguage(requestedRoutineContext, "es") }
+  : structuredClone(record.input.routine);
 
 const setOutputState = (label, tone = "neutral") => {
   contentOutputState.textContent = label;
@@ -43,6 +92,7 @@ const setLinkState = (link, enabled, href) => {
 
 const lockReviewedHandoffs = () => {
   setLinkState(openReviewedFlashcard, false, "flashcards.html");
+  openReviewedFlashcard.textContent = "Create flashcard";
   setLinkState(openSchoolPreview, false, "school.html");
   setLinkState(openFamilyPreview, false, "family.html");
 };
@@ -54,7 +104,7 @@ const resetCandidate = () => {
   approveContentPack.disabled = true;
   requestContentChanges.disabled = true;
   restoreHumanCopy.disabled = true;
-  approveContentPack.textContent = "Approve Content";
+  approveContentPack.textContent = "Approve content";
   setOutputState("Waiting");
   setEngineText("#engine-ai", "Not generated");
   setEngineText("#engine-gate", "Waiting");
@@ -64,20 +114,60 @@ const resetCandidate = () => {
   lockReviewedHandoffs();
 };
 
-const sourceForLanguage = (record) => ({ ...structuredClone(record.input), language: contentPackLanguage.value });
+const clearUnsupportedSignOption = () => {
+  contentPackSign.querySelector('option[data-unsupported-sign="true"]')?.remove();
+  contentPackSign.removeAttribute("aria-invalid");
+};
+
+const renderUnsupportedSign = (signId) => {
+  const label = requestedSignLabel(signId);
+  resetCandidate();
+  setEngineText("#content-source-title", `${label} is not available`);
+  setEngineText("#content-source-copy", "Choose another sign to prepare family wording.");
+  setEngineText("#engine-movement", "Not available");
+  setEngineText("#engine-character", "Not available");
+  setEngineText("#engine-context", "Not available");
+  setEngineText("#engine-hand", "Not available");
+  setEngineText("#engine-library", "Not available");
+  contentEngineStatus.textContent = "This sign is not available in the current demo set. Choose another sign.";
+  setOutputState("Not available", "review");
+  generateContentPack.disabled = true;
+  contentPackSign.setAttribute("aria-invalid", "true");
+};
+
+const selectUnsupportedSign = (signId) => {
+  clearUnsupportedSignOption();
+  const option = document.createElement("option");
+  option.value = signId;
+  option.textContent = `${requestedSignLabel(signId)} — Not available`;
+  option.dataset.unsupportedSign = "true";
+  contentPackSign.append(option);
+  contentPackSign.value = signId;
+};
+
+const sourceForLanguage = (record) => ({
+  ...structuredClone(record.input),
+  routine: resolvedRoutine(record),
+  language: contentPackLanguage.value
+});
 
 const renderSource = () => {
   const record = selectedEngineRecord();
-  if (!record) return;
-  const source = record.input;
-  setEngineText("#content-source-title", `${source.display_name} / ${source.spanish_label} · ${source.routine.en}`);
+  if (!record) {
+    renderUnsupportedSign(contentPackSign.value);
+    return;
+  }
+  clearUnsupportedSignOption();
+  generateContentPack.disabled = false;
+  const source = sourceForLanguage(record);
+  setEngineText("#content-source-title", `${source.display_name} / ${source.spanish_label} · ${source.routine[contentPackLanguage.value]}`);
   setEngineText("#content-source-copy", `${source.approved_context.school_use.en} ${source.approved_context.family_use.en}`);
   setEngineText("#engine-movement", friendlyState(record.readiness.movement_intelligence));
   setEngineText("#engine-character", friendlyState(record.readiness.character));
   setEngineText("#engine-context", friendlyState(record.readiness.context));
   setEngineText("#engine-hand", friendlyState(record.readiness.hand_pose));
   setEngineText("#engine-library", friendlyState(record.readiness.library));
-  contentEngineStatus.textContent = `${source.display_name} source context loaded. Generation is explicit; existing human copy is unchanged.`;
+  contentEngineStatus.textContent = `${source.display_name} wording source loaded. Existing approved copy is unchanged.`;
   resetCandidate();
 };
 
@@ -99,9 +189,9 @@ const renderRun = (run, sourceLabel = "Local backend") => {
   const passed = run.quality_gate?.passed === true;
   const rejected = run.state === "REJECTED" || run.state === "FAILED";
   setOutputState(rejected ? "Rejected safely" : run.state === "APPROVED_LOCALLY" ? "Approved locally" : "Ready for review", rejected ? "review" : run.state === "APPROVED_LOCALLY" ? "ready" : "review");
-  setEngineText("#engine-ai", `${friendlyState(run.generation.method)} · ${run.generation.mode}`);
+  setEngineText("#engine-ai", `${friendlyState(run.generation.method)} · ${friendlyState(run.generation.mode)}`);
   setEngineText("#engine-gate", passed ? "Pass" : "Fail");
-  setEngineText("#engine-langsmith", `${run.langsmith.mode} · ${friendlyState(run.langsmith.evaluation_status)}`);
+  setEngineText("#engine-langsmith", `${friendlyState(run.langsmith.mode)} · ${friendlyState(run.langsmith.evaluation_status)}`);
   setEngineText("#engine-review", run.review?.status === "APPROVED" ? "Approved · local" : friendlyState(run.review?.status || "PENDING"));
   setEngineText("#engine-flashcard", run.flashcard_handoff ? "Preview ready" : "Blocked until content approval");
   approveContentPack.disabled = !passed || run.state !== "READY_FOR_REVIEW";
@@ -111,20 +201,22 @@ const renderRun = (run, sourceLabel = "Local backend") => {
   if (reviewed) {
     sessionStorage.setItem("kinderflowReviewedContentPack", JSON.stringify(run.content_pack));
     const sign = encodeURIComponent(run.content_pack.flashcard_copy.primary_label);
-    setLinkState(openReviewedFlashcard, true, `flashcards.html?sign=${sign}&reviewed=1`);
+    setLinkState(openReviewedFlashcard, false, "flashcards.html");
+    openReviewedFlashcard.textContent = "Approve a visual to create printable";
     setLinkState(openSchoolPreview, true, `school.html?sign=${sign}&reviewed=1`);
     setLinkState(openFamilyPreview, true, `family.html?sign=${sign}&reviewed=1`);
   } else {
     lockReviewedHandoffs();
   }
-  const latency = Number.isFinite(run.generation.latency_ms) ? ` · ${run.generation.latency_ms} ms` : "";
-  contentEngineStatus.textContent = `${sourceLabel}: ${friendlyState(run.state)} · ${run.generation.mode}${latency}. No publication action was taken.`;
+  const draftSource = friendlyState(run.generation.method);
+  contentEngineStatus.textContent = `${draftSource}: ${friendlyState(run.state)}. Nothing was added to the library.`;
 };
 
 const staticFallbackRun = () => {
   const record = selectedEngineRecord();
   const origin = selectedOrigin();
   const candidate = structuredClone(record.candidate_output);
+  candidate.routine_context = resolvedRoutine(record);
   candidate.generation_method = origin;
   candidate.generation_mode = origin === "llm_assisted" ? "DRY_RUN" : "NOT_APPLICABLE";
   candidate.language = contentPackLanguage.value;
@@ -147,7 +239,7 @@ const callContentApi = async (path, options = {}) => {
   const contentType = response.headers.get("content-type") || "";
   if (!contentType.includes("application/json")) throw new Error("LOCAL_BACKEND_UNAVAILABLE");
   const payload = await response.json();
-  if (!response.ok) throw new Error(payload.error || "The Content Pack request failed.");
+  if (!response.ok) throw new Error(payload.error || "The family content request failed.");
   return payload;
 };
 
@@ -155,7 +247,7 @@ generateContentPack.addEventListener("click", async () => {
   const record = selectedEngineRecord();
   if (!record) return;
   generateContentPack.disabled = true;
-  contentEngineStatus.textContent = "Generating the Content Pack through the local service…";
+  contentEngineStatus.textContent = "Preparing family content…";
   setOutputState("Running", "review");
   try {
     if (!backendAvailable) throw new Error("LOCAL_BACKEND_UNAVAILABLE");
@@ -167,13 +259,13 @@ generateContentPack.addEventListener("click", async () => {
   } catch (error) {
     if (error.message === "LOCAL_BACKEND_UNAVAILABLE") {
       renderRun(staticFallbackRun(), "Static fallback");
-      contentEngineStatus.textContent = "Static DRY-RUN fallback used. Start python mvp/app.py for backend runs or live provider mode.";
+      contentEngineStatus.textContent = "A saved demo draft is ready for human review.";
     } else {
       activeRun = null;
       setOutputState("Failed", "review");
       contentPackJson.textContent = JSON.stringify({ error: error.message }, null, 2);
       contentGateResults.innerHTML = "<li>Generation stopped before human review.</li>";
-      contentEngineStatus.textContent = error.message;
+      contentEngineStatus.textContent = "Family content could not be prepared. Check the technical details or try again.";
     }
   } finally {
     generateContentPack.disabled = false;
@@ -223,7 +315,7 @@ restoreHumanCopy.addEventListener("click", async () => {
       ? await callContentApi(`/api/content-packs/${encodeURIComponent(activeRun.run_id)}/restore`, { method: "POST", body: "{}" })
       : (() => { document.querySelector('input[name="content_origin"][value="human"]').checked = true; return staticFallbackRun(); })();
     renderRun(restored, backendAvailable ? "Local backend" : "Static fallback");
-    contentEngineStatus.textContent = "Approved human source restored as a separate review candidate. The earlier AI run was not overwritten.";
+    contentEngineStatus.textContent = "Approved source copy restored as a separate draft for review. The earlier draft was kept.";
   } catch (error) {
     contentEngineStatus.textContent = error.message;
   }
@@ -241,23 +333,28 @@ const checkBackend = async () => {
   } catch (_error) {
     backendAvailable = false;
   }
-  setEngineText("#engine-backend", backendAvailable ? "Connected" : "Static fallback");
+  setEngineText("#engine-backend", backendAvailable ? "Connected" : "Saved demo available");
 };
 
 const loadContentEngine = async () => {
   try {
     await checkBackend();
     const response = await fetch("data/content_engine_demo.json", { cache: "no-store" });
-    if (!response.ok) throw new Error("Content Pack data is unavailable.");
+    if (!response.ok) throw new Error("Family content data is unavailable.");
     const report = await response.json();
-    if (report.operation !== "GENERATE_CONTENT_PACK" || !Array.isArray(report.results) || report.results.length !== 5) throw new Error("Content Pack contract is invalid.");
+    if (report.operation !== "GENERATE_CONTENT_PACK" || !Array.isArray(report.results) || report.results.length !== 5) throw new Error("Family content data could not be read.");
     contentEngineRecords = report.results;
-    const requested = new URLSearchParams(window.location.search).get("sign")?.trim().toLowerCase().replaceAll(" ", "_");
-    if (contentEngineRecords.some((item) => item.sign_id === requested)) contentPackSign.value = requested;
+    const parameters = new URLSearchParams(window.location.search);
+    requestedRoutineContext = (parameters.get("routine") || "").trim().slice(0, 180);
+    if (parameters.has("sign")) {
+      const requested = normalizeRequestedSign(parameters.get("sign"));
+      if (contentEngineRecords.some((item) => item.sign_id === requested)) contentPackSign.value = requested;
+      else selectUnsupportedSign(requested);
+    }
     renderSource();
   } catch (error) {
     generateContentPack.disabled = true;
-    contentEngineStatus.textContent = `${error.message} Run python -m content_ops and reload.`;
+    contentEngineStatus.textContent = `${error.message} Reload the page after the local content service is ready.`;
   }
 };
 

@@ -1,13 +1,13 @@
 {
   "audit_date": "2026-09-03",
-  "source_root": "assets/flashcards/source_libraries/Flat Assets/Separate Atoms",
+  "source_root": "../resources/Flat Assets",
   "licence_status": "FOUNDER_VERIFIED_CC0",
   "runtime_dependency": true,
   "categories": {
-    "base_person": {"count": 3, "examples": ["bust.svg", "standing.svg", "sitting.svg"]},
+    "base_person": {"count": 3, "examples": ["bust.svg", "standing.svg", "sitting.svg"], "selected_for_signs": "Separate Atoms/a person/bust.svg"},
     "faces": {"count": 30, "selected": ["Smile.svg"]},
     "heads_and_hair": {"count": 46, "selected": ["Bun 2.svg"]},
-    "bodies_and_clothing": {"count": 30, "selected_pose": ["pose/sitting/mid-2.svg"]},
+    "bodies_and_clothing": {"count": 30, "selected_pose": ["a person/bust.svg"]},
     "accessories": {"count": 9, "shortlist": ["* None.svg"]},
     "facial_hair": {"count": 17, "shortlist": ["* None.svg"]}
   },
@@ -17,12 +17,12 @@
       "bust_base": "0 0 1136 1533",
       "face": "0 0 289 293",
       "head": "0 0 473 567",
-      "body_pose_mid_2": "0 0 1534 1856"
+      "sign_base_bust": "0 0 1136 1533"
     },
     "direct_interchangeability": false,
     "reason": "Category viewBoxes and dimensions differ. A controlled composition needs per-category scale, translation, stacking order and attachment anchors.",
     "flattened_templates": "Composed Bust, Standing and Sitting template files are useful as references but may be harder to separate safely than the atom files.",
-    "arm_rule": "Any generic body arms must be replaced by a Kinder Signs custom reviewed arm/hand layer. Open Peeps is not the movement source."
+    "arm_rule": "The exact bust is the only character base for every sign visual. Its neutral forearms are visually removed before sign-specific shoulders, upper arms, elbows, forearms, wrists, palms, thumbs and fingers are layered. pointing_finger-1.svg and peep-4.svg provide style grammar only; Open Peeps is not the movement source."
   },
   "excluded_from_shortlist": [
     "eye patches",

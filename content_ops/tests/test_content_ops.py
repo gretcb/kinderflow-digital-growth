@@ -211,10 +211,19 @@ class ContentEngineTests(unittest.TestCase):
         self.assertNotIn("automatic_publication", handoff)
         self.assertNotIn("teacher_message", handoff)
 
-    def test_all_five_signs_use_same_operation_contract(self) -> None:
-        report = build_demo_report(Path(__file__).parents[2] / "prototype/data/signs.json")
+    def test_all_registered_signs_use_same_operation_contract(self) -> None:
+        signs_path = Path(__file__).parents[2] / "prototype/data/signs.json"
+        registered_ids = {
+            item["sign_id"] for item in load_json(signs_path)["signs"]
+        }
+        report = build_demo_report(signs_path)
         self.assertEqual(report["operation"], "GENERATE_CONTENT_PACK")
-        self.assertEqual(len(report["results"]), 5)
+        self.assertEqual(
+            {item["sign_id"] for item in report["results"]}, registered_ids
+        )
+        self.assertTrue(
+            {"more", "help", "eat", "sleep", "milk", "water"}.issubset(registered_ids)
+        )
         self.assertTrue(all(item["deterministic_quality_gate"]["passed"] for item in report["results"]))
         self.assertTrue(all(item["langsmith"]["trace_status"] == "NOT_SENT" for item in report["results"]))
 
@@ -234,7 +243,19 @@ class FlashcardIntegrationTests(unittest.TestCase):
         self.assertFalse(modular["compatibility_findings"]["direct_interchangeability"])
         self.assertTrue(modular["runtime_dependency"])
         self.assertEqual(provenance["licence"], "CC0")
-        self.assertEqual(len(provenance["selected_components"]), 3)
+        roles = {item["role"] for item in provenance["selected_components"]}
+        self.assertEqual(
+            roles,
+            {
+                "base_character",
+                "hand_finger_style_grammar",
+                "shoulder_arm_style_grammar",
+                "functional_pose_mechanics",
+                "supplementary_hand_configuration",
+                "movement_reference",
+                "landmark_support",
+            },
+        )
 
     def test_runtime_does_not_reference_ignored_source_library(self) -> None:
         runtime_files = list((self.repo / "prototype").glob("*.html")) + list((self.repo / "prototype").glob("*.js")) + list((self.repo / "prototype").glob("*.css"))
@@ -251,10 +272,14 @@ class FlashcardIntegrationTests(unittest.TestCase):
         self.assertIn("print-card.html", builder_js)
         self.assertIn("window.print()", print_js)
 
-    def test_all_five_signs_have_one_bilingual_print_contract(self) -> None:
+    def test_all_registered_signs_have_one_bilingual_print_contract(self) -> None:
         signs = load_json(self.repo / "prototype/data/signs.json")["signs"]
-        self.assertEqual(len(signs), 5)
-        self.assertEqual({item["sign_id"] for item in signs}, {"more", "eat", "water", "all_done", "help"})
+        sign_ids = [item["sign_id"] for item in signs]
+        self.assertEqual(len(sign_ids), len(set(sign_ids)))
+        self.assertTrue(
+            {"more", "help", "eat", "sleep", "milk", "water"}.issubset(sign_ids)
+        )
+        self.assertIn("all_done", sign_ids)
         for sign in signs:
             for field in ("routine", "short_family_guidance", "try_it_during"):
                 self.assertTrue(sign[field]["en"].strip())
@@ -267,10 +292,11 @@ class FlashcardIntegrationTests(unittest.TestCase):
         forbidden = {"human_review", "automatic_publication", "teacher_message", "family_message", "generation_mode"}
         self.assertFalse(forbidden.intersection(handoff))
 
-    def test_more_pose_package_is_explicitly_blocked(self) -> None:
+    def test_more_pose_package_is_ready_for_review_but_not_approved(self) -> None:
         package = load_json(self.repo / "assets/flashcards/hand_pose_references/more/reference_package.json")
-        self.assertEqual(package["target_svg_slot"]["status"], "NOT_CREATED")
-        self.assertEqual(package["library_readiness"], "BLOCKED")
+        self.assertEqual(package["target_svg_slot"]["status"], "THREE_DRAFT_CANDIDATES_CREATED")
+        self.assertEqual(package["library_readiness"], "READY_FOR_HUMAN_REVIEW")
+        self.assertEqual(package["publication_status"], "DRAFT")
 
 
 if __name__ == "__main__":

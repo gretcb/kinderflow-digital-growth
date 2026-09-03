@@ -1,35 +1,41 @@
 {
   "sign_id": "more",
-  "package_status": "INCOMPLETE",
-  "purpose": "Human-inspectable source package for a future custom MORE arm and hand SVG.",
+  "package_status": "READY_FOR_HUMAN_REVIEW",
+  "purpose": "Human-inspectable evidence package for the deterministic MORE arm and hand composer.",
   "reference_still": {
-    "status": "MISSING_RIGHTS_CLEARED_EXPORT",
-    "target": "assets/flashcards/hand_pose_references/more/more_reference_still.png"
+    "status": "REGISTERED_EXTERNAL_REFERENCE",
+    "asset_id": "functional_more",
+    "path": "../resources/ilustraciones/more.jpg",
+    "usage": "Primary functional source for the two flat-O hands, upper-chest position and apart/contact sequence; not redistributed."
   },
   "landmark_snapshot": {
-    "status": "NEEDS_HUMAN_SELECTION",
-    "available_evidence": [
-      "poc/output/diagnostics/sign_reference_detection_timeline.png",
-      "poc/output/diagnostics/sign_reference_wrist_trajectory.png",
-      "poc/output/diagnostics/sign_reference_fingertip_trajectories.png"
-    ],
-    "note": "The diagnostic charts are technical evidence. They are not a final hand-pose reference or proof of sign correctness.",
-    "target": "assets/flashcards/hand_pose_references/more/more_landmark_snapshot.png"
+    "status": "NOT_AVAILABLE_FOR_MORE",
+    "available_evidence": [],
+    "note": "The committed demo diagnostics belong to WATER and are deliberately excluded from MORE. The functional MORE illustration and curated knowledge ground these draft visuals."
   },
   "poc_evidence": {
-    "frames_analysed": 332,
-    "pose_detection_coverage_percent": 100.0,
-    "dominant_hand_detection_coverage_percent": 93.98,
-    "missing_hand_frames": 20,
-    "motion_representation_status": "MOTION_REPRESENTATION_PARTIAL",
-    "technical_decision": "Proceed with conditions",
-    "source": "poc/output/diagnostics/sign_reference_motion_summary.json"
+    "status": "NOT_MAPPED_TO_MORE",
+    "reason": "The local demo reference is byte-identical to the registered WATER input. No automatic sign inference is claimed."
   },
   "target_svg_slot": {
-    "status": "NOT_CREATED",
-    "target": "assets/flashcards/hand_pose_references/more/more_hand_pose.svg",
-    "rule": "The SVG must be derived from the validated reference movement and must not be inferred from the generic character pose."
+    "status": "THREE_DRAFT_CANDIDATES_CREATED",
+    "targets": [
+      "prototype/assets/signs/more-a.svg",
+      "prototype/assets/signs/more-b.svg",
+      "prototype/assets/signs/more-c.svg"
+    ],
+    "rule": "The SVG mechanics derive from the functional MORE reference and curated knowledge; the Open Peeps references define visual grammar only."
+  },
+  "open_peeps_composer": {
+    "base_character": "open_peeps_bust_base",
+    "style_grammar": [
+      "open_peeps_pointing_finger_reference",
+      "open_peeps_arm_reference"
+    ],
+    "excluded_pose": "pose/sitting/mid-2.svg",
+    "hand_construction": "Two custom flat-O hands, each with four finger paths, one thumb path, palm, wrist, forearm, elbow, upper arm and shoulder attachment."
   },
   "review_record": "assets/flashcards/hand_pose_references/more/review_notes.md",
-  "library_readiness": "BLOCKED"
+  "library_readiness": "READY_FOR_HUMAN_REVIEW",
+  "publication_status": "DRAFT"
 }

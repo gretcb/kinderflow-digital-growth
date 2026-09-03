@@ -24,6 +24,7 @@ from content_packs import (
     restore_human_copy,
 )
 from pipeline import (
+    DEMO_SIGN_NAME,
     InputError,
     MAX_UPLOAD_BYTES,
     REPO_ROOT,
@@ -223,10 +224,10 @@ class KinderFlowHandler(BaseHTTPRequestHandler):
             if route == "/api/runs/demo":
                 payload = self.read_json()
                 run_dir, manifest = prepare_run(
-                    payload.get("sign_name", ""),
+                    DEMO_SIGN_NAME,
                     payload.get("routine_context", ""),
                     payload.get("reference_status", ""),
-                    "sign_reference.mp4",
+                    "more.mp4",
                     "demo_reference",
                     payload.get("reference_source_url", ""),
                 )
@@ -262,7 +263,7 @@ class KinderFlowHandler(BaseHTTPRequestHandler):
             self.send_json({"error": str(error)}, HTTPStatus.BAD_REQUEST)
         except (ValueError, TypeError):
             self.send_json(
-                {"error": "The movement check could not be started."},
+                {"error": "The reference review could not be started."},
                 HTTPStatus.BAD_REQUEST,
             )
 

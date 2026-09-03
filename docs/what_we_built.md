@@ -102,7 +102,7 @@ Kinder Signs tests whether one controlled sign source can become reusable school
 
 **Why we need it:** The school should operate a simple distribution flow, not CV, LLM or content production.
 
-**What it does not do:** It does not save assignments, enforce permissions, contact families or integrate with a school platform.
+**What it does not do:** It does not persist assignments beyond browser session storage, enforce permissions, contact families or integrate with a school platform.
 
 ### 13. Family output
 

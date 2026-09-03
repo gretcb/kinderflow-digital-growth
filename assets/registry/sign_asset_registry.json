@@ -1,0 +1,1346 @@
+{
+  "schema_version": "1.0",
+  "registry_purpose": "Canonical mapping and provenance record for Kinder Signs reference material, technical evidence, demo media and internal visual outputs.",
+  "resource_root": "../resources",
+  "canonical_sign_ids": [
+    "more",
+    "help",
+    "eat",
+    "sleep",
+    "milk",
+    "water"
+  ],
+  "asset_classes": [
+    "THIRD_PARTY_REFERENCE",
+    "FOUNDER_PROVIDED_REFERENCE",
+    "TECHNICAL_EVIDENCE",
+    "PREGENERATED_DEMO_OUTPUT",
+    "KINDERFLOW_DERIVED_ASSET",
+    "KINDERFLOW_RUNTIME_ASSET"
+  ],
+  "assets": {
+    "canonical_sign_content": {
+      "path": "prototype/data/signs.json",
+      "exists": true,
+      "file_type": "application/json",
+      "byte_size": 15176,
+      "sha256": "1cdbb3d551076604ac01ea6429e063122a7dff97e7c54a3b75a71e2236adf3f1",
+      "sign_mapping": [
+        "more",
+        "help",
+        "eat",
+        "sleep",
+        "milk",
+        "water"
+      ],
+      "workflow_role": "Existing internal bilingual sign and product-state source",
+      "asset_class": "KINDERFLOW_RUNTIME_ASSET",
+      "licence_or_provenance_status": "KINDERFLOW_INTERNAL",
+      "redistribution_allowed": true,
+      "demo_display_allowed": true,
+      "printable_allowed": false,
+      "known_limitation": "Contains additional non-canonical prototype signs and is not linguistic certification."
+    },
+    "visual_sign_packages": {
+      "path": "prototype/data/visual_sign_packages.json",
+      "exists": true,
+      "file_type": "application/json",
+      "byte_size": 40981,
+      "sha256": "1138082a53af304f5a1b55baa21484f6cbd696d1212f2ac3cb531f10c4f8350b",
+      "sign_mapping": [
+        "more",
+        "help",
+        "eat",
+        "sleep",
+        "milk",
+        "water"
+      ],
+      "workflow_role": "Existing internal visual grounding package",
+      "asset_class": "KINDERFLOW_RUNTIME_ASSET",
+      "licence_or_provenance_status": "KINDERFLOW_INTERNAL",
+      "redistribution_allowed": true,
+      "demo_display_allowed": true,
+      "printable_allowed": false,
+      "known_limitation": "All six canonical signs have controlled visual options; every option still requires human review."
+    },
+    "open_peeps_bust_base": {
+      "path": "../resources/Flat Assets/Separate Atoms/a person/bust.svg",
+      "exists": true,
+      "file_type": "image/svg+xml",
+      "byte_size": 26663,
+      "sha256": "b631d9ab4a7bb7d0f632ffb42185825d4cf208853eb2c07338a15cc4999601df",
+      "sign_mapping": [
+        "more",
+        "help",
+        "eat",
+        "sleep",
+        "milk",
+        "water"
+      ],
+      "workflow_role": "Open Peeps base character identity reference",
+      "asset_class": "THIRD_PARTY_REFERENCE",
+      "licence_or_provenance_status": "FOUNDER_VERIFIED_CC0_OFFICIAL_SOURCE",
+      "redistribution_allowed": true,
+      "demo_display_allowed": true,
+      "printable_allowed": false,
+      "known_limitation": "Character identity only; it is not evidence for sign mechanics."
+    },
+    "open_peeps_arm_reference": {
+      "path": "../resources/Flat Assets/Templates/Bust/peep-4.svg",
+      "exists": true,
+      "file_type": "image/svg+xml",
+      "byte_size": 44256,
+      "sha256": "2e354cb71804158d4b5fa9ab8a6721c5cff1b74461990e911e1b2a2cf2e79ef0",
+      "sign_mapping": [
+        "more",
+        "help",
+        "eat",
+        "sleep",
+        "milk",
+        "water"
+      ],
+      "workflow_role": "Complementary Open Peeps arm and hand style reference",
+      "asset_class": "THIRD_PARTY_REFERENCE",
+      "licence_or_provenance_status": "FOUNDER_VERIFIED_CC0_OFFICIAL_SOURCE",
+      "redistribution_allowed": true,
+      "demo_display_allowed": true,
+      "printable_allowed": false,
+      "known_limitation": "Supplementary visual reference only; it is not a final character pose or sign source."
+    },
+    "open_peeps_pointing_finger_reference": {
+      "path": "../resources/Flat Assets/Separate Atoms/pose/standing/pointing_finger-1.svg",
+      "exists": true,
+      "file_type": "image/svg+xml",
+      "byte_size": 25007,
+      "sha256": "b5fc22a9f2f5b2229b789e49587c6998564fa7b524f4b1107e3c25b640c12fd0",
+      "sign_mapping": [
+        "more",
+        "help",
+        "eat",
+        "sleep",
+        "milk",
+        "water"
+      ],
+      "workflow_role": "Expected exact Open Peeps hand-style reference",
+      "asset_class": "THIRD_PARTY_REFERENCE",
+      "licence_or_provenance_status": "FOUNDER_VERIFIED_CC0_OFFICIAL_SOURCE",
+      "redistribution_allowed": true,
+      "demo_display_allowed": true,
+      "printable_allowed": false,
+      "known_limitation": "Hand-style reference only; it is not a final pose or sign-mechanics source."
+    },
+    "functional_more": {
+      "path": "../resources/ilustraciones/more.jpg",
+      "exists": true,
+      "file_type": "image/jpeg",
+      "byte_size": 108814,
+      "sha256": "b11d125a41b4ee5ea180361c7dc0f359d72ae366517128ae8a25664a3083408c",
+      "sign_mapping": [
+        "more"
+      ],
+      "workflow_role": "Functional sign mechanics and pose reference",
+      "asset_class": "FOUNDER_PROVIDED_REFERENCE",
+      "licence_or_provenance_status": "FOUNDER_PROVIDED_RIGHTS_CONFIRMATION_NEEDED",
+      "redistribution_allowed": null,
+      "demo_display_allowed": null,
+      "printable_allowed": false,
+      "known_limitation": "Defines mechanics only and must not define KinderFlow character identity."
+    },
+    "functional_help": {
+      "path": "../resources/ilustraciones/help.jpg",
+      "exists": true,
+      "file_type": "image/jpeg",
+      "byte_size": 42007,
+      "sha256": "079370a2bd6e301c64d29cc16a99ca09ec15af304330e3a77a30b7d351f4ee28",
+      "sign_mapping": [
+        "help"
+      ],
+      "workflow_role": "Functional sign mechanics and pose reference",
+      "asset_class": "FOUNDER_PROVIDED_REFERENCE",
+      "licence_or_provenance_status": "FOUNDER_PROVIDED_RIGHTS_CONFIRMATION_NEEDED",
+      "redistribution_allowed": null,
+      "demo_display_allowed": null,
+      "printable_allowed": false,
+      "known_limitation": "Defines mechanics only and must not define KinderFlow character identity."
+    },
+    "functional_eat": {
+      "path": "../resources/ilustraciones/eat.jpg",
+      "exists": true,
+      "file_type": "image/jpeg",
+      "byte_size": 146232,
+      "sha256": "9dac1ea686fc24a33b2ab3c088191cdc26ac1b8bed52e0e17d3f37b0b979a120",
+      "sign_mapping": [
+        "eat"
+      ],
+      "workflow_role": "Functional sign mechanics and pose reference",
+      "asset_class": "FOUNDER_PROVIDED_REFERENCE",
+      "licence_or_provenance_status": "FOUNDER_PROVIDED_RIGHTS_CONFIRMATION_NEEDED",
+      "redistribution_allowed": null,
+      "demo_display_allowed": null,
+      "printable_allowed": false,
+      "known_limitation": "Defines mechanics only and must not define KinderFlow character identity."
+    },
+    "functional_sleep": {
+      "path": "../resources/ilustraciones/sleep.jpg",
+      "exists": true,
+      "file_type": "image/jpeg",
+      "byte_size": 28910,
+      "sha256": "7fbdd8145fa0524d86c2d9c6c1bce57e148c24c01f2e501486f1c592248ce6bc",
+      "sign_mapping": [
+        "sleep"
+      ],
+      "workflow_role": "Functional sign mechanics and pose reference",
+      "asset_class": "FOUNDER_PROVIDED_REFERENCE",
+      "licence_or_provenance_status": "FOUNDER_PROVIDED_RIGHTS_CONFIRMATION_NEEDED",
+      "redistribution_allowed": null,
+      "demo_display_allowed": null,
+      "printable_allowed": false,
+      "known_limitation": "Defines mechanics only and must not define KinderFlow character identity."
+    },
+    "functional_milk": {
+      "path": "../resources/ilustraciones/milk.jpg",
+      "exists": true,
+      "file_type": "image/jpeg",
+      "byte_size": 28482,
+      "sha256": "e6e815f0f03fb83a99ecba03d8f4d3fb920ac1b85174b3739a7152817a9d9801",
+      "sign_mapping": [
+        "milk"
+      ],
+      "workflow_role": "Functional sign mechanics and pose reference",
+      "asset_class": "FOUNDER_PROVIDED_REFERENCE",
+      "licence_or_provenance_status": "FOUNDER_PROVIDED_RIGHTS_CONFIRMATION_NEEDED",
+      "redistribution_allowed": null,
+      "demo_display_allowed": null,
+      "printable_allowed": false,
+      "known_limitation": "Defines mechanics only and must not define KinderFlow character identity."
+    },
+    "functional_hand_sheet_jpg": {
+      "path": "../resources/ilustraciones/illustraciones_signos.jpg",
+      "exists": true,
+      "file_type": "image/jpeg",
+      "byte_size": 1378160,
+      "sha256": "315bdee7269e14711ca0290283a4afdc34569026914d3db900af8a38516351da",
+      "sign_mapping": [
+        "more",
+        "help",
+        "eat",
+        "sleep",
+        "milk",
+        "water"
+      ],
+      "workflow_role": "Supplementary raster hand and sign reference sheet",
+      "asset_class": "FOUNDER_PROVIDED_REFERENCE",
+      "licence_or_provenance_status": "FOUNDER_PROVIDED_RIGHTS_CONFIRMATION_NEEDED",
+      "redistribution_allowed": null,
+      "demo_display_allowed": null,
+      "printable_allowed": false,
+      "known_limitation": "Supplementary mechanics reference only; not a final KinderFlow asset."
+    },
+    "functional_hand_sheet_eps": {
+      "path": "../resources/ilustraciones/vectores_illustraciones.eps",
+      "exists": true,
+      "file_type": "application/postscript",
+      "byte_size": 3475398,
+      "sha256": "617281bfbdcb342183cd4eb2de55297304cebdbc428127e49a10371314cff01b",
+      "sign_mapping": [
+        "more",
+        "help",
+        "eat",
+        "sleep",
+        "milk",
+        "water"
+      ],
+      "workflow_role": "Supplementary vector illustration source sheet",
+      "asset_class": "FOUNDER_PROVIDED_REFERENCE",
+      "licence_or_provenance_status": "FOUNDER_PROVIDED_RIGHTS_CONFIRMATION_NEEDED",
+      "redistribution_allowed": null,
+      "demo_display_allowed": false,
+      "printable_allowed": false,
+      "known_limitation": "Reference/editing source only; provenance and redistribution rights are not documented."
+    },
+    "input_more": {
+      "path": "../resources/video_input/more.mp4",
+      "exists": true,
+      "file_type": "video/mp4",
+      "byte_size": 502934,
+      "sha256": "9b3fe8f0880fef85f64264f34509aa70fb5c188a316be135cf5230af0009b594",
+      "sign_mapping": [
+        "more"
+      ],
+      "workflow_role": "Reference input video and identity source for the local MORE demo reference",
+      "asset_class": "FOUNDER_PROVIDED_REFERENCE",
+      "licence_or_provenance_status": "FOUNDER_PROVIDED_PRESENTATION_RIGHTS_CONFIRMATION_NEEDED",
+      "redistribution_allowed": false,
+      "demo_display_allowed": null,
+      "printable_allowed": false,
+      "known_limitation": "Local demo reference only; presentation rights still need confirmation and it is not linguistic certification."
+    },
+    "input_help": {
+      "path": "../resources/video_input/help.mp4",
+      "exists": true,
+      "file_type": "video/mp4",
+      "byte_size": 1048227,
+      "sha256": "344bfa462eb5d3eb5438b9c8981554e925a89d89aa4ffa3ac946a00b42cc3002",
+      "sign_mapping": [
+        "help"
+      ],
+      "workflow_role": "Reference input video",
+      "asset_class": "FOUNDER_PROVIDED_REFERENCE",
+      "licence_or_provenance_status": "FOUNDER_PROVIDED_PRESENTATION_RIGHTS_CONFIRMATION_NEEDED",
+      "redistribution_allowed": false,
+      "demo_display_allowed": null,
+      "printable_allowed": false,
+      "known_limitation": "Reference input is not linguistic certification and must remain separate from generated outputs."
+    },
+    "input_eat": {
+      "path": "../resources/video_input/eat.mp4",
+      "exists": true,
+      "file_type": "video/mp4",
+      "byte_size": 550619,
+      "sha256": "90432a597ea75a02bdbb1cc903c1c09e64646565ab48394cd67d4da3f7477822",
+      "sign_mapping": [
+        "eat"
+      ],
+      "workflow_role": "Reference input video",
+      "asset_class": "FOUNDER_PROVIDED_REFERENCE",
+      "licence_or_provenance_status": "FOUNDER_PROVIDED_PRESENTATION_RIGHTS_CONFIRMATION_NEEDED",
+      "redistribution_allowed": false,
+      "demo_display_allowed": null,
+      "printable_allowed": false,
+      "known_limitation": "Reference input is not linguistic certification and must remain separate from generated outputs."
+    },
+    "input_sleep": {
+      "path": "../resources/video_input/sleep.mp4",
+      "exists": true,
+      "file_type": "video/mp4",
+      "byte_size": 544897,
+      "sha256": "e423863518bcfc1e937d5207f98057976a089689987d52603f3fbf97355f0610",
+      "sign_mapping": [
+        "sleep"
+      ],
+      "workflow_role": "Reference input video",
+      "asset_class": "FOUNDER_PROVIDED_REFERENCE",
+      "licence_or_provenance_status": "FOUNDER_PROVIDED_PRESENTATION_RIGHTS_CONFIRMATION_NEEDED",
+      "redistribution_allowed": false,
+      "demo_display_allowed": null,
+      "printable_allowed": false,
+      "known_limitation": "Reference input is not linguistic certification and must remain separate from generated outputs."
+    },
+    "input_milk": {
+      "path": "../resources/video_input/milk.mp4",
+      "exists": true,
+      "file_type": "video/mp4",
+      "byte_size": 831970,
+      "sha256": "1a525a1685cbf9aad9006168ca59f3df43856bdc5916764e8cc6555ea95c5760",
+      "sign_mapping": [
+        "milk"
+      ],
+      "workflow_role": "Reference input video",
+      "asset_class": "FOUNDER_PROVIDED_REFERENCE",
+      "licence_or_provenance_status": "FOUNDER_PROVIDED_PRESENTATION_RIGHTS_CONFIRMATION_NEEDED",
+      "redistribution_allowed": false,
+      "demo_display_allowed": null,
+      "printable_allowed": false,
+      "known_limitation": "Reference input is not linguistic certification and must remain separate from generated outputs."
+    },
+    "demo_more": {
+      "path": "../resources/video_output/mas.mp4",
+      "exists": true,
+      "file_type": "video/mp4",
+      "byte_size": 3721728,
+      "sha256": "adec2ddda3b6cd8ce0a10e9eaa8a5eaf02f826147c0ea33fcc3be403ee48f6a4",
+      "sign_mapping": [
+        "more"
+      ],
+      "workflow_role": "Pre-generated Gemini FX demo output",
+      "asset_class": "PREGENERATED_DEMO_OUTPUT",
+      "licence_or_provenance_status": "GOOGLE_LABS_FX_OUTPUT_USAGE_CONFIRMATION_NEEDED",
+      "redistribution_allowed": null,
+      "demo_display_allowed": null,
+      "printable_allowed": false,
+      "known_limitation": "Not generated from the current landmark run and not linguistically certified."
+    },
+    "demo_help": {
+      "path": "../resources/video_output/ayuda.mp4",
+      "exists": true,
+      "file_type": "video/mp4",
+      "byte_size": 547216,
+      "sha256": "529b3bea31746d8a1ce305828244badfa9db543ae1960312ad7c6665b838db02",
+      "sign_mapping": [
+        "help"
+      ],
+      "workflow_role": "Pre-generated Gemini FX demo output",
+      "asset_class": "PREGENERATED_DEMO_OUTPUT",
+      "licence_or_provenance_status": "GOOGLE_LABS_FX_OUTPUT_USAGE_CONFIRMATION_NEEDED",
+      "redistribution_allowed": null,
+      "demo_display_allowed": null,
+      "printable_allowed": false,
+      "known_limitation": "Not generated from the current landmark run and not linguistically certified."
+    },
+    "demo_milk": {
+      "path": "../resources/video_output/leche.mp4",
+      "exists": true,
+      "file_type": "video/mp4",
+      "byte_size": 530320,
+      "sha256": "55d106d20318c9c9be430f523a71e4b85d5a7656c90c4fdbdf32a58d1efa95c2",
+      "sign_mapping": [
+        "milk"
+      ],
+      "workflow_role": "Pre-generated Gemini FX demo output",
+      "asset_class": "PREGENERATED_DEMO_OUTPUT",
+      "licence_or_provenance_status": "GOOGLE_LABS_FX_OUTPUT_USAGE_CONFIRMATION_NEEDED",
+      "redistribution_allowed": null,
+      "demo_display_allowed": null,
+      "printable_allowed": false,
+      "known_limitation": "Not generated from the current landmark run and not linguistically certified."
+    },
+    "flashcard_more_reference": {
+      "path": "../resources/flashcards/more-flash-card.pdf",
+      "exists": true,
+      "file_type": "application/pdf",
+      "byte_size": 2696928,
+      "sha256": "92e41f7e68c44ec99c6f0c80537e089a0a02413672007bd3d1c2cd99252fcf89",
+      "sign_mapping": [
+        "more"
+      ],
+      "workflow_role": "Reference flashcard",
+      "asset_class": "FOUNDER_PROVIDED_REFERENCE",
+      "licence_or_provenance_status": "FOUNDER_PROVIDED_REFERENCE_ONLY",
+      "redistribution_allowed": false,
+      "demo_display_allowed": false,
+      "printable_allowed": false,
+      "known_limitation": "Reference only; must never be copied into production or treated as a distributable output."
+    },
+    "flashcard_help_reference": {
+      "path": "../resources/flashcards/help-flash-card.pdf",
+      "exists": true,
+      "file_type": "application/pdf",
+      "byte_size": 650516,
+      "sha256": "a28c72750a1e58aede191aa00ca18f509c47411c6755421245c4430a2010f6d0",
+      "sign_mapping": [
+        "help"
+      ],
+      "workflow_role": "Reference flashcard",
+      "asset_class": "FOUNDER_PROVIDED_REFERENCE",
+      "licence_or_provenance_status": "FOUNDER_PROVIDED_REFERENCE_ONLY",
+      "redistribution_allowed": false,
+      "demo_display_allowed": false,
+      "printable_allowed": false,
+      "known_limitation": "Reference only; must never be copied into production or treated as a distributable output."
+    },
+    "flashcard_eat_reference": {
+      "path": "../resources/flashcards/eat-flash-card.pdf",
+      "exists": true,
+      "file_type": "application/pdf",
+      "byte_size": 2044069,
+      "sha256": "2037609b3e510e937be803efaf0db007c9ab4bcb836f9b73745a6a0b4e2759dc",
+      "sign_mapping": [
+        "eat"
+      ],
+      "workflow_role": "Reference flashcard",
+      "asset_class": "FOUNDER_PROVIDED_REFERENCE",
+      "licence_or_provenance_status": "FOUNDER_PROVIDED_REFERENCE_ONLY",
+      "redistribution_allowed": false,
+      "demo_display_allowed": false,
+      "printable_allowed": false,
+      "known_limitation": "Reference only; must never be copied into production or treated as a distributable output."
+    },
+    "flashcard_sleep_reference": {
+      "path": "../resources/flashcards/sleep-flash-card.pdf",
+      "exists": true,
+      "file_type": "application/pdf",
+      "byte_size": 2847495,
+      "sha256": "f03467890345dd1fef060b226c9350a5559100176a49626438f1c2bc09aeb82f",
+      "sign_mapping": [
+        "sleep"
+      ],
+      "workflow_role": "Reference flashcard",
+      "asset_class": "FOUNDER_PROVIDED_REFERENCE",
+      "licence_or_provenance_status": "FOUNDER_PROVIDED_REFERENCE_ONLY",
+      "redistribution_allowed": false,
+      "demo_display_allowed": false,
+      "printable_allowed": false,
+      "known_limitation": "Reference only; must never be copied into production or treated as a distributable output."
+    },
+    "flashcard_milk_reference": {
+      "path": "../resources/flashcards/milk-flash-card.pdf",
+      "exists": true,
+      "file_type": "application/pdf",
+      "byte_size": 1027607,
+      "sha256": "026f09787ec453b72da11969e4c69f937566a707b4a0d79673c565e8fd6427ad",
+      "sign_mapping": [
+        "milk"
+      ],
+      "workflow_role": "Reference flashcard",
+      "asset_class": "FOUNDER_PROVIDED_REFERENCE",
+      "licence_or_provenance_status": "FOUNDER_PROVIDED_REFERENCE_ONLY",
+      "redistribution_allowed": false,
+      "demo_display_allowed": false,
+      "printable_allowed": false,
+      "known_limitation": "Reference only; must never be copied into production or treated as a distributable output."
+    },
+    "icon_help_primary": {
+      "path": "../resources/iconos/ayuda.png",
+      "exists": true,
+      "file_type": "image/png",
+      "byte_size": 30521,
+      "sha256": "41b8da9ccb9099f64a354729e9e5dbe393357a866b39c1f2687b9645cde22b61",
+      "sign_mapping": [
+        "help"
+      ],
+      "workflow_role": "Routine icon reference",
+      "asset_class": "FOUNDER_PROVIDED_REFERENCE",
+      "licence_or_provenance_status": "VENDOR_ARTWORK_REFERENCE_ONLY",
+      "redistribution_allowed": false,
+      "demo_display_allowed": false,
+      "printable_allowed": false,
+      "known_limitation": "Vendor artwork is reference only and cannot become the final KinderFlow icon."
+    },
+    "icon_help_alternate": {
+      "path": "../resources/iconos/ayuda2.png",
+      "exists": true,
+      "file_type": "image/png",
+      "byte_size": 18568,
+      "sha256": "ef7a1adf68645fcd0b5582b70da84dd9ba59ac5db655b933ba2e806b7c675415",
+      "sign_mapping": [
+        "help"
+      ],
+      "workflow_role": "Alternate routine icon reference",
+      "asset_class": "FOUNDER_PROVIDED_REFERENCE",
+      "licence_or_provenance_status": "VENDOR_ARTWORK_REFERENCE_ONLY",
+      "redistribution_allowed": false,
+      "demo_display_allowed": false,
+      "printable_allowed": false,
+      "known_limitation": "Vendor artwork is reference only and cannot become the final KinderFlow icon."
+    },
+    "icon_milk": {
+      "path": "../resources/iconos/biberon.png",
+      "exists": true,
+      "file_type": "image/png",
+      "byte_size": 8060,
+      "sha256": "2783bce03bdc11f10a56e4986743fe614c082033bdac2ccf9472d1e1ff2fb319",
+      "sign_mapping": [
+        "milk"
+      ],
+      "workflow_role": "Routine icon reference",
+      "asset_class": "FOUNDER_PROVIDED_REFERENCE",
+      "licence_or_provenance_status": "VENDOR_ARTWORK_REFERENCE_ONLY",
+      "redistribution_allowed": false,
+      "demo_display_allowed": false,
+      "printable_allowed": false,
+      "known_limitation": "Vendor artwork is reference only and cannot become the final KinderFlow icon."
+    },
+    "icon_eat": {
+      "path": "../resources/iconos/comer.png",
+      "exists": true,
+      "file_type": "image/png",
+      "byte_size": 22629,
+      "sha256": "6b11ff5992a3f3e2cd76b39591912f3ced49c48963cb1a7b8614d4d68af897bb",
+      "sign_mapping": [
+        "eat"
+      ],
+      "workflow_role": "Routine icon reference",
+      "asset_class": "FOUNDER_PROVIDED_REFERENCE",
+      "licence_or_provenance_status": "VENDOR_ARTWORK_REFERENCE_ONLY",
+      "redistribution_allowed": false,
+      "demo_display_allowed": false,
+      "printable_allowed": false,
+      "known_limitation": "Vendor artwork is reference only and cannot become the final KinderFlow icon."
+    },
+    "icon_sleep": {
+      "path": "../resources/iconos/dormir.png",
+      "exists": true,
+      "file_type": "image/png",
+      "byte_size": 21174,
+      "sha256": "f38884e3261495e0ff4879679f8a4d8632cd53c2c553bd392467fde3f4dc7bc1",
+      "sign_mapping": [
+        "sleep"
+      ],
+      "workflow_role": "Routine icon reference",
+      "asset_class": "FOUNDER_PROVIDED_REFERENCE",
+      "licence_or_provenance_status": "VENDOR_ARTWORK_REFERENCE_ONLY",
+      "redistribution_allowed": false,
+      "demo_display_allowed": false,
+      "printable_allowed": false,
+      "known_limitation": "Vendor artwork is reference only and cannot become the final KinderFlow icon."
+    },
+    "icon_more_play": {
+      "path": "../resources/iconos/jugar.png",
+      "exists": true,
+      "file_type": "image/png",
+      "byte_size": 26070,
+      "sha256": "c4e72af6183b8ad8ff3cd1a5a524cce7ed5390b782c416b6a924df32b92be609",
+      "sign_mapping": [
+        "more"
+      ],
+      "workflow_role": "Play-routine icon reference for MORE contexts",
+      "asset_class": "FOUNDER_PROVIDED_REFERENCE",
+      "licence_or_provenance_status": "VENDOR_ARTWORK_REFERENCE_ONLY",
+      "redistribution_allowed": false,
+      "demo_display_allowed": false,
+      "printable_allowed": false,
+      "known_limitation": "Contextual reference only; vendor artwork is not a literal MORE icon or final KinderFlow asset."
+    },
+    "more_context_image": {
+      "path": "prototype/assets/context/more-snack-time.png",
+      "exists": true,
+      "file_type": "image/png",
+      "byte_size": 2126130,
+      "sha256": "d364e1011347193ce2b14010bb324be08a970d1fab075a0448e84cf2f4376f52",
+      "sign_mapping": [
+        "more"
+      ],
+      "workflow_role": "Current prototype contextual image",
+      "asset_class": "KINDERFLOW_RUNTIME_ASSET",
+      "licence_or_provenance_status": "KINDERFLOW_RUNTIME_RIGHTS_RECORD_INCOMPLETE",
+      "redistribution_allowed": null,
+      "demo_display_allowed": true,
+      "printable_allowed": false,
+      "known_limitation": "Context only; source-rights record and production approval are incomplete."
+    },
+    "input_water": {
+      "path": "../resources/video_input/water.mp4",
+      "exists": true,
+      "file_type": "video/mp4",
+      "byte_size": 586766,
+      "sha256": "28f844d5af72ef1bcd351048ba57d74b2ad32bb6584fed919e27d3e59f8f44ea",
+      "sign_mapping": [
+        "water"
+      ],
+      "workflow_role": "Reference input video and identity source for supporting WATER evidence",
+      "asset_class": "FOUNDER_PROVIDED_REFERENCE",
+      "licence_or_provenance_status": "FOUNDER_PROVIDED_PRESENTATION_RIGHTS_CONFIRMATION_NEEDED",
+      "redistribution_allowed": false,
+      "demo_display_allowed": null,
+      "printable_allowed": false,
+      "known_limitation": "Reference input is not automatic sign recognition or linguistic certification."
+    },
+    "functional_water": {
+      "path": "../resources/ilustraciones/water.jpg",
+      "exists": true,
+      "file_type": "image/jpeg",
+      "byte_size": 39108,
+      "sha256": "aa56ca59a37f2e3b5cf188e34d7b747bc0855ddc85b2712bc13e8a760606fbbc",
+      "sign_mapping": [
+        "water"
+      ],
+      "workflow_role": "Functional sign mechanics and pose reference",
+      "asset_class": "FOUNDER_PROVIDED_REFERENCE",
+      "licence_or_provenance_status": "FOUNDER_PROVIDED_RIGHTS_CONFIRMATION_NEEDED",
+      "redistribution_allowed": null,
+      "demo_display_allowed": null,
+      "printable_allowed": false,
+      "known_limitation": "Defines mechanics only and must not define KinderFlow character identity."
+    },
+    "flashcard_water_reference": {
+      "path": "../resources/flashcards/water-flash-card.pdf",
+      "exists": true,
+      "file_type": "application/pdf",
+      "byte_size": 1988888,
+      "sha256": "af80d56706b4110ac1378f428806478b17669ace8a612a278cdee3a15729cbd9",
+      "sign_mapping": [
+        "water"
+      ],
+      "workflow_role": "Reference-only sign flashcard",
+      "asset_class": "FOUNDER_PROVIDED_REFERENCE",
+      "licence_or_provenance_status": "FOUNDER_PROVIDED_RIGHTS_CONFIRMATION_NEEDED",
+      "redistribution_allowed": null,
+      "demo_display_allowed": null,
+      "printable_allowed": false,
+      "known_limitation": "Reference-only source; never a distributable KinderFlow output."
+    },
+    "water_landmark_summary": {
+      "path": "poc/output/diagnostics/sign_reference_motion_summary.json",
+      "exists": true,
+      "file_type": "application/json",
+      "byte_size": 11006,
+      "sha256": "feb413fc233610f95f6dc962c9f6d6a6dd44412479ea78dd9345f084bfc6fef3",
+      "sign_mapping": [
+        "water"
+      ],
+      "workflow_role": "Committed MediaPipe motion-summary evidence for the local WATER supporting run",
+      "asset_class": "TECHNICAL_EVIDENCE",
+      "licence_or_provenance_status": "KINDERFLOW_GENERATED_FROM_PRIVATE_REFERENCE",
+      "redistribution_allowed": false,
+      "demo_display_allowed": true,
+      "printable_allowed": false,
+      "known_limitation": "Technical movement representation only; does not certify sign correctness."
+    },
+    "water_detection_timeline": {
+      "path": "poc/output/diagnostics/sign_reference_detection_timeline.png",
+      "exists": true,
+      "file_type": "image/png",
+      "byte_size": 34213,
+      "sha256": "23c44d531370b1e16ad859cde3165a1efca36258a04cc6e27a7c9a3162504f6b",
+      "sign_mapping": [
+        "water"
+      ],
+      "workflow_role": "Human-inspectable MediaPipe detection timeline",
+      "asset_class": "TECHNICAL_EVIDENCE",
+      "licence_or_provenance_status": "KINDERFLOW_GENERATED_FROM_PRIVATE_REFERENCE",
+      "redistribution_allowed": false,
+      "demo_display_allowed": true,
+      "printable_allowed": false,
+      "known_limitation": "Detection coverage evidence only; not a hand-pose reference or linguistic review."
+    },
+    "water_validation_summary": {
+      "path": "poc/output/validation_summary.json",
+      "exists": true,
+      "file_type": "application/json",
+      "byte_size": 854,
+      "sha256": "7d4101ca5203e27a890426580fd5369f8537366a180b88f5d675887e47b3cc66",
+      "sign_mapping": [
+        "water"
+      ],
+      "workflow_role": "Canonical technical validation decision",
+      "asset_class": "TECHNICAL_EVIDENCE",
+      "licence_or_provenance_status": "KINDERFLOW_GENERATED_FROM_PRIVATE_REFERENCE",
+      "redistribution_allowed": false,
+      "demo_display_allowed": true,
+      "printable_allowed": false,
+      "known_limitation": "Applies only to the committed reference run and is not publication approval."
+    },
+    "static_more_a": {
+      "path": "prototype/assets/signs/more-a.svg",
+      "exists": true,
+      "file_type": "image/svg+xml",
+      "byte_size": 36338,
+      "sha256": "cb138b8a2a626462098b3c015cfdf76ae062a52a267bf218b6ef9a84fbb82900",
+      "sign_mapping": [
+        "more"
+      ],
+      "workflow_role": "Source-grounded deterministic sign visual option",
+      "asset_class": "KINDERFLOW_DERIVED_ASSET",
+      "licence_or_provenance_status": "OPEN_PEEPS_CC0_DERIVATIVE_WITH_KINDERFLOW_CUSTOM_LAYER",
+      "redistribution_allowed": true,
+      "demo_display_allowed": true,
+      "printable_allowed": false,
+      "known_limitation": "Requires human visual review; not published or linguistically certified."
+    },
+    "static_more_b": {
+      "path": "prototype/assets/signs/more-b.svg",
+      "exists": true,
+      "file_type": "image/svg+xml",
+      "byte_size": 69118,
+      "sha256": "b3229ed4d8828c573d08db8432be5083518e26d5fa145617f75ec6af646b832c",
+      "sign_mapping": [
+        "more"
+      ],
+      "workflow_role": "Source-grounded deterministic sign visual option",
+      "asset_class": "KINDERFLOW_DERIVED_ASSET",
+      "licence_or_provenance_status": "OPEN_PEEPS_CC0_DERIVATIVE_WITH_KINDERFLOW_CUSTOM_LAYER",
+      "redistribution_allowed": true,
+      "demo_display_allowed": true,
+      "printable_allowed": false,
+      "known_limitation": "Requires human visual review; not published or linguistically certified."
+    },
+    "static_more_c": {
+      "path": "prototype/assets/signs/more-c.svg",
+      "exists": true,
+      "file_type": "image/svg+xml",
+      "byte_size": 36327,
+      "sha256": "76783fb92c6c7aafdef36ffa3280bbd5e19c5c61998fecf99bad8ba6804b381f",
+      "sign_mapping": [
+        "more"
+      ],
+      "workflow_role": "Source-grounded deterministic sign visual option",
+      "asset_class": "KINDERFLOW_DERIVED_ASSET",
+      "licence_or_provenance_status": "OPEN_PEEPS_CC0_DERIVATIVE_WITH_KINDERFLOW_CUSTOM_LAYER",
+      "redistribution_allowed": true,
+      "demo_display_allowed": true,
+      "printable_allowed": false,
+      "known_limitation": "Requires human visual review; not published or linguistically certified."
+    },
+    "static_help_a": {
+      "path": "prototype/assets/signs/help-a.svg",
+      "exists": true,
+      "file_type": "image/svg+xml",
+      "byte_size": 36113,
+      "sha256": "97554ab2bf5e47f7c3b25e7eb64d9f114e3fe488362dd5b906e4c41c348c7aac",
+      "sign_mapping": [
+        "help"
+      ],
+      "workflow_role": "Source-grounded deterministic sign visual option",
+      "asset_class": "KINDERFLOW_DERIVED_ASSET",
+      "licence_or_provenance_status": "OPEN_PEEPS_CC0_DERIVATIVE_WITH_KINDERFLOW_CUSTOM_LAYER",
+      "redistribution_allowed": true,
+      "demo_display_allowed": true,
+      "printable_allowed": false,
+      "known_limitation": "Requires human visual review; not published or linguistically certified."
+    },
+    "static_help_b": {
+      "path": "prototype/assets/signs/help-b.svg",
+      "exists": true,
+      "file_type": "image/svg+xml",
+      "byte_size": 68682,
+      "sha256": "e7e44db0f71b7420e81b1bbe6cd08faa43445c19316551b9f5c0c2889aa4ea16",
+      "sign_mapping": [
+        "help"
+      ],
+      "workflow_role": "Source-grounded deterministic sign visual option",
+      "asset_class": "KINDERFLOW_DERIVED_ASSET",
+      "licence_or_provenance_status": "OPEN_PEEPS_CC0_DERIVATIVE_WITH_KINDERFLOW_CUSTOM_LAYER",
+      "redistribution_allowed": true,
+      "demo_display_allowed": true,
+      "printable_allowed": false,
+      "known_limitation": "Requires human visual review; not published or linguistically certified."
+    },
+    "static_help_c": {
+      "path": "prototype/assets/signs/help-c.svg",
+      "exists": true,
+      "file_type": "image/svg+xml",
+      "byte_size": 36117,
+      "sha256": "b3d9c6da7636084fcf8df9827323a2bfd63e002c9fbe9c03579a6b08e69745b4",
+      "sign_mapping": [
+        "help"
+      ],
+      "workflow_role": "Source-grounded deterministic sign visual option",
+      "asset_class": "KINDERFLOW_DERIVED_ASSET",
+      "licence_or_provenance_status": "OPEN_PEEPS_CC0_DERIVATIVE_WITH_KINDERFLOW_CUSTOM_LAYER",
+      "redistribution_allowed": true,
+      "demo_display_allowed": true,
+      "printable_allowed": false,
+      "known_limitation": "Requires human visual review; not published or linguistically certified."
+    },
+    "static_eat_a": {
+      "path": "prototype/assets/signs/eat-a.svg",
+      "exists": true,
+      "file_type": "image/svg+xml",
+      "byte_size": 33746,
+      "sha256": "92747ef417eaccade25ea8c845b6d865e130509e233fdd9073528e6c404932a9",
+      "sign_mapping": [
+        "eat"
+      ],
+      "workflow_role": "Source-grounded deterministic sign visual option",
+      "asset_class": "KINDERFLOW_DERIVED_ASSET",
+      "licence_or_provenance_status": "OPEN_PEEPS_CC0_DERIVATIVE_WITH_KINDERFLOW_CUSTOM_LAYER",
+      "redistribution_allowed": true,
+      "demo_display_allowed": true,
+      "printable_allowed": false,
+      "known_limitation": "Requires human visual review; not published or linguistically certified."
+    },
+    "static_eat_b": {
+      "path": "prototype/assets/signs/eat-b.svg",
+      "exists": true,
+      "file_type": "image/svg+xml",
+      "byte_size": 63952,
+      "sha256": "c131cbb16db8fc4c0c388d7bf71a13350d4fc2e7fd830afce068b731d0319edc",
+      "sign_mapping": [
+        "eat"
+      ],
+      "workflow_role": "Source-grounded deterministic sign visual option",
+      "asset_class": "KINDERFLOW_DERIVED_ASSET",
+      "licence_or_provenance_status": "OPEN_PEEPS_CC0_DERIVATIVE_WITH_KINDERFLOW_CUSTOM_LAYER",
+      "redistribution_allowed": true,
+      "demo_display_allowed": true,
+      "printable_allowed": false,
+      "known_limitation": "Requires human visual review; not published or linguistically certified."
+    },
+    "static_eat_c": {
+      "path": "prototype/assets/signs/eat-c.svg",
+      "exists": true,
+      "file_type": "image/svg+xml",
+      "byte_size": 33742,
+      "sha256": "7157ea6018632a6561288a45bdeb7be36b357a01c1309c7163e2daded8de917f",
+      "sign_mapping": [
+        "eat"
+      ],
+      "workflow_role": "Source-grounded deterministic sign visual option",
+      "asset_class": "KINDERFLOW_DERIVED_ASSET",
+      "licence_or_provenance_status": "OPEN_PEEPS_CC0_DERIVATIVE_WITH_KINDERFLOW_CUSTOM_LAYER",
+      "redistribution_allowed": true,
+      "demo_display_allowed": true,
+      "printable_allowed": false,
+      "known_limitation": "Requires human visual review; not published or linguistically certified."
+    },
+    "static_sleep_a": {
+      "path": "prototype/assets/signs/sleep-a.svg",
+      "exists": true,
+      "file_type": "image/svg+xml",
+      "byte_size": 33683,
+      "sha256": "08509011ec42593621473c96c5600d599f415a562841c774ef60245598da3a48",
+      "sign_mapping": [
+        "sleep"
+      ],
+      "workflow_role": "Source-grounded deterministic sign visual option",
+      "asset_class": "KINDERFLOW_DERIVED_ASSET",
+      "licence_or_provenance_status": "OPEN_PEEPS_CC0_DERIVATIVE_WITH_KINDERFLOW_CUSTOM_LAYER",
+      "redistribution_allowed": true,
+      "demo_display_allowed": true,
+      "printable_allowed": false,
+      "known_limitation": "Requires human visual review; not published or linguistically certified."
+    },
+    "static_sleep_b": {
+      "path": "prototype/assets/signs/sleep-b.svg",
+      "exists": true,
+      "file_type": "image/svg+xml",
+      "byte_size": 63756,
+      "sha256": "fd02fea1c890ef3dec52f8646b1394f1a49b63aae83c161c7d53721038e8b8f5",
+      "sign_mapping": [
+        "sleep"
+      ],
+      "workflow_role": "Source-grounded deterministic sign visual option",
+      "asset_class": "KINDERFLOW_DERIVED_ASSET",
+      "licence_or_provenance_status": "OPEN_PEEPS_CC0_DERIVATIVE_WITH_KINDERFLOW_CUSTOM_LAYER",
+      "redistribution_allowed": true,
+      "demo_display_allowed": true,
+      "printable_allowed": false,
+      "known_limitation": "Requires human visual review; not published or linguistically certified."
+    },
+    "static_sleep_c": {
+      "path": "prototype/assets/signs/sleep-c.svg",
+      "exists": true,
+      "file_type": "image/svg+xml",
+      "byte_size": 33688,
+      "sha256": "206e064a359d43dbd65eb2dd17b0fa7f3275f88ebf147927ddc609fb4cc6f457",
+      "sign_mapping": [
+        "sleep"
+      ],
+      "workflow_role": "Source-grounded deterministic sign visual option",
+      "asset_class": "KINDERFLOW_DERIVED_ASSET",
+      "licence_or_provenance_status": "OPEN_PEEPS_CC0_DERIVATIVE_WITH_KINDERFLOW_CUSTOM_LAYER",
+      "redistribution_allowed": true,
+      "demo_display_allowed": true,
+      "printable_allowed": false,
+      "known_limitation": "Requires human visual review; not published or linguistically certified."
+    },
+    "static_milk_a": {
+      "path": "prototype/assets/signs/milk-a.svg",
+      "exists": true,
+      "file_type": "image/svg+xml",
+      "byte_size": 33920,
+      "sha256": "b33f99a2c4b0000be73509048f9cb76e5df5024394537a151a4fb05bcc580bd5",
+      "sign_mapping": [
+        "milk"
+      ],
+      "workflow_role": "Source-grounded deterministic sign visual option",
+      "asset_class": "KINDERFLOW_DERIVED_ASSET",
+      "licence_or_provenance_status": "OPEN_PEEPS_CC0_DERIVATIVE_WITH_KINDERFLOW_CUSTOM_LAYER",
+      "redistribution_allowed": true,
+      "demo_display_allowed": true,
+      "printable_allowed": false,
+      "known_limitation": "Requires human visual review; not published or linguistically certified."
+    },
+    "static_milk_b": {
+      "path": "prototype/assets/signs/milk-b.svg",
+      "exists": true,
+      "file_type": "image/svg+xml",
+      "byte_size": 64256,
+      "sha256": "8c2d7928647dc8134d4aa5e48ce1051d93f54cfe76980dc6b05f10bace855030",
+      "sign_mapping": [
+        "milk"
+      ],
+      "workflow_role": "Source-grounded deterministic sign visual option",
+      "asset_class": "KINDERFLOW_DERIVED_ASSET",
+      "licence_or_provenance_status": "OPEN_PEEPS_CC0_DERIVATIVE_WITH_KINDERFLOW_CUSTOM_LAYER",
+      "redistribution_allowed": true,
+      "demo_display_allowed": true,
+      "printable_allowed": false,
+      "known_limitation": "Requires human visual review; not published or linguistically certified."
+    },
+    "static_milk_c": {
+      "path": "prototype/assets/signs/milk-c.svg",
+      "exists": true,
+      "file_type": "image/svg+xml",
+      "byte_size": 33934,
+      "sha256": "2675f2f7b37c63f9076c2a4e81db4f264b58d97d159de3b42027c61134252f0e",
+      "sign_mapping": [
+        "milk"
+      ],
+      "workflow_role": "Source-grounded deterministic sign visual option",
+      "asset_class": "KINDERFLOW_DERIVED_ASSET",
+      "licence_or_provenance_status": "OPEN_PEEPS_CC0_DERIVATIVE_WITH_KINDERFLOW_CUSTOM_LAYER",
+      "redistribution_allowed": true,
+      "demo_display_allowed": true,
+      "printable_allowed": false,
+      "known_limitation": "Requires human visual review; not published or linguistically certified."
+    },
+    "static_water_a": {
+      "path": "prototype/assets/signs/water-a.svg",
+      "exists": true,
+      "file_type": "image/svg+xml",
+      "byte_size": 33980,
+      "sha256": "eead4af19ff8fcb83aa8e692b124f86a9b54020f483c8c0355a99d7cfccb4e4c",
+      "sign_mapping": [
+        "water"
+      ],
+      "workflow_role": "Source-grounded deterministic sign visual option",
+      "asset_class": "KINDERFLOW_DERIVED_ASSET",
+      "licence_or_provenance_status": "OPEN_PEEPS_CC0_DERIVATIVE_WITH_KINDERFLOW_CUSTOM_LAYER",
+      "redistribution_allowed": true,
+      "demo_display_allowed": true,
+      "printable_allowed": false,
+      "known_limitation": "Requires human visual review; not published or linguistically certified."
+    },
+    "static_water_b": {
+      "path": "prototype/assets/signs/water-b.svg",
+      "exists": true,
+      "file_type": "image/svg+xml",
+      "byte_size": 64175,
+      "sha256": "11a25cb3f24e070b1cb824c9ba854849996f138ae5b95493f2bcd2ec0e06f354",
+      "sign_mapping": [
+        "water"
+      ],
+      "workflow_role": "Source-grounded deterministic sign visual option",
+      "asset_class": "KINDERFLOW_DERIVED_ASSET",
+      "licence_or_provenance_status": "OPEN_PEEPS_CC0_DERIVATIVE_WITH_KINDERFLOW_CUSTOM_LAYER",
+      "redistribution_allowed": true,
+      "demo_display_allowed": true,
+      "printable_allowed": false,
+      "known_limitation": "Requires human visual review; not published or linguistically certified."
+    },
+    "static_water_c": {
+      "path": "prototype/assets/signs/water-c.svg",
+      "exists": true,
+      "file_type": "image/svg+xml",
+      "byte_size": 33974,
+      "sha256": "c2fdbbcd4fe912abfa37257702429fe27d5c8b796c69fd21bac2b440482ecaef",
+      "sign_mapping": [
+        "water"
+      ],
+      "workflow_role": "Source-grounded deterministic sign visual option",
+      "asset_class": "KINDERFLOW_DERIVED_ASSET",
+      "licence_or_provenance_status": "OPEN_PEEPS_CC0_DERIVATIVE_WITH_KINDERFLOW_CUSTOM_LAYER",
+      "redistribution_allowed": true,
+      "demo_display_allowed": true,
+      "printable_allowed": false,
+      "known_limitation": "Requires human visual review; not published or linguistically certified."
+    }
+  },
+  "signs": [
+    {
+      "sign_id": "more",
+      "label_en": "MORE",
+      "label_es": "MÁS",
+      "knowledge_sources": [
+        "canonical_sign_content",
+        "visual_sign_packages"
+      ],
+      "reference_source_urls": [
+        {
+          "url": "https://www.openpeeps.com/",
+          "role": "Official Open Peeps source and founder-verified CC0 basis",
+          "status": "FOUNDER_VERIFIED"
+        }
+      ],
+      "reference_video_input": "input_more",
+      "reference_video_hash": "9b3fe8f0880fef85f64264f34509aa70fb5c188a316be135cf5230af0009b594",
+      "reference_flashcard": "flashcard_more_reference",
+      "functional_sign_illustration": "functional_more",
+      "supplementary_hand_sheet": [
+        "functional_hand_sheet_jpg",
+        "functional_hand_sheet_eps"
+      ],
+      "open_peeps_base": "open_peeps_bust_base",
+      "open_peeps_hand_style_reference": "open_peeps_pointing_finger_reference",
+      "open_peeps_arm_reference": "open_peeps_arm_reference",
+      "open_peeps_reference_status": "AVAILABLE_REFERENCE_ONLY",
+      "gemini_demo_video": "demo_more",
+      "gemini_demo_status": "AVAILABLE_PREGENERATED_DEMO_ONLY",
+      "gemini_demo_provider": "Google Labs FX / Gemini FX",
+      "gemini_demo_disclosure": "Pre-generated demo output; not generated from the current landmark run, not the reference input video, and not linguistically certified.",
+      "contextual_image": "more_context_image",
+      "routine_icon_reference": [
+        "icon_more_play"
+      ],
+      "landmark_evidence": [],
+      "static_visual_candidates": [
+        "static_more_a",
+        "static_more_b",
+        "static_more_c"
+      ],
+      "reviewed_static_visual": [],
+      "flashcard_outputs": [],
+      "routine_card_outputs": [],
+      "technical_status": "REFERENCE_INPUT_AVAILABLE_NOT_ANALYSED_IN_CANONICAL_RUN",
+      "visual_status": "SOURCE_GROUNDED_OPTIONS_NEED_HUMAN_REVIEW",
+      "printable_status": "BLOCKED",
+      "publication_status": "DRAFT_BLOCKED",
+      "school_availability": "UNAVAILABLE",
+      "rights_or_provenance_status": "MIXED_OPEN_PEEPS_VERIFIED_EXTERNAL_REFERENCES_NEED_CONFIRMATION",
+      "known_gaps": [
+        "Static candidates need human hand-pose review.",
+        "No distributable flashcard or routine-card output is approved.",
+        "Sign visual options need human review; no distributable card output is approved."
+      ]
+    },
+    {
+      "sign_id": "help",
+      "label_en": "HELP",
+      "label_es": "AYUDA",
+      "knowledge_sources": [
+        "canonical_sign_content",
+        "visual_sign_packages"
+      ],
+      "reference_source_urls": [
+        {
+          "url": "https://www.openpeeps.com/",
+          "role": "Official Open Peeps source and founder-verified CC0 basis",
+          "status": "FOUNDER_VERIFIED"
+        }
+      ],
+      "reference_video_input": "input_help",
+      "reference_video_hash": "344bfa462eb5d3eb5438b9c8981554e925a89d89aa4ffa3ac946a00b42cc3002",
+      "reference_flashcard": "flashcard_help_reference",
+      "functional_sign_illustration": "functional_help",
+      "supplementary_hand_sheet": [
+        "functional_hand_sheet_jpg",
+        "functional_hand_sheet_eps"
+      ],
+      "open_peeps_base": "open_peeps_bust_base",
+      "open_peeps_hand_style_reference": "open_peeps_pointing_finger_reference",
+      "open_peeps_arm_reference": "open_peeps_arm_reference",
+      "open_peeps_reference_status": "AVAILABLE_REFERENCE_ONLY",
+      "gemini_demo_video": "demo_help",
+      "gemini_demo_status": "AVAILABLE_PREGENERATED_DEMO_ONLY",
+      "gemini_demo_provider": "Google Labs FX / Gemini FX",
+      "gemini_demo_disclosure": "Pre-generated demo output; not generated from the current landmark run, not the reference input video, and not linguistically certified.",
+      "contextual_image": null,
+      "routine_icon_reference": [
+        "icon_help_primary",
+        "icon_help_alternate"
+      ],
+      "landmark_evidence": [],
+      "static_visual_candidates": [
+        "static_help_a",
+        "static_help_b",
+        "static_help_c"
+      ],
+      "reviewed_static_visual": [],
+      "flashcard_outputs": [],
+      "routine_card_outputs": [],
+      "technical_status": "REFERENCE_INPUT_AVAILABLE_NOT_ANALYSED_IN_CANONICAL_RUN",
+      "visual_status": "SOURCE_GROUNDED_OPTIONS_NEED_HUMAN_REVIEW",
+      "printable_status": "BLOCKED",
+      "publication_status": "DRAFT_BLOCKED",
+      "school_availability": "UNAVAILABLE",
+      "rights_or_provenance_status": "MIXED_OPEN_PEEPS_VERIFIED_EXTERNAL_REFERENCES_NEED_CONFIRMATION",
+      "known_gaps": [
+        "Sign visual options need human review; no distributable card output is approved."
+      ]
+    },
+    {
+      "sign_id": "eat",
+      "label_en": "EAT",
+      "label_es": "COMER",
+      "knowledge_sources": [
+        "canonical_sign_content",
+        "visual_sign_packages"
+      ],
+      "reference_source_urls": [
+        {
+          "url": "https://www.openpeeps.com/",
+          "role": "Official Open Peeps source and founder-verified CC0 basis",
+          "status": "FOUNDER_VERIFIED"
+        }
+      ],
+      "reference_video_input": "input_eat",
+      "reference_video_hash": "90432a597ea75a02bdbb1cc903c1c09e64646565ab48394cd67d4da3f7477822",
+      "reference_flashcard": "flashcard_eat_reference",
+      "functional_sign_illustration": "functional_eat",
+      "supplementary_hand_sheet": [
+        "functional_hand_sheet_jpg",
+        "functional_hand_sheet_eps"
+      ],
+      "open_peeps_base": "open_peeps_bust_base",
+      "open_peeps_hand_style_reference": "open_peeps_pointing_finger_reference",
+      "open_peeps_arm_reference": "open_peeps_arm_reference",
+      "open_peeps_reference_status": "AVAILABLE_REFERENCE_ONLY",
+      "gemini_demo_video": null,
+      "gemini_demo_status": "NOT_AVAILABLE_STATIC_FLOW_ALLOWED",
+      "gemini_demo_provider": null,
+      "gemini_demo_disclosure": "No current Gemini FX output exists; this valid state does not block the static flow.",
+      "contextual_image": null,
+      "routine_icon_reference": [
+        "icon_eat"
+      ],
+      "landmark_evidence": [],
+      "static_visual_candidates": [
+        "static_eat_a",
+        "static_eat_b",
+        "static_eat_c"
+      ],
+      "reviewed_static_visual": [],
+      "flashcard_outputs": [],
+      "routine_card_outputs": [],
+      "technical_status": "REFERENCE_INPUT_AVAILABLE_SIGN_AWARE_REVIEW_NOT_CANONICAL_EVIDENCE",
+      "visual_status": "SOURCE_GROUNDED_OPTIONS_NEED_HUMAN_REVIEW",
+      "printable_status": "BLOCKED",
+      "publication_status": "DRAFT_BLOCKED",
+      "school_availability": "UNAVAILABLE",
+      "rights_or_provenance_status": "MIXED_OPEN_PEEPS_VERIFIED_EXTERNAL_REFERENCES_NEED_CONFIRMATION",
+      "known_gaps": [
+        "No Gemini FX demo exists; static flow remains valid.",
+        "Static candidates need human hand-pose review; no distributable card output is approved.",
+        "Sign visual options need human review; no distributable card output is approved."
+      ]
+    },
+    {
+      "sign_id": "sleep",
+      "label_en": "SLEEP",
+      "label_es": "DORMIR",
+      "knowledge_sources": [
+        "canonical_sign_content",
+        "visual_sign_packages"
+      ],
+      "reference_source_urls": [
+        {
+          "url": "https://www.openpeeps.com/",
+          "role": "Official Open Peeps source and founder-verified CC0 basis",
+          "status": "FOUNDER_VERIFIED"
+        }
+      ],
+      "reference_video_input": "input_sleep",
+      "reference_video_hash": "e423863518bcfc1e937d5207f98057976a089689987d52603f3fbf97355f0610",
+      "reference_flashcard": "flashcard_sleep_reference",
+      "functional_sign_illustration": "functional_sleep",
+      "supplementary_hand_sheet": [
+        "functional_hand_sheet_jpg",
+        "functional_hand_sheet_eps"
+      ],
+      "open_peeps_base": "open_peeps_bust_base",
+      "open_peeps_hand_style_reference": "open_peeps_pointing_finger_reference",
+      "open_peeps_arm_reference": "open_peeps_arm_reference",
+      "open_peeps_reference_status": "AVAILABLE_REFERENCE_ONLY",
+      "gemini_demo_video": null,
+      "gemini_demo_status": "NOT_AVAILABLE_STATIC_FLOW_ALLOWED",
+      "gemini_demo_provider": null,
+      "gemini_demo_disclosure": "No current Gemini FX output exists; this valid state does not block the static flow.",
+      "contextual_image": null,
+      "routine_icon_reference": [
+        "icon_sleep"
+      ],
+      "landmark_evidence": [],
+      "static_visual_candidates": [
+        "static_sleep_a",
+        "static_sleep_b",
+        "static_sleep_c"
+      ],
+      "reviewed_static_visual": [],
+      "flashcard_outputs": [],
+      "routine_card_outputs": [],
+      "technical_status": "REFERENCE_INPUT_AVAILABLE_NOT_ANALYSED_IN_CANONICAL_RUN",
+      "visual_status": "SOURCE_GROUNDED_OPTIONS_NEED_HUMAN_REVIEW",
+      "printable_status": "BLOCKED",
+      "publication_status": "DRAFT_BLOCKED",
+      "school_availability": "UNAVAILABLE",
+      "rights_or_provenance_status": "MIXED_OPEN_PEEPS_VERIFIED_EXTERNAL_REFERENCES_NEED_CONFIRMATION",
+      "known_gaps": [
+        "No Gemini FX demo exists; static flow remains valid.",
+        "Sign visual options need human review; no distributable card output is approved."
+      ]
+    },
+    {
+      "sign_id": "milk",
+      "label_en": "MILK",
+      "label_es": "LECHE",
+      "knowledge_sources": [
+        "canonical_sign_content",
+        "visual_sign_packages"
+      ],
+      "reference_source_urls": [
+        {
+          "url": "https://www.openpeeps.com/",
+          "role": "Official Open Peeps source and founder-verified CC0 basis",
+          "status": "FOUNDER_VERIFIED"
+        }
+      ],
+      "reference_video_input": "input_milk",
+      "reference_video_hash": "1a525a1685cbf9aad9006168ca59f3df43856bdc5916764e8cc6555ea95c5760",
+      "reference_flashcard": "flashcard_milk_reference",
+      "functional_sign_illustration": "functional_milk",
+      "supplementary_hand_sheet": [
+        "functional_hand_sheet_jpg",
+        "functional_hand_sheet_eps"
+      ],
+      "open_peeps_base": "open_peeps_bust_base",
+      "open_peeps_hand_style_reference": "open_peeps_pointing_finger_reference",
+      "open_peeps_arm_reference": "open_peeps_arm_reference",
+      "open_peeps_reference_status": "AVAILABLE_REFERENCE_ONLY",
+      "gemini_demo_video": "demo_milk",
+      "gemini_demo_status": "AVAILABLE_PREGENERATED_DEMO_ONLY",
+      "gemini_demo_provider": "Google Labs FX / Gemini FX",
+      "gemini_demo_disclosure": "Pre-generated demo output; not generated from the current landmark run, not the reference input video, and not linguistically certified.",
+      "contextual_image": null,
+      "routine_icon_reference": [
+        "icon_milk"
+      ],
+      "landmark_evidence": [],
+      "static_visual_candidates": [
+        "static_milk_a",
+        "static_milk_b",
+        "static_milk_c"
+      ],
+      "reviewed_static_visual": [],
+      "flashcard_outputs": [],
+      "routine_card_outputs": [],
+      "technical_status": "REFERENCE_INPUT_AVAILABLE_NOT_ANALYSED_IN_CANONICAL_RUN",
+      "visual_status": "SOURCE_GROUNDED_OPTIONS_NEED_HUMAN_REVIEW",
+      "printable_status": "BLOCKED",
+      "publication_status": "DRAFT_BLOCKED",
+      "school_availability": "UNAVAILABLE",
+      "rights_or_provenance_status": "MIXED_OPEN_PEEPS_VERIFIED_EXTERNAL_REFERENCES_NEED_CONFIRMATION",
+      "known_gaps": [
+        "Sign visual options need human review; no distributable card output is approved."
+      ]
+    },
+    {
+      "sign_id": "water",
+      "label_en": "WATER",
+      "label_es": "AGUA",
+      "knowledge_sources": [
+        "canonical_sign_content",
+        "visual_sign_packages"
+      ],
+      "reference_source_urls": [
+        {
+          "url": "https://www.openpeeps.com/",
+          "role": "Official Open Peeps source and founder-verified CC0 basis",
+          "status": "FOUNDER_VERIFIED"
+        }
+      ],
+      "reference_video_input": "input_water",
+      "reference_video_hash": "28f844d5af72ef1bcd351048ba57d74b2ad32bb6584fed919e27d3e59f8f44ea",
+      "reference_flashcard": "flashcard_water_reference",
+      "functional_sign_illustration": "functional_water",
+      "supplementary_hand_sheet": [
+        "functional_hand_sheet_jpg",
+        "functional_hand_sheet_eps"
+      ],
+      "open_peeps_base": "open_peeps_bust_base",
+      "open_peeps_hand_style_reference": "open_peeps_pointing_finger_reference",
+      "open_peeps_arm_reference": "open_peeps_arm_reference",
+      "open_peeps_reference_status": "AVAILABLE_REFERENCE_ONLY",
+      "gemini_demo_video": null,
+      "gemini_demo_status": "NOT_AVAILABLE_STATIC_FLOW_ALLOWED",
+      "gemini_demo_provider": null,
+      "gemini_demo_disclosure": "No pre-generated demo output exists; the registered WATER reference remains available as supporting multi-sign evidence.",
+      "contextual_image": null,
+      "routine_icon_reference": [],
+      "landmark_evidence": [
+        "water_landmark_summary",
+        "water_detection_timeline",
+        "water_validation_summary"
+      ],
+      "static_visual_candidates": [
+        "static_water_a",
+        "static_water_b",
+        "static_water_c"
+      ],
+      "reviewed_static_visual": [],
+      "flashcard_outputs": [],
+      "routine_card_outputs": [],
+      "technical_status": "SUPPORTING_REFERENCE_IDENTITY_CONFIRMED_REVIEW_NEEDED",
+      "visual_status": "SOURCE_GROUNDED_OPTIONS_NEED_HUMAN_REVIEW",
+      "printable_status": "BLOCKED",
+      "publication_status": "DRAFT_BLOCKED",
+      "school_availability": "UNAVAILABLE",
+      "rights_or_provenance_status": "MIXED_OPEN_PEEPS_VERIFIED_EXTERNAL_REFERENCES_NEED_CONFIRMATION",
+      "known_gaps": [
+        "No pre-generated demo output exists; the registered WATER reference remains valid supporting evidence.",
+        "No distributable flashcard or routine-card output is approved.",
+        "Sign visual options need human review; no distributable card output is approved."
+      ]
+    }
+  ]
+}

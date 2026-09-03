@@ -10,7 +10,7 @@ The current internal content flow is:
 
 ```text
 Validated/reference adult sign video
-→ Computer Vision movement check
+→ reference review
 → movement data and human-inspectable evidence
 → content and visual preparation
 → human review
@@ -25,11 +25,12 @@ Computer Vision measures whether movement landmarks were captured sufficiently f
 ## What works now
 
 - A local Python MVP accepts an MP4 reference, runs the existing MediaPipe pipeline and returns run-specific movement evidence and controlled technical states.
-- The committed reference evidence contains 332 analysed frames, 100% pose coverage, 93.98% dominant-hand coverage and 20 missing hand frames. Its motion-representation status is `PARTIAL`, leading to `Proceed with conditions`; these values apply only to that run.
+- The committed WATER reference evidence contains 332 analysed frames, 100% pose coverage, 93.98% dominant-hand coverage and 20 missing hand frames. Its motion-representation status is `PARTIAL`, leading to `Proceed with conditions`; these values apply only to that run.
+- Six sign-specific visual packages provide 18 deterministic Open Peeps-derived draft options for MORE, HELP, EAT, SLEEP, MILK and WATER; qualified human sign and visual review is still required.
 - A logical human-review gate separates technical processing from publication.
 - Content Operations provides shared records, provenance, state transitions, deterministic publication checks, an audit log and a five-sign engineering regression set.
 - The Content Engine supports `HUMAN` and `LLM_ASSISTED` methods. `DRY_RUN` is evidenced; `NOT_APPLICABLE` is used for human-only content. Real external `LIVE` LLM execution and a live LangSmith trace are not yet evidenced.
-- Flashcard Studio provides deterministic English/Spanish previews for Flashcard and Routine Card outputs. Browser Print / Save as PDF is implemented; final saved-PDF visual QA remains pending. PNG export is disabled and labelled as a prototype.
+- Flashcard Studio provides deterministic Bilingual/Spanish previews for Flashcard and Routine Card outputs. Browser Print / Save as PDF is implemented; final saved-PDF visual QA remains pending. No PNG action is exposed.
 - Local School Admin and Family Preview pages demonstrate the intended experience without real delivery or personal data.
 
 ## Current MORE state
@@ -40,7 +41,7 @@ MORE is an **internal visual and content proof**, not a published school asset.
 |---|---|
 | Source | Review Needed; confirmation pending |
 | Technical | Review Needed / Proceed with conditions |
-| Artwork | Needs Artwork; internal proof only |
+| Artwork | Needs reviewed artwork; source-grounded draft options only |
 | Hand review | Needs Review |
 | Quality gate | Blocked where publication requirements are unmet |
 | Human review | Pending |
@@ -100,7 +101,7 @@ Open:
 - [School Admin](http://127.0.0.1:8000/school.html)
 - [Family Preview](http://127.0.0.1:8000/family.html)
 
-The demo reference is private local material and is not committed. Confirm its source rights, sign identity and presentation permission before external use.
+The current app demo uses the local MORE reference at `../resources/video_input/more.mp4`; its identity is confirmed by an exact hash match with the registered MORE input. The committed `poc/input/sign_reference.mp4` and Round 1 diagnostics remain historical supporting WATER evidence. Presentation rights for both founder-provided reference files still require confirmation before external use.
 
 ## Repository structure
 

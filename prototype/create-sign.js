@@ -1,14 +1,33 @@
 "use strict";
 
 const STAGES = [
-  ["video_received", "Video received"],
-  ["video_validation", "Video validation"],
-  ["landmark_extraction", "Landmark extraction"],
-  ["movement_normalization", "Movement normalization"],
-  ["motion_analysis", "Motion analysis"],
-  ["technical_checks", "Technical checks"],
-  ["results_ready", "Results ready"]
+  ["video_received", "Reference received"],
+  ["video_validation", "Check the video"],
+  ["landmark_extraction", "Find the reference poses"],
+  ["movement_normalization", "Organise the poses"],
+  ["motion_analysis", "Find clear moments"],
+  ["technical_checks", "Run quality checks"],
+  ["results_ready", "Ready to review"]
 ];
+const STAGE_LABELS = Object.fromEntries(STAGES);
+const INTERNAL_REFERENCE_STATUS = "Validated reference";
+const TRACKED_POSE_MINIMUM_PERCENT = 90;
+
+const SUPPORTED_SIGN_IDS = new Set(["more", "help", "eat", "sleep", "milk", "water"]);
+
+const TECHNICAL_STATUS_COPY = {
+  "Pass": { label: "Ready to continue", explanation: "The reference is clear enough to continue." },
+  "Review needed": { label: "Review recommended", explanation: "A few moments are worth checking before continuing." },
+  "Fail": { label: "Choose another reference", explanation: "There is not enough clear information to continue with this video." }
+};
+
+const RUN_STATE_COPY = {
+  queued: "Waiting to start",
+  processing: "Reference review in progress",
+  complete: "Ready to review",
+  failed: "Reference review stopped",
+  insufficient_coverage: "Choose another reference"
+};
 
 const state = {
   source: null,
@@ -25,6 +44,7 @@ const state = {
 };
 const form = document.querySelector("#sign-run-form");
 const fileInput = document.querySelector("#reference-video");
+const signControl = document.querySelector("#sign-name");
 const fileName = document.querySelector("#selected-file-name");
 const fileMeta = document.querySelector("#selected-file-meta");
 const runButton = document.querySelector("#run-movement-check");
@@ -40,6 +60,10 @@ const visualReviewSection = document.querySelector("#visual-review-section");
 const downstreamSection = document.querySelector("#downstream-section");
 
 const escapeQuery = (value) => encodeURIComponent(value || "");
+const scrollToSection = (element, block = "start") => element.scrollIntoView({
+  behavior: window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches ? "auto" : "smooth",
+  block
+});
 
 const renderStages = (stages = STAGES.map(([key, label]) => ({ key, label, status: "Waiting" }))) => {
   stageList.replaceChildren(...stages.map((stage, index) => {
@@ -48,7 +72,7 @@ const renderStages = (stages = STAGES.map(([key, label]) => ({ key, label, statu
     const number = document.createElement("span");
     number.textContent = String(index + 1).padStart(2, "0");
     const label = document.createElement("strong");
-    label.textContent = stage.label;
+    label.textContent = STAGE_LABELS[stage.key] || "Reference review";
     const status = document.createElement("small");
     status.textContent = stage.status;
     item.append(number, label, status);
@@ -61,9 +85,13 @@ const setSelectedSource = (source, selectedFile = null) => {
   state.file = selectedFile;
   runButton.disabled = false;
   if (source === "demo") {
-    fileName.textContent = "sign_reference.mp4";
-    fileMeta.textContent = "Demo reference · stored locally · 573 KB";
-    formMessage.textContent = "Demo reference selected. Ready to run the real movement check.";
+    signControl.value = "MORE";
+    signControl.disabled = true;
+    fileName.textContent = "Included MORE reference";
+    fileMeta.textContent = "Demo reference · stored on this computer";
+    formMessage.textContent = "MORE reference video selected. Ready for review.";
+  } else {
+    signControl.disabled = false;
   }
 };
 
@@ -81,10 +109,14 @@ const resetRun = () => {
   state.evidenceRoute = null;
   state.selectedFrames = [];
   state.workflowRecord = null;
+  sessionStorage.removeItem("kinderflowReferenceReview");
+  sessionStorage.removeItem("kinderflowVisualWorkflow");
+  sessionStorage.removeItem("kinderflowApprovedVisual");
+  sessionStorage.removeItem("kinderflowPrintableApproval");
   document.querySelector("#visual-candidates").replaceChildren();
   const generateButton = document.querySelector("#generate-visual-candidates");
   generateButton.disabled = false;
-  generateButton.textContent = "Generate visual candidates";
+  generateButton.textContent = "Create visual options";
   const regenerateButton = document.querySelector("#regenerate-candidate");
   regenerateButton.disabled = false;
   const approveVisualButton = document.querySelector("#approve-visual");
@@ -94,19 +126,24 @@ const resetRun = () => {
   const approve = document.querySelector("#approve-sign");
   approve.hidden = false;
   approve.disabled = false;
-  approve.textContent = "Prepare visual";
+  approve.textContent = "Create family materials";
   document.querySelector("#use-another-reference").hidden = false;
+  document.querySelector("#use-another-reference").textContent = "Use another reference";
+  document.querySelector("#tracked-pose-availability").hidden = true;
   const reviewState = document.querySelector("#review-state");
-  reviewState.textContent = "Technical review needed";
+  reviewState.textContent = "Review recommended";
   reviewState.className = "status-pill status-review";
-  setText("#review-message", "No technical review action recorded.");
+  setText("#review-message", "Choose how to continue.");
+  setText("#frame-picker-help", "Select at least one pose to continue.");
   document.querySelector("#technical-review-rationale").value = "";
+  document.querySelector("#technical-review-rationale").disabled = false;
   document.querySelector("#suggested-reference-frames").replaceChildren();
   form.querySelectorAll("input, select, button").forEach((control) => { control.disabled = false; });
+  signControl.disabled = state.source === "demo";
   runButton.disabled = !state.source;
   renderStages();
   processingNote.textContent = state.source ? "Reference selected. Ready to run." : "Waiting for a reference video.";
-  formMessage.textContent = state.source ? "Ready to run the movement check." : "Select an MP4 or use the demo reference.";
+  formMessage.textContent = state.source ? "Ready to review the reference." : "Select an MP4 or use the demo reference.";
 };
 
 const clearReference = () => {
@@ -116,9 +153,10 @@ const clearReference = () => {
   fileInput.value = "";
   fileName.textContent = "No video selected";
   fileMeta.textContent = "MP4 · maximum 100 MB";
+  signControl.disabled = false;
   runButton.disabled = true;
   formMessage.textContent = "Select an MP4 or use the demo reference.";
-  document.querySelector(".create-sign-setup").scrollIntoView({ behavior: "smooth", block: "start" });
+  scrollToSection(document.querySelector(".create-sign-setup"));
 };
 
 const formatBytes = (bytes) => bytes < 1024 * 1024
@@ -140,16 +178,16 @@ fileInput.addEventListener("change", () => {
   fileName.textContent = selected.name;
   fileMeta.textContent = `${formatBytes(selected.size)} · selected from this computer`;
   setSelectedSource("upload", selected);
-  formMessage.textContent = "Reference video selected. Ready to run the movement check.";
+  formMessage.textContent = "Reference video selected. Ready for review.";
 });
 
 document.querySelector("#use-demo-video").addEventListener("click", () => setSelectedSource("demo"));
-retryButton.addEventListener("click", resetRun);
+retryButton.addEventListener("click", clearReference);
 
 const requestRun = async () => {
   const signName = document.querySelector("#sign-name").value.trim();
   const routineContext = document.querySelector("#routine-context").value.trim();
-  const referenceStatus = document.querySelector("#reference-status").value;
+  const referenceStatus = INTERNAL_REFERENCE_STATUS;
   const referenceSourceUrl = document.querySelector("#reference-source-url").value.trim();
   if (!signName || !routineContext) throw new Error("Complete the sign name and routine before processing.");
   if (!state.source) throw new Error("Select an MP4 or use the demo reference.");
@@ -172,6 +210,8 @@ const requestRun = async () => {
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
+  sessionStorage.removeItem("kinderflowApprovedVisual");
+  sessionStorage.removeItem("kinderflowPrintableApproval");
   runButton.disabled = true;
   retryButton.hidden = true;
   resultSection.hidden = true;
@@ -179,22 +219,22 @@ form.addEventListener("submit", async (event) => {
   visualPreparationSection.hidden = true;
   visualReviewSection.hidden = true;
   downstreamSection.hidden = true;
-  formMessage.textContent = "Sending the local reference to the movement pipeline…";
-  processingNote.textContent = "Starting the movement check. Processing may take about a minute.";
+  formMessage.textContent = "Preparing the reference review…";
+  processingNote.textContent = "Starting the reference review. Processing may take about a minute.";
   renderStages(STAGES.map(([key, label], index) => ({ key, label, status: index === 0 ? "Running" : "Waiting" })));
-  document.querySelector("#processing-section").scrollIntoView({ behavior: "smooth", block: "start" });
+  scrollToSection(document.querySelector("#processing-section"));
   try {
     const response = await requestRun();
     const payload = await response.json();
-    if (!response.ok) throw new Error(payload.error || "The movement check could not be started.");
+    if (!response.ok) throw new Error(payload.error || "The reference review could not be started.");
     state.run = payload;
     form.querySelectorAll("input, select, button").forEach((control) => { control.disabled = true; });
     retryButton.disabled = false;
-    formMessage.textContent = `Run started: ${payload.run_id}`;
+    formMessage.textContent = "Reference review started.";
     pollRun(payload.run_id);
   } catch (error) {
     formMessage.textContent = error.message;
-    processingNote.textContent = "The movement check could not be started.";
+    processingNote.textContent = "The reference review could not be started.";
     retryButton.hidden = false;
     retryButton.disabled = false;
   }
@@ -208,7 +248,7 @@ const pollRun = async (runId) => {
     state.run = run;
     renderStages(run.stages);
     const active = run.stages.find((stage) => stage.status === "Running");
-    processingNote.textContent = active ? `${active.label} is running locally…` : `Run state: ${run.state.replaceAll("_", " ")}.`;
+    processingNote.textContent = active ? `${STAGE_LABELS[active.key] || "Reference review"} is running on this computer…` : `${RUN_STATE_COPY[run.state] || "Reference review updated"}.`;
     if (["complete", "failed", "insufficient_coverage"].includes(run.state)) {
       finishRun(run);
       return;
@@ -229,31 +269,84 @@ const normalizeSignId = (value) => (value || "")
   .replaceAll(/[^a-z0-9]+/g, "_")
   .replaceAll(/^_+|_+$/g, "");
 
+const friendlyReviewReason = (reason) => {
+  const copy = String(reason || "");
+  const handCoverage = copy.match(/Dominant-hand landmarks were detected in ([0-9.]+)% of frames\./i);
+  if (handCoverage) return `The main hand was visible in ${handCoverage[1]}% of the video.`;
+  const unresolved = copy.match(/(\d+) unresolved frames \(([0-9.]+)%\) remain\./i);
+  if (unresolved) return `${unresolved[1]} frames (${unresolved[2]}%) need review.`;
+  if (/grounded fallback/i.test(copy)) return "Some of the hand movement near the face was not visible throughout the video. You can continue using the reviewed sign references or choose another video.";
+  if (/Long or edge movement gaps/i.test(copy)) return "Some movement at the beginning or end of the video needs review.";
+  if (/body reference was not available/i.test(copy)) return "The body position was not visible consistently.";
+  if (/Abrupt movement transitions/i.test(copy)) return "Some movement changes need review.";
+  if (/Technical capture is sufficient/i.test(copy)) return "The reference movement is clear enough to continue.";
+  if (/Technical issues should be reviewed/i.test(copy)) return "This reference needs review before continuing.";
+  return copy
+    .replaceAll(/dominant-hand landmarks/gi, "main-hand visibility")
+    .replaceAll(/unresolved frames/gi, "frames needing review")
+    .replaceAll(/grounded fallback/gi, "reviewed references");
+};
+
+const friendlyRunError = (error) => {
+  const message = String(error?.message || "");
+  if (/preview|ffmpeg|encoding/i.test(message)) return "The pose preview could not be prepared. Try another reference or ask an administrator to check the local service.";
+  if (/movement data|hands visible|coverage/i.test(message)) return "Not enough of the sign was visible for review. Try a clearer reference video with the hands in view.";
+  return message && !/[A-Z_]{3,}/.test(message) ? message : "The reference review could not be completed. Choose another reference video and try again.";
+};
+
+const trackedPosesAreAvailable = (run) => {
+  const coverage = Number(run?.metrics?.dominant_hand_detection_coverage_percent);
+  return Number.isFinite(coverage) && coverage >= TRACKED_POSE_MINIMUM_PERCENT;
+};
+
+const evidenceRouteIsAvailable = (route, run) => {
+  if (route === "LANDMARK_KEY_POSE") return trackedPosesAreAvailable(run);
+  if (route === "HUMAN_SELECTED_FRAME") return Boolean(run?.artifacts?.suggested_reference_frames?.length);
+  return route === "KNOWLEDGE_REFERENCE_FALLBACK";
+};
+
+const availableRouteForRun = (run, signPackage, requestedRoute = null) => {
+  if (requestedRoute && evidenceRouteIsAvailable(requestedRoute, run)) return requestedRoute;
+  const configuredRoute = routeForRun(run, signPackage);
+  if (evidenceRouteIsAvailable(configuredRoute, run)) return configuredRoute;
+  if (trackedPosesAreAvailable(run)) return "LANDMARK_KEY_POSE";
+  if (run?.artifacts?.suggested_reference_frames?.length) return "HUMAN_SELECTED_FRAME";
+  return "KNOWLEDGE_REFERENCE_FALLBACK";
+};
+
+const visualPackageIsReady = (signPackage) => {
+  if (!signPackage || !Array.isArray(signPackage.candidates) || signPackage.candidates.length === 0) return false;
+  const declaredStates = [signPackage.status, signPackage.readiness_status, signPackage.visual_status, signPackage.review_status]
+    .filter(Boolean)
+    .map((value) => String(value).toUpperCase());
+  return !declaredStates.some((value) => value === "NOT_READY" || value === "UNSUPPORTED");
+};
+
 const loadVisualPackages = async () => {
   const response = await fetch("data/visual_sign_packages.json", { cache: "no-store" });
-  if (!response.ok) throw new Error("Visual sign packages are unavailable.");
+  if (!response.ok) throw new Error("Sign visuals are unavailable.");
   const payload = await response.json();
-  if (!Array.isArray(payload.signs)) throw new Error("Visual sign packages are invalid.");
+  if (!Array.isArray(payload.signs)) throw new Error("Sign visuals could not be read.");
   state.visualPackages = payload.signs;
 };
 
 const ROUTE_COPY = {
   LANDMARK_KEY_POSE: {
-    level: 1, title: "Landmark key poses", note: "Curated sign knowledge + MediaPipe key poses + functional sign reference.", status: "Usable"
+    level: 1, title: "Tracked poses", note: "Reviewed sign guidance, clear tracked poses and the trusted sign reference.", status: "Ready"
   },
   HUMAN_SELECTED_FRAME: {
-    level: 2, title: "Human-selected reference frame", note: "Curated sign knowledge + operator-selected reference poses + functional sign reference.", status: "Human selection"
+    level: 2, title: "Selected reference frames", note: "Reviewed sign guidance and the reference poses selected for this visual.", status: "Selected"
   },
   KNOWLEDGE_REFERENCE_FALLBACK: {
-    level: 3, title: "Knowledge and sign-reference fallback", note: "Curated sign mechanics + functional sign reference + any usable movement evidence.", status: "Grounded fallback"
+    level: 3, title: "Reviewed references", note: "Reviewed sign guidance, the trusted sign reference and any clear movement information.", status: "Review required"
   },
   INTERNAL_POSE_GUIDE: {
-    level: 4, title: "Internal pose guide", note: "Controlled Open Peeps pose guide — not final artwork.", status: "Review required"
+    level: 4, title: "Reviewed pose guide", note: "A controlled pose guide for visual review, not final artwork.", status: "Review required"
   }
 };
 
 const routeForRun = (run, signPackage) => {
-  if (!signPackage) return null;
+  if (!signPackage?.evidence_routes) return null;
   if (run.technical_status === "Pass") return signPackage.evidence_routes.pass;
   if (run.technical_status === "Review needed") return signPackage.evidence_routes.review;
   return signPackage.evidence_routes.fallback;
@@ -264,13 +357,14 @@ const routeCopy = () => ROUTE_COPY[state.evidenceRoute] || ROUTE_COPY.KNOWLEDGE_
 const persistWorkflowRecord = (updates = {}) => {
   const now = new Date().toISOString();
   const base = state.workflowRecord || {
-    sign_id: state.activePackage?.sign_id || normalizeSignId(state.run?.sign?.name),
+    sign_id: state.activePackage?.sign_id || normalizeSignId(state.run?.sign?.sign_id || state.run?.sign?.name),
     cv_run_id: state.run?.run_id || null,
+    routine_context: state.run?.sign?.routine_context || "",
     technical_status: (state.run?.technical_status || "Waiting").toUpperCase().replaceAll(" ", "_"),
     technical_review_action: null,
     technical_review_rationale: "",
     visual_evidence_route: state.evidenceRoute,
-    candidate_ids: state.currentCandidates.map((candidate) => candidate.id),
+    candidate_ids: [],
     selected_candidate_id: null,
     visual_review_status: "NOT_STARTED",
     internal_printable_eligible: false,
@@ -281,6 +375,82 @@ const persistWorkflowRecord = (updates = {}) => {
   sessionStorage.setItem("kinderflowVisualWorkflow", JSON.stringify(state.workflowRecord));
 };
 
+const readStoredPayload = (key) => {
+  try {
+    return JSON.parse(sessionStorage.getItem(key) || "null");
+  } catch (_error) {
+    return null;
+  }
+};
+
+const allPackageCandidates = () => state.activePackage
+  ? [...state.activePackage.candidates, ...(state.activePackage.regeneration_candidates || [])]
+  : [];
+
+const updateFamilyMaterialLinks = () => {
+  if (!state.run || !state.activePackage || !state.selectedCandidate) return;
+  const sign = state.run.sign;
+  const printableApproval = readStoredPayload("kinderflowPrintableApproval");
+  const printablePreferences = readStoredPayload("kinderflowPrintablePreferences");
+  const preferredLanguage = (
+    printableApproval?.sign_id === state.activePackage.sign_id
+    && ["en", "es"].includes(printableApproval.language)
+  ) ? printableApproval.language : (
+    printablePreferences?.sign_id === state.activePackage.sign_id
+    && ["en", "es"].includes(printablePreferences.language)
+  ) ? printablePreferences.language : "en";
+  const common = {
+    sign: sign.name,
+    routine: sign.routine_context,
+    source_run: state.run.run_id,
+    visual: state.selectedCandidate.id,
+    approved: "1"
+  };
+  document.querySelector("#create-printable-link").href = `flashcards.html?${new URLSearchParams({ ...common, restore: "1", type: "flashcard", lang: preferredLanguage }).toString()}`;
+  document.querySelector("#create-routine-link").href = `flashcards.html?${new URLSearchParams({ ...common, restore: "1", type: "routine", lang: preferredLanguage }).toString()}`;
+  const storyLink = document.querySelector("#create-story-link");
+  const storyAvailabilityNote = document.querySelector("#story-availability-note");
+  const storyIsAvailable = normalizeSignId(sign.name) === "more";
+  storyLink.hidden = !storyIsAvailable;
+  storyAvailabilityNote.hidden = storyIsAvailable;
+  if (storyIsAvailable) storyLink.href = `create-story.html?${new URLSearchParams(common).toString()}`;
+  document.querySelector("#review-library-link").href = `library.html?${new URLSearchParams({ sign: sign.name, source_run: state.run.run_id }).toString()}`;
+};
+
+const markReferenceReviewComplete = () => {
+  const reviewState = document.querySelector("#review-state");
+  reviewState.textContent = "Reference review complete";
+  reviewState.className = "status-pill status-ready";
+  setText("#content-status", "Ready to create visual options");
+  setText("#review-title", "Reference poses ready");
+  setText("#review-guidance", "The reference review is saved. Continue to create the visual options.");
+  setText("#review-message", "Your reference choice is saved.");
+  document.querySelectorAll('input[name="evidence_route"]').forEach((input) => { input.disabled = true; });
+  document.querySelector("#suggested-reference-frames").querySelectorAll('input[type="checkbox"]').forEach((input) => { input.disabled = true; });
+  document.querySelector("#technical-review-rationale").disabled = true;
+};
+
+const updatePoseSelectionUi = () => {
+  const isFrames = state.evidenceRoute === "HUMAN_SELECTED_FRAME";
+  const container = document.querySelector("#suggested-reference-frames");
+  const inputs = [...container.querySelectorAll('input[type="checkbox"]')];
+  state.selectedFrames = inputs.filter((input) => input.checked).map((input) => input.value);
+  const count = state.selectedFrames.length;
+  inputs.forEach((input) => {
+    input.disabled = isFrames && count >= 2 && !input.checked;
+  });
+  document.querySelector("#approve-sign").disabled = isFrames && (count < 1 || count > 2);
+  if (isFrames) {
+    setText(
+      "#frame-picker-help",
+      count === 0 ? "Select at least one pose to continue." : `${count} pose${count === 1 ? "" : "s"} selected`
+    );
+    setText("#source-detail-frames", count === 0 ? "Not selected" : `${count} selected`);
+  } else {
+    setText("#source-detail-frames", "Not needed for this pose source");
+  }
+};
+
 const updateEvidenceRouteUi = () => {
   const route = state.evidenceRoute;
   const isFrames = route === "HUMAN_SELECTED_FRAME";
@@ -289,12 +459,11 @@ const updateEvidenceRouteUi = () => {
   document.querySelector("#fallback-rationale-field").hidden = !isFallback;
   setText("#source-detail-route", ROUTE_COPY[route]?.title || "Not selected");
   const action = document.querySelector("#approve-sign");
-  action.textContent = isFallback
-    ? "Continue with grounded fallback"
-    : `Prepare ${state.activePackage?.labels?.en || "sign"} visual`;
+  action.textContent = "Create family materials";
   setText("#review-message", isFallback
-    ? "Add a concise rationale before continuing. This accepts technical evidence only; visual review is still required."
-    : "Choose the clearest available evidence route, then prepare the visual.");
+    ? "Continue with reviewed references after adding a short reason."
+    : isFrames ? "Select the clearest reference poses." : "The tracked poses are ready to use.");
+  updatePoseSelectionUi();
 };
 
 const renderSuggestedFrames = (frames = []) => {
@@ -302,7 +471,7 @@ const renderSuggestedFrames = (frames = []) => {
   const container = document.querySelector("#suggested-reference-frames");
   if (!frames.length) {
     container.replaceChildren();
-    setText("#frame-picker-help", "Suggested frames are unavailable. Choose grounded fallback or use another video.");
+    setText("#frame-picker-help", "Suggested frames are unavailable. Use reviewed references or choose another video.");
     return;
   }
   container.replaceChildren(...frames.slice(0, 6).map((frame) => {
@@ -310,23 +479,25 @@ const renderSuggestedFrames = (frames = []) => {
     const input = document.createElement("input");
     input.type = "checkbox";
     input.value = frame.id;
+    input.setAttribute("aria-label", frame.label);
     input.addEventListener("change", () => {
-      if (input.checked && state.selectedFrames.length >= 2) {
-        input.checked = false;
-        setText("#frame-picker-help", "Choose no more than two poses.");
+      if (state.workflowRecord?.technical_review_action) {
+        input.checked = state.selectedFrames.includes(input.value);
         return;
       }
-      state.selectedFrames = [...container.querySelectorAll("input:checked")].map((item) => item.value);
-      setText("#frame-picker-help", state.selectedFrames.length ? `${state.selectedFrames.length} pose${state.selectedFrames.length > 1 ? "s" : ""} selected.` : "Select at least one frame.");
+      if (input.checked && container.querySelectorAll("input:checked").length > 2) input.checked = false;
+      updatePoseSelectionUi();
+      persistWorkflowRecord({ selected_reference_frames: [...state.selectedFrames] });
     });
     const image = document.createElement("img");
     image.src = frame.url;
-    image.alt = `${frame.label}, suggested still from the validated reference video`;
+    image.alt = `${frame.label}, suggested still from the reference video`;
     const text = document.createElement("span");
     text.textContent = frame.label;
     label.append(input, image, text);
     return label;
   }));
+  updatePoseSelectionUi();
 };
 
 const loadRunVideo = (video, status, url, runId) => {
@@ -350,31 +521,44 @@ const loadRunVideo = (video, status, url, runId) => {
   video.load();
 };
 
-const finishRun = (run) => {
+const finishRun = (run, { scroll = true } = {}) => {
   retryButton.hidden = false;
   retryButton.disabled = false;
-  formMessage.textContent = run.state === "complete" ? "Movement check complete." : run.error?.message || "Movement check finished with limited evidence.";
+  formMessage.textContent = run.state === "complete" ? "Reference review complete." : friendlyRunError(run.error) || "Reference review finished with limited information.";
   const isComplete = run.state === "complete";
-  state.activePackage = state.visualPackages.find((item) => item.sign_id === normalizeSignId(run.sign?.name));
-  state.evidenceRoute = routeForRun(run, state.activePackage);
-  state.currentCandidates = state.activePackage ? [...state.activePackage.candidates] : [];
-  const canPrepare = Boolean(state.activePackage);
+  const selectedSignId = normalizeSignId(run.sign?.sign_id || run.sign?.name);
+  state.activePackage = state.visualPackages.find((item) => normalizeSignId(item.sign_id) === selectedSignId) || null;
+  state.evidenceRoute = availableRouteForRun(run, state.activePackage);
+  const reviewIsUsable = isComplete && ["Pass", "Review needed"].includes(run.technical_status);
+  const canPrepare = reviewIsUsable && visualPackageIsReady(state.activePackage);
+  formMessage.textContent = reviewIsUsable
+    ? "Reference review complete."
+    : "This reference video cannot be used. Choose another reference to continue.";
+  state.currentCandidates = canPrepare ? [...state.activePackage.candidates] : [];
+  const isSupportedSign = SUPPORTED_SIGN_IDS.has(selectedSignId);
   const hasMetrics = Boolean(run.metrics);
   const hasArtifacts = Boolean(run.artifacts && run.artifacts.reference_video_url);
-  const explanations = {
-    "Pass": "Technical capture is sufficient to prepare a review candidate.",
-    "Review needed": "The run produced usable evidence with conditions. Review it before preparing the visual.",
-    "Fail": "Movement evidence is not sufficient for landmark conditioning. A visual package, when available, is a separate grounded fallback."
-  };
-  setText("#result-kicker", "Movement check complete");
-  setText("#result-title", run.technical_status);
-  setText("#result-explanation", explanations[run.technical_status] || run.error?.message || "The movement check could not be completed.");
+  const statusCopy = TECHNICAL_STATUS_COPY[run.technical_status] || { label: "Reference review unavailable", explanation: friendlyRunError(run.error) };
+  setText("#result-kicker", "Reference review");
+  setText("#result-title", reviewIsUsable ? "Reference review complete" : "Choose another reference video");
+  setText(
+    "#result-explanation",
+    reviewIsUsable
+      ? "We found a few moments worth checking before creating the family materials."
+      : "This reference video cannot be used. Choose another reference to continue."
+  );
   processingNote.textContent = isComplete
     ? "Results ready. Review the summary and visual evidence below."
-    : run.error?.message || "The movement check could not be completed.";
-  setText("#technical-status", run.technical_status);
-  setText("#content-status", canPrepare ? "Visual package available" : "Visual package unavailable");
-  setText("#run-identifier", "Movement run recorded");
+    : friendlyRunError(run.error);
+  setText("#technical-status", reviewIsUsable ? "Complete" : statusCopy.label);
+  setText("#raw-technical-status", run.technical_status);
+  setText(
+    "#content-status",
+    canPrepare
+      ? "Choose the clearest poses"
+      : !reviewIsUsable ? "Choose another reference" : isSupportedSign ? "Illustration not prepared" : "Sign not available"
+  );
+  setText("#run-identifier", "Reference ready");
   setText("#source-detail-run", run.run_id);
   const sourceUrl = run.source?.reference_source_url;
   const sourceDetail = document.querySelector("#source-detail-url");
@@ -384,13 +568,28 @@ const finishRun = (run) => {
     link.href = sourceUrl;
     link.target = "_blank";
     link.rel = "noopener";
-    link.textContent = "Open reference webpage";
+    link.textContent = "View source";
     sourceDetail.append(link);
   } else {
     sourceDetail.textContent = "Not provided";
   }
   document.querySelector("#movement-comparison").hidden = !hasArtifacts;
   document.querySelector("#technical-details").hidden = !hasMetrics;
+  const movementPreview = document.querySelector("#movement-video-preview");
+  const movementPlaybackStatus = document.querySelector("#movement-playback-status");
+  const hasMovementPreview = Boolean(run.artifacts?.movement_preview_url);
+  document.querySelector("#movement-preview-panel").hidden = !hasMovementPreview;
+  if (!hasMovementPreview) {
+    movementPreview.pause?.();
+    movementPreview.removeAttribute("src");
+    movementPlaybackStatus.textContent = "Pose preview is unavailable for this reference.";
+  }
+  const timelineLink = document.querySelector("#detection-timeline-link");
+  const wristLink = document.querySelector("#wrist-trajectory-link");
+  timelineLink.hidden = !run.artifacts?.detection_timeline_url;
+  wristLink.hidden = !run.artifacts?.wrist_trajectory_url;
+  if (timelineLink.hidden) document.querySelector("#detection-timeline").removeAttribute("src");
+  if (wristLink.hidden) document.querySelector("#wrist-trajectory").removeAttribute("src");
   if (hasMetrics) {
     setText("#metric-frames", run.metrics.frames_analysed);
     setText("#metric-pose", `${run.metrics.pose_detection_coverage_percent}%`);
@@ -408,8 +607,8 @@ const finishRun = (run) => {
     );
     if (run.artifacts.movement_preview_url) {
       loadRunVideo(
-        document.querySelector("#movement-video-preview"),
-        document.querySelector("#movement-playback-status"),
+        movementPreview,
+        movementPlaybackStatus,
         run.artifacts.movement_preview_url,
         run.run_id
       );
@@ -417,16 +616,16 @@ const finishRun = (run) => {
     if (run.artifacts.detection_timeline_url) {
       const timeline = document.querySelector("#detection-timeline");
       timeline.src = run.artifacts.detection_timeline_url;
-      document.querySelector("#detection-timeline-link").href = run.artifacts.detection_timeline_url;
+      timelineLink.href = run.artifacts.detection_timeline_url;
     }
     if (run.artifacts.wrist_trajectory_url) {
       const wrist = document.querySelector("#wrist-trajectory");
       wrist.src = run.artifacts.wrist_trajectory_url;
-      document.querySelector("#wrist-trajectory-link").href = run.artifacts.wrist_trajectory_url;
+      wristLink.href = run.artifacts.wrist_trajectory_url;
     }
   }
   renderSuggestedFrames(run.artifacts?.suggested_reference_frames || []);
-  const warnings = run.warnings.length ? run.warnings : ["No additional technical warnings were recorded."];
+  const warnings = run.warnings?.length ? run.warnings : ["No additional technical warnings were recorded."];
   const warningList = document.querySelector("#technical-warnings");
   warningList.replaceChildren(...warnings.map((warning) => { const item = document.createElement("li"); item.textContent = warning; return item; }));
   const raw = run.technical_details || {};
@@ -437,113 +636,139 @@ const finishRun = (run) => {
       : ""
   );
   const reviewReasons = document.querySelector("#review-reasons");
-  reviewReasons.replaceChildren(...warnings.map((warning) => {
-    const item = document.createElement("li");
-    item.textContent = warning;
-    return item;
-  }));
-  reviewReasons.hidden = run.technical_status === "Pass";
+  reviewReasons.replaceChildren();
+  reviewReasons.hidden = true;
   const approveButton = document.querySelector("#approve-sign");
   approveButton.hidden = !canPrepare;
-  approveButton.textContent = state.activePackage ? `Prepare ${state.activePackage.labels.en} visual` : "Prepare visual";
-  const reviewHeadings = {
-    "Pass": "Ready to prepare visual",
-    "Review needed": state.activePackage?.sign_id === "eat" ? "Technical review needed — usable with grounded fallback" : "Technical review needed",
-    "Fail": "Movement evidence needs fallback"
-  };
-  const reviewGuidance = {
-    "Pass": "Review the movement evidence, then prepare a grounded visual candidate.",
-    "Review needed": state.activePackage?.sign_id === "eat"
-      ? "Important movement evidence is available, but some hand tracking is incomplete near the face. Continue with the grounded sign reference and available movement evidence, or use another reference video."
-      : "Review the conditions below, choose reference poses, then prepare the visual or use another reference.",
-    "Fail": "The movement evidence is blocked. If a grounded package is available, use fallback explicitly; otherwise use another reference."
-  };
-  setText("#review-title", reviewHeadings[run.technical_status] || "Review movement evidence");
-  setText("#review-guidance", canPrepare
-    ? reviewGuidance[run.technical_status] || "Review the evidence before preparing a visual."
-    : "No local visual package matches this sign yet. Use another sign or add a reviewed package.");
+  approveButton.textContent = "Create family materials";
+  if (canPrepare) {
+    setText("#review-title", "Choose one or two reference poses");
+    setText("#review-guidance", "Select the clearest moments to guide the visual.");
+  } else if (!reviewIsUsable) {
+    setText("#review-title", "Choose another reference video");
+    setText("#review-guidance", "This reference video cannot be used. Choose another reference to continue.");
+  } else if (isSupportedSign) {
+    setText("#review-title", "Sign visual not ready");
+    setText("#review-guidance", "This sign does not have a reviewed illustration yet. Choose another sign to continue.");
+  } else {
+    setText("#review-title", "Sign not available");
+    setText("#review-guidance", "This sign is not available in the current demo set. Choose another sign to continue.");
+  }
   const reviewState = document.querySelector("#review-state");
-  reviewState.textContent = run.technical_status === "Pass" ? "Ready to prepare visual" : "Technical review needed";
-  reviewState.className = `status-pill ${run.technical_status === "Pass" ? "status-ready" : "status-review"}`;
+  reviewState.textContent = canPrepare
+    ? "Review recommended"
+    : !reviewIsUsable ? "Reference not usable" : isSupportedSign ? "Illustration not prepared" : "Sign not available";
+  reviewState.className = "status-pill status-review";
   resultSection.hidden = false;
   reviewSection.hidden = false;
+  const trackedPosesAvailable = canPrepare && trackedPosesAreAvailable(run);
   document.querySelectorAll('input[name="evidence_route"]').forEach((input) => {
     input.checked = input.value === state.evidenceRoute;
     input.disabled = (
-      (input.value === "LANDMARK_KEY_POSE" && run.technical_status !== "Pass")
+      (input.value === "LANDMARK_KEY_POSE" && !trackedPosesAvailable)
       || (input.value === "HUMAN_SELECTED_FRAME" && !(run.artifacts?.suggested_reference_frames || []).length)
     );
   });
+  document.querySelector("#tracked-pose-availability").hidden = trackedPosesAvailable;
+  document.querySelector("#evidence-route-options").hidden = !canPrepare;
+  document.querySelector("#reference-frame-picker").hidden = true;
+  document.querySelector("#fallback-rationale-field").hidden = true;
+  const recoveryButton = document.querySelector("#use-another-reference");
+  recoveryButton.textContent = (canPrepare || !reviewIsUsable) ? "Use another reference" : "Choose another sign";
   persistWorkflowRecord();
-  updateEvidenceRouteUi();
-  resultSection.scrollIntoView({ behavior: "smooth", block: "start" });
+  if (canPrepare) updateEvidenceRouteUi();
+  else setText(
+    "#review-message",
+    !reviewIsUsable ? "Choose another reference video to continue." : "Choose another sign and add its reference video."
+  );
+  sessionStorage.setItem("kinderflowReferenceReview", JSON.stringify(run));
+  if (scroll) scrollToSection(resultSection);
 };
 
 const renderVisualPreparation = () => {
   const signPackage = state.activePackage;
-  const route = routeCopy();
   document.querySelectorAll("[data-active-sign]").forEach((element) => { element.textContent = signPackage.labels.en; });
-  setText("#grounding-source", signPackage.grounding_sources[0].label);
-  setText("#grounding-source-note", signPackage.grounding_sources[0].role);
-  setText("#grounding-source-status", signPackage.grounding_sources[0].status === "Applied" ? "Applied" : "Review");
-  setText("#grounding-motion", route.title);
-  setText("#grounding-motion-note", route.note);
-  setText("#grounding-motion-status", route.status);
-  document.querySelector("#grounding-motion-status").className = `grounding-status ${route.level === 1 ? "status-ready" : "status-review"}`;
-  setText("#grounding-character", signPackage.visual_identity.base_system);
-  setText("#grounding-character-note", signPackage.visual_identity.operator_description);
+  setText("#grounding-source", "Reviewed sign guidance");
+  setText("#grounding-source-note", "The reviewed sign information is ready.");
+  setText("#grounding-source-status", "Ready");
+  document.querySelector("#grounding-source-status").className = "grounding-status status-ready";
+  setText("#grounding-motion", "Reference poses");
+  setText("#grounding-motion-note", "The clearest movement moments are ready.");
+  setText(
+    "#grounding-motion-status",
+    state.evidenceRoute === "HUMAN_SELECTED_FRAME" ? `${state.selectedFrames.length} selected` : "Ready"
+  );
+  document.querySelector("#grounding-motion-status").className = "grounding-status status-ready";
+  setText("#grounding-character", "KinderFlow illustration");
+  setText("#grounding-character-note", "The consistent family-facing style is ready.");
+  setText("#grounding-character-status", "Ready");
   setText("#visual-brief-title", `${signPackage.movement.hands} ${signPackage.movement.hands === 1 ? "hand" : "hands"} · ${signPackage.movement.body_location.toLowerCase()} · ${signPackage.knowledge.direction.toLowerCase()} movement`);
   setText("#visual-brief-description", `${signPackage.movement.description} ${signPackage.movement.presentation}`);
-  setText("#fallback-title", `Evidence route ${route.level}`);
-  setText("#fallback-description", route.note);
-  setText("#visual-preparation-status", "Ready to create two grounded vector candidates for human review.");
+  setText("#fallback-title", "Routine / context");
+  setText("#visual-routine-context", state.run.sign.routine_context);
+  setText("#visual-preparation-status", "Ready to create visual options for review.");
 };
 
 document.querySelectorAll('input[name="evidence_route"]').forEach((input) => {
   input.addEventListener("change", () => {
+    if (state.workflowRecord?.technical_review_action) {
+      input.checked = input.value === state.evidenceRoute;
+      return;
+    }
     state.evidenceRoute = input.value;
+    if (state.evidenceRoute !== "HUMAN_SELECTED_FRAME") {
+      document.querySelector("#suggested-reference-frames").querySelectorAll('input[type="checkbox"]').forEach((frame) => {
+        frame.checked = false;
+        frame.disabled = false;
+      });
+      state.selectedFrames = [];
+    }
+    if (state.evidenceRoute !== "KNOWLEDGE_REFERENCE_FALLBACK") {
+      document.querySelector("#technical-review-rationale").value = "";
+    }
     updateEvidenceRouteUi();
-    persistWorkflowRecord({ visual_evidence_route: state.evidenceRoute });
+    persistWorkflowRecord({
+      visual_evidence_route: state.evidenceRoute,
+      selected_reference_frames: [...state.selectedFrames]
+    });
   });
 });
 
 document.querySelector("#approve-sign").addEventListener("click", (event) => {
   if (!state.activePackage) return;
-  if (state.evidenceRoute === "HUMAN_SELECTED_FRAME" && !state.selectedFrames.length) {
-    setText("#review-message", "Choose at least one suggested reference pose before preparing the visual.");
-    document.querySelector("#reference-frame-picker").scrollIntoView({ behavior: "smooth", block: "center" });
+  if (state.evidenceRoute === "HUMAN_SELECTED_FRAME" && (state.selectedFrames.length < 1 || state.selectedFrames.length > 2)) {
+    const selectionMessage = state.selectedFrames.length < 1
+      ? "Select at least one pose to continue."
+      : "Choose no more than two poses to continue.";
+    setText("#frame-picker-help", selectionMessage);
+    setText("#review-message", selectionMessage);
+    scrollToSection(document.querySelector("#reference-frame-picker"), "center");
     return;
   }
-  const rationale = document.querySelector("#technical-review-rationale").value.trim();
+  const rationale = state.evidenceRoute === "KNOWLEDGE_REFERENCE_FALLBACK"
+    ? document.querySelector("#technical-review-rationale").value.trim()
+    : "";
   if (state.evidenceRoute === "KNOWLEDGE_REFERENCE_FALLBACK" && !rationale) {
-    setText("#review-message", "Add a short technical-review rationale for grounded fallback.");
+    setText("#review-message", "Add a short reason for using reviewed references.");
     document.querySelector("#technical-review-rationale").focus();
     return;
   }
   const action = state.evidenceRoute === "KNOWLEDGE_REFERENCE_FALLBACK" ? "ACCEPT_WITH_FALLBACK" : "ACCEPT_FOR_VISUAL_PREPARATION";
   persistWorkflowRecord({
     technical_review_action: action,
-    technical_review_rationale: rationale || `Operator selected ${routeCopy().title.toLowerCase()} after reviewing movement evidence.`,
+    technical_review_rationale: rationale || `Reviewer selected ${routeCopy().title.toLowerCase()} after reviewing the reference.`,
     visual_evidence_route: state.evidenceRoute,
-    selected_reference_frames: [...state.selectedFrames],
+    selected_reference_frames: state.evidenceRoute === "HUMAN_SELECTED_FRAME" ? [...state.selectedFrames] : [],
     visual_review_status: "READY_TO_GENERATE",
     internal_printable_eligible: false
   });
   event.currentTarget.disabled = true;
-  event.currentTarget.textContent = "Evidence reviewed";
+  event.currentTarget.textContent = "Family materials ready";
   document.querySelector("#use-another-reference").hidden = true;
-  const reviewState = document.querySelector("#review-state");
-  reviewState.textContent = "Ready to prepare visual";
-  reviewState.className = "status-pill status-ready";
-  setText("#content-status", "Ready to prepare visual");
-  setText("#result-kicker", "Technical review recorded locally");
-  setText("#result-title", "Ready to prepare visual");
-  setText("#review-title", "Movement review recorded");
-  setText("#review-guidance", "The evidence route is resolved. Prepare the visual using the grounded sign package.");
-  setText("#review-message", "Current technical evidence accepted for visual preparation only. Human visual review is still required; no sign certification or publication was created.");
+  markReferenceReviewComplete();
   renderVisualPreparation();
   visualPreparationSection.hidden = false;
-  visualPreparationSection.scrollIntoView({ behavior: "smooth", block: "start" });
+  scrollToSection(visualPreparationSection);
 });
 
 const createCandidateCard = (candidate, index) => {
@@ -558,7 +783,7 @@ const createCandidateCard = (candidate, index) => {
     document.querySelectorAll(".visual-candidate-card").forEach((card) => card.classList.remove("is-selected"));
     label.classList.add("is-selected");
     document.querySelector("#approve-visual").disabled = false;
-    setText("#visual-review-status", `${candidate.label} selected. Check the hands and movement cue, then approve the visual.`);
+    setText("#visual-review-status", `Option ${String.fromCharCode(65 + index)} selected. Check the hands and movement cue, then approve the visual.`);
   });
   const imageFrame = document.createElement("div");
   imageFrame.className = "candidate-image-frame";
@@ -571,22 +796,24 @@ const createCandidateCard = (candidate, index) => {
   const top = document.createElement("div");
   const badge = document.createElement("span");
   badge.className = "candidate-label";
-  badge.textContent = candidate.label;
+  badge.textContent = `Option ${String.fromCharCode(65 + index)}`;
   const recommendation = document.createElement("span");
   recommendation.className = "candidate-recommendation";
-  recommendation.textContent = `Best for ${candidate.recommended_for.toLowerCase()}`;
-  top.append(badge, recommendation);
+  recommendation.textContent = "Recommended for this sign";
+  top.append(badge);
+  if (candidate.recommended === true) top.append(recommendation);
   const title = document.createElement("h3");
   title.textContent = candidate.title;
   const note = document.createElement("p");
   note.textContent = candidate.review_note;
   const checks = document.createElement("ul");
   const knowledge = state.activePackage.knowledge;
-  [
+  const checksToShow = candidate.review_checks || [
     `${knowledge.hands_used} ${knowledge.hands_used === 1 ? "hand" : "hands"} expected`,
     `${knowledge.body_location} location`,
     index === 0 ? "Movement cue visible" : `${knowledge.expected_key_pose_count}-pose explanation`
-  ].forEach((copy) => {
+  ];
+  checksToShow.forEach((copy) => {
     const item = document.createElement("li");
     item.textContent = copy;
     checks.append(item);
@@ -600,18 +827,60 @@ const renderVisualCandidates = () => {
   state.selectedCandidate = null;
   document.querySelector("#approve-visual").disabled = true;
   document.querySelector("#visual-candidates").replaceChildren(...state.currentCandidates.map(createCandidateCard));
-  setText("#visual-review-status", "Select one candidate to continue.");
+  setText("#visual-review-status", "Select one visual option to continue.");
+};
+
+const showApprovedVisual = ({ persist = true, scroll = true } = {}) => {
+  if (!state.selectedCandidate || !state.run || !state.activePackage) return;
+  const approveButton = document.querySelector("#approve-visual");
+  approveButton.disabled = true;
+  approveButton.textContent = "Create family materials";
+  document.querySelector("#regenerate-candidate").disabled = true;
+  document.querySelectorAll('input[name="visual_candidate"]').forEach((input) => { input.disabled = true; });
+  const visualState = document.querySelector("#visual-review-state");
+  visualState.textContent = "Visual approved";
+  visualState.className = "status-pill status-ready";
+  const selectedIndex = state.currentCandidates.findIndex((candidate) => candidate.id === state.selectedCandidate.id);
+  setText("#visual-review-status", `Option ${String.fromCharCode(65 + Math.max(0, selectedIndex))} approved. Choose the family material you want to create.`);
+  setText("#content-status", "Create family materials");
+  if (persist) {
+    persistWorkflowRecord({
+      candidate_ids: state.currentCandidates.map((candidate) => candidate.id),
+      selected_candidate_id: state.selectedCandidate.id,
+      visual_review_status: "APPROVED_FOR_INTERNAL_PRINTABLE",
+      internal_printable_eligible: true
+    });
+    sessionStorage.setItem("kinderflowApprovedVisual", JSON.stringify({
+      sign_id: state.activePackage.sign_id,
+      cv_run_id: state.run.run_id,
+      routine_context: state.run.sign.routine_context,
+      candidate_id: state.selectedCandidate.id,
+      asset: state.selectedCandidate.asset,
+      content_hash: state.selectedCandidate.content_hash,
+      status: "APPROVED_FOR_INTERNAL_PRINTABLE",
+      internal_printable_eligible: true,
+      publication_status: "DRAFT",
+      source_run: state.run.run_id,
+      approved_at: new Date().toISOString()
+    }));
+  }
+  updateFamilyMaterialLinks();
+  downstreamSection.hidden = false;
+  if (scroll) scrollToSection(downstreamSection);
 };
 
 document.querySelector("#generate-visual-candidates").addEventListener("click", (event) => {
+  if (!state.currentCandidates.length && state.activePackage) {
+    state.currentCandidates = [...state.activePackage.candidates];
+  }
   event.currentTarget.disabled = true;
-  event.currentTarget.textContent = "Generating visual…";
-  setText("#visual-preparation-status", "Generating visual candidates from the resolved sign package…");
+  event.currentTarget.textContent = "Creating visual options…";
+  setText("#visual-preparation-status", "Creating visual options from the reviewed sign information…");
   window.setTimeout(() => {
     renderVisualCandidates();
     visualReviewSection.hidden = false;
-    setText("#visual-preparation-status", "Two controlled candidates are ready for visual review.");
-    event.currentTarget.textContent = "Candidates generated";
+    setText("#visual-preparation-status", "The visual options are ready for review.");
+    event.currentTarget.textContent = "Visual options created";
     const visualState = document.querySelector("#visual-review-state");
     visualState.textContent = "Visual review";
     visualState.className = "status-pill status-review";
@@ -620,15 +889,15 @@ document.querySelector("#generate-visual-candidates").addEventListener("click", 
       visual_review_status: "REVIEW_REQUIRED",
       internal_printable_eligible: false
     });
-    visualReviewSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    scrollToSection(visualReviewSection);
   }, 550);
 });
 
 document.querySelector("#regenerate-candidate").addEventListener("click", async (event) => {
   const button = event.currentTarget;
   button.disabled = true;
-  button.textContent = "Generating candidate…";
-  setText("#visual-review-status", "Building a distinct local vector recomposition…");
+  button.textContent = "Creating visual option…";
+  setText("#visual-review-status", "Creating a different local visual option…");
   try {
     const response = await fetch("/api/visual-candidates/regenerate", {
       method: "POST",
@@ -640,10 +909,10 @@ document.querySelector("#regenerate-candidate").addEventListener("click", async 
       })
     });
     const payload = await response.json();
-    if (!response.ok) throw new Error(payload.error || "A new candidate could not be generated.");
+    if (!response.ok) throw new Error(payload.error || "A new visual option could not be created.");
     const candidate = payload.candidate;
     const duplicates = state.currentCandidates.some((item) => item.id === candidate.id || item.asset === candidate.asset || item.content_hash === candidate.content_hash);
-    if (duplicates) throw new Error("The candidate service returned a duplicate. Existing candidates were kept.");
+    if (duplicates) throw new Error("The new visual matched an existing option. The current options were kept.");
     state.currentCandidates.push(candidate);
     renderVisualCandidates();
     persistWorkflowRecord({
@@ -651,61 +920,38 @@ document.querySelector("#regenerate-candidate").addEventListener("click", async 
       visual_review_status: "REVIEW_REQUIRED",
       internal_printable_eligible: false
     });
-    setText("#visual-review-status", `${candidate.label} created with a new ID, asset version and vector content. Select a candidate to continue.`);
-    button.textContent = "Another candidate generated";
+    setText("#visual-review-status", `A different visual option is ready. Select an option to continue.`);
+    button.textContent = "Another visual option created";
   } catch (error) {
-    setText("#visual-review-status", `${error.message} Existing candidates were kept.`);
+    setText("#visual-review-status", `${error.message} The current visual options were kept.`);
     button.disabled = false;
-    button.textContent = "Generate another candidate";
+    button.textContent = "Create another visual option";
   }
 });
 
 document.querySelector("#approve-visual").addEventListener("click", (event) => {
   if (!state.selectedCandidate) return;
-  event.currentTarget.disabled = true;
-  event.currentTarget.textContent = "Approved for internal printable";
-  document.querySelector("#regenerate-candidate").disabled = true;
-  document.querySelectorAll('input[name="visual_candidate"]').forEach((input) => { input.disabled = true; });
-  const visualState = document.querySelector("#visual-review-state");
-  visualState.textContent = "Approved for internal printable";
-  visualState.className = "status-pill status-ready";
-  setText("#visual-review-status", `${state.selectedCandidate.label} approved by the operator for an internal printable.`);
-  setText("#content-status", "Approved for internal printable");
-  persistWorkflowRecord({
-    candidate_ids: state.currentCandidates.map((candidate) => candidate.id),
-    selected_candidate_id: state.selectedCandidate.id,
-    visual_review_status: "APPROVED_FOR_INTERNAL_PRINTABLE",
-    internal_printable_eligible: true
-  });
-  sessionStorage.setItem("kinderflowApprovedVisual", JSON.stringify({
-    sign_id: state.activePackage.sign_id,
-    cv_run_id: state.run.run_id,
-    candidate_id: state.selectedCandidate.id,
-    asset: state.selectedCandidate.asset,
-    content_hash: state.selectedCandidate.content_hash,
-    status: "APPROVED_FOR_INTERNAL_PRINTABLE",
-    internal_printable_eligible: true,
-    publication_status: "DRAFT",
-    source_run: state.run.run_id,
-    approved_at: new Date().toISOString()
-  }));
-  const sign = state.run.sign;
-  const query = `?sign=${escapeQuery(sign.name)}&routine=${escapeQuery(sign.routine_context)}&source_run=${escapeQuery(state.run.run_id)}`;
-  document.querySelector("#continue-content-engine-link").href = `library.html${query}#content-engine-title`;
-  document.querySelector("#create-story-link").href = `create-story.html${query}`;
-  document.querySelector("#create-printable-link").href = `flashcards.html?sign=${escapeQuery(sign.name)}&visual=${escapeQuery(state.selectedCandidate.id)}&approved=1`;
-  downstreamSection.hidden = false;
-  downstreamSection.scrollIntoView({ behavior: "smooth", block: "start" });
+  showApprovedVisual();
 });
 
 document.querySelector("#reject-visual").addEventListener("click", () => {
   state.selectedCandidate = null;
   downstreamSection.hidden = true;
-  document.querySelector("#approve-visual").disabled = true;
+  const approveVisual = document.querySelector("#approve-visual");
+  approveVisual.disabled = true;
+  approveVisual.textContent = "Approve selected visual";
+  document.querySelector("#regenerate-candidate").disabled = false;
+  document.querySelectorAll('input[name="visual_candidate"]').forEach((input) => {
+    input.disabled = false;
+    input.checked = false;
+  });
+  document.querySelectorAll(".visual-candidate-card").forEach((card) => card.classList.remove("is-selected"));
+  sessionStorage.removeItem("kinderflowApprovedVisual");
+  sessionStorage.removeItem("kinderflowPrintableApproval");
   const visualState = document.querySelector("#visual-review-state");
-  visualState.textContent = "Visual review required";
+  visualState.textContent = "Visual review";
   visualState.className = "status-pill status-review";
-  setText("#visual-review-status", "Visual rejected. Generate another candidate, choose different pose evidence, or use another reference video.");
+  setText("#visual-review-status", "Visual rejected. Choose another option, create a different option, or choose a different pose.");
   persistWorkflowRecord({
     selected_candidate_id: null,
     visual_review_status: "REJECTED",
@@ -713,15 +959,66 @@ document.querySelector("#reject-visual").addEventListener("click", () => {
   });
 });
 
-document.querySelector("#choose-different-evidence").addEventListener("click", () => {
+const resetToPoseSelection = () => {
+  const frameInputs = [...document.querySelector("#suggested-reference-frames").querySelectorAll('input[type="checkbox"]')];
+  frameInputs.forEach((input) => {
+    input.checked = false;
+    input.disabled = false;
+  });
+  state.selectedFrames = [];
+  state.evidenceRoute = frameInputs.length
+    ? "HUMAN_SELECTED_FRAME"
+    : availableRouteForRun(state.run, state.activePackage);
+  state.selectedCandidate = null;
+  state.currentCandidates = [];
   visualReviewSection.hidden = true;
   visualPreparationSection.hidden = true;
-  const approveButton = document.querySelector("#approve-sign");
-  approveButton.disabled = false;
-  approveButton.textContent = state.evidenceRoute === "KNOWLEDGE_REFERENCE_FALLBACK" ? "Continue with grounded fallback" : `Prepare ${state.activePackage.labels.en} visual`;
-  setText("#review-message", "Choose another evidence route or pose selection, then prepare the visual again.");
-  reviewSection.scrollIntoView({ behavior: "smooth", block: "start" });
-});
+  downstreamSection.hidden = true;
+  document.querySelector("#visual-candidates").replaceChildren();
+  const generateButton = document.querySelector("#generate-visual-candidates");
+  generateButton.disabled = false;
+  generateButton.textContent = "Create visual options";
+  const regenerateButton = document.querySelector("#regenerate-candidate");
+  regenerateButton.disabled = false;
+  regenerateButton.textContent = "Create another visual option";
+  const approveVisualButton = document.querySelector("#approve-visual");
+  approveVisualButton.disabled = true;
+  approveVisualButton.textContent = "Approve selected visual";
+  const approveReferenceButton = document.querySelector("#approve-sign");
+  approveReferenceButton.hidden = false;
+  approveReferenceButton.textContent = "Create family materials";
+  document.querySelector("#use-another-reference").hidden = false;
+  document.querySelectorAll('input[name="evidence_route"]').forEach((input) => {
+    input.checked = input.value === state.evidenceRoute;
+    input.disabled = (
+      (input.value === "LANDMARK_KEY_POSE" && !trackedPosesAreAvailable(state.run))
+      || (input.value === "HUMAN_SELECTED_FRAME" && frameInputs.length === 0)
+    );
+  });
+  document.querySelector("#technical-review-rationale").disabled = false;
+  sessionStorage.removeItem("kinderflowApprovedVisual");
+  sessionStorage.removeItem("kinderflowPrintableApproval");
+  persistWorkflowRecord({
+    technical_review_action: null,
+    technical_review_rationale: "",
+    visual_evidence_route: state.evidenceRoute,
+    selected_reference_frames: [],
+    candidate_ids: [],
+    selected_candidate_id: null,
+    visual_review_status: "NOT_STARTED",
+    internal_printable_eligible: false
+  });
+  updateEvidenceRouteUi();
+  const reviewState = document.querySelector("#review-state");
+  reviewState.textContent = "Reference review complete";
+  reviewState.className = "status-pill status-ready";
+  setText("#review-title", "Choose one or two reference poses");
+  setText("#review-guidance", "Select the clearest moments to guide the visual.");
+  setText("#review-message", "Choose a different pose. Your reference review is still complete.");
+  scrollToSection(reviewSection);
+};
+
+document.querySelector("#choose-different-evidence").addEventListener("click", resetToPoseSelection);
 
 document.querySelector("#use-another-reference").addEventListener("click", clearReference);
 
@@ -730,16 +1027,167 @@ const checkService = async () => {
   try {
     const response = await fetch("/api/health", { cache: "no-store" });
     if (!response.ok) throw new Error();
-    serviceState.textContent = "Local movement service ready";
+    serviceState.textContent = "Reference review ready";
   } catch {
-    serviceState.textContent = "Start the local MVP service to process video";
-    formMessage.textContent = "Run “python mvp/app.py” from the repository root, then reopen this page at localhost:8000.";
+    serviceState.textContent = "Reference review is unavailable";
+    formMessage.textContent = "Start the local KinderFlow service, then reload this page.";
   }
 };
 
-Promise.allSettled([loadVisualPackages(), checkService()]).then((results) => {
+const restoreWorkflowFromSession = async () => {
+  const parameters = new URLSearchParams(window.location.search);
+  if (parameters.get("restore") !== "1") return false;
+  const workflow = readStoredPayload("kinderflowVisualWorkflow");
+  const approvedVisual = readStoredPayload("kinderflowApprovedVisual");
+  const runId = parameters.get("run") || workflow?.cv_run_id || approvedVisual?.cv_run_id;
+  if (!workflow || !runId) throw new Error("The saved sign work could not be found. Use the reference review to continue.");
+  let run = readStoredPayload("kinderflowReferenceReview");
+  if (!run || run.run_id !== runId) {
+    const response = await fetch(`/api/runs/${encodeURIComponent(runId)}`, { cache: "no-store" });
+    if (!response.ok) throw new Error("The saved reference review is unavailable.");
+    run = await response.json();
+  }
+  const runSignId = normalizeSignId(run.sign?.sign_id || run.sign?.name);
+  if (workflow.cv_run_id !== runId
+    || run.run_id !== runId
+    || workflow.sign_id !== runSignId
+    || !["complete", "failed", "insufficient_coverage"].includes(run.state)) {
+    throw new Error("The saved sign work does not match this reference review.");
+  }
+  state.source = run.source?.kind === "demo_reference" ? "demo" : "upload";
+  state.run = run;
+  signControl.value = run.sign.name;
+  signControl.disabled = true;
+  document.querySelector("#routine-context").value = run.sign.routine_context;
+  document.querySelector("#reference-source-url").value = run.source?.reference_source_url || "";
+  fileName.textContent = run.source?.display_filename || `${run.sign.name} reference video`;
+  fileMeta.textContent = "Saved reference review";
+  form.querySelectorAll("input, select, button").forEach((control) => { control.disabled = true; });
+  retryButton.disabled = false;
+  state.workflowRecord = workflow;
+  finishRun(run, { scroll: false });
+  state.evidenceRoute = availableRouteForRun(run, state.activePackage, workflow.visual_evidence_route);
+  document.querySelectorAll('input[name="evidence_route"]').forEach((input) => {
+    input.checked = input.value === state.evidenceRoute;
+  });
+  const selectedFrames = new Set(workflow.selected_reference_frames || []);
+  document.querySelector("#suggested-reference-frames").querySelectorAll('input[type="checkbox"]').forEach((input) => {
+    input.checked = selectedFrames.has(input.value);
+  });
+  document.querySelector("#technical-review-rationale").value = workflow.technical_review_rationale || "";
+  updateEvidenceRouteUi();
+  if (run.state !== "complete" || !["Pass", "Review needed"].includes(run.technical_status)) return true;
+  const restoredFrames = [...state.selectedFrames];
+  const expectedReviewAction = state.evidenceRoute === "KNOWLEDGE_REFERENCE_FALLBACK"
+    ? "ACCEPT_WITH_FALLBACK"
+    : "ACCEPT_FOR_VISUAL_PREPARATION";
+  const restoredDecisionIsValid = workflow.technical_review_action === expectedReviewAction
+    && SUPPORTED_SIGN_IDS.has(runSignId)
+    && visualPackageIsReady(state.activePackage)
+    && evidenceRouteIsAvailable(state.evidenceRoute, run)
+    && (state.evidenceRoute !== "HUMAN_SELECTED_FRAME" || (restoredFrames.length >= 1 && restoredFrames.length <= 2))
+    && (state.evidenceRoute !== "KNOWLEDGE_REFERENCE_FALLBACK"
+      || Boolean(document.querySelector("#technical-review-rationale").value.trim()));
+  if (!restoredDecisionIsValid) {
+    const hasDerivedVisualState = Boolean(workflow.technical_review_action)
+      || ["READY_TO_GENERATE", "REVIEW_REQUIRED", "REJECTED", "APPROVED_FOR_INTERNAL_PRINTABLE"].includes(
+        workflow.visual_review_status
+      )
+      || Boolean(approvedVisual);
+    if (hasDerivedVisualState) {
+      state.selectedCandidate = null;
+      state.currentCandidates = [];
+      state.selectedFrames = [];
+      document.querySelector("#suggested-reference-frames").querySelectorAll('input[type="checkbox"]').forEach((input) => {
+        input.checked = false;
+        input.disabled = false;
+      });
+      document.querySelector("#technical-review-rationale").value = "";
+      document.querySelector("#technical-review-rationale").disabled = false;
+      document.querySelectorAll('input[name="evidence_route"]').forEach((input) => {
+        input.checked = input.value === state.evidenceRoute;
+        input.disabled = (
+          (input.value === "LANDMARK_KEY_POSE" && !trackedPosesAreAvailable(run))
+          || (input.value === "HUMAN_SELECTED_FRAME" && !(run.artifacts?.suggested_reference_frames || []).length)
+        );
+      });
+      sessionStorage.removeItem("kinderflowApprovedVisual");
+      sessionStorage.removeItem("kinderflowPrintableApproval");
+      persistWorkflowRecord({
+        technical_review_action: null,
+        technical_review_rationale: "",
+        selected_reference_frames: [],
+        candidate_ids: [],
+        selected_candidate_id: null,
+        visual_review_status: "NOT_STARTED",
+        internal_printable_eligible: false
+      });
+      updateEvidenceRouteUi();
+    }
+    return true;
+  }
+  markReferenceReviewComplete();
+  document.querySelector("#approve-sign").disabled = true;
+  document.querySelector("#approve-sign").textContent = "Family materials ready";
+  document.querySelector("#use-another-reference").hidden = true;
+  renderVisualPreparation();
+  visualPreparationSection.hidden = false;
+  const visualWasGenerated = ["REVIEW_REQUIRED", "REJECTED", "APPROVED_FOR_INTERNAL_PRINTABLE"].includes(
+    workflow.visual_review_status
+  );
+  const candidateIds = new Set(workflow.candidate_ids || []);
+  state.currentCandidates = visualWasGenerated
+    ? allPackageCandidates().filter((candidate) => candidateIds.has(candidate.id))
+    : [];
+  if (!state.currentCandidates.length && visualWasGenerated) {
+    state.currentCandidates = [...state.activePackage.candidates];
+  }
+  if (visualWasGenerated && state.currentCandidates.length) {
+    renderVisualCandidates();
+    visualReviewSection.hidden = false;
+  }
+  if (approvedVisual
+    && approvedVisual.status === "APPROVED_FOR_INTERNAL_PRINTABLE"
+    && approvedVisual.internal_printable_eligible === true
+    && approvedVisual.publication_status === "DRAFT"
+    && workflow.visual_review_status === "APPROVED_FOR_INTERNAL_PRINTABLE"
+    && workflow.internal_printable_eligible === true
+    && workflow.publication_status === "DRAFT"
+    && approvedVisual.sign_id === state.activePackage.sign_id
+    && approvedVisual.cv_run_id === run.run_id
+    && workflow.selected_candidate_id === approvedVisual.candidate_id) {
+    state.selectedCandidate = allPackageCandidates().find((candidate) => (
+      candidate.id === approvedVisual.candidate_id
+      && candidate.asset === approvedVisual.asset
+      && Boolean(approvedVisual.content_hash)
+      && candidate.content_hash === approvedVisual.content_hash
+    )) || null;
+    if (state.selectedCandidate) {
+      const selectedInput = document.querySelector(`input[name="visual_candidate"][value="${state.selectedCandidate.id}"]`);
+      if (selectedInput) {
+        selectedInput.checked = true;
+        selectedInput.closest(".visual-candidate-card")?.classList.add("is-selected");
+      }
+      showApprovedVisual({ persist: false, scroll: false });
+    }
+  }
+  const view = parameters.get("view");
+  const target = view === "family-materials" && !downstreamSection.hidden
+    ? downstreamSection
+    : visualReviewSection.hidden ? reviewSection : visualReviewSection;
+  scrollToSection(target);
+  return true;
+};
+
+Promise.allSettled([loadVisualPackages(), checkService()]).then(async (results) => {
   const packageResult = results[0];
   if (packageResult.status === "rejected") {
-    formMessage.textContent = `${packageResult.reason.message} Serve the prototype through the local MVP service and reload.`;
+    formMessage.textContent = `${packageResult.reason.message} Reload this page to try again.`;
+    return;
+  }
+  try {
+    await restoreWorkflowFromSession();
+  } catch (error) {
+    formMessage.textContent = error.message;
   }
 });
