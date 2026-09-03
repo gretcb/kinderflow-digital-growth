@@ -1,44 +1,22 @@
 {
-  "audit_date": "2026-09-02",
+  "audit_date": "2026-09-03",
   "source_library": "assets/flashcards/source_libraries/Flat Assets",
-  "source_library_runtime_use": false,
-  "licence_status": "LICENCE_VERIFICATION_NEEDED",
-  "selection_status": "FOUNDER_REVIEW_NEEDED",
-  "composition_status": "METADATA_ONLY_UNTIL_LICENCE_VERIFIED",
-  "decision": "No source SVG is copied into the runtime. The founder selects modular parts only after reviewing the local originals and confirming licence terms.",
+  "source_library_runtime_use": true,
+  "licence_status": "FOUNDER_VERIFIED_CC0",
+  "selection_status": "FOUNDER_SELECTED",
+  "composition_status": "SELECTED_GEOMETRY_EMBEDDED_IN_DERIVATIVES",
+  "decision": "Only the founder-selected Smile, Bun 2 and pose/sitting/mid-2 atoms are embedded in deterministic runtime derivatives; the full library is not redistributed.",
   "candidates": [
     {
-      "candidate_id": "calm_bun_sweater",
-      "base": "Separate Atoms/a person/bust.svg",
-      "face": "Separate Atoms/face/Calm.svg",
-      "hair": "Separate Atoms/head/Bun.svg",
-      "body": "Separate Atoms/body/Sweater.svg",
-      "accessories": "None",
-      "why_shortlisted": "Calm expression, simple clothing and no face obstruction.",
-      "composition_note": "Parts have category-specific viewBoxes and require an explicit anchor/scale map before composition.",
-      "status": "CANDIDATE_ONLY"
-    },
-    {
-      "candidate_id": "smile_afro_tee",
-      "base": "Separate Atoms/a person/bust.svg",
+      "candidate_id": "kinderflow_open_peeps_selected_base",
+      "base": "Separate Atoms/pose/sitting/mid-2.svg",
       "face": "Separate Atoms/face/Smile.svg",
-      "hair": "Separate Atoms/head/Afro.svg",
-      "body": "Separate Atoms/body/Tee 1.svg",
+      "hair": "Separate Atoms/head/Bun 2.svg",
+      "body": "Separate Atoms/pose/sitting/mid-2.svg",
       "accessories": "None",
-      "why_shortlisted": "Readable expression, clear head silhouette and restrained clothing.",
-      "composition_note": "Parts have category-specific viewBoxes and require an explicit anchor/scale map before composition.",
-      "status": "CANDIDATE_ONLY"
-    },
-    {
-      "candidate_id": "gentle_bangs_striped_tee",
-      "base": "Separate Atoms/a person/bust.svg",
-      "face": "Separate Atoms/face/Cute.svg",
-      "hair": "Separate Atoms/head/Bangs.svg",
-      "body": "Separate Atoms/body/Striped Tee.svg",
-      "accessories": "None",
-      "why_shortlisted": "Friendly expression with an uncluttered upper-body composition.",
-      "composition_note": "Parts have category-specific viewBoxes and require an explicit anchor/scale map before composition.",
-      "status": "CANDIDATE_ONLY"
+      "why_shortlisted": "Founder-selected identity with exact Open Peeps geometry and no face obstruction.",
+      "composition_note": "Category-specific viewBoxes are resolved in tools/build_sign_vectors.py; custom sign hands replace generic pose meaning.",
+      "status": "IN_USE_FOR_INTERNAL_VISUAL_REVIEW"
     }
   ]
 }

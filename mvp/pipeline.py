@@ -12,6 +12,7 @@ import traceback
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Callable, Dict, Optional
+from urllib.parse import urlparse
 from uuid import uuid4
 
 import cv2
@@ -75,6 +76,17 @@ def validate_extension(filename: str) -> str:
     return cleaned
 
 
+def validate_reference_source_url(value: str) -> Optional[str]:
+    """Validate an optional provenance URL without treating it as video input."""
+    cleaned = (value or "").strip()
+    if not cleaned:
+        return None
+    parsed = urlparse(cleaned)
+    if parsed.scheme not in {"http", "https"} or not parsed.netloc:
+        raise InputError("Reference source URL must be a complete http:// or https:// webpage URL.")
+    return cleaned
+
+
 def inspect_video(video_path: Path) -> Dict[str, object]:
     if not video_path.exists() or video_path.stat().st_size == 0:
         raise InputError("We couldn't process this video. Try another reference file.")
@@ -95,6 +107,39 @@ def inspect_video(video_path: Path) -> Dict[str, object]:
             "frames_reported": frames,
             "resolution": {"width": width, "height": height},
         }
+    finally:
+        capture.release()
+
+
+def create_reference_frame_suggestions(video_path: Path, output_dir: Path) -> list:
+    """Create four deterministic operator-selectable frames from a readable video."""
+    capture = cv2.VideoCapture(str(video_path))
+    if not capture.isOpened():
+        return []
+    try:
+        total = int(capture.get(cv2.CAP_PROP_FRAME_COUNT))
+        if total <= 0:
+            return []
+        output_dir.mkdir(parents=True, exist_ok=True)
+        suggestions = []
+        for index, fraction in enumerate((0.18, 0.40, 0.62, 0.84)):
+            frame_index = min(total - 1, max(0, round((total - 1) * fraction)))
+            capture.set(cv2.CAP_PROP_POS_FRAMES, frame_index)
+            ok, frame = capture.read()
+            if not ok:
+                continue
+            label = f"Pose {chr(65 + index)}"
+            destination = output_dir / f"pose-{chr(97 + index)}.jpg"
+            if cv2.imwrite(str(destination), frame, [cv2.IMWRITE_JPEG_QUALITY, 88]):
+                suggestions.append(
+                    {
+                        "id": f"pose-{chr(97 + index)}",
+                        "label": label,
+                        "frame_index": frame_index,
+                        "relative_path": str(destination),
+                    }
+                )
+        return suggestions
     finally:
         capture.release()
 
@@ -167,7 +212,7 @@ def finalize_browser_preview(intermediate_path: Path) -> Dict[str, object]:
     )
 
 
-def map_technical_status(summary: Dict[str, object]) -> tuple:
+def map_technical_status(summary: Dict[str, object], sign_name: str = "") -> tuple:
     """Map existing POC decisions to the three operator-facing states."""
     extraction_status = summary["extraction"]["status"]
     motion_status = summary["status"]
@@ -178,7 +223,15 @@ def map_technical_status(summary: Dict[str, object]) -> tuple:
     unresolved = int(missing["unresolved_frames"])
     unresolved_percent = round(100 * unresolved / total_frames, 2) if total_frames else 0.0
 
-    if (
+    eat_occlusion_review = (
+        sign_name.strip().upper() == "EAT"
+        and 65.0 <= float(summary["extraction"]["hand_detection_rate_percent"]) <= 80.0
+        and float(summary["extraction"].get("pose_detection_rate_percent", 0.0)) >= 75.0
+    )
+
+    if eat_occlusion_review:
+        status = "Review needed"
+    elif (
         extraction_status == "EXTRACTION_FAIL"
         or motion_status == "MOTION_REPRESENTATION_FAIL"
         or "FAIL" in automated_statuses
@@ -196,6 +249,11 @@ def map_technical_status(summary: Dict[str, object]) -> tuple:
         hand_rate = summary["extraction"]["hand_detection_rate_percent"]
         reasons.append(
             f"Dominant-hand landmarks were detected in {hand_rate:.2f}% of frames."
+        )
+    if eat_occlusion_review:
+        reasons.insert(
+            0,
+            "Important EAT movement evidence is available, but hand tracking is incomplete near the face; grounded fallback is available.",
         )
     if unresolved:
         reasons.append(
@@ -273,6 +331,7 @@ def prepare_run(
     reference_status: str,
     original_filename: str,
     source_kind: str,
+    reference_source_url: str = "",
 ) -> tuple:
     sign_name = (sign_name or "").strip().upper()
     routine_context = (routine_context or "").strip()
@@ -282,6 +341,7 @@ def prepare_run(
         raise InputError("Enter a routine or context before running the movement check.")
     if reference_status != "Validated reference":
         raise InputError("Select Validated reference before processing.")
+    source_url = validate_reference_source_url(reference_source_url)
     run_id = create_run_id()
     run_dir = RUNS_ROOT / run_id
     (run_dir / "input").mkdir(parents=True, exist_ok=False)
@@ -303,6 +363,8 @@ def prepare_run(
             ),
             "display_filename": safe_filename(original_filename),
             "child_video_used": False,
+            "reference_source_url": source_url,
+            "reference_source_url_role": "Provenance only; not processed as video" if source_url else None,
         },
         "stages": initial_stages(),
         "technical_status": "Waiting",
@@ -361,6 +423,24 @@ def run_pipeline(
     try:
         video_metadata = inspect_video(video_path)
         manifest["source"].update(video_metadata)
+        frame_suggestions = create_reference_frame_suggestions(
+            video_path, output_root / "reference_frames"
+        )
+        manifest["artifacts"] = {
+            "reference_video_url": f"/runs/{manifest['run_id']}/input/reference.mp4",
+            "suggested_reference_frames": [
+                {
+                    "id": item["id"],
+                    "label": item["label"],
+                    "frame_index": item["frame_index"],
+                    "url": (
+                        f"/runs/{manifest['run_id']}/output/reference_frames/"
+                        f"{Path(item['relative_path']).name}"
+                    ),
+                }
+                for item in frame_suggestions
+            ],
+        }
         update_stage(manifest, "video_validation", "Complete")
         update_stage(manifest, "landmark_extraction", "Running")
         persist()
@@ -384,7 +464,7 @@ def run_pipeline(
         persist()
 
         technical_status, technical_reasons, unresolved_percent = (
-            map_technical_status(summary)
+            map_technical_status(summary, manifest["sign"]["name"])
         )
         extraction_metrics = summary["extraction"]
         missing_metrics = summary["missing_data"]
@@ -421,8 +501,7 @@ def run_pipeline(
                 if key != "path"
             },
         }
-        manifest["artifacts"] = {
-            "reference_video_url": f"/runs/{manifest['run_id']}/input/reference.mp4",
+        manifest["artifacts"].update({
             "movement_preview_url": (
                 f"/runs/{manifest['run_id']}/output/previews/reference_landmarks.mp4"
             ),
@@ -434,7 +513,7 @@ def run_pipeline(
                 f"/runs/{manifest['run_id']}/output/diagnostics/"
                 "reference_wrist_trajectory.png"
             ),
-        }
+        })
         update_stage(manifest, "technical_checks", "Complete")
         manifest["artifacts"]["movement_preview_url"] = (
             f"/runs/{manifest['run_id']}/output/previews/"

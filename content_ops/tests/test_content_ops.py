@@ -223,15 +223,18 @@ class FlashcardIntegrationTests(unittest.TestCase):
     def setUp(self) -> None:
         self.repo = Path(__file__).parents[2]
 
-    def test_candidate_inventory_is_valid_and_not_runtime_enabled(self) -> None:
+    def test_founder_selected_open_peeps_atoms_are_runtime_enabled_with_provenance(self) -> None:
         inventory = load_json(self.repo / "assets/flashcards/open_peeps/candidates.json")
         modular = load_json(self.repo / "assets/flashcards/open_peeps/modular_inventory.json")
-        self.assertEqual(inventory["licence_status"], "LICENCE_VERIFICATION_NEEDED")
-        self.assertFalse(inventory["source_library_runtime_use"])
+        provenance = load_json(self.repo / "assets/flashcards/open_peeps/provenance.json")
+        self.assertEqual(inventory["licence_status"], "FOUNDER_VERIFIED_CC0")
+        self.assertTrue(inventory["source_library_runtime_use"])
         self.assertLessEqual(len(inventory["candidates"]), 3)
-        self.assertTrue(all(item["status"] == "CANDIDATE_ONLY" for item in inventory["candidates"]))
+        self.assertTrue(all(item["status"] == "IN_USE_FOR_INTERNAL_VISUAL_REVIEW" for item in inventory["candidates"]))
         self.assertFalse(modular["compatibility_findings"]["direct_interchangeability"])
-        self.assertFalse(modular["runtime_dependency"])
+        self.assertTrue(modular["runtime_dependency"])
+        self.assertEqual(provenance["licence"], "CC0")
+        self.assertEqual(len(provenance["selected_components"]), 3)
 
     def test_runtime_does_not_reference_ignored_source_library(self) -> None:
         runtime_files = list((self.repo / "prototype").glob("*.html")) + list((self.repo / "prototype").glob("*.js")) + list((self.repo / "prototype").glob("*.css"))
@@ -243,8 +246,10 @@ class FlashcardIntegrationTests(unittest.TestCase):
         self.assertEqual(html.count('class="flashcard-output"'), 1)
         self.assertIn('class="flashcard-visual-unit"', html)
         self.assertIn('class="flashcard-sign-lockup"', html)
-        js = (self.repo / "prototype/flashcards.js").read_text(encoding="utf-8")
-        self.assertIn("window.print()", js)
+        builder_js = (self.repo / "prototype/flashcards.js").read_text(encoding="utf-8")
+        print_js = (self.repo / "prototype/print-card.js").read_text(encoding="utf-8")
+        self.assertIn("print-card.html", builder_js)
+        self.assertIn("window.print()", print_js)
 
     def test_all_five_signs_have_one_bilingual_print_contract(self) -> None:
         signs = load_json(self.repo / "prototype/data/signs.json")["signs"]

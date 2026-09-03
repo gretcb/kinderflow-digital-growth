@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import mimetypes
 import re
@@ -40,6 +41,7 @@ from pipeline import (
 
 PROTOTYPE_ROOT = REPO_ROOT / "prototype"
 CHARACTER_CANDIDATES_PATH = REPO_ROOT / "assets/flashcards/open_peeps/candidates.json"
+VISUAL_PACKAGES_PATH = PROTOTYPE_ROOT / "data/visual_sign_packages.json"
 PROCESSING_LOCK = threading.Lock()
 
 
@@ -62,6 +64,42 @@ def response_schema_ok(payload: dict) -> bool:
         "processing",
     }
     return required.issubset(payload) and isinstance(payload.get("stages"), list)
+
+
+def regenerate_visual_candidate(payload: dict) -> dict:
+    """Return a verified, distinct, prebuilt local vector recomposition."""
+    sign_id = str(payload.get("sign_id", "")).strip().lower()
+    existing_ids = {
+        str(value) for value in payload.get("existing_candidate_ids", []) if value
+    }
+    try:
+        packages = json.loads(VISUAL_PACKAGES_PATH.read_text(encoding="utf-8"))["signs"]
+    except (OSError, KeyError, json.JSONDecodeError) as error:
+        raise InputError("Visual candidate packages are unavailable.") from error
+    sign_package = next((item for item in packages if item.get("sign_id") == sign_id), None)
+    if not sign_package:
+        raise InputError("No reviewed visual package is available for this sign.")
+    candidate = next(
+        (
+            item
+            for item in sign_package.get("regeneration_candidates", [])
+            if item.get("id") not in existing_ids
+        ),
+        None,
+    )
+    if not candidate:
+        raise InputError("No additional local candidate is available. Keep the current candidates or refine the pose evidence.")
+    asset_path = (PROTOTYPE_ROOT / candidate["asset"]).resolve()
+    if PROTOTYPE_ROOT.resolve() not in asset_path.parents or not asset_path.is_file():
+        raise InputError("The new candidate asset is unavailable. Existing candidates were kept.")
+    actual_hash = hashlib.sha256(asset_path.read_bytes()).hexdigest()
+    if actual_hash != candidate.get("content_hash"):
+        raise InputError("The new candidate failed its integrity check. Existing candidates were kept.")
+    return {
+        "candidate": candidate,
+        "generation_method": "DETERMINISTIC_LOCAL_VECTOR_RECOMPOSITION",
+        "publication_status": "DRAFT",
+    }
 
 
 class KinderFlowHandler(BaseHTTPRequestHandler):
@@ -125,7 +163,7 @@ class KinderFlowHandler(BaseHTTPRequestHandler):
     def do_GET(self) -> None:  # noqa: N802
         route = unquote(urlparse(self.path).path)
         if route == "/api/health":
-            self.send_json({"status": "ok", "service": "kinderflow-local-mvp", "capabilities": ["create_sign", "generate_content_pack"]})
+            self.send_json({"status": "ok", "service": "kinderflow-local-mvp", "capabilities": ["create_sign", "generate_content_pack", "regenerate_visual_candidate"]})
             return
         if route == "/api/visual-assets/open-peeps":
             try:
@@ -167,6 +205,10 @@ class KinderFlowHandler(BaseHTTPRequestHandler):
                 result = generate_content_pack(self.read_json())
                 self.send_json(result, HTTPStatus.CREATED)
                 return
+            if route == "/api/visual-candidates/regenerate":
+                result = regenerate_visual_candidate(self.read_json())
+                self.send_json(result, HTTPStatus.CREATED)
+                return
             content_action = re.fullmatch(r"/api/content-packs/(content_[A-Za-z0-9_-]+)/(approve|request-changes|restore)", route)
             if content_action:
                 run_id, action = content_action.groups()
@@ -186,6 +228,7 @@ class KinderFlowHandler(BaseHTTPRequestHandler):
                     payload.get("reference_status", ""),
                     "sign_reference.mp4",
                     "demo_reference",
+                    payload.get("reference_source_url", ""),
                 )
                 video_path = store_demo(run_dir)
             elif route == "/api/runs/upload":
@@ -197,6 +240,7 @@ class KinderFlowHandler(BaseHTTPRequestHandler):
                     fields.get("reference_status", ""),
                     filename,
                     "operator_upload",
+                    fields.get("reference_source_url", ""),
                 )
                 video_path = store_upload(run_dir, filename, video_bytes)
             else:
@@ -258,7 +302,7 @@ class KinderFlowHandler(BaseHTTPRequestHandler):
             if name == "reference_video":
                 filename = part.get_filename()
                 video_bytes = part.get_payload(decode=True)
-            elif name in ("sign_name", "routine_context", "reference_status"):
+            elif name in ("sign_name", "routine_context", "reference_status", "reference_source_url"):
                 fields[name] = part.get_content()
         if not filename or video_bytes is None:
             raise InputError("Select an MP4 reference video.")

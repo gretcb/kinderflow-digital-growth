@@ -21,7 +21,8 @@ const MORE_ROUTINE_COPY = {
 
 const builder = {
   signs: [], selectedId: null, language: "en", cardType: "flashcard",
-  layoutReviewed: false, reviewedHandoff: null, visualPackages: [], approvedVisual: null
+  layoutReviewed: false, reviewedHandoff: null, visualPackages: [], approvedVisual: null,
+  activeCandidate: null
 };
 
 const card = document.querySelector(".flashcard-output");
@@ -53,7 +54,13 @@ const validateSignData = (payload) => {
 
 const selectedSign = () => builder.signs.find((sign) => sign.id === builder.selectedId);
 const visualPackageFor = (sign) => builder.visualPackages.find((item) => item.sign_id === sign?.sign_id);
-const isEligible = (sign) => Boolean(sign && visualPackageFor(sign) && (sign.flashcard_status === "preview_ready_with_controlled_visual" || sign.publication_status === "published"));
+const isEligible = (sign) => Boolean(
+  sign
+  && visualPackageFor(sign)
+  && builder.approvedVisual?.sign_id === sign.sign_id
+  && builder.approvedVisual?.status === "APPROVED_FOR_INTERNAL_PRINTABLE"
+  && builder.approvedVisual?.internal_printable_eligible === true
+);
 const signOptionLabel = (sign) => isEligible(sign)
   ? `${sign.display_name} — Printable proof available`
   : `${sign.display_name} — Not ready`;
@@ -62,7 +69,7 @@ const loadApprovedVisual = () => {
   if (new URLSearchParams(window.location.search).get("approved") !== "1") return null;
   try {
     const payload = JSON.parse(sessionStorage.getItem("kinderflowApprovedVisual") || "null");
-    return payload?.status === "APPROVED_FOR_PRINTABLE" && payload.sign_id && payload.asset ? payload : null;
+    return payload?.status === "APPROVED_FOR_INTERNAL_PRINTABLE" && payload.internal_printable_eligible === true && payload.publication_status === "DRAFT" && payload.sign_id && payload.asset ? payload : null;
   } catch (_error) {
     return null;
   }
@@ -132,9 +139,11 @@ const render = () => {
   const output = outputFor(sign);
   const word = builder.language === "es" ? sign.spanish_label : sign.display_name;
   const approvedVisual = builder.approvedVisual?.sign_id === sign.sign_id ? builder.approvedVisual : null;
-  const candidate = visualPackage.candidates.find((item) => item.id === approvedVisual?.candidate_id)
-    || visualPackage.candidates.find((item) => item.recommended)
+  const availableCandidates = [...visualPackage.candidates, ...(visualPackage.regeneration_candidates || [])];
+  const candidate = availableCandidates.find((item) => item.id === approvedVisual?.candidate_id)
+    || visualPackage.candidates.find((item) => item.recommended_for?.includes("readability"))
     || visualPackage.candidates[0];
+  builder.activeCandidate = candidate;
   card.dataset.cardType = builder.cardType;
   card.querySelector("[data-card-sign]").textContent = word;
   card.querySelector("[data-card-spanish]").textContent = sign.spanish_label;
@@ -147,17 +156,15 @@ const render = () => {
   signIllustration.src = candidate.asset;
   signIllustration.alt = `${word} sign illustration, ${candidate.title.toLowerCase()}`;
   const contextImage = card.querySelector("[data-context-image]");
-  contextImage.src = visualPackage.contextual_image.asset;
-  contextImage.alt = visualPackage.contextual_image.alt;
+  contextImage.src = visualPackage.contextual_image?.asset || "";
+  contextImage.alt = visualPackage.contextual_image?.alt || "";
   card.querySelector("[data-context-panel]").hidden = builder.cardType !== "flashcard";
   card.querySelector("[data-routine-icon]").hidden = builder.cardType !== "routine";
   card.querySelector("[data-routine-icon] span").textContent = output.routine;
   card.querySelector(".flashcard-visual").setAttribute("aria-label", `${word} approved sign illustration${builder.cardType === "flashcard" ? " with a supporting early-childhood context" : " with a routine icon"}`);
   card.setAttribute("aria-label", `Kinder Signs ${builder.cardType === "flashcard" ? "flashcard" : "routine card"} internal preview for ${word}`);
   previewTitle.textContent = `${builder.cardType === "flashcard" ? "Flashcard" : "Routine Card"} · ${copy.language}`;
-  document.querySelector("#sign-source-help").textContent = approvedVisual
-    ? `${sign.display_name} uses the visual approved in this local workflow.`
-    : `${sign.display_name} uses the recommended controlled proof; approve it locally before printing.`;
+  document.querySelector("#sign-source-help").textContent = `${sign.display_name} uses the visual approved by the operator in this local workflow.`;
   status.textContent = `${copy.language} ${builder.cardType === "flashcard" ? "Flashcard" : "Routine Card"} preview ready. ${builder.cardType === "flashcard" ? "Context image included." : "No contextual photo is used."}`;
 };
 
@@ -225,6 +232,16 @@ reviewButton.addEventListener("click", () => {
   state.textContent = "Printable ready";
   reviewButton.textContent = "Printable approved";
   printButton.disabled = !sign.printable || typeof window.print !== "function";
+  sessionStorage.setItem("kinderflowPrintableApproval", JSON.stringify({
+    sign_id: sign.sign_id,
+    candidate_id: builder.activeCandidate.id,
+    asset: builder.activeCandidate.asset,
+    card_type: builder.cardType,
+    language: builder.language,
+    status: "PRINTABLE_READY",
+    publication_status: "DRAFT",
+    approved_at: new Date().toISOString()
+  }));
   status.textContent = printButton.disabled
     ? "The proof is approved locally, but browser printing is not available."
     : "Printable ready. Print / Save as PDF is now available; library publication remains a separate decision.";
@@ -232,8 +249,15 @@ reviewButton.addEventListener("click", () => {
 
 printButton.addEventListener("click", () => {
   if (!builder.layoutReviewed || printButton.disabled) return;
-  status.textContent = "Opening the browser print dialog. Choose Save as PDF to create the proof.";
-  window.print();
+  const sign = selectedSign();
+  const params = new URLSearchParams({
+    sign: sign.sign_id,
+    type: builder.cardType,
+    lang: builder.language,
+    asset: builder.activeCandidate.id
+  });
+  status.textContent = "Opening the dedicated A5 print proof.";
+  window.location.assign(`print-card.html?${params.toString()}`);
 });
 
 document.querySelector("#create-another").addEventListener("click", () => {

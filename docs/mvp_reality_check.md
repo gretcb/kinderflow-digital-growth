@@ -13,8 +13,10 @@ This classification is based on repository evidence on 2 September 2026. “Func
 | Real movement metrics | Run responses contain calculated frames, pose/hand coverage, missing frames, gaps and technical status. |
 | Controlled CV result states | The service distinguishes pass, review needed, insufficient coverage and processing failure. |
 | POC evidence | One reference has 332 frames, 100% pose coverage, 93.98% dominant-hand coverage, 20 missing hand frames and a partial motion-representation result. |
-| Flashcard Studio | Internal KinderFlow tool with local sign selection, English/Spanish output, Flashcard and Routine Card types, deterministic immediate preview and local proof approval. MORE is the only internal proof; other signs can be ineligible. There is no Family Guide, A5/A6 selector or tips toggle. |
-| Browser print | Print actions call `window.print()` and print CSS isolates the selected output. The browser Print / Save as PDF path is implemented, but final saved-PDF visual QA remains pending. This is not server-side PDF generation. PNG export is disabled and labelled prototype. |
+| Grounded visual review | MORE and EAT use exact local Open Peeps source geometry for the selected face, hair and body. Sign mechanics come from curated/local functional references; MediaPipe is supporting evidence. Human review controls internal-printable eligibility. |
+| Sign-aware EAT fallback | The observed EAT run remains reviewable at 76.57% hand coverage and explicitly routes to knowledge/sign-reference fallback with a required operator rationale. It is not sign certification. |
+| Flashcard Studio | Internal KinderFlow tool with English/Spanish output, distinct Flashcard and Routine Card layouts, deterministic preview and human-controlled local proof approval. Routine guidance occupies its own row. |
+| Browser print | The builder opens a dedicated A5 portrait route. That route validates the exact local approval, waits for images, renders one card and then enables Print / Save as PDF. Final saved-PDF visual QA remains pending. PNG export remains disabled. |
 | Structured sign source | `prototype/data/signs.json` supplies five local bilingual records for rendering/regression. It is not a professionally approved library. |
 | Content-operations rules | Separate technical, content, visual and publication states are implemented in Python. Invalid status jumps are rejected. |
 | Deterministic readiness checks | Required content, visual assets, hand review, technical state and explicit human approval are checked with specific blocking reasons. |
@@ -26,7 +28,7 @@ This classification is based on repository evidence on 2 September 2026. “Func
 | LangSmith dry-run | The script builds the prompt, loads the sample output, runs the gate and records what would be traced without a network call. |
 | n8n workflow artifact | A credential-free workflow/export and node specification exist. Import/runtime compatibility still needs verification in the target n8n installation. |
 
-Environment note: the non-integration MVP tests pass in the existing `poc_env` with MediaPipe 0.10.14, but that environment reports Python 3.9.6. The documented target is Python 3.11/3.12, and the machine's default Python 3.13 cannot import the required legacy `mediapipe.solutions` API. A clean supported environment still needs to be reproduced.
+Environment note: the validated local prototype uses the existing `poc_env` with Python 3.9.6 and MediaPipe 0.10.14. Do not upgrade or substitute the machine's default environment for this checkpoint.
 
 ## PROTOTYPE / LOCAL STATE
 
@@ -48,8 +50,8 @@ Environment note: the non-integration MVP tests pass in the existing `poc_env` w
 | Capability | Missing evidence or work |
 |---|---|
 | Professionally approved reference library | Source rights, sign identity and professional suitability are not confirmed for the current local reference. |
-| Final Open Peeps/character artwork | Only the asset contract/integration point exists; no final approved artwork is in the flashcard asset directory. |
-| Reviewed MORE hand-pose asset | A sign-specific SVG and documented hand review are missing. |
+| Production-approved sign artwork | Actual Open Peeps-derived MORE/EAT vectors exist for internal human review, but no candidate is professionally certified or published by this implementation. |
+| Professional hand-pose review | Candidate review is operator-controlled local state; professional sign-language review evidence remains outside this prototype. |
 | Production avatar | No validated retargeting, generation or movement-fidelity result exists. |
 | Live LangSmith evaluation | The repository proves dry-run behaviour, not a captured live trace. |
 | Executed content-ops n8n adapter | The contract is documented; target-runtime execution evidence is missing. |

@@ -39,6 +39,7 @@
                 <div class="form-field"><label for="sign-name">Sign name</label><input id="sign-name" name="sign_name" value="MORE" maxlength="60" required><small>Use the library name, for example MORE.</small></div>
                 <div class="form-field"><label for="routine-context">Routine / context</label><input id="routine-context" name="routine_context" value="Snack time, mealtime, playtime" maxlength="180" required><small>Describe where families and schools may use the sign.</small></div>
                 <div class="form-field"><label for="reference-status">Reference status</label><select id="reference-status" name="reference_status"><option selected>Validated reference</option></select><small>Use validated adult reference material only.</small></div>
+                <div class="form-field"><label for="reference-source-url">Reference source URL <span class="optional-label">Optional</span></label><input id="reference-source-url" name="reference_source_url" type="url" inputmode="url" placeholder="https://example.org/sign-reference" aria-describedby="reference-source-help"><small id="reference-source-help">Stored as provenance only. This webpage is not processed as video.</small></div>
               </fieldset>
 
               <fieldset>
@@ -102,7 +103,18 @@
       <section class="workspace-section section-shell review-section" id="review-section" aria-labelledby="review-title" hidden>
         <div class="review-gate-card">
           <div><p class="eyebrow">Step 4 · Technical review</p><h2 id="review-title">Review movement evidence</h2><p id="review-guidance">Confirm that the evidence is useful enough to prepare a visual.</p><ul class="review-reasons" id="review-reasons"></ul><p class="prototype-boundary"><span class="sr-only">Human approval is the publication gate. </span>This decision accepts the evidence for visual preparation only; it does not certify the sign or publish content.</p></div>
-          <div class="review-controls"><span class="status-pill status-review" id="review-state">Technical review needed</span><button class="button button-primary" id="approve-sign" type="button">Prepare visual</button><button class="button button-secondary" id="use-another-reference" type="button">Use another reference video</button><p id="review-message" class="form-message" aria-live="polite">No technical review action recorded.</p></div>
+          <div class="review-controls">
+            <span class="status-pill status-review" id="review-state">Technical review needed</span>
+            <fieldset class="evidence-route-options" id="evidence-route-options"><legend>Choose evidence route</legend>
+              <label><input type="radio" name="evidence_route" value="LANDMARK_KEY_POSE"><span><strong>Landmark key poses</strong><small>Use when automatic geometry is sufficiently clear.</small></span></label>
+              <label><input type="radio" name="evidence_route" value="HUMAN_SELECTED_FRAME"><span><strong>Choose reference frames</strong><small>Select one or two suggested poses without entering frame numbers.</small></span></label>
+              <label><input type="radio" name="evidence_route" value="KNOWLEDGE_REFERENCE_FALLBACK"><span><strong>Grounded fallback</strong><small>Use curated mechanics and the functional sign reference with available movement evidence.</small></span></label>
+            </fieldset>
+            <div class="reference-frame-picker" id="reference-frame-picker" hidden><strong>Choose Pose A and optionally Pose B</strong><div id="suggested-reference-frames" class="suggested-reference-frames" role="group" aria-label="Suggested reference frames"></div><p id="frame-picker-help">Select at least one frame.</p></div>
+            <div class="form-field fallback-rationale" id="fallback-rationale-field" hidden><label for="technical-review-rationale">Why is grounded fallback appropriate?</label><textarea id="technical-review-rationale" rows="3" maxlength="400" placeholder="For example: the approach and mouth contact are clear in the validated reference, although tracking is incomplete near the face."></textarea><small>Required when grounded fallback is selected.</small></div>
+            <button class="button button-primary" id="approve-sign" type="button">Prepare visual</button><button class="button button-secondary" id="use-another-reference" type="button">Use another reference video</button><p id="review-message" class="form-message" aria-live="polite">No technical review action recorded.</p>
+            <details class="source-details"><summary>Technical and source details</summary><dl><div><dt>Run</dt><dd id="source-detail-run">—</dd></div><div><dt>Evidence route</dt><dd id="source-detail-route">Not selected</dd></div><div><dt>Reference source</dt><dd id="source-detail-url">Not provided</dd></div><div><dt>Character provenance</dt><dd>Open Peeps · founder-verified CC0 record</dd></div></dl></details>
+          </div>
         </div>
       </section>
 
@@ -112,7 +124,7 @@
           <div class="grounding-summary" aria-label="Resolved visual grounding">
             <article><span class="grounding-number">01</span><div><small>Sign knowledge</small><h3 id="grounding-source">Validated reference</h3><p id="grounding-source-note">Sign mechanics and meaning are ready for human confirmation.</p></div><span class="grounding-status status-review" id="grounding-source-status">Review</span></article>
             <article><span class="grounding-number">02</span><div><small>Movement geometry</small><h3 id="grounding-motion">MediaPipe key poses</h3><p id="grounding-motion-note">Relative hand and upper-body positioning from this run.</p></div><span class="grounding-status status-ready" id="grounding-motion-status">Usable</span></article>
-            <article><span class="grounding-number">03</span><div><small>Character identity</small><h3 id="grounding-character">KinderFlow character</h3><p id="grounding-character-note">Smile · bun2 · mid-2 · calm visual language.</p></div><span class="grounding-status status-ready">Applied</span></article>
+            <article><span class="grounding-number">03</span><div><small>Character identity</small><h3 id="grounding-character">KinderFlow character identity</h3><p id="grounding-character-note">Open Peeps visual system · calm monochrome linework.</p></div><span class="grounding-status status-ready">Applied</span></article>
           </div>
           <div class="visual-brief-card">
             <div><p class="card-label">Resolved visual brief</p><h3 id="visual-brief-title">Two hands · upper chest · repeated inward movement</h3><p id="visual-brief-description">A simplified educational illustration prioritising hand relationship, body location and a readable movement cue.</p></div>
@@ -127,16 +139,16 @@
         <div class="visual-candidates" id="visual-candidates" role="radiogroup" aria-label="Visual candidates"></div>
         <div class="visual-review-actions">
           <div><span class="status-pill status-review" id="visual-review-state">Visual review</span><p id="visual-review-status" role="status" aria-live="polite">Select one candidate to continue.</p></div>
-          <div class="button-row"><button class="button button-secondary" id="regenerate-candidate" type="button">Regenerate candidate</button><button class="button button-primary" id="approve-visual" type="button" disabled>Approve visual</button></div>
+          <div class="button-row"><button class="button button-secondary" id="choose-different-evidence" type="button">Choose different pose evidence</button><button class="button button-secondary" id="regenerate-candidate" type="button">Generate another candidate</button><button class="text-link-button" id="reject-visual" type="button">Reject visual</button><button class="button button-primary" id="approve-visual" type="button" disabled>Approve selected visual</button></div>
         </div>
         <p class="prototype-boundary">The candidates are controlled local SVG proofs. They are grounded in the resolved package and require human review; no autonomous visual generation or linguistic certification is claimed.</p>
       </section>
 
       <section class="workspace-section section-tint downstream-section" id="downstream-section" aria-labelledby="downstream-title" hidden>
         <div class="section-shell">
-          <div class="workspace-heading"><div><p class="eyebrow">Step 7 · Approved for printable</p><h2 id="downstream-title">Create the educational card</h2></div><p>The selected illustration is approved for a local printable proof. Library publication remains a separate controlled decision.</p></div>
+          <div class="workspace-heading"><div><p class="eyebrow">Step 7 · Approved for internal printable</p><h2 id="downstream-title">Create the educational card</h2></div><p>The selected illustration is approved for a local printable proof. Library publication remains a separate controlled decision.</p></div>
           <div class="downstream-grid">
-            <article class="primary-downstream"><span class="content-type-tag">Printable ready</span><h3>Flashcard or Routine Card</h3><p>Choose English or Spanish, review the live A6 proof, then print or save it as a PDF.</p><a class="button button-primary" id="create-printable-link" href="flashcards.html">Create printable</a></article>
+            <article class="primary-downstream"><span class="content-type-tag">Printable ready</span><h3>Flashcard or Routine Card</h3><p>Choose English or Spanish, review the live A5 proof, then print or save it as a PDF.</p><a class="button button-primary" id="create-printable-link" href="flashcards.html">Create printable</a></article>
             <article><span class="content-type-tag">Optional content step</span><h3>Content Engine</h3><p>Prepare and review structured school and family wording before a future publication decision.</p><a class="button button-secondary" id="continue-content-engine-link" href="library.html#content-engine-title">Prepare family content</a></article>
             <article><span class="content-type-tag">Separate workflow</span><h3>Story</h3><p>Prepare an original contextual draft using the reviewed sign package.</p><a class="text-link" id="create-story-link" href="create-story.html">Create story</a></article>
           </div>

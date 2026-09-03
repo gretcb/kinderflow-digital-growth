@@ -1,23 +1,23 @@
 {
-  "audit_date": "2026-09-02",
+  "audit_date": "2026-09-03",
   "source_root": "assets/flashcards/source_libraries/Flat Assets/Separate Atoms",
-  "licence_status": "LICENCE_VERIFICATION_NEEDED",
-  "runtime_dependency": false,
+  "licence_status": "FOUNDER_VERIFIED_CC0",
+  "runtime_dependency": true,
   "categories": {
     "base_person": {"count": 3, "examples": ["bust.svg", "standing.svg", "sitting.svg"]},
-    "faces": {"count": 30, "shortlist": ["Calm.svg", "Smile.svg", "Cute.svg"]},
-    "heads_and_hair": {"count": 46, "shortlist": ["Bun.svg", "Afro.svg", "Bangs.svg"]},
-    "bodies_and_clothing": {"count": 30, "shortlist": ["Sweater.svg", "Tee 1.svg", "Striped Tee.svg"]},
+    "faces": {"count": 30, "selected": ["Smile.svg"]},
+    "heads_and_hair": {"count": 46, "selected": ["Bun 2.svg"]},
+    "bodies_and_clothing": {"count": 30, "selected_pose": ["pose/sitting/mid-2.svg"]},
     "accessories": {"count": 9, "shortlist": ["* None.svg"]},
     "facial_hair": {"count": 17, "shortlist": ["* None.svg"]}
   },
   "compatibility_findings": {
-    "stroke_width": "Inspected shortlist roots use stroke-width 1, but full visual review is still required.",
+    "stroke_width": "Selected roots use the Open Peeps filled-path language with a nominal root stroke-width of 1; custom sign layers use rounded, proportionate outlines.",
     "viewboxes": {
       "bust_base": "0 0 1136 1533",
       "face": "0 0 289 293",
       "head": "0 0 473 567",
-      "body": "0 0 818 733"
+      "body_pose_mid_2": "0 0 1534 1856"
     },
     "direct_interchangeability": false,
     "reason": "Category viewBoxes and dimensions differ. A controlled composition needs per-category scale, translation, stacking order and attachment anchors.",

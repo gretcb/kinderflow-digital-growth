@@ -1,0 +1,83 @@
+{
+  "schema_version": "1.0",
+  "library_name": "Open Peeps",
+  "creator": "Pablo Stanley / Pabs Stanley",
+  "official_source_url": "https://www.openpeeps.com/",
+  "licence": "CC0",
+  "verification_basis": "Founder-verified official CC0 reference",
+  "date_recorded": "2026-09-03",
+  "selected_components": [
+    {
+      "role": "face",
+      "path": "assets/flashcards/source_libraries/Flat Assets/Separate Atoms/face/Smile.svg",
+      "sha256": "b58792cfb55fcdbb02092c1ba6f81f647f79ade99748e7502d5787bca3887021"
+    },
+    {
+      "role": "hair",
+      "path": "assets/flashcards/source_libraries/Flat Assets/Separate Atoms/head/Bun 2.svg",
+      "sha256": "d2cee9def8228715fc0aa632871643842a95a0b7feb6de6329560cc24d06f7ab"
+    },
+    {
+      "role": "body",
+      "path": "assets/flashcards/source_libraries/Flat Assets/Separate Atoms/pose/sitting/mid-2.svg",
+      "sha256": "a127d4f40cb66276f73d3c2769237b256fab09b7a23d478ff4e4da1314bb085f"
+    }
+  ],
+  "pose_reference_pool": [
+    25,
+    34,
+    38,
+    42,
+    43,
+    44,
+    45,
+    46,
+    52,
+    57,
+    60,
+    62,
+    64,
+    67,
+    68,
+    71,
+    74,
+    77,
+    78,
+    90
+  ],
+  "derivatives": [
+    {
+      "derivative_asset_id": "more-a",
+      "path": "prototype/assets/signs/more-a.svg",
+      "sha256": "2e99c084eaa833c2b7df04c9e93f9b63eb7ef27faae9a0d2f16fef71869b7fca"
+    },
+    {
+      "derivative_asset_id": "more-b",
+      "path": "prototype/assets/signs/more-b.svg",
+      "sha256": "30bee014949f667cc1dc3ea68725c377ccfaff9b89c0d6b8c796b1ca4339a06b"
+    },
+    {
+      "derivative_asset_id": "more-c-v3",
+      "path": "prototype/assets/signs/more-c.svg",
+      "sha256": "78e185f873f60bf9bebc02b9d6094f7f752fc175f8cc40053031de0fcce83d41"
+    },
+    {
+      "derivative_asset_id": "eat-a",
+      "path": "prototype/assets/signs/eat-a.svg",
+      "sha256": "50b8e62c616c34f425e05717f5dda10c93171246fe4bc6fa27e5db0711b065ab"
+    },
+    {
+      "derivative_asset_id": "eat-b",
+      "path": "prototype/assets/signs/eat-b.svg",
+      "sha256": "b6682219bb058858235175ab7656c0a74d1d6463f75096e5035253aef9249cff"
+    },
+    {
+      "derivative_asset_id": "eat-c-v2",
+      "path": "prototype/assets/signs/eat-c.svg",
+      "sha256": "7110098c86736c9466de74649a98322ae02e21c1c17a6298f90a8fe29edb10c4"
+    }
+  ],
+  "composition": "Exact selected SVG atom geometry embedded in a reusable character symbol; only sign arms/hands and accents are custom.",
+  "voluntary_credit": "Character foundation: Open Peeps by Pablo Stanley.",
+  "publication_status": "DRAFT"
+}

@@ -4,25 +4,20 @@ This local MVP serves two connected internal capabilities: the existing Create a
 
 ## Requirements
 
-- Python 3.11 or 3.12 as the target/recommended clean environment; this exact clean setup has not yet been revalidated in the current evidence pass;
-- MediaPipe legacy Solutions API (MediaPipe 0.10);
+- the existing `poc_env` with Python 3.9.6;
+- MediaPipe 0.10.14 using the legacy Solutions API;
 - ffmpeg with an H.264 encoder available on PATH;
 - an MP4 reference video; and
 - the existing local demo file at *poc/input/sign_reference.mp4* for the demo-reference path.
 
-The currently evidenced local `poc_env` uses Python 3.9.6 with MediaPipe 0.10.14 and passes the non-integration suites. The machine's default Python 3.13 environment is not equivalent: its MediaPipe 1.0.1 package does not expose the legacy `solutions` API.
-
-Create and activate a virtual environment, then install:
-
-~~~bash
-python -m pip install -r mvp/requirements.txt
-~~~
+Do not upgrade or replace this environment for the current prototype. The machine's default Python/MediaPipe installation is not equivalent to the validated local path.
 
 ## Start
 
 From the repository root:
 
 ~~~bash
+source poc_env/bin/activate
 python mvp/app.py
 ~~~
 
@@ -62,21 +57,17 @@ MP4 is the supported MVP format. Uploads are limited to 100 MB, remain local and
 
 MediaPipe/OpenCV first writes the real landmark overlay as an intermediate MPEG-4 Part 2 file. The MVP then uses ffmpeg to create a browser-facing H.264 MP4 with yuv420p pixel format and fast-start metadata. MediaPipe is not rerun. If ffmpeg or H.264 encoding is unavailable, the run stops with a controlled preview error rather than presenting an unplayable video.
 
-## Operator-facing status rules
+## Operator-facing status and evidence routes
 
 - **Pass:** extraction is EXTRACTION_PASS and all five automated POC quality dimensions are PASS.
-- **Review needed:** extraction produced usable movement data and no automated dimension failed, but at least one dimension is PARTIAL.
-- **Fail:** extraction is EXTRACTION_FAIL, motion status is MOTION_REPRESENTATION_FAIL, or any automated quality dimension is FAIL.
+- **Review needed:** extraction produced usable movement data with conditions, or a sign-aware exception applies. EAT at 65–80% dominant-hand coverage with strong pose coverage remains reviewable because near-face occlusion is expected.
+- **Fail:** extraction is unusable outside an explicit sign-aware exception. Visual-package availability is reported separately and is not a MediaPipe result.
 
 The POC's raw statuses remain available under technical details. Proceed with conditions is not shown as the main operator status.
 
-Actions are deliberately bounded:
+The visual flow records one explicit route: `LANDMARK_KEY_POSE`, `HUMAN_SELECTED_FRAME`, `KNOWLEDGE_REFERENCE_FALLBACK`, or the last-resort `INTERNAL_POSE_GUIDE`. Review-needed video can expose four selectable frame suggestions. Grounded fallback requires a rationale. The observed local EAT reference returns **Review needed** at 76.57% dominant-hand coverage and can continue through grounded fallback.
 
-- Pass → **Approve**;
-- Review needed → **Approve anyway** or **Use another reference video**;
-- Fail → **Use another reference video** only.
-
-Movement approval is local browser state and continues to the Content Engine. It does not publish the asset.
+Visual approval records **Approved for internal printable** in session state. It does not certify the sign or publish the asset. The Flashcard Studio hands off to a dedicated A5 route so Flashcards and Routine Cards print as one deterministic portrait card.
 
 For live presentations, keep a short screen recording of the completed demo flow as a fallback. The recording should show the input, stage progression, visual comparison, metrics and review boundary without including private filesystem paths.
 

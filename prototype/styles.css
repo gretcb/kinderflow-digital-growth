@@ -2711,6 +2711,438 @@ footer {
   }
 }
 
+/* Prompt A refinement: explicit evidence choice and deterministic A5 proof. */
+
+.optional-label {
+  color: var(--muted);
+  font-size: 0.72em;
+  font-weight: 650;
+}
+
+.evidence-route-options {
+  display: grid;
+  gap: 9px;
+  margin: 4px 0;
+  padding: 0;
+  border: 0;
+}
+
+.evidence-route-options legend,
+.reference-frame-picker > strong {
+  margin-bottom: 8px;
+  color: var(--ink);
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.evidence-route-options label {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px;
+  align-items: start;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--white);
+  cursor: pointer;
+}
+
+.evidence-route-options label:has(input:checked) {
+  border-color: var(--teal);
+  box-shadow: 0 0 0 2px rgb(31 111 107 / 14%);
+}
+
+.evidence-route-options label:has(input:disabled) {
+  cursor: not-allowed;
+  opacity: 0.52;
+}
+
+.evidence-route-options input {
+  margin-top: 4px;
+}
+
+.evidence-route-options span,
+.evidence-route-options small {
+  display: block;
+}
+
+.evidence-route-options small {
+  margin-top: 3px;
+  color: var(--muted);
+  line-height: 1.35;
+}
+
+.reference-frame-picker,
+.fallback-rationale,
+.source-details {
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #f8f7f2;
+}
+
+.suggested-reference-frames {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+  margin-top: 10px;
+}
+
+.suggested-reference-frames label {
+  position: relative;
+  display: grid;
+  gap: 5px;
+  padding: 6px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--white);
+  cursor: pointer;
+}
+
+.suggested-reference-frames label:has(input:checked) {
+  border-color: var(--teal);
+  box-shadow: 0 0 0 2px rgb(31 111 107 / 15%);
+}
+
+.suggested-reference-frames input {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+.suggested-reference-frames img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.suggested-reference-frames span {
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-align: center;
+}
+
+.fallback-rationale textarea {
+  width: 100%;
+  resize: vertical;
+}
+
+.source-details summary {
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.source-details dl {
+  display: grid;
+  gap: 8px;
+  margin: 12px 0 0;
+}
+
+.source-details dl div {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 8px;
+  font-size: 0.74rem;
+}
+
+.source-details dt {
+  color: var(--muted);
+  font-weight: 750;
+}
+
+.source-details dd {
+  min-width: 0;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.visual-review-actions .button-row {
+  flex-wrap: wrap;
+}
+
+.flashcard-page .flashcard-output {
+  width: min(100%, 560px);
+  min-height: 0;
+  aspect-ratio: 148 / 210;
+  margin-inline: auto;
+  overflow: hidden;
+}
+
+.flashcard-page .flashcard-output[data-card-type="routine"] {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto auto;
+}
+
+.flashcard-page .flashcard-output[data-card-type="routine"] .flashcard-guidance {
+  position: static;
+  isolation: isolate;
+  min-height: 84px;
+  margin: 0;
+}
+
+.print-card-page {
+  min-height: 100vh;
+  margin: 0;
+  background: #e9ece8;
+  color: #1d2a27;
+}
+
+.print-card-main {
+  padding: 28px;
+}
+
+.print-card-toolbar {
+  display: flex;
+  max-width: 900px;
+  margin: 0 auto 24px;
+  padding: 18px 20px;
+  gap: 24px;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #ccd3ce;
+  border-radius: 14px;
+  background: #fff;
+}
+
+.print-card-toolbar h1,
+.print-card-toolbar p {
+  margin: 0;
+}
+
+.print-card-toolbar h1 {
+  margin-block: 3px 5px;
+  font-size: 1.35rem;
+}
+
+.print-card-stage {
+  display: grid;
+  place-items: start center;
+}
+
+.a5-print-card {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
+  width: min(148mm, calc(100vw - 40px));
+  height: min(210mm, calc((100vw - 40px) * 210 / 148));
+  min-height: 680px;
+  max-height: 210mm;
+  padding: 10mm;
+  overflow: hidden;
+  border: 0.35mm solid #50605a;
+  background: #fffdf8;
+  box-shadow: 0 18px 55px rgb(19 36 31 / 16%);
+}
+
+.a5-card-header,
+.a5-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #36544c;
+  font-size: 10pt;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.a5-card-header {
+  padding-bottom: 4mm;
+  border-bottom: 0.4mm solid #789389;
+}
+
+.a5-print-card > h2 {
+  margin: 7mm 0 5mm;
+  color: #18231f;
+  font-size: clamp(38px, 15vw, 60pt);
+  line-height: 0.9;
+  letter-spacing: -0.055em;
+  text-align: center;
+}
+
+.a5-flashcard-grid {
+  display: grid;
+  grid-template-rows: minmax(0, 0.42fr) minmax(0, 0.58fr);
+  gap: 4mm;
+  min-height: 0;
+}
+
+.a5-context-panel,
+.a5-sign-panel,
+.a5-routine-sign {
+  position: relative;
+  min-height: 0;
+  margin: 0;
+  overflow: hidden;
+  border: 0.3mm solid #c7d0cb;
+  border-radius: 5mm;
+  background: #f2f3ee;
+}
+
+.a5-context-panel img,
+.a5-sign-panel img,
+.a5-routine-sign img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.a5-context-panel img {
+  object-fit: cover;
+}
+
+.a5-context-panel figcaption,
+.a5-sign-panel figcaption {
+  position: absolute;
+  right: 3mm;
+  bottom: 3mm;
+  left: 3mm;
+  padding: 2mm 3mm;
+  border-radius: 3mm;
+  background: rgb(255 253 248 / 92%);
+  color: #344740;
+  font-size: 8.5pt;
+  font-weight: 700;
+  line-height: 1.25;
+  text-align: center;
+}
+
+.a5-routine-layout {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto auto;
+  gap: 4mm;
+  min-height: 0;
+}
+
+.a5-routine-row {
+  display: grid;
+  grid-template-columns: 18mm minmax(0, 1fr);
+  gap: 4mm;
+  align-items: center;
+  padding: 3mm 4mm;
+  border: 0.3mm solid #b8c7c1;
+  border-radius: 4mm;
+  background: #edf3f0;
+}
+
+.a5-routine-row svg {
+  width: 18mm;
+  height: 18mm;
+}
+
+.a5-routine-row span,
+.a5-guidance-row span {
+  display: block;
+  margin-bottom: 1mm;
+  color: #5f6f69;
+  font-size: 8pt;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.a5-routine-row strong {
+  font-size: 17pt;
+  line-height: 1.1;
+}
+
+.a5-guidance-row {
+  position: static;
+  min-height: 26mm;
+  padding: 4mm;
+  border-left: 2mm solid #dc725d;
+  background: #f8efe8;
+}
+
+.a5-guidance-row p {
+  margin: 0;
+  font-size: 12.5pt;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.a5-card-footer {
+  margin-top: 4mm;
+  padding-top: 3mm;
+  border-top: 0.3mm solid #c7d0cb;
+  font-size: 8pt;
+}
+
+.print-card-error {
+  max-width: 540px;
+  padding: 28px;
+  border-radius: 14px;
+  background: #fff;
+  text-align: center;
+}
+
+@media (max-width: 700px) {
+  .print-card-main {
+    padding: 14px;
+  }
+
+  .print-card-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .a5-print-card {
+    width: 100%;
+    height: auto;
+    min-height: 720px;
+    aspect-ratio: 148 / 210;
+    padding: 7mm;
+  }
+}
+
+@page kinderflow-a5 {
+  size: A5 portrait;
+  margin: 0;
+}
+
+@media print {
+  body.print-card-page {
+    page: kinderflow-a5;
+    width: 148mm;
+    height: 210mm;
+    margin: 0;
+    background: #fff;
+  }
+
+  body.print-card-page .print-card-main,
+  body.print-card-page .print-card-stage {
+    display: block;
+    width: 148mm;
+    height: 210mm;
+    margin: 0;
+    padding: 0;
+  }
+
+  body.print-card-page .print-card-toolbar,
+  body.print-card-page .print-card-error {
+    display: none !important;
+  }
+
+  body.print-card-page .a5-print-card {
+    display: grid !important;
+    width: 148mm;
+    height: 210mm;
+    min-height: 0;
+    max-height: none;
+    margin: 0;
+    padding: 10mm;
+    overflow: hidden;
+    border: 0;
+    box-shadow: none;
+    break-after: avoid-page;
+    break-inside: avoid-page;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+}
+
 /* Flashcard Studio: focused content-operator workspace */
 
 .builder-intro-studio {
@@ -6729,4 +7161,25 @@ blockquote {
     grid-template-columns: minmax(0, 1fr) 28mm;
     min-height: 54mm;
   }
+}
+
+/* Final Flashcard Studio preview ratio; exported printing uses print-card.html. */
+
+.flashcard-page .print-sheet .flashcard-output {
+  width: min(100%, 560px);
+  height: auto;
+  min-height: 0;
+  max-height: none;
+  aspect-ratio: 148 / 210;
+  overflow: hidden;
+}
+
+.flashcard-page .flashcard-output[data-card-type="routine"] .flashcard-visual-unit {
+  min-height: 0;
+}
+
+.flashcard-page .flashcard-output[data-card-type="routine"] .flashcard-guidance {
+  position: static;
+  z-index: 1;
+  margin-top: 0;
 }

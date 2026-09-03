@@ -101,17 +101,20 @@ The internal MVP flow is:
 
 The Create a Sign route becomes functional when it is served by the local MVP service. An operator can use the existing demo reference or select another MP4. Each run uses the real POC pipeline, produces its own movement overlay and diagnostics, and reports only metrics calculated for that input.
 
-The browser preview is an H.264 MP4 created from the real OpenCV/MediaPipe overlay through a local ffmpeg transcode. Operator-facing outcomes are **Pass**, **Review needed**, or **Fail**. Pass uses MediaPipe key poses, Review needed uses representative reference frames, and Fail can still create a controlled review-needed pose guide from the local sign package instead of ending in an empty state.
+The browser preview is an H.264 MP4 created from the real OpenCV/MediaPipe overlay through a local ffmpeg transcode. Operator-facing outcomes are **Pass**, **Review needed**, or **Fail**. Evidence routing is explicit: landmark key poses, one or two operator-selected reference frames, or a knowledge/sign-reference fallback with a required rationale. EAT is sign-aware: partial hand tracking near the face does not automatically create a dead end.
+
+The MORE and EAT visual candidates embed the exact founder-selected Open Peeps source atoms for face, hair and body. Sign-specific hands/arms and restrained movement accents are custom layers. Local regeneration returns a different prebuilt vector composition with a new ID, path, version and verified hash; it never reorders the original candidates and calls no paid API.
 
 Start it from the repository root:
 
 ~~~bash
+source poc_env/bin/activate
 python mvp/app.py
 ~~~
 
 Then open [http://127.0.0.1:8000/create-sign.html](http://127.0.0.1:8000/create-sign.html).
 
-No child video is required. Files remain local, every run is isolated under *mvp/runs/*, and canonical Round 1 evidence is not overwritten. Technical metrics are movement-processing signals, not linguistic correctness certification or system-wide accuracy. Technical review, visual approval and publication remain separate decisions. Production-ready avatar generation is not complete.
+No child video is required. Files remain local, every run is isolated under *mvp/runs/*, and canonical Round 1 evidence is not overwritten. Technical metrics are movement-processing signals, not linguistic correctness certification or system-wide accuracy. Technical review, internal-printable approval and publication remain separate decisions. Production-ready avatar generation is not complete.
 
 ## Kinder Signs Flashcard Studio
 

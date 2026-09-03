@@ -20,7 +20,7 @@ MVP_ROOT = REPO_ROOT / "mvp"
 sys.path.insert(0, str(MVP_ROOT))
 
 import pipeline  # noqa: E402
-from app import response_schema_ok  # noqa: E402
+from app import regenerate_visual_candidate, response_schema_ok  # noqa: E402
 
 
 class IdCollector(HTMLParser):
@@ -41,6 +41,15 @@ class InputSafetyTests(unittest.TestCase):
     def test_invalid_extension_is_rejected(self) -> None:
         with self.assertRaisesRegex(pipeline.InputError, "supported MP4"):
             pipeline.validate_extension("reference.mov")
+
+    def test_optional_reference_source_url_is_validated_for_provenance_only(self) -> None:
+        self.assertEqual(
+            pipeline.validate_reference_source_url("https://example.org/sign/more"),
+            "https://example.org/sign/more",
+        )
+        self.assertIsNone(pipeline.validate_reference_source_url(""))
+        with self.assertRaisesRegex(pipeline.InputError, "complete http"):
+            pipeline.validate_reference_source_url("example.org/sign")
 
     def test_filename_is_reduced_to_safe_provenance(self) -> None:
         self.assertEqual(
@@ -237,6 +246,46 @@ class PipelineStateTests(unittest.TestCase):
             "status": "FAIL",
         }
         self.assertEqual(pipeline.map_technical_status(base)[0], "Fail")
+
+    def test_eat_partial_hand_coverage_is_sign_aware_review_not_fail(self) -> None:
+        summary = {
+            "extraction": {
+                "status": "EXTRACTION_PARTIAL",
+                "frames_total": 100,
+                "pose_detection_rate_percent": 99.0,
+                "hand_detection_rate_percent": 76.57,
+            },
+            "missing_data": {"unresolved_frames": 19},
+            "status": "MOTION_REPRESENTATION_FAIL",
+            "quality_assessment": [
+                {"dimension": "A. Detection coverage", "status": "PARTIAL"},
+                {"dimension": "B. Missing-data continuity", "status": "PARTIAL"},
+                {"dimension": "C. Short-gap recoverability", "status": "FAIL"},
+                {"dimension": "D. Body-relative stability", "status": "PASS"},
+                {"dimension": "E. Temporal smoothness", "status": "FAIL"},
+            ],
+        }
+        status, reasons, unresolved = pipeline.map_technical_status(summary, "EAT")
+        self.assertEqual(status, "Review needed")
+        self.assertEqual(unresolved, 19.0)
+        self.assertTrue(any("grounded fallback" in reason for reason in reasons))
+        self.assertEqual(pipeline.map_technical_status(summary, "MORE")[0], "Fail")
+
+    def test_real_regeneration_returns_distinct_verified_candidate(self) -> None:
+        result = regenerate_visual_candidate(
+            {"sign_id": "more", "existing_candidate_ids": ["more-a", "more-b"]}
+        )
+        candidate = result["candidate"]
+        self.assertEqual(result["generation_method"], "DETERMINISTIC_LOCAL_VECTOR_RECOMPOSITION")
+        self.assertNotIn(candidate["id"], {"more-a", "more-b"})
+        self.assertNotIn(candidate["asset"], {"assets/signs/more-a.svg", "assets/signs/more-b.svg"})
+        self.assertEqual(result["publication_status"], "DRAFT")
+
+    def test_regeneration_failure_keeps_existing_candidates_honest(self) -> None:
+        with self.assertRaisesRegex(pipeline.InputError, "No additional local candidate"):
+            regenerate_visual_candidate(
+                {"sign_id": "more", "existing_candidate_ids": ["more-a", "more-b", "more-c-v3"]}
+            )
 
 
 class CreateSignPageTests(unittest.TestCase):

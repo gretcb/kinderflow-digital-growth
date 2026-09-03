@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="KinderFlow A5 print proof">
+    <title>A5 printable | KinderFlow</title>
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="styles.css">
+    <script src="print-card.js" defer></script>
+  </head>
+  <body class="print-card-page">
+    <main class="print-card-main">
+      <section class="print-card-toolbar" aria-labelledby="print-proof-title">
+        <div><p class="eyebrow">A5 print proof</p><h1 id="print-proof-title">Review before printing</h1><p id="print-card-status" role="status" aria-live="polite">Preparing the approved internal printable…</p></div>
+        <div class="button-row"><button class="button button-primary" id="open-print-dialog" type="button" disabled>Print / Save as PDF</button><a class="button button-secondary" id="return-to-builder" href="flashcards.html">Return to printable</a></div>
+      </section>
+
+      <section class="print-card-stage" aria-label="A5 printable preview">
+        <article class="a5-print-card" id="a5-print-card" data-card-type="flashcard" aria-label="Kinder Signs A5 internal printable" hidden>
+          <header class="a5-card-header"><strong>KINDER SIGNS</strong><span data-print-kind>FLASHCARD</span></header>
+          <h2 data-print-word>MORE</h2>
+          <div class="a5-flashcard-grid" data-print-flashcard>
+            <figure class="a5-context-panel"><img data-print-context alt=""><figcaption data-context-caption>Everyday context</figcaption></figure>
+            <figure class="a5-sign-panel"><img data-print-sign alt=""><figcaption data-movement-caption>Review the movement cue</figcaption></figure>
+          </div>
+          <div class="a5-routine-layout" data-print-routine hidden>
+            <figure class="a5-routine-sign"><img data-print-routine-sign alt=""></figure>
+            <div class="a5-routine-row">
+              <svg viewBox="0 0 120 120" role="img" aria-labelledby="routine-icon-title"><title id="routine-icon-title">Mealtime routine</title><path d="M20 59h80c-3 27-18 42-40 42S23 86 20 59Z" fill="#dce9e4" stroke="#1d2a27" stroke-width="5"/><path d="M31 58c5-17 16-25 29-25s25 8 29 25" fill="#fffdf8" stroke="#1d2a27" stroke-width="5"/><circle cx="44" cy="48" r="7" fill="#dc725d"/><circle cx="62" cy="42" r="8" fill="#ead8ab"/><circle cx="78" cy="49" r="6" fill="#8dbdb2"/></svg>
+              <div><span data-routine-label>Routine</span><strong data-print-routine-name>Snack time</strong></div>
+            </div>
+            <div class="a5-guidance-row"><span data-guidance-label>How to use it</span><p data-print-guidance></p></div>
+          </div>
+          <footer class="a5-card-footer"><span>KinderFlow</span><span>Internal printable</span></footer>
+        </article>
+        <div class="print-card-error" id="print-card-error" hidden><h2>This printable could not be prepared.</h2><p id="print-card-error-message">Return to visual review and approve a valid visual.</p><a class="button button-primary" href="create-sign.html">Return to visual review</a></div>
+      </section>
+    </main>
+  </body>
+</html>

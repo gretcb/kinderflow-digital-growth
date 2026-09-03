@@ -1,7 +1,7 @@
 {
-  "schema_version": "1.0",
-  "purpose": "Local, deterministic retrieval packages for the Kinder Signs visual-preparation MVP.",
-  "governance_note": "These packages support visual preparation and human review. They do not certify linguistic correctness or publish content.",
+  "schema_version": "2.0",
+  "purpose": "Exact local retrieval packages for the MORE acceptance path and EAT grounded-fallback path.",
+  "governance_note": "These records ground visual preparation and human review. They do not certify linguistic correctness or publish content.",
   "signs": [
     {
       "sign_id": "more",
@@ -15,49 +15,78 @@
         "en": "Use the sign naturally just before offering more food.",
         "es": "Haz el signo de forma natural justo antes de ofrecer más comida."
       },
+      "knowledge": {
+        "hands_used": 2,
+        "dominant_hand": "Both hands participate symmetrically",
+        "non_dominant_hand": "Both hands participate symmetrically",
+        "broad_handshape": "Fingertips gathered on each hand",
+        "palm_orientation": "Hands face one another",
+        "body_location": "Upper chest",
+        "movement": "Hands move together at the fingertips",
+        "direction": "Inward",
+        "repetition": "Small repeated contact",
+        "contact_relationship": "The two gathered fingertip groups meet",
+        "expected_key_pose_count": 2,
+        "variants": "TBD",
+        "source_conflict": "TBD"
+      },
       "movement": {
         "hands": 2,
         "body_location": "Upper chest",
-        "description": "Both hands meet at the fingertips in a small repeated inward movement.",
-        "presentation": "One clear central pose with a small repeat indicator; a two-pose sequence is also suitable.",
-        "technical_evidence": "Real local MediaPipe run available",
-        "evidence_quality": "Proceed with conditions"
+        "description": "Both gathered fingertip groups meet at upper-chest height.",
+        "presentation": "A start/contact sequence best preserves the repeated inward relationship.",
+        "technical_evidence": "MediaPipe-based pose and hand landmark tracking",
+        "evidence_quality": "Use sign-aware review"
       },
       "visual_identity": {
-        "base_system": "Open Peeps-derived KinderFlow character",
-        "face": "smile",
-        "hair": "bun2",
-        "body": "mid-2",
-        "mood": "Calm, warm and child-friendly"
+        "base_system": "Open Peeps visual system",
+        "operator_description": "KinderFlow character identity · calm monochrome linework",
+        "mood": "Calm, editorial and friendly"
       },
       "grounding_sources": [
-        {"label": "Validated sign reference", "role": "Sign meaning and mechanics", "status": "Human confirmation required"},
-        {"label": "MediaPipe evidence", "role": "Relative hand and body positioning", "status": "Usable with conditions"},
-        {"label": "KinderFlow character system", "role": "Character identity and visual language", "status": "Applied"}
+        {"label": "Curated sign knowledge", "role": "Canonical mechanics and usage; human confirmation required", "status": "Applied"},
+        {"label": "Functional sign reference", "role": "Local MORE flashcard and reference video define pose sequence", "status": "Applied"},
+        {"label": "Movement evidence", "role": "MediaPipe supports broad geometry and diagnostics where usable", "status": "Condition-dependent"},
+        {"label": "Open Peeps visual system", "role": "Character identity only; not the movement source", "status": "Applied"}
       ],
-      "fallback": {
-        "preferred_level": 1,
-        "low_confidence_level": 2,
-        "no_landmarks_level": 3,
-        "final_level": 4,
-        "final_label": "Controlled pose guide · review needed"
+      "evidence_routes": {
+        "pass": "LANDMARK_KEY_POSE",
+        "review": "HUMAN_SELECTED_FRAME",
+        "fallback": "KNOWLEDGE_REFERENCE_FALLBACK",
+        "last_resort": "INTERNAL_POSE_GUIDE"
       },
       "candidates": [
         {
           "id": "more-a",
+          "version": 2,
           "label": "Candidate A",
-          "title": "Single-pose teaching view",
-          "asset": "assets/signs/more-candidate-a.svg",
-          "review_note": "Largest hand area and clearest chest-level placement.",
-          "recommended": true
+          "title": "Single teaching pose",
+          "asset": "assets/signs/more-a.svg",
+          "content_hash": "2e99c084eaa833c2b7df04c9e93f9b63eb7ef27faae9a0d2f16fef71869b7fca",
+          "review_note": "Large contact pose with a compact repeat cue.",
+          "recommended_for": "Single-pose readability"
         },
         {
           "id": "more-b",
+          "version": 2,
           "label": "Candidate B",
-          "title": "Two-pose movement view",
-          "asset": "assets/signs/more-candidate-b.svg",
-          "review_note": "Start and contact positions are shown as a compact sequence.",
-          "recommended": false
+          "title": "Start and contact sequence",
+          "asset": "assets/signs/more-b.svg",
+          "content_hash": "30bee014949f667cc1dc3ea68725c377ccfaff9b89c0d6b8c796b1ca4339a06b",
+          "review_note": "Two panels make the together/apart relationship explicit.",
+          "recommended_for": "Two-state movement explanation"
+        }
+      ],
+      "regeneration_candidates": [
+        {
+          "id": "more-c-v3",
+          "version": 3,
+          "label": "New candidate",
+          "title": "Movement-focused alternate",
+          "asset": "assets/signs/more-c.svg",
+          "content_hash": "78e185f873f60bf9bebc02b9d6094f7f752fc175f8cc40053031de0fcce83d41",
+          "review_note": "A distinct single-pose crop emphasises the inward direction.",
+          "recommended_for": "Alternate arrow placement"
         }
       ],
       "contextual_image": {
@@ -66,7 +95,104 @@
         "scope": "Flashcard only"
       },
       "routine_icon": "snack",
-      "review_status": "READY_FOR_HUMAN_REVIEW"
+      "review_status": "READY_FOR_HUMAN_REVIEW",
+      "publication_status": "DRAFT"
+    },
+    {
+      "sign_id": "eat",
+      "labels": {"en": "EAT", "es": "COMER"},
+      "usage": {
+        "en": "Use when food is offered or a familiar meal begins.",
+        "es": "Úsalo al ofrecer comida o al comenzar una comida habitual."
+      },
+      "routine": {"en": "Mealtime", "es": "Hora de comer"},
+      "routine_guidance": {
+        "en": "Use the sign naturally when a familiar meal begins.",
+        "es": "Haz el signo de forma natural al comenzar una comida habitual."
+      },
+      "knowledge": {
+        "hands_used": 1,
+        "dominant_hand": "One dominant hand",
+        "non_dominant_hand": "Not used",
+        "broad_handshape": "Fingertips gathered",
+        "palm_orientation": "Toward the mouth",
+        "body_location": "Mouth",
+        "movement": "Gathered fingertips approach and contact the mouth",
+        "direction": "Toward the mouth",
+        "repetition": "One tap for this reviewed teaching distinction",
+        "contact_relationship": "Gathered fingertips meet the mouth",
+        "expected_key_pose_count": 2,
+        "variants": "TBD",
+        "source_conflict": "TBD"
+      },
+      "movement": {
+        "hands": 1,
+        "body_location": "Mouth",
+        "description": "One gathered dominant hand moves toward the mouth for one reviewed contact.",
+        "presentation": "A start/contact sequence makes the approach and mouth location clear.",
+        "technical_evidence": "Partial MediaPipe-based pose and hand tracking may remain useful despite face occlusion",
+        "evidence_quality": "Technical review needed — usable with grounded fallback"
+      },
+      "visual_identity": {
+        "base_system": "Open Peeps visual system",
+        "operator_description": "KinderFlow character identity · calm monochrome linework",
+        "mood": "Calm, editorial and friendly"
+      },
+      "grounding_sources": [
+        {"label": "Curated sign knowledge", "role": "One-hand mouth approach and one-tap review distinction", "status": "Applied"},
+        {"label": "Functional sign reference", "role": "Local EAT flashcard and reference video define start/contact mechanics", "status": "Applied"},
+        {"label": "Movement evidence", "role": "Available geometry supports review; near-face gaps are expected", "status": "Usable with conditions"},
+        {"label": "Open Peeps visual system", "role": "Character identity only; not the movement source", "status": "Applied"}
+      ],
+      "evidence_routes": {
+        "pass": "LANDMARK_KEY_POSE",
+        "review": "KNOWLEDGE_REFERENCE_FALLBACK",
+        "fallback": "KNOWLEDGE_REFERENCE_FALLBACK",
+        "last_resort": "INTERNAL_POSE_GUIDE"
+      },
+      "sign_aware_review": {
+        "coverage_floor_percent": 65,
+        "coverage_ceiling_percent": 80,
+        "reason": "Hand-to-face occlusion makes the critical approach/contact window more important than overall hand coverage."
+      },
+      "candidates": [
+        {
+          "id": "eat-a",
+          "version": 1,
+          "label": "Candidate A",
+          "title": "Mouth-contact teaching pose",
+          "asset": "assets/signs/eat-a.svg",
+          "content_hash": "50b8e62c616c34f425e05717f5dda10c93171246fe4bc6fa27e5db0711b065ab",
+          "review_note": "The mouth location and one-hand relationship are dominant.",
+          "recommended_for": "Single-pose readability"
+        },
+        {
+          "id": "eat-b",
+          "version": 1,
+          "label": "Candidate B",
+          "title": "Approach and contact sequence",
+          "asset": "assets/signs/eat-b.svg",
+          "content_hash": "b6682219bb058858235175ab7656c0a74d1d6463f75096e5035253aef9249cff",
+          "review_note": "Two panels distinguish the approach from the single mouth contact.",
+          "recommended_for": "Start/end movement explanation"
+        }
+      ],
+      "regeneration_candidates": [
+        {
+          "id": "eat-c-v2",
+          "version": 2,
+          "label": "New candidate",
+          "title": "Approach-focused alternate",
+          "asset": "assets/signs/eat-c.svg",
+          "content_hash": "7110098c86736c9466de74649a98322ae02e21c1c17a6298f90a8fe29edb10c4",
+          "review_note": "A distinct crop emphasises the hand path toward the mouth.",
+          "recommended_for": "Alternate movement emphasis"
+        }
+      ],
+      "contextual_image": null,
+      "routine_icon": "mealtime",
+      "review_status": "GROUNDED_FALLBACK_AVAILABLE",
+      "publication_status": "DRAFT"
     }
   ]
 }
