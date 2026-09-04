@@ -1,67 +1,153 @@
 # KinderFlow plain-language UX audit
 
-Date: 3 September 2026
+Date: 4 September 2026
 
-## Scope and method
+## Scope
 
-This audit covers the eleven current prototype routes, including the dedicated print-proof route, and the JavaScript that writes copy into them. Primary UI now leads with the user’s task and decision. Internal keys, API fields, stored state values and test fixtures remain unchanged; JavaScript presentation maps translate those values for display.
+The prototype contains 12 HTML routes. The local MVP service maps its root route to create-sign.html. A basic static server maps its root to index.html.
 
-Technical evidence is available only to KinderFlow Admin users through disclosures labelled **Technical and source details**. School and Family views contain product and routine language only.
+The audit distinguishes visible product language from internal stored values. Exact UI labels take priority in user instructions. Raw statuses and provenance remain available through Technical and source details where the interface exposes them.
 
-## Route audit
+## Route map
 
-| Route | Role and primary user | Primary task | Internal wording found | Plain-language result | Changed | Technical detail | Deferred |
-|---|---|---|---|---|---|---|---|
-| `index.html` | KinderFlow Hub; prospective schools and product reviewers | Understand the product and choose a view | Computer Vision, MediaPipe, generative architecture, capstone prototype | Explains trusted references, consistent formats and human review | Yes | Removed from this public surface | Broader Hub information architecture remains Prompt 6A |
-| `admin.html` | KinderFlow Admin; internal operator | Open content, school and activity workspaces | Static prototype, bounded operational signals, illustrative metrics | Uses operations, example activity and a single truthful example-data boundary | Yes | Not needed on this route | Live analytics remain outside the MVP |
-| `content-studio.html` | KinderFlow Admin; content operator | Choose a top-level workspace | Direct Flashcard/Story/Song tools and implementation-first descriptions | Uses Studio overview, Create sign, Master Library and Schools; family formats are derived outputs | Yes | Method details remain in a **Technical and source details** disclosure | Library architecture remains Prompt 5 |
-| `create-sign.html` | KinderFlow Admin; sign operator and reviewer | Choose a sign/reference, review the reference, choose a visual and create family materials | Processing, technical review, landmarks, grounded fallback, visual package/candidate, internal printable, raw run state | Uses the nine-step product journey, reference review, reviewed references, visual options and family materials | Yes | Raw status, metrics, source/run data and Open Peeps provenance remain in **Technical and source details** | MediaPipe extraction is unchanged |
-| `library.html` | KinderFlow Admin; content and library reviewer | Review content readiness and prepare family wording | Raw generation labels, JSON, deterministic gate, LangSmith, component filenames and policy states | Uses AI-assisted draft, approved source copy, quality checks and clear readiness labels | Yes | Raw structured output, review trace, component metadata and operations report remain in **Technical and source details** disclosures | Master Content Library redesign remains Prompt 5 |
-| `flashcards.html` | KinderFlow Admin; printable reviewer | Choose a reviewed sign, card/language, approve and print | Eligible/internal proof, grounded visual package, not ready | Uses Finish your printable, Ready for approval, Back to visual options and Bilingual/Spanish | Yes | Internal stored approval values remain hidden | Final saved-PDF visual QA remains |
-| `print-card.html` | KinderFlow Admin; printable reviewer | Review the A5 proof and open Print / Save as PDF | Internal printable in status, accessible name and card footer | Uses printable proof consistently | Yes | Internal stored approval values remain hidden | Final saved-PDF visual QA remains Prompt 4 |
-| `create-story.html` | KinderFlow Admin; story author and reviewer | Choose story details, create an English or Spanish draft and review it | Structured prompt, evaluator score, LLM/n8n/LangSmith flow, misleading Published label | Uses story details, story checks, human review and approved locally | Yes | Architecture and evaluation tooling remain in **Technical and source details** | Catalan remains Prompt 4 |
-| `create-song.html` | KinderFlow Admin; product/content planner | Understand the planned Song format | P3 extensibility and implementation-dependency wording | Uses planned format, coming later and a clear future review path | Yes | Removed because no technical action is available | Song generation remains a later capability |
-| `school.html` | School Admin; educator or school administrator | See plan content, share signs and manage family access | Operations, distribution, metrics and prototype phrasing | Uses Little Steps Nursery, your plan, available content, Share and active assignments | Yes | Demo disclosure is collapsed under **Demo details** | Production persistence remains outside the MVP |
-| `family.html` | Family View; parent or caregiver | Understand the sign, routine and shared materials | Output preview, fictional/demo, implementation and publication boundaries | Uses shared by Little Steps Nursery, sign guidance, family materials and a clear help path | Yes | None exposed | Additional languages and final delivery remain outside the MVP |
+### index.html
+
+Role: platform overview for prospective schools and reviewers.
+
+Primary heading: Bring nursery learning home.
+
+Boundary: the statement that families receive active materials describes the intended experience. Real assignment delivery is not implemented.
+
+### kinder-signs.html
+
+Role: Kinder Signs product overview.
+
+Primary heading: Turn Baby Sign knowledge into content families can use.
+
+Boundary: this route explains the proposition. It does not prove that content is published or commercially available.
+
+### admin.html
+
+Role: KinderFlow Team operations overview.
+
+Primary heading: KinderFlow Admin.
+
+Boundary: activity and access values are explicitly example data. No live accounts, permissions, or analytics are connected.
+
+### content-studio.html
+
+Role: internal product and workspace selector.
+
+Primary heading: KinderFlow Content Studio.
+
+Boundary: Kinder Signs is the active prototype. Kinder Daily and Kinder Food are future products.
+
+### create-sign.html
+
+Role: internal sign operator and reviewer.
+
+Primary heading: Create a sign.
+
+The five visible steps are:
+
+1. Sign & reference.
+2. Review reference.
+3. Choose poses.
+4. Approve visual.
+5. Family materials.
+
+Exact source labels are Upload a video, Use a direct video URL, and Use demo reference. The submission action is Review the sign reference.
+
+The evidence choices are Use tracked poses, Choose reference frames, and Use reviewed references. The decision action is Create family materials.
+
+Visual actions are Create visual options, Choose different pose, Create another visual option, Reject visual, and Approve selected visual.
+
+Technical terms, run IDs, source paths, and raw status values remain under Technical and source details. The visible Reviewed reference label maps to the internal request value Validated reference.
+
+### library.html
+
+Role: internal Content Library and wording-readiness demonstration.
+
+Primary heading: Content Library.
+
+Boundary: the five-record Content Operations set is separate from the six-sign visual registry. Every governed publication record remains blocked.
+
+### flashcards.html
+
+Role: internal printable reviewer.
+
+Primary heading: Create a printable.
+
+Exact output choices are Flashcard and Routine Card. Exact language choices are Bilingual and Spanish. The approved visual cannot be changed on this route.
+
+Boundary: the route creates a local proof only.
+
+### print-card.html
+
+Role: internal print-proof reviewer.
+
+Primary heading: Review before printing.
+
+Boundary: the only export action is browser Print or Save as PDF. No PNG or server PDF action exists.
+
+### create-story.html
+
+Role: internal story author and reviewer.
+
+Primary heading: Turn a reviewed sign into a simple story.
+
+Boundary: the current script produces deterministic English or Spanish text for MORE only. No live LLM, n8n, or LangSmith call occurs.
+
+### create-song.html
+
+Role: future-format explanation.
+
+Primary heading: Song.
+
+Boundary: Coming soon and Not available yet are the current status labels.
+
+### school.html
+
+Role: Little Steps Nursery educator or administrator.
+
+Primary heading: Share Kinder Signs with your families.
+
+The interface supports selecting a sign, group, materials, and audience. The audience can be everyone in the group or one child. It blocks an exact duplicate and supports edit and removal for active assignments.
+
+Boundary: synthetic data and browser session storage only. Share is demonstration copy, not proof of real delivery.
+
+### family.html
+
+Role: family-facing preview.
+
+Primary heading: Your Kinder Signs.
+
+The page labels its collection Your mini-library and Signs shared with you. It can filter and combine assignments from the current browser session. If no stored assignment exists, it inserts a synthetic MORE example.
+
+Boundary: a family-facing guidance prototype exists. A personalised assignment-driven family library remains a next product iteration.
 
 ## Presentation mappings
 
-Representative display mappings include:
+- MediaPipe processing appears as Reference review.
+- Landmark extraction appears as Find the reference poses.
+- Dominant-hand landmark coverage appears as Main-hand visibility in summary copy.
+- KNOWLEDGE_REFERENCE_FALLBACK appears as Reviewed references.
+- Visual package appears as Sign visual.
+- Candidate appears as Visual option.
+- APPROVED_FOR_INTERNAL_PRINTABLE appears as Ready for family materials.
+- LLM_ASSISTED appears as AI-assisted draft.
+- HUMAN appears as Approved source copy.
+- Deterministic quality gate appears as Quality checks.
+- DRY_RUN appears as Demo mode in technical details.
+- NOT_APPLICABLE appears as Not used for this step in technical details.
 
-| Internal value or concept | Primary UI label |
-|---|---|
-| MediaPipe processing | Reference review |
-| Landmark extraction | Find the reference poses |
-| Technical review | Reference review |
-| Dominant-hand landmark coverage | Main-hand visibility |
-| Unresolved frames | Frames needing review |
-| `KNOWLEDGE_REFERENCE_FALLBACK` | Reviewed references |
-| Visual package | Sign visual |
-| Candidate | Visual option |
-| Approved for internal printable | Ready for family materials |
-| `LLM_ASSISTED` | AI-assisted draft |
-| `HUMAN` | Approved source copy |
-| Deterministic quality gate | Quality checks |
-| `DRY_RUN` | Demo mode, in details only |
-| `NOT_APPLICABLE` | Not used for this step, in details only |
+## Accessibility and responsive evidence
 
-## Story language behavior
+- Native labelled controls remain in place.
+- Status changes use live regions.
+- Visual choices remain keyboard-operable radio controls.
+- Details summaries have visible focus styles.
+- The five-step flow reflows across desktop, tablet, and mobile layouts.
+- Tests cover headings, duplicate IDs, labels, local links, JavaScript syntax, story languages, and the 18 visual candidates.
 
-Story output supports English and Spanish. The selected language is shown in the preview metadata. Each language uses a complete, separate story variant so the output is not mixed. Changing language or any other brief field clears the previous story text, returns the flow to Draft, disables review actions and requires a new draft before approval.
-
-## Sign and printable recovery behavior
-
-Create a Sign resolves its illustration only from the explicit selected sign identity, preferring `run.sign.sign_id`. MORE, HELP, EAT, SLEEP, MILK and WATER are explicit choices. The included app demo selects and retains MORE; historical POC evidence remains WATER. A supported sign without a reviewed illustration shows a truthful not-ready message; an unknown sign shows an unsupported message. Neither state falls back to MORE.
-
-Flashcard Studio distinguishes three cases: requested sign ready, requested sign awaiting visual review, and requested sign unsupported. An unsupported query never silently selects MORE. Normal first-sign selection remains only when no sign was requested.
-
-## Accessibility and responsive checks
-
-- Native labelled controls are retained.
-- Status changes use `aria-live` regions already present in the routes.
-- Visual options remain keyboard-operable radio controls with descriptive alternative text.
-- Details summaries have visible keyboard focus.
-- The nine-step sign journey reflows across desktop, tablet and mobile layouts.
-- Existing reduced-motion, focus-visible, 44 px target and responsive rules remain in place.
-
-Automated checks cover headings, duplicate IDs, labels, local links, prohibited primary-language terms, JavaScript syntax and bilingual Story output. A headless-browser render pass covered all 18 sign candidates and the three registered Open Peeps source examples; founder visual and sign-language review is still required.
+These checks support interface quality. They do not replace assistive-technology testing with users.

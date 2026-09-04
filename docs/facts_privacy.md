@@ -1,50 +1,144 @@
-# Privacy facts
+# Kinder Signs Privacy Facts
 
-This is a data-minimisation inventory for later GDPR work. It is not a GDPR certification.
+**Frozen baseline:** 8eb0742
+**Scope:** Current local MVP and proposed controlled pilot
 
-## DATA CURRENTLY USED
+This fact sheet is a repository writing control. It is not legal advice or a privacy certificate. Use the [full GDPR record](../compliance/gdpr_documentation.md) for the processing register, role analysis, retention, rights, recipients, transfers, security, and DPIA screen.
 
-| Data | Why it exists | Current handling |
-|---|---|---|
-| Local adult reference video | Source for movement extraction | Processed locally; input and run media are excluded from Git |
-| Hand and pose landmarks | Structured technical evidence | Stored in local POC/MVP run artifacts; canonical CSV evidence is excluded from public Git |
-| Capture diagnostics | Explain coverage, gaps and technical status | Small non-sensitive JSON/plots are retained as evidence |
-| Sign name, routine and family copy | Build content and printable output | Local structured JSON |
-| Source reference and technical run ID | Link an asset to its evidence | Synthetic/controlled identifiers; no raw path shown in the UI |
-| File hashes | Detect changes in referenced local artifacts | Stored in manifests; they do not establish ownership or correctness |
-| Content-operations events | Record local system/workflow events | System/synthetic identifiers; no reviewer name or child data |
-| Fictional school/child labels | Demonstrate assignment UX | Static examples such as School A and Child A; not real records |
+## Current local MVP
 
-## DATA NOT REQUIRED
+| Item | Current fact |
+| --- | --- |
+| Reference subject | Intended to be an adult |
+| Input | Registered MORE demo, local MP4 upload, or bounded public direct MP4 URL |
+| Processing | Local OpenCV and MediaPipe |
+| Artifacts | Local video copy, landmarks, metrics, plots, and previews |
+| Nursery data | Synthetic Little Steps Nursery fixture |
+| Child and family data | Synthetic labels such as Child A to Child F; no real accounts |
+| Assignment | Local or session-based prototype |
+| Family View | Basic guidance preview, not production delivery |
+| LLM and LangSmith | No evidenced live transfer of personal data |
+| Child media | None in intended core scope |
+| Age estimation | Not implemented or claimed |
 
-| Data | Why it is not required for the core workflow |
-|---|---|
-| Child video or photograph | The CV use case processes controlled reference material, not child performance |
-| Child name or surname | Content production and template rendering do not need identity |
-| Health or developmental data | Kinder Signs does not diagnose, score or personalise clinical support |
-| Emotion or biometric identification | Not part of the intended purpose |
-| Family message content | The prototype prepares output but does not integrate with a communication channel |
-| Payment details | Billing is not implemented |
+An identifiable adult video is personal data. Pose and hand landmarks can also be personal data when they remain linkable to that adult.
 
-## POTENTIAL FUTURE PILOT DATA
+The current system does not use landmarks to identify a person. It does not infer emotion or estimate age. Special-category biometric treatment would require processing for unique identification, which is not the current purpose.
 
-| Field | Why it would exist | What should be minimised |
-|---|---|---|
-| `event_id` | Deduplicate and trace a product event | Use a random ID with no embedded personal data |
-| `timestamp` | Order actions and measure task duration | Limit precision/retention to what the metric needs |
-| `event_type` | Count a defined action | Use an allow-list; no free-text activity description |
-| `school_id` | Measure adoption by participating school | Use a synthetic/pseudonymous code in analysis data |
-| `group_id` | Measure group assignment | Do not include group names unless operationally necessary |
-| `family_id` | Measure delivery/reach without names | Use a short-lived pseudonymous ID; avoid child linkage where possible |
-| `sign_id` / content type | Attribute use to a library item | No personal data is needed |
-| `duration_ms` | Estimate educator/reviewer effort | Store task duration, not detailed staff monitoring |
-| minimal metadata | Explain the specific event | No names, media, health fields, developmental notes or unrestricted free text |
+## Direct MP4 URL
 
-## Decisions needed before a real pilot
+The local service:
 
-- Define controller/processor roles and every vendor receiving data.
-- Confirm the lawful basis and participant notices.
-- Decide whether family-level IDs are necessary or whether aggregates are enough.
-- Set access, retention, deletion, backup and incident rules.
-- Decide whether a DPIA is required for the actual pilot design.
-- Prevent prototype fields from becoming production data collection by default.
+- accepts a public HTTP or HTTPS direct MP4;
+- rejects local and private targets;
+- validates resolved addresses and redirects;
+- limits type, size, time, and redirects;
+- writes a generated local file;
+- cleans failed partial files; and
+- strips the URL query from persisted provenance.
+
+The remote host still receives request metadata such as the service's public IP and user-agent. The local service receives and stores the video. The control does not prove source rights, performer consent, sign correctness, or malware safety.
+
+## Family View boundary
+
+A family-facing guidance prototype exists. A personalised assignment-driven family library remains a next product iteration.
+
+The current screens do not prove:
+
+- real caregiver identity;
+- family-to-child relationship verification;
+- nursery separation;
+- persistent assignments;
+- notifications; or
+- secure delivery to family accounts.
+
+## Proposed pilot minimum
+
+Use group assignment by default.
+
+Potential pilot data:
+
+- nursery account;
+- administrator and educator identity;
+- role and access events;
+- group ID;
+- sign and material assignment;
+- authorised family contact or access credential;
+- pseudonymous child assignment ID only when individual assignment is necessary;
+- review and publication log;
+- minimal security, support, notice, and request records; and
+- aggregated or pseudonymous pilot measures.
+
+Exclude by default:
+
+- child video, voice, or photograph;
+- health, diagnosis, disability, or development data;
+- emotion or behaviour inference;
+- learning or ability scores;
+- free-text child observations;
+- family history; and
+- personal data in LLM or LangSmith prompts and traces.
+
+## Role and legal-basis questions
+
+The nursery is likely controller for its child and family relationship records. KinderFlow may be processor when it stores assignments only on documented nursery instructions. KinderFlow may be controller for its own account administration, security, and adult-reference content production.
+
+These are working assumptions. Contracts and actual purposes decide the roles.
+
+Before pilot:
+
+- assign a controller and processor for every purpose;
+- select and document an Article 6 basis for every activity;
+- complete Article 28 terms where KinderFlow is processor;
+- avoid bundled consent;
+- assess GDPR Article 8 only if a service is offered directly to a child and relies on consent;
+- complete a vendor and international-transfer record; and
+- complete the DPIA.
+
+## Retention facts
+
+Current local run artifacts remain until manually removed. Git ignore is not deletion.
+
+Proposed pilot targets include:
+
+- adult source: delete within 30 days after review closes;
+- landmarks and technical previews: delete within 90 days after the final content decision unless a smaller approved evidence subset is required;
+- account data: delete or anonymise within 30 days after the relationship ends, subject to legal records;
+- assignments: delete within 90 days after the service need ends;
+- security logs: 90 days unless an active incident requires longer;
+- row-level pilot measures: aggregate and delete within 30 days after the pilot decision; and
+- publication decisions: keep for the active life plus 12 months after withdrawal.
+
+These are proposed design targets, not implemented policy. The controller must approve or replace them and test deletion across active stores, exports, temporary files, and backups.
+
+## Rights, recipients, and incidents
+
+The pilot needs an authenticated process for information, access, correction, deletion, restriction, portability where applicable, objection where applicable, and withdrawal where consent is used.
+
+Current local processing has no evidenced live LLM or LangSmith recipient. A public direct-video host sees the fetch request. Gemini FX files were prepared separately; their original provider-side source, location, retention, and transfer facts are not documented.
+
+Every pilot vendor needs a recorded purpose, role, data, sub-processor list, location, retention, security, deletion, and transfer mechanism.
+
+The pilot also needs a tested breach and content-withdrawal process. The controller must assess supervisory-authority and individual notification under GDPR Articles 33 and 34 for each qualifying incident.
+
+## DPIA fact
+
+The proposed persistent family-access flow concerns children as vulnerable data subjects and may combine new technology, account linkage, and targeted assignment. A complete DPIA is a pilot gate, even if the first design is group-first.
+
+Stop before live data if:
+
+- an individual child ID is not necessary;
+- a wrong family can access an assignment;
+- personal data can enter an AI or monitoring path;
+- vendor locations or transfers are unknown;
+- deletion cannot be demonstrated; or
+- high residual risk remains unresolved.
+
+## Evidence
+
+- [Local processing and direct URL code](../mvp/pipeline.py)
+- [Local routes](../mvp/app.py)
+- [Current tests](../mvp/tests/test_prompt_3.py)
+- [Prototype documentation](../prototype/README.md)
+- [Canonical asset registry](../assets/registry/sign_asset_registry.json)
+- [GDPR text](https://eur-lex.europa.eu/eli/reg/2016/679/oj)

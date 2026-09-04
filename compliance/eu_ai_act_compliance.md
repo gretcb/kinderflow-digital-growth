@@ -1,928 +1,378 @@
-# KinderFlow — EU AI Act Preliminary Internal Assessment
+# KinderFlow EU AI Act Preliminary Intended-Purpose Assessment
 
-**Project:** KinderFlow — Early Childhood Digital Growth  
-**Use case assessed:** Kinder Signs  
-**Assessment date:** 2 September 2026  
-**Assessment scope:** Current local MVP, proposed controlled pilot, and foreseeable production deployment  
-**Regulatory basis:** Regulation (EU) 2024/1689 (Artificial Intelligence Act), consolidated version current in 2026
+**Assessment date:** 4 September 2026
+**Frozen repository baseline:** 8eb0742, Freeze connected KinderFlow capstone demo
+**Assessment type:** Preliminary intended-purpose assessment
+**Decision use:** Controlled pilot planning
 
-> This document is a capstone compliance assessment, not formal legal advice. Final production classification and contractual roles should be confirmed before a real-school deployment.
+This document is a product and governance assessment. It is not legal advice, a regulatory determination, or a compliance certificate. KinderFlow must repeat the assessment when the intended purpose, users, data, model providers, deployment design, or applicable law changes.
 
----
+## Executive conclusion
 
-# 1. Executive takeaway
+Kinder Signs uses Computer Vision to turn an adult reference video into technical movement evidence for human review. It can also prepare bounded family wording through an optional model path, although the repository proves only deterministic and dry-run evaluation evidence, not a live external model run. The product prototype includes six sign records, draft sign visuals, nursery assignment interactions, and a basic family-facing guidance preview.
 
-## Executive question
+The current intended purpose does not:
 
-**How should Kinder Signs be classified under the EU AI Act, and what must KinderFlow do before a controlled pilot?**
+- admit a child to education;
+- determine access to education;
+- assign an educational level;
+- evaluate a child's learning outcome;
+- assess, score, rank, or profile a child;
+- monitor prohibited behaviour during a test;
+- recognise emotion;
+- identify or categorise a person biometrically; or
+- make an automated educational decision.
 
-## Current conclusion
+On that intended-purpose evidence, Kinder Signs does not appear to perform an education or biometric function listed as high risk in Annex III. This conclusion depends on function, not on the product being used near children or in a nursery setting. It is preliminary and must not be shortened to a generic risk label.
 
-**Preliminary internal assessment: the current intended use does not appear to match the Annex III high-risk education uses.**
+The product is not ready for an external pilot on regulatory documentation alone. Rights, sign review, role allocation, transparency, data protection, security, audit logging, and the current registry-to-content-package mismatch remain pilot gates.
 
-Kinder Signs operates in an educational context, but the current system does not perform the education functions listed as high-risk in Annex III. It does not determine access or admission to education, evaluate learning outcomes, decide educational level, or monitor prohibited behaviour during tests.
+## Scope and evidence
 
-The current product also does not perform emotion recognition, biometric identification, biometric categorisation, child scoring, developmental assessment or automated educational decision-making.
+The assessment covers the repository state at 8eb0742.
 
-This working conclusion depends on the **intended purpose remaining narrow**. Final classification should be confirmed against the actual pilot design and deployment roles before launch.
+| Component | Current evidence | Evidence state |
+| --- | --- | --- |
+| Adult reference intake | Registered demo, local MP4 upload, or bounded public direct MP4 URL | Implemented local control |
+| Computer Vision | MediaPipe pose and hand landmarks, OpenCV processing, normalization, diagnostics, and reviewer-facing previews | Functional technical evidence |
+| Six-sign registry | MORE, HELP, EAT, SLEEP, MILK, and WATER | Evidence present |
+| Static sign visuals | Three Open Peeps-derived SVG candidates for each of six signs | Draft evidence; human review pending |
+| Optional family-copy model path | Structured prompt, schema checks, deterministic quality gate, n8n design, and LangSmith dry-run | Partial evidence; no live run claimed |
+| Gemini FX motion previews | MORE maps to mas.mp4, HELP to ayuda.mp4, and MILK to leche.mp4 | Separate demo files; rights and fidelity gates open |
+| Nursery assignment | Little Steps Nursery fixture with synthetic records and session-based state | Local prototype |
+| Family View | Basic family-facing guidance preview | Local prototype; personalised library pending |
 
-If KinderFlow later adds child-performance assessment, developmental scoring, emotion inference, educational placement or other decision-making functions, the classification must be reassessed before those features are deployed.
+Primary repository evidence:
 
-## Pilot recommendation
+- [Local MVP service](../mvp/app.py)
+- [Computer Vision pipeline](../mvp/pipeline.py)
+- [Current MVP tests](../mvp/tests/test_prompt_3.py)
+- [Canonical sign asset registry](../assets/registry/sign_asset_registry.json)
+- [Generated asset inventory](../assets/registry/sign_asset_inventory.md)
+- [Open Peeps provenance record](../assets/flashcards/open_peeps/provenance.json)
+- [Visual sign packages](../prototype/data/visual_sign_packages.json)
+- [Content operations manifests](../content_ops/signs/)
+- [n8n workflow export](../workflow/kinder_signs_n8n_workflow.json)
+- [LangSmith dry-run record](../workflow/langsmith_dry_run_summary.json)
 
-**PROCEED WITH CONDITIONS**
+## Intended purpose
 
-Before a real-school pilot, KinderFlow should:
+### Current intended purpose
 
-1. document the intended purpose and excluded uses;
-2. formalise provider/deployer roles;
-3. implement role-appropriate AI literacy;
-4. complete the GDPR pilot assessment;
-5. preserve human review and content-governance controls;
-6. confirm which Article 50 transparency duties apply to any live AI-generated content;
-7. maintain technical documentation and change-control records;
-8. reassess classification if the pilot scope changes.
+KinderFlow prepares and governs reusable early-childhood content. Kinder Signs is its first active AI-enabled product.
 
----
+The current workflow is:
 
-# 2. Why this matters for KinderFlow
+1. An operator supplies an adult reference video.
+2. The local service extracts pose and hand landmarks.
+3. The service creates technical metrics and previews.
+4. A human reviews the reference and selects or reviews a pose.
+5. A human reviews a draft static visual and family material.
+6. The Little Steps Nursery prototype simulates assignment.
+7. Family View displays a basic local guidance preview.
 
-KinderFlow works with nursery schools and supports content used around very young children.
+Computer Vision supports content review. It does not recognise a sign, certify linguistic correctness, evaluate a child, or approve publication.
 
-That does **not automatically make every AI component high-risk**, but the context requires careful boundaries.
+### Current product boundary
 
-The most important regulatory design choice is therefore not simply choosing a risk label.
+A family-facing guidance prototype exists. A personalised assignment-driven family library remains a next product iteration.
 
-It is making sure KinderFlow does not quietly evolve from:
+The current prototype has no production nursery accounts, family accounts, notifications, persistent cross-session assignment service, or real delivery to caregivers. It uses fictional Little Steps Nursery records and synthetic child labels.
 
-> content production and school-home support
+### Out-of-scope uses
 
-into:
+The intended purpose excludes:
 
-> automated assessment or decision-making about children.
+- processing child video in the core workflow;
+- developmental, clinical, behavioural, or educational assessment;
+- emotion inference;
+- identity matching;
+- biometric categorisation;
+- automated admission, placement, progression, grading, or discipline;
+- automated decisions about access to services;
+- autonomous content publication; and
+- professional sign-language certification.
 
-The current architecture already reduces this risk by keeping child video, child scoring and developmental assessment outside the core product.
+These exclusions must appear in product requirements, operator training, contracts, and change control. A user interface disclaimer alone is not enough.
 
----
+## System component classification
 
-# 3. System assessed
+| Component | AI relevance | Current role | Boundary |
+| --- | --- | --- | --- |
+| MediaPipe landmark extraction | AI system component | Converts adult video frames into pose and hand landmarks | No identity, emotion, child assessment, or sign certification |
+| OpenCV and ffmpeg | Supporting software | Frame processing and browser-compatible preview preparation | Not treated as AI by themselves |
+| Normalization and thresholds | Deterministic logic | Produces body-relative technical evidence and routes review states | Technical coverage is not sign correctness |
+| Optional language-model path | AI system component when used live | Drafts bounded family wording from approved sign and routine data | No live external run or personal-data transfer is evidenced |
+| LangSmith path | Monitoring design | Describes evaluation of the optional wording step | Dry-run only; does not validate Computer Vision or sign fidelity |
+| n8n workflow | Orchestration design | Defines steps, branching, quality gates, and review preparation | Importable export; final target-runtime execution is not evidenced |
+| Open Peeps-derived SVGs | Deterministic visual composition | Supplies a consistent character and line grammar | Open Peeps does not determine sign mechanics |
+| Gemini FX files | Pre-generated synthetic media | Illustrative motion direction for three signs | Separate from current landmarks; rights and professional review pending |
+| Nursery and Family Views | Product interface | Simulates selection and basic family guidance | No production delivery or personalised family library |
 
-## 3.1 KinderFlow platform
+## Actors and role allocation
 
-KinderFlow is the wider platform.
+Role allocation depends on who develops, places, operates, and controls each system.
 
-The current capstone develops **Kinder Signs** as the first product.
+| Actor | Working role | Question to settle before pilot |
+| --- | --- | --- |
+| KinderFlow | Likely provider of the Kinder Signs system if it places the system under its name | Confirm legal entity, intended purpose, instructions, monitoring, and post-market duties |
+| KinderFlow content team | Operator of internal Computer Vision and content workflow | Define competence, approval authority, escalation, and logging |
+| Nursery school | Potential deployer if it operates an AI-enabled feature; content recipient if it only uses reviewed static material | Fix the actual pilot architecture and contract |
+| Educator or administrator | Authorised human user | Define training, allowed actions, and override or escalation route |
+| Families and children | Affected persons or recipients of reviewed content, depending on the final flow | Provide clear notices and a correction route |
+| Upstream model or tool provider | Third-party provider or processor depending on service and data flow | Record terms, instructions, location, transparency marks, and change notices |
 
-Other roadmap concepts, such as Kinder Daily and Kinder Food, are outside this classification unless they later introduce their own AI functionality.
+KinderFlow is not shown to provide a general-purpose AI model. An upstream model provider's obligations do not replace KinderFlow's duties for the product it designs and operates.
 
----
+## Prohibited-practices check
 
-## 3.2 Current Kinder Signs AI components
+The review found no intended use for the following practices.
 
-### A. Computer Vision / MediaPipe
+| Practice | Current finding | Control |
+| --- | --- | --- |
+| Harmful manipulation or exploitation | Not part of the intended purpose | Bounded family copy, review, and complaints route |
+| Social scoring | No scoring or ranking | Prohibit child and family scores |
+| Predictive criminal-risk assessment | Not relevant to the product | Keep outside product scope |
+| Untargeted facial-image scraping | No facial-image database or scraper | Direct URL accepts a bounded MP4, not a generic webpage |
+| Emotion recognition in education | No emotion model or emotion field | Prohibited-use rule and test coverage |
+| Biometric categorisation | No sensitive-attribute categorisation | Do not add such fields or models |
+| Real-time remote biometric identification | No identity matching | Do not create identity templates |
 
-Current function:
+The direct MP4 URL does not change this result. It downloads one operator-supplied public video into an isolated local run. It is not a face-scraping or internet-crawling function. The operator must still have authority to use the video.
 
-```text
-Validated adult reference video
-→ MediaPipe processing
-→ pose / hand landmarks
-→ normalization
-→ movement diagnostics
-→ landmark / skeleton preview
-→ technical result
-→ human review
-```
+## Annex III reasoning
 
-The current MVP can process real MP4 input and generate run-specific movement evidence.
+### Step 1: Identify the relevant area
 
-The Computer Vision component does **not**:
+Nursery use makes the education area relevant for review. It does not decide classification by itself.
 
-- identify the person in the video;
-- classify sensitive traits;
-- infer emotion;
-- assess a child;
-- determine linguistic sign correctness;
-- make an educational decision.
+### Step 2: Compare actual functions with the listed education functions
 
-The current MVP documentation explicitly separates technical movement evidence from sign correctness.
+| Annex III education concern | Kinder Signs current function |
+| --- | --- |
+| Admission or access | No |
+| Assignment to an educational institution | No |
+| Evaluation of learning outcomes | No |
+| Determining educational level | No |
+| Test monitoring or detection of prohibited behaviour | No |
 
----
+Kinder Signs prepares reviewed communication material. The nursery prototype lets an educator select an available sign, group, material set, and audience. It does not use AI to decide who receives education or to evaluate a child.
 
-### B. Content Engine
+### Step 3: Check biometric and emotion functions
 
-The current content layer supports:
+MediaPipe produces body and hand landmarks from an adult reference. The service does not use them to establish or verify identity. It does not create a biometric identity template, compare a person against a database, categorise sensitive traits, or infer emotion.
 
-- stored human wording;
-- LLM-assisted wording where configured;
-- strict structured input/output contracts;
-- deterministic quality checks;
-- review states;
-- human approval;
-- dry-run / live-mode distinction.
+Landmarks may still be personal data when linked to an identifiable adult. That GDPR issue does not make the current processing biometric identification under the AI Act.
 
-Generated content cannot autonomously publish itself.
+### Step 4: Record the preliminary result
 
----
+The current intended use does not appear to fall within the reviewed Annex III functions. A regulator, court, or qualified adviser may reach a different conclusion based on the final deployment facts. The product team must reopen this assessment before any material change.
 
-### C. LangSmith / observability
+## Transparency and AI-generated content
 
-LangSmith is relevant only to the LLM-assisted content-transformation layer.
+### Computer Vision disclosure
 
-It does not evaluate:
+Operator documentation should say that MediaPipe extracts landmarks and that the output measures capture and movement representation. It should also say that a reviewer, not the metric, decides whether content can progress.
 
-- MediaPipe performance;
-- movement correctness;
-- sign-language correctness;
-- child development.
+### Optional model-generated wording
 
-The current repository distinguishes LIVE, DRY_RUN and NOT_APPLICABLE states. DRY_RUN is evidenced, and NOT_APPLICABLE is used for human-only content. Provider-path tests exist, but real external LIVE LLM execution and a LIVE LangSmith trace/evaluation are not evidenced.
+The current Family View is not an autonomous chatbot. The repository shows a bounded drafting path and a dry-run quality evaluation, not a live conversation or live external trace.
 
-A recorded trace would show observability evidence; it would not by itself prove that an evaluation was completed or that content was approved.
+If a live language model is introduced, KinderFlow must:
 
----
+- disclose AI assistance where Article 50 or consumer expectations require it;
+- identify the reviewed source and version;
+- block unsupported developmental or clinical claims;
+- keep personal child, family, and nursery data out of prompts and traces;
+- retain reviewer identity, decision, rationale, and timestamp; and
+- prevent unreviewed text from reaching a family.
 
-### D. Flashcard Studio
+### Gemini FX previews
 
-Flashcard Studio uses deterministic templates.
+The registry records:
 
-It does not require Generative AI for layout.
+| Sign | File | Status |
+| --- | --- | --- |
+| MORE | mas.mp4 | Pre-generated demo only |
+| HELP | ayuda.mp4 | Pre-generated demo only |
+| MILK | leche.mp4 | Pre-generated demo only |
+| EAT | No file | Static flow remains available |
+| SLEEP | No file | Static flow remains available |
+| WATER | No file | Static flow remains available |
 
-This is relevant to the AI Act assessment because not every KinderFlow function is an AI system or AI-driven decision.
+These videos were prepared separately as illustrative motion previews. They are not generated automatically from the current MediaPipe run or its landmarks.
 
----
+The files are not certified sign videos. The registry records Google Labs FX or Gemini FX usage confirmation as pending, with external display and redistribution permission unresolved. The current code accepts a null display-rights value as locally available, so the permission boundary is not fully fail-closed.
 
-# 4. Does Kinder Signs contain an “AI system”?
+Before any external display, KinderFlow must:
 
-## Assessment
+1. confirm display and redistribution rights;
+2. obtain qualified motion and sign-fidelity review;
+3. preserve any machine-readable provider mark;
+4. decide whether visible synthetic-content disclosure is required; and
+5. record the decision and evidence.
 
-**YES — the broader Kinder Signs solution contains AI-system components.**
+Article 50 applies by component and actor. The Commission states that Article 50 generally applies from 2 August 2026. A limited transition to 2 December 2026 applies only to the Article 50(2) marking and detection duty for providers of relevant systems placed on the market before 2 August 2026. KinderFlow must determine whether that narrow transition applies and verify the current rule before external use.
 
-The AI Act defines an AI system as a machine-based system that operates with varying levels of autonomy and infers from input how to generate outputs such as predictions, content, recommendations or decisions.
+### AI literacy
 
-Kinder Signs currently includes:
+Staff who operate or review AI components need role-specific literacy. Training should cover:
 
-- machine-learning-based Computer Vision for pose/hand landmark extraction; and
-- an optional LLM-assisted content-generation component.
+- what coverage metrics do and do not prove;
+- missing-frame and partial-motion states;
+- sign and visual review limits;
+- source and usage rights;
+- synthetic-content disclosure;
+- prohibited child assessment and biometric uses;
+- privacy and security escalation; and
+- incident and correction handling.
 
-The deterministic Flashcard renderer, static school assignment interface and ordinary rule-based checks should not be treated as separate AI systems merely because they are part of the same product.
+The Commission's current Article 4 guidance describes an obligation to support AI literacy without guaranteeing a specific individual level. KinderFlow should keep training material and attendance evidence.
 
-## What this means for KinderFlow
+## Human oversight and publication control
 
-Compliance should be based on the **specific AI functions and intended purpose**, not on describing the whole platform as “AI” without distinction.
+No AI output should publish autonomously.
 
----
+| Decision | Required human authority | Evidence to retain |
+| --- | --- | --- |
+| Reference is suitable and lawfully usable | Content lead and rights owner | Source, rights record, reviewer, date |
+| Technical run is reviewable | Trained operator | Run ID, metrics, warnings, exception |
+| Sign mechanics are correct | Qualified sign reviewer | Decision, notes, version |
+| Visual is readable and accurate | Sign reviewer and visual reviewer | Candidate ID, decision, rationale |
+| Family wording is bounded and accurate | Content reviewer | Source version, draft, final text |
+| Asset may be published | Publication owner | Rights, review approvals, release version |
+| Correction or withdrawal | Product owner | Incident, affected versions, action |
 
-# 5. Operator-role assessment
+The current interface demonstrates review actions, but it does not provide a production identity, timestamped approval ledger, immutable audit trail, or correction workflow. Those controls remain operational gaps.
 
-The final contractual allocation must be confirmed before a live pilot.
+## Technical and security controls
 
-## Working role assumption: KinderFlow
+### Direct MP4 intake
 
-**Likely provider, subject to the final system and placing-on-the-market model**
+The current direct URL path:
 
-The AI Act defines a provider as the entity that develops, or has developed, an AI system and places it on the market or puts it into service under its own name or trademark.
+- accepts only a complete public HTTP or HTTPS URL;
+- rejects credentials, fragments, local names, private addresses, unsafe ports, and non-global resolved addresses;
+- pins the connection to validated public IP addresses;
+- revalidates redirects and rejects an HTTPS-to-HTTP downgrade;
+- limits redirects, total time, response type, and bytes;
+- stores the file under a generated local run name;
+- removes partial files on failure; and
+- redacts the query string from persisted provenance.
 
-If KinderFlow supplies Kinder Signs to schools under the KinderFlow name, KinderFlow is likely to act as the provider of the Kinder Signs AI system.
+Evidence appears in [the pipeline](../mvp/pipeline.py) and [direct URL tests](../mvp/tests/test_prompt_3.py).
 
-Where KinderFlow integrates a third-party general-purpose model, the original model provider remains responsible for its own GPAI-model obligations, while KinderFlow remains responsible for how its downstream system is designed and used.
+This is a local bounded intake control. It does not prove source rights, performer consent, sign correctness, malware safety, or production network security. HTTP remains permitted. A production design still needs authentication, authorisation, tenant separation, rate limits, controlled egress, decoder isolation, retention, monitoring, and incident handling.
 
----
+### Registries, provenance, and hashes
 
-## Working role assumption: nursery school / school group
+The registry records exact asset identity and detects silent file changes. A hash does not prove ownership, consent, lawful use, linguistic correctness, or complete security.
 
-**Role requires feature-level and contractual confirmation**
+Open Peeps by Pablo Stanley supplies the base character and visual line grammar. The provenance record states CC0 and links to the official source. Functional sign references, curated sign knowledge, frames, and movement evidence determine sign mechanics. Human review remains required for fingers, palms, contact, direction, and readability.
 
-A school operating an AI-enabled Kinder Signs function professionally under its authority may act as a deployer. A school that only receives reviewed static content may instead be a customer or recipient of the service rather than a deployer of KinderFlow's internal AI system. The role must be assessed per feature and contract before pilot launch.
+The character defines the look. The reviewed reference defines the sign.
 
-The exact role should be confirmed in the pilot agreement because the school currently interacts mainly with reviewed content rather than the internal CV/content-production pipeline.
+### Registry and content-package drift
 
----
+The canonical registry contains six signs and 18 current draft visual candidates. The older content-operations manifests and golden-set report cover a five-sign package and still assign WATER technical evidence to a MORE record. Their passing result covers schema and hash checks only.
 
-## Families
+Before pilot, KinderFlow must reconcile sign IDs and evidence ownership, bind current rights and visual records into the content package, regenerate the package, and obtain explicit expert and publication approvals.
 
-Families are primarily recipients/users of the resulting content in the current design.
+## Logging and documentation
 
-They do not operate the internal AI system.
+### Current evidence
 
----
+Current local runs record technical inputs, run identifiers, metrics, artifacts, and redacted provenance. Registry files preserve asset paths, classifications, hashes, sign mappings, and limitations. Git preserves versioned evidence.
 
-# 6. Prohibited-practices audit — Article 5
+### Production gaps
 
-| Article 5 area | Kinder Signs current use | Status | Reason |
-|---|---|---|---|
-| Subliminal/manipulative techniques causing significant harm | Not intended | **Evidence present** | Product provides school-linked content; no hidden behavioural manipulation feature is designed |
-| Exploitation of vulnerability due to age/disability causing significant harm | Not intended | **Pilot control required** | Children are a vulnerable population; design and marketing must avoid manipulative or harmful use |
-| Social scoring | Not used | **Not present in current scope** | No social score or cross-context treatment |
-| Criminal-risk prediction | Not used | **Not applicable to current scope** | Outside product purpose |
-| Untargeted facial-image scraping | Not used | **Not applicable to current scope** | No facial database creation |
-| Emotion recognition in education | Not used | **Hard boundary** | No emotion inference is included |
-| Sensitive biometric categorisation | Not used | **Not present in current scope** | No sensitive-trait inference |
-| Prohibited biometric identification use | Not used | **Not present in current scope** | MediaPipe movement extraction is not person identification |
+The repository does not evidence:
 
-## Key control
+- authenticated reviewer identities;
+- a tamper-evident approval log;
+- production model and prompt version logging;
+- production access logs;
+- change approval;
+- incident and withdrawal records;
+- deployed monitoring;
+- a live LangSmith trace; or
+- a final n8n runtime execution.
 
-**Emotion recognition must remain out of scope.**
+These are not optional proof points if KinderFlow relies on them in pilot governance.
 
-The AI Act prohibits emotion-recognition systems in education institutions except for narrow medical or safety reasons.
+## Conformity assessment summary
 
-KinderFlow should therefore treat any future “emotion”, “engagement from facial expression” or similar feature as a regulatory red flag requiring a new legal assessment before development.
+| Question | Preliminary finding | Evidence state |
+| --- | --- | --- |
+| Is AI used? | Yes. MediaPipe is active; an optional language-model path exists; Gemini files are separate synthetic demo media. | Evidence present |
+| Is a prohibited practice intended? | No prohibited practice was identified in the current intended purpose. | Intended-purpose evidence present |
+| Does the current use appear to match Annex III education functions? | No. It does not admit, assess, score, place, proctor, or determine access or level. | Preliminary conclusion |
+| Does it perform biometric identity, categorisation, or emotion recognition? | No. Adult landmarks support motion review only. | Evidence present in current code |
+| Is a formal high-risk conformity procedure triggered by this assessment? | Not on the current intended-purpose finding. | Legal confirmation required before market placement |
+| Are Article 50 questions closed? | No. Gemini output and any future live model use need actor-specific assessment and records. | Pilot control required |
+| Are human controls complete? | No. The local workflow demonstrates gates, but production identity, audit, correction, and withdrawal controls are missing. | Operational gap |
+| Are content and rights records complete? | No. Open Peeps provenance is recorded, but sign-source rights, Gemini rights, expert review, and package reconciliation remain open. | Pilot gate |
 
----
+This summary is not an EU declaration of conformity or CE-marking decision.
 
-# 7. High-risk classification — Article 6 and Annex III
+## Technical documentation outline
 
-## 7.1 Annex I product-safety route
+KinderFlow should maintain one controlled technical file with:
 
-Kinder Signs is not currently:
+1. legal entity, system name, version, owner, and release status;
+2. intended purpose, excluded uses, affected persons, and operating context;
+3. component inventory, including MediaPipe, optional model, Gemini files, deterministic logic, and interfaces;
+4. data and asset flow, including direct URL intake and deletion;
+5. model, library, provider, prompt, schema, and dependency versions;
+6. six-sign registry, source rights, hashes, provenance, and sign mappings;
+7. Open Peeps source and style-only role;
+8. Computer Vision metrics, thresholds, missing-data handling, and known limits;
+9. sign, visual, language, and publication review procedures;
+10. Article 50 assessment and marking or disclosure decisions;
+11. role allocation and user instructions;
+12. privacy, security, retention, recipient, and transfer controls;
+13. logging, monitoring, incidents, corrections, and withdrawal;
+14. tests, validation evidence, known failures, and residual risks;
+15. change history and reassessment record; and
+16. pilot acceptance and stop criteria.
 
-- a safety component of a product regulated under the Annex I product-safety legislation; or
-- itself a regulated product that requires third-party conformity assessment under that route.
+## Reassessment triggers
 
-**Preliminary internal view: the Article 6(1) high-risk route does not appear to apply to the current described scope. Legal confirmation remains required for the final pilot design.**
+Reopen the assessment before any of these changes:
 
----
+- child video, voice, image, or landmarks enter the workflow;
+- the system estimates age, emotion, development, behaviour, ability, or learning;
+- a score, ranking, recommendation, or prediction affects a child;
+- an AI output affects admission, access, placement, level, progress, discipline, or support;
+- identity matching or biometric categorisation is added;
+- test or behaviour monitoring is added;
+- family delivery becomes personalised and persistent;
+- a live model or new model provider is introduced;
+- the system generates or publishes video, images, or text automatically;
+- a nursery operates an AI component directly;
+- source, sign, rights, or review policy changes;
+- deployment expands to a new country, user group, or material purpose; or
+- a serious incident, complaint, or material model change occurs.
 
-## 7.2 Annex III — education and vocational training
+## Pilot gates
 
-Annex III identifies specific educational AI uses as high-risk.
+| Client fact | Action | Target | Owner | Decision rule |
+| --- | --- | --- | --- | --- |
+| Intended purpose is narrow but only documented in the repository | Approve a versioned intended-purpose and prohibited-use statement | Signed before pilot configuration | Product Owner and legal reviewer | Do not pilot if scope permits child assessment, emotion, biometric identity, or automated education decisions |
+| Roles depend on the final service design | Allocate provider, deployer, controller, processor, and reviewer roles | Contracts and responsibility matrix complete | Product Owner and privacy lead | Do not process real data until roles and instructions agree |
+| Six-sign registry and older package disagree | Rebuild package from the canonical registry and verify ownership of evidence | Six of six sign records reconcile | Content Operations | Block every unreconciled sign |
+| No sign is published | Complete rights, sign, visual, and publication reviews | Every pilot sign has all approvals and a rationale | Content lead and qualified sign reviewer | Unreviewed content delivered equals zero |
+| Gemini rights and fidelity remain open | Confirm rights and complete Article 50 and sign review | Written evidence for every displayed file | Product Owner and rights owner | No external display without evidence |
+| Production oversight logs do not exist | Implement authenticated, timestamped decisions and correction or withdrawal records | Every decision attributable and reversible | Engineering and Content Operations | Stop if an unreviewed or blocked asset can reach a user |
+| Direct URL is a local control | Complete production security design and testing | Approved threat model and test record | Security owner | No public intake until authentication, egress, isolation, logging, and retention gates close |
+| AI literacy is not yet evidenced | Train each role on limits and escalation | Attendance and materials recorded before access | Product Owner | No operator access without training |
 
-### A. Access, admission or assignment to educational institutions
+## Official legal references
 
-Kinder Signs does not decide:
+- [Regulation (EU) 2024/1689, consolidated text](https://eur-lex.europa.eu/eli/reg/2024/1689)
+- [European Commission AI Act implementation overview](https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai)
+- [European Commission enforcement framework](https://digital-strategy.ec.europa.eu/en/policies/enforcement-ai-act)
+- [European Commission Article 50 transparency FAQ](https://digital-strategy.ec.europa.eu/en/faqs/transparency-obligations-under-article-50-ai-act)
+- [European Commission AI literacy questions and answers](https://digital-strategy.ec.europa.eu/en/faqs/ai-literacy-questions-answers)
 
-- whether a child may access a nursery;
-- admission;
-- placement in an educational institution.
-
-**NOT APPLICABLE**
-
----
-
-### B. Evaluation of learning outcomes
-
-Kinder Signs does not:
-
-- grade children;
-- score sign performance;
-- assess learning outcomes;
-- use AI output to steer a child's educational process.
-
-**NOT APPLICABLE**
-
----
-
-### C. Assessment of the appropriate level of education
-
-Kinder Signs does not decide:
-
-- educational level;
-- programme placement;
-- educational pathway;
-- eligibility for a particular level of education.
-
-**NOT APPLICABLE**
-
----
-
-### D. Monitoring prohibited behaviour during tests
-
-Kinder Signs is not an exam-proctoring or behaviour-monitoring system.
-
-**NOT APPLICABLE**
-
----
-
-## 7.3 Education-sector conclusion
-
-**Kinder Signs is not high-risk merely because it is used around nursery schools.**
-
-The high-risk education category applies to the specific decision-making and assessment purposes listed in Annex III.
-
-Kinder Signs currently performs content production, movement representation and school-home content distribution support.
-
-It does not perform the listed high-risk educational decisions.
-
-### Preliminary internal classification
-
-**The current intended use does not appear to match the Annex III high-risk education uses. Final classification remains subject to the actual pilot design and deployment roles.**
-
----
-
-# 8. Biometric-risk screening
-
-MediaPipe processes hand and pose landmarks from a validated adult reference video.
-
-The current use does not seek to establish or verify identity.
-
-It also does not infer:
-
-- race;
-- political beliefs;
-- religion;
-- trade-union membership;
-- sex life;
-- sexual orientation;
-- emotion.
-
-The movement representation should therefore not be described as biometric identification or sensitive biometric categorisation merely because body landmarks are processed.
-
-## Control
-
-The intended purpose must remain documented as:
-
-> movement extraction and representation from validated reference content.
-
-If future functionality identifies people, profiles children, infers traits or analyses emotion, a new classification is required.
-
----
-
-# 9. Transparency obligations — Article 50
-
-Article 50 became particularly relevant from August 2026 for certain AI interactions and synthetic content.
-
-KinderFlow should assess transparency at the level of each feature.
-
----
-
-## 9.1 Direct interaction with AI
-
-### Current product
-
-Families and educators do not currently interact directly with a chatbot or autonomous AI assistant.
-
-They receive reviewed content through the product interface.
-
-**Current assessment: Article 50(1) chatbot-style disclosure is not triggered by the existing family experience.**
-
-### Future change trigger
-
-If KinderFlow introduces:
-
-- an AI tutor;
-- conversational assistant;
-- chatbot;
-- autonomous family coach;
-
-the user must be informed that they are interacting with AI where Article 50 applies.
-
----
-
-## 9.2 AI-generated content marking
-
-The live LLM-assisted content path can generate text.
-
-Article 50 includes technical transparency requirements for providers of systems generating synthetic text or other synthetic content.
-
-### Current position
-
-The local MVP distinguishes:
-
-- HUMAN;
-- LLM_ASSISTED;
-- LIVE;
-- DRY_RUN;
-- NOT_APPLICABLE.
-
-This is good internal provenance.
-
-### Required action before live pilot
-
-**REVIEW REQUIRED**
-
-Before live LLM-assisted content is distributed, KinderFlow should confirm:
-
-- whether KinderFlow is itself the relevant Article 50 provider for the generated output;
-- what machine-readable marking is supplied by the upstream model provider;
-- what additional marking KinderFlow must preserve or add;
-- whether the human-review/editorial-control exception for certain published text is relevant to the specific content.
-
-Do not assume that human review automatically removes all Article 50(2) technical-marking duties.
-
----
-
-## 9.3 Public-interest text
-
-Kinder Signs family guidance is not currently designed as text published to inform the general public about matters of public interest.
-
-The Article 50 rule for AI-generated text published for that purpose is therefore not the core current use case.
-
-Human review and editorial responsibility should nevertheless remain documented.
-
----
-
-# 10. AI literacy — Article 4
-
-AI literacy obligations already apply.
-
-KinderFlow and relevant deployers must take measures to support appropriate AI literacy for staff and people operating AI systems on their behalf.
-
-## KinderFlow staff should understand
-
-- what MediaPipe metrics mean;
-- what they do **not** mean;
-- why hand-detection coverage is not sign accuracy;
-- when human review is required;
-- the difference between deterministic checks and semantic correctness;
-- LIVE vs DRY_RUN LLM mode;
-- LangSmith's actual scope;
-- escalation and incident procedures.
-
-## School staff should understand
-
-At a minimum:
-
-- KinderFlow centrally creates/reviews AI-supported content;
-- educators do not validate the sign with AI;
-- AI outputs do not assess the child;
-- available school content should be used only for its intended purpose;
-- unexpected or inappropriate content should be reported.
-
-## Pilot action
-
-Create a short role-based AI literacy briefing and retain evidence that it was delivered.
-
----
-
-# 11. Human oversight
-
-Human oversight is already a core KinderFlow design principle.
-
-## Current controls
-
-- Computer Vision produces technical status, not publication.
-- `Pass` allows human approval.
-- `Review needed` requires a human decision.
-- `Fail` cannot be approved through the normal route.
-- Generated family content requires review.
-- Deterministic PASS does not equal publication.
-- LangSmith evidence does not equal approval.
-
-## Gap
-
-Current approval is local/prototype behavior.
-
-Before production, KinderFlow requires:
-
-- reviewer role definition;
-- reviewer competence requirements;
-- versioned review criteria;
-- reviewer identity;
-- timestamp;
-- change history;
-- escalation route;
-- audit evidence.
-
----
-
-# 12. General AI Act controls recommended for the pilot
-
-Even though the current system is not classified as high-risk, KinderFlow should voluntarily adopt several high-risk-style controls because the product operates in an early-childhood setting.
-
-| Control | Current MVP | Pilot action |
-|---|---|---|
-| Intended-purpose documentation | Partial | Formalise and version |
-| Risk management | Partial | Maintain pilot risk register |
-| Data / input provenance | Partial | Record all reference sources |
-| Technical documentation | Strong base | Consolidate |
-| Logging / traceability | Local runs | Define pilot logging |
-| Human oversight | Built into logic | Formalise reviewer role |
-| Technical performance / robustness (AI Act terminology) | Coverage and motion diagnostics; not sign accuracy | Define pilot thresholds |
-| Cybersecurity | Local only | Pilot security controls required |
-| Change management | Git/versioning | Formal release process |
-| Incident reporting | Not formal | Define process before pilot |
-
-This is a voluntary governance decision for the current classification, not a claim that all Chapter III high-risk obligations legally apply.
-
----
-
-# 13. Current applicability timeline
-
-As of this assessment date:
-
-- prohibited-practice rules and AI literacy obligations are already applicable;
-- general-purpose AI governance obligations have already entered into application;
-- new Article 50 transparency requirements are in application from August 2026;
-- the amended enforcement timetable places Annex III high-risk-system rules from **2 December 2027**.
-
-The timing does not remove the need to classify KinderFlow correctly today.
-
-A pilot started before the Annex III high-risk date should still be designed so that a future feature change does not create a compliance cliff.
-
----
-
-# 14. Change triggers requiring reclassification
-
-The current non-high-risk conclusion is conditional.
-
-Reassess immediately if KinderFlow adds any of the following:
-
-## Child performance analysis
-
-Examples:
-
-- “Is the child signing correctly?”
-- performance score;
-- ranking;
-- progression score.
-
----
-
-## Educational assessment
-
-Examples:
-
-- learning-outcome evaluation;
-- readiness assessment;
-- programme placement;
-- educational-level recommendation.
-
----
-
-## Emotion recognition
-
-Examples:
-
-- detecting engagement, frustration, happiness or anxiety from face/voice in an educational setting.
-
-This is particularly sensitive because emotion recognition in education is prohibited except in narrow medical/safety cases.
-
----
-
-## Biometric identification or sensitive categorisation
-
-Any identity or sensitive-trait inference requires separate assessment.
-
----
-
-## Automated decisions affecting access or treatment
-
-If AI output begins materially affecting:
-
-- admission;
-- access;
-- placement;
-- educational opportunities;
-- services provided to a child;
-
-the classification must be revisited.
-
----
-
-# 15. Provider / deployer action matrix
-
-This is a provisional planning matrix. School-column duties apply only where the final feature-level assessment and contract establish that the school is a deployer, rather than only a customer receiving reviewed static content.
-
-| Action | KinderFlow | School | Pilot timing |
-|---|---|---|---|
-| Define intended purpose | Lead | Acknowledge | Before pilot |
-| Define prohibited uses | Lead | Follow | Before pilot |
-| AI literacy | Internal team | Role-appropriate staff | Before / at onboarding |
-| Reference-content provenance | Lead | N/A | Before pilot |
-| Human-review process | Lead | Report issues | Before pilot |
-| Technical documentation | Lead | Receive relevant instructions | Before pilot |
-| AI transparency assessment | Lead | Apply school-facing notices if needed | Before pilot |
-| Monitor intended use | Lead | Use within scope | During pilot |
-| Report incidents/issues | Receive / investigate | Report | During pilot |
-| Reclassification trigger | Lead | Notify use-case change | Continuous |
-
----
-
-# 16. Gap analysis
-
-| Check | Status | Evidence | Gap | Required action |
-|---|---|---|---|---|
-| AI system inventory | **Partial evidence** | CV + LLM components documented | Final inventory should be versioned | Add to technical documentation |
-| Intended purpose | **Evidence present** | Product docs and MVP boundaries | Cross-document reconciliation required | Maintain one versioned statement |
-| Prohibited-practice screening | **Preliminary internal screening** | Current feature set | Must prevent future scope creep | Add prohibited-use list and obtain legal confirmation |
-| Annex III education screening | **Preliminary internal screening** | No admission/scoring/assessment/proctoring | Final pilot design may alter the analysis | Legal confirmation and change-control trigger |
-| Biometric screening | **Preliminary internal screening** | Adult movement landmarks only | Future identity/trait features would change assessment | Maintain boundary and confirm final use |
-| Emotion recognition | **Hard boundary** | Not implemented | Future feature would be highly problematic | Explicitly prohibit |
-| Article 50 direct-interaction disclosure | **Not applicable to current scope** | No direct AI conversation | Reassess if AI tutor/chat added | Change trigger |
-| Article 50 synthetic-content marking | **Legal confirmation required** | LLM-assisted text path exists | Final technical marking responsibility unresolved | Confirm before live LLM pilot |
-| AI literacy | **Operational gap** | No formal training evidence yet | Article 4 operational evidence needed | Create role-based briefing |
-| Human oversight | **Partial evidence** | Logical local gate exists | No production reviewer/audit identity | Formalise before pilot |
-| Technical documentation | **Partial evidence** | Repository evidence exists | Needs consolidated final ToC | Complete before submission/pilot |
-| Incident process | **Operational gap** | No formal process | Production/pilot issue escalation missing | Define before pilot |
-| Post-market monitoring | **Not applicable to current local scope** | No production deployment | Future operational process | Design before full deployment |
-
----
-
-# 17. Conformity Assessment Summary
-
-## Legal trigger
-
-**Under the preliminary internal classification, a formal high-risk conformity assessment does not appear to be triggered by the current described intended purpose. This is not a certification or final legal conclusion.**
-
-Therefore KinderFlow should not:
-
-- claim high-risk conformity certification;
-- claim CE marking for this AI use;
-- perform a fictitious conformity procedure merely for the capstone.
-
-## Internal readiness assessment
-
-For capstone and pilot-readiness purposes, KinderFlow should nevertheless maintain an internal conformity-style evidence pack covering:
-
-1. intended purpose;
-2. system description;
-3. AI components;
-4. known limitations;
-5. risk assessment;
-6. human oversight;
-7. performance evidence;
-8. error handling;
-9. data/provenance;
-10. technical documentation;
-11. transparency;
-12. AI literacy;
-13. incident/change procedures.
-
-## Current internal result
-
-**PARTIAL EVIDENCE — LEGAL AND OPERATIONAL CONFIRMATION REQUIRED**
-
-The repository already provides strong technical evidence and unusually clear separation between technical processing and human approval.
-
-The main gaps are operational and governance-related rather than core MVP feasibility.
-
----
-
-# 18. Technical Documentation Outline
-
-The following structure should be maintained for pilot and production readiness.
-
-## 1. System identification
-
-- Product name
-- Version
-- Provider
-- Intended purpose
-- Intended users
-- Deployment context
-
-## 2. Product architecture
-
-- KinderFlow Hub
-- KinderFlow Admin
-- Kinder Signs School Admin
-- Family experience
-- Internal vs external responsibilities
-
-## 3. AI component inventory
-
-### Computer Vision
-
-- MediaPipe version
-- input format
-- landmark extraction
-- normalization
-- technical metrics
-- status mapping
-- known limitations
-
-### LLM-assisted content
-
-- provider/model
-- prompt version
-- structured contract
-- output fields
-- quality gate
-- LIVE / DRY_RUN behavior
-- LangSmith boundary
-
-## 4. Non-AI components
-
-- deterministic quality rules
-- Flashcard templates
-- ordinary UI/business logic
-
-## 5. Data and content inputs
-
-- validated adult reference material
-- sign metadata
-- routines/context
-- generated/reviewed family wording
-- provenance
-
-## 6. Outputs
-
-- movement representation
-- technical metrics
-- content review candidate
-- Flashcard / Routine Card proof
-- school/family preview
-
-## 7. Performance evidence
-
-- test results
-- MediaPipe run evidence
-- run-specific metrics
-- known failure cases
-- error handling
-
-## 8. Human oversight
-
-- reviewer role
-- approval criteria
-- Review needed handling
-- Fail handling
-- publication boundary
-
-## 9. Risk management
-
-- technical
-- regulatory
-- ethical
-- operational
-- commercial
-
-## 10. Transparency
-
-- AI role explanation
-- direct-interaction analysis
-- generated-content marking
-- family/school notices
-
-## 11. Security
-
-- runtime architecture
-- credentials
-- local vs production storage
-- access control
-- logging
-- incident management
-
-## 12. Change management
-
-- version control
-- model changes
-- prompt changes
-- threshold changes
-- new features
-- classification review trigger
-
-## 13. Third parties
-
-- MediaPipe / Google
-- LLM provider
-- LangSmith
-- hosting/infrastructure
-- visual source libraries where relevant
-
-## 14. Compliance links
-
-- GDPR assessment
-- DPIA
-- AI Act assessment
-- asset/content provenance
-- contractual roles
-
----
-
-# 19. What KinderFlow should say publicly
-
-## Safe description
-
-> KinderFlow uses Computer Vision to turn validated adult reference movement into structured technical evidence for human review. AI-assisted content can help prepare family wording, but publication remains under human control.
-
-## Avoid
-
-> AI validates the sign.
-
-> KinderFlow verifies that a child signs correctly.
-
-> KinderFlow assesses child development.
-
-> The system is certified as EU AI Act compliant.
-
-> The system is minimal-risk because it is only educational content.
-
----
-
-# 20. Pilot controls
-
-## Must resolve before pilot
-
-1. Finalise intended-purpose statement.
-2. Document prohibited uses.
-3. Confirm provider/deployer roles.
-4. Complete GDPR / DPIA screening.
-5. Confirm reference-content rights.
-6. Formalise reviewer responsibilities.
-7. Create AI literacy briefing.
-8. Resolve Article 50 generated-text marking responsibilities for any live LLM path.
-9. Define incident/escalation process.
-10. Reconcile README, MVP docs and demonstrated product state.
-
-## Operate during pilot
-
-- track technical failures;
-- track Review needed frequency;
-- track content-review issues;
-- log scope changes;
-- monitor school misuse or misunderstanding;
-- collect staff feedback about AI transparency.
-
-## Production requirement
-
-- persistent audit records;
-- authentication / permissions;
-- production security;
-- formal release management;
-- post-market monitoring;
-- vendor governance;
-- classification reassessment when functionality changes.
-
----
-
-# 21. Slide-ready summary
-
-| Question | Answer |
-|---|---|
-| Is Kinder Signs an AI-enabled system? | **Yes** |
-| Does the current intended use appear to match Annex III high-risk education uses? | **No, under the preliminary internal assessment; final pilot confirmation required** |
-| Why not? | It does not make admissions, learning-outcome, educational-level or exam-monitoring decisions |
-| Does it use child video? | **No** |
-| Does it score children? | **No** |
-| Does it recognise emotions? | **No — explicit boundary** |
-| Does CV certify sign correctness? | **No** |
-| Is human review required? | **Yes** |
-| What is the main AI Act gap before pilot? | AI literacy, final transparency assessment, documented roles and governance |
-| Could classification change? | **Yes, if future child-assessment or decision-making features are added** |
-
----
-
-# 22. Bottom line
-
-## Assessment
-
-**PROCEED WITH CONDITIONS**
-
-Kinder Signs is an AI-enabled product operating in an educational setting. Under the preliminary internal assessment, its current described intended purpose does not appear to match the high-risk education uses listed in Annex III.
-
-This is a meaningful distinction: **education context alone does not make the system high-risk.**
-
-The current product architecture also avoids several particularly sensitive areas by design:
-
-- no child video;
-- no emotion recognition;
-- no biometric identification;
-- no learning-outcome scoring;
-- no developmental assessment;
-- no automated educational decisions;
-- no autonomous publication.
-
-Before a controlled pilot, KinderFlow should close the remaining governance gaps, particularly AI literacy, provider/deployer role documentation, Article 50 transparency analysis for any live LLM output, human-review procedures and GDPR pilot readiness.
-
-A future feature that begins assessing children or materially influencing educational decisions must trigger a fresh AI Act classification before development or deployment proceeds.
-
----
-
-# 23. Official sources
-
-1. Regulation (EU) 2024/1689 — Artificial Intelligence Act, consolidated version current in 2026  
-   https://eur-lex.europa.eu/eli/reg/2024/1689
-
-2. EUR-Lex — Annex III high-risk AI systems, including education and vocational training  
-   https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:02024R1689-20260727
-
-3. European Commission — Navigating the AI Act / application timetable  
-   https://digital-strategy.ec.europa.eu/en/faqs/navigating-ai-act
-
-4. European Commission — AI literacy Q&A  
-   https://digital-strategy.ec.europa.eu/en/faqs/ai-literacy-questions-answers
-
-5. European Commission — AI Act enforcement framework  
-   https://digital-strategy.ec.europa.eu/en/policies/enforcement-ai-act
-
-6. European Commission — High-risk AI-system guidelines and updated application timeline  
-   https://digital-strategy.ec.europa.eu/en/policies/guidelines-ai-high-risk-systems
-
----
-
-# 24. Repository evidence used
-
-The assessment was checked against the committed repository baseline, including:
-
-- `mvp/mvp_documentation.md`
-- `poc/`
-- `content_ops/`
-- `workflow/kinder_signs_n8n_workflow.md`
-- `prototype/README.md`
-- `prototype/create-sign.*`
-- `prototype/flashcards.*`
-- `prototype/school.*`
-- `prototype/family.html`
-
-Current committed Round 2 baseline:
-
-`661c027 — Build Round 2 KinderFlow MVP and UX`
-
-## Documentation gap identified
-
-The root `README.md` still contains some Round 1 / older product wording, including cadence-specific school assignment language and an older repository overview.
-
-The more recent `prototype/README.md` and MVP documentation better reflect the current product architecture.
-
-**Action before final submission:** reconcile the root README with the final frozen Round 2 state.
+Legal timing and guidance can change. Check the current consolidated law and regulator guidance at each release decision.

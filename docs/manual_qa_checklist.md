@@ -12,7 +12,7 @@ Use `poc_env/bin/python mvp/app.py`, then open `http://127.0.0.1:8000/create-sig
 - [ ] Try `file:`, credential-bearing, localhost/private-address and oversized URL cases; confirm they fail closed without a partial or orphaned run.
 - [ ] Run the reference review and watch all seven processing stages.
 - [ ] Play the reference and skeleton/landmark previews side by side.
-- [ ] Confirm frames, pose coverage, hand coverage and missing frames describe capture—not sign accuracy.
+- [ ] Confirm frames, pose coverage, hand coverage and missing frames describe capture. They do not measure sign accuracy.
 - [ ] Confirm Fail cannot be approved and Review needed explains its conditions.
 - [ ] Confirm the practical value statement, the two decision charts and the collapsed technical/source details.
 - [ ] Confirm tracked poses are offered at 90% tracked-hand coverage and disabled with a clear reason below 90%.
@@ -28,7 +28,7 @@ Use `poc_env/bin/python mvp/app.py`, then open `http://127.0.0.1:8000/create-sig
 - [ ] Select `LLM-assisted` and generate. Confirm `LIVE` or `DRY-RUN` is accurate.
 - [ ] Inspect structured JSON, the deterministic gate and the separate LangSmith status.
 - [ ] Confirm rejected output cannot be approved.
-- [ ] Approve valid content and confirm Flashcard, school and family preview links unlock.
+- [ ] Approve valid content and confirm Flashcard, school and family preview links become available.
 - [ ] Request changes and confirm those links lock again.
 - [ ] Restore human copy and confirm it creates a separate human review candidate.
 
@@ -51,9 +51,9 @@ Use `poc_env/bin/python mvp/app.py`, then open `http://127.0.0.1:8000/create-sig
 
 ## Character and context
 
-- [ ] Compare the three metadata-only Open Peeps recipes and save one local candidate.
-- [ ] Confirm no third-party source SVG is loaded by the runtime.
-- [ ] Confirm `LICENCE VERIFICATION NEEDED` is visible.
+- [ ] Compare the current Open Peeps-derived draft options and save one distinct local candidate.
+- [ ] Confirm the runtime uses versioned KinderFlow-derived SVGs rather than an ignored third-party source file.
+- [ ] Confirm the Open Peeps provenance record states the official source and founder-verified CC0 basis, while unrelated source and Gemini rights remain visibly unresolved.
 - [ ] Follow the Miroodles manual-export note; do not treat context artwork as the sign source.
 
 ## Library, school and family previews

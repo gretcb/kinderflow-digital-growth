@@ -1,6 +1,8 @@
 # Architecture challenge
 
-This review asks whether each part earns its place now. The goal is a smaller, clearer product—not maximum technical coverage.
+This is a pre-final architecture decision record. The Open Peeps defer decision was later superseded by 18 deterministic draft SVG options with versioned provenance. The current status and remaining review gates are recorded in `docs/mvp_reality_check.md` and `assets/registry/source_assets_provenance.md`; the row below remains as historical rationale.
+
+This review asks whether each part earns its place now. The goal is a smaller, clearer product rather than maximum technical coverage.
 
 | Decision | Element | Reason |
 |---|---|---|

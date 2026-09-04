@@ -1,310 +1,409 @@
-# Kinder Signs Technical Feasibility POC
+# Kinder Signs technical feasibility POC
 
-## Business problem
+## Decision question
 
-Generative video may create visually plausible presenters while altering detailed sign biomechanics. KinderFlow therefore needs a motion-preservation checkpoint before any future rendering experiment.
+Generated video can look plausible while changing hand shape, palm orientation, contact, timing, or trajectory. KinderFlow therefore needs an inspectable motion representation before any future rendering experiment.
 
-This POC asks one bounded question:
+This POC asks:
 
-> Can a validated sign video be converted into a stable, body-relative and temporally coherent structured motion representation suitable for future motion-preserving content production?
+> Can one selected adult reference be converted into body-relative, temporally ordered hand and pose data that is suitable for controlled motion-preservation experiments?
 
-The experiment evaluates motion representation. It does not evaluate language, pedagogy, clinical outcomes, market demand, avatars, or synthetic video.
+The experiment evaluates extraction coverage and representation quality. It does not evaluate language correctness, pedagogy, clinical outcomes, market demand, avatar fidelity, or synthetic-video quality.
+
+## Evidence identity and version status
+
+The Round 1 POC result belongs to WATER.
+
+The local file poc/input/sign_reference.mp4 is byte-identical to the registered local WATER input at ../resources/video_input/water.mp4. Both have:
+
+- byte size: 586,766; and
+- SHA-256: 28f844d5af72ef1bcd351048ba57d74b2ad32bb6584fed919e27d3e59f8f44ea.
+
+The source MP4 is ignored by Git. It is not part of a fresh clone. The repository versions the POC code, metadata, summary JSON, diagnostic JSON, plots, and the asset-registry identity record. An authorised copy of the WATER source is required for a full rerun.
+
+Do not relabel this evidence as MORE. The current MORE MVP run is a different, ignored local run with different measurements.
 
 ## Technical hypothesis
 
-A Computer Vision pipeline can extract observed body and hand coordinates, preserve the raw evidence, transform the coordinates into a body-relative reference frame, handle only short recoverable gaps, and expose temporal behavior for inspection.
+A local Computer Vision pipeline can:
 
-The intended benefit is not semantic understanding. The intended benefit is that observed movement becomes structured, traceable data before any future rendering stage.
+- extract observed body and hand coordinates;
+- preserve raw-evidence hashes;
+- transform hand points into a shoulder-relative coordinate system;
+- make missing observations explicit;
+- reconstruct only short internal gaps;
+- store a lightly smoothed derivative without overwriting earlier stages; and
+- expose movement continuity for human inspection.
+
+The hypothesis concerns structured representation. It does not claim semantic understanding.
 
 ## Architecture
 
-```text
-Validated adult reference
-  → MediaPipe
-  → raw landmarks
-  → body-relative normalization
-  → conservative gap handling
-  → temporal diagnostics
-  → human/professional review
-  → future rendering
-```
+    Selected adult reference
+    → MediaPipe pose and hand extraction
+    → raw landmark records
+    → complete expected index
+    → shoulder-relative normalization
+    → conservative internal-gap interpolation
+    → centered smoothing
+    → temporal diagnostics and plots
+    → qualified human comparison
+    → future rendering experiment
 
-The stored lineage is explicit:
+The recorded lineage is:
 
-```text
-raw → normalized → interpolated → smoothed → diagnostics
-```
+    raw → normalized → interpolated → smoothed → diagnostics
 
-Raw coordinate CSVs in `poc/output/landmarks/` are treated as immutable extraction evidence. Derived coordinates are written to `poc/output/normalized/`; diagnostic evidence is written to `poc/output/diagnostics/`.
+Raw and derived coordinates remain separate. The versioned normalization metadata records SHA-256 values for the local raw hand CSV, pose CSV, and extraction metadata.
 
-## Method
+## Source and extraction method
 
-### Source and extraction
+MediaPipe processes each frame of one adult reference and emits:
 
-The local source is one adult reference video. MediaPipe Holistic processes each video frame and emits:
+- 33 pose landmarks for each detected pose frame;
+- 21 landmarks for each detected hand;
+- normalized image coordinates x, y, and z;
+- frame number; and
+- timestamp.
 
-- 33 pose landmarks per detected pose frame
-- 21 landmarks for each detected hand
-- normalized image coordinates `x`, `y`, and `z`
-- frame number and timestamp
+The result contains 332 processed frames at 29.970 frames per second and 640 by 360 pixels. The right hand is the dominant detected hand for this experiment.
 
-The current evidence contains 332 processed frames. The right hand is the dominant detected hand and is the relevant hand for this experiment.
+Extraction thresholds are:
 
-Extraction status is coverage-only:
+- EXTRACTION_PASS: pose coverage at least 95% and hand coverage at least 90%;
+- EXTRACTION_PARTIAL: hand coverage at least 70% when the pass criteria are not met; and
+- EXTRACTION_FAIL: hand coverage below 70%.
 
-- `EXTRACTION_PASS`: pose coverage at least 95% and hand coverage at least 90%
-- `EXTRACTION_PARTIAL`: hand coverage at least 70% but the pass criteria are not met
-- `EXTRACTION_FAIL`: hand coverage below 70%
+An extraction pass means there is enough landmark coverage for downstream analysis under these thresholds. It does not show biomechanical or linguistic correctness.
 
-An extraction pass means landmark coverage is sufficient for downstream motion analysis. It does not establish motion fidelity or sign correctness.
+## Complete expected index
 
-### Missing-data analysis
+The detected-hand CSV omits a row when the hand is absent. The normalization stage reconstructs the expected sequence:
 
-The hand CSV omits frames where no hand is detected. The pipeline reconstructs the complete expected index:
+    332 frames × one dominant Right hand × 21 landmarks = 6,972 rows
 
-```text
-332 frames × dominant Right hand × 21 landmark IDs = 6,972 rows
-```
+Missing observations become explicit rows with null raw coordinates. The stage records:
 
-Missing observations become explicit rows with null raw coordinates. Gap analysis is saved before interpolation and classifies each run as leading, internal, or trailing.
+- is_detected;
+- is_interpolated; and
+- is_unresolved.
 
-### Body-relative normalization
+This prevents missing detection from being mistaken for an absent frame or a zero coordinate.
 
-For each frame with valid pose landmarks:
+## Shoulder-relative normalization
 
-```text
-shoulder_midpoint = (left_shoulder_xyz + right_shoulder_xyz) / 2
-shoulder_width = EuclideanDistance(left_shoulder_xyz, right_shoulder_xyz)
-norm_axis = (raw_axis - shoulder_mid_axis) / shoulder_width
-```
+For every frame with valid shoulder landmarks:
 
-Raw coordinates remain in `raw_x`, `raw_y`, and `raw_z`. Derived values are stored separately in `norm_x`, `norm_y`, and `norm_z`, with the shoulder reference used for each frame.
+    shoulder_midpoint = (left_shoulder_xyz + right_shoulder_xyz) / 2
+    shoulder_width = EuclideanDistance(left_shoulder_xyz, right_shoulder_xyz)
+    norm_axis = (raw_axis - shoulder_mid_axis) / shoulder_width
 
-Body-relative normalization reduces sensitivity to performer position and apparent scale. It does not provide full viewpoint invariance.
+The original values remain in raw_x, raw_y, and raw_z. Derived values are stored in norm_x, norm_y, and norm_z with the frame's shoulder reference.
 
-### Conservative interpolation
+This reduces sensitivity to where the performer appears in the image and to apparent body scale. It does not create full viewpoint invariance. Camera angle, body rotation, occlusion, detector behavior, and MediaPipe depth convention still affect the coordinates.
 
-The default policy permits linear interpolation only when all conditions are true:
+## Missing-data policy
 
-- the gap is internal
-- the gap is no more than three consecutive frames
-- valid observations exist on both sides
+The interpolation rule permits a linear fill only when:
 
-The pipeline performs no leading extrapolation, no trailing extrapolation, and no silent filling of longer gaps. Each row records `is_detected`, `is_interpolated`, and `is_unresolved`.
+- the gap is internal;
+- the gap contains no more than three consecutive frames; and
+- valid observations exist on both sides.
 
-### Smoothing
+The pipeline performs no leading extrapolation, trailing extrapolation, or automatic reconstruction of longer gaps.
 
-A centered three-frame rolling mean creates `smooth_x`, `smooth_y`, and `smooth_z`. It does not overwrite normalized values and does not bridge unresolved gaps.
+Gap analysis is saved before interpolation.
 
-Minimal smoothing reduces frame-level detector jitter while preserving temporal structure. A centered window avoids causal lag but uses neighboring frames, so this representation is intended for offline content preparation rather than real-time control.
+## Smoothing
 
-### Motion diagnostics
+A centered three-frame rolling mean creates smooth_x, smooth_y, and smooth_z.
 
-Diagnostics cover the wrist and five fingertips:
+The smoother:
 
-| Landmark ID | Point |
-|---:|---|
-| 0 | Wrist |
-| 4 | Thumb tip |
-| 8 | Index tip |
-| 12 | Middle tip |
-| 16 | Ring tip |
-| 20 | Pinky tip |
+- does not overwrite normalized coordinates;
+- does not bridge unresolved gaps; and
+- has no causal lag because it uses neighboring frames on both sides.
 
-Frame-to-frame displacement is the Euclidean distance between consecutive smoothed body-relative coordinates. Trajectory length is the sum of valid consecutive displacements.
+This representation is intended for offline content preparation, not real-time control.
 
-An abrupt jump is flagged separately for each landmark when:
+## Motion diagnostics
 
-```text
-displacement > median displacement + 6 × median absolute deviation (MAD)
-```
+The analysis covers:
 
-This robust rule exposes unusual transitions without labeling them as errors. Abrupt-jump flags are detector diagnostics, not an accuracy measure; fast intentional motion can also be flagged.
+- wrist, landmark 0;
+- thumb tip, landmark 4;
+- index tip, landmark 8;
+- middle tip, landmark 12;
+- ring tip, landmark 16; and
+- pinky tip, landmark 20.
 
-## Results
+Frame displacement is the Euclidean distance between consecutive smoothed shoulder-relative coordinates. Trajectory length is the sum of valid consecutive displacements.
 
-### Extraction and data shape
+An unusual transition is flagged separately for each landmark when:
 
-**FACT**
+    displacement > median displacement + 6 × median absolute deviation
 
-- 332 frames were processed.
-- Pose landmarks were detected in 332 of 332 frames: 100.00%.
-- Dominant right-hand landmarks were detected in 312 of 332 frames: 93.98%.
-- Every detected hand frame contains 21 landmarks.
-- Every pose frame contains 33 landmarks.
-- No duplicate frame/hand/landmark or frame/pose-landmark keys were found.
-- The raw extraction status is `EXTRACTION_PASS`.
+The threshold identifies observations for comparison with the source. A flag is not an accuracy error; intentional fast motion can also cross it.
 
-**INTERPRETATION**
+## Extraction results
 
-Landmark extraction coverage is sufficient for downstream motion analysis on this reference sequence.
+Facts:
 
-**LIMITATION**
+- frames processed: 332;
+- pose detections: 332 of 332, or 100.00%;
+- dominant right-hand detections: 312 of 332, or 93.98%;
+- missing dominant-hand frames: 20;
+- hand landmarks per detected frame: 21;
+- pose landmarks per detected frame: 33;
+- duplicate hand keys: 0;
+- duplicate pose keys: 0; and
+- extraction status: EXTRACTION_PASS.
 
-Coverage does not demonstrate that every coordinate is biomechanically accurate or that the performed sign is professionally correct.
+Interpretation:
 
-### Missing data and recovery
+The reference has enough detected pose and dominant-hand frames for the defined downstream representation checks.
 
-**FACT**
+Limitation:
 
-The 20 missing hand frames form three gaps:
+Coverage does not demonstrate accurate coordinates in every frame, correct sign performance, or professional approval.
 
-| Gap | Frames | Length | Approx. duration | Type | Decision |
-|---|---:|---:|---:|---|---|
-| 1 | 0–8 | 9 | 300.30 ms | Leading | Unresolved |
-| 2 | 320 | 1 | 33.37 ms | Internal | Interpolated |
-| 3 | 322–331 | 10 | 333.67 ms | Trailing | Unresolved |
+## Missing-data results
 
-- Gap count: 3
-- Longest gap: 10 frames
-- Median gap length: 9 frames
-- Interpolated frames: 1
-- Unresolved frames: 19, or 5.72% of the sequence
+The 20 missing dominant-hand frames form three gaps.
 
-**INTERPRETATION**
+Gap 1:
 
-The one-frame internal gap is recoverable under the predefined conservative rule. The leading and trailing gaps lack observations on both sides and remain missing by design.
+- frames: 0 through 8;
+- length: 9 frames;
+- approximate duration: 300.30 milliseconds;
+- type: leading; and
+- decision: unresolved.
 
-**LIMITATION**
+Gap 2:
 
-The representation does not reconstruct movement outside the detected interval. Future rendering must either respect the unresolved boundaries or use a separately validated capture/editing decision.
+- frame: 320;
+- length: 1 frame;
+- approximate duration: 33.37 milliseconds;
+- type: internal; and
+- decision: interpolated.
 
-### Normalization
+Gap 3:
 
-**FACT**
+- frames: 322 through 331;
+- length: 10 frames;
+- approximate duration: 333.67 milliseconds;
+- type: trailing; and
+- decision: unresolved.
 
-- Shoulder midpoint and shoulder width were available for all 332 frames.
-- Median shoulder width in MediaPipe coordinate space: 0.310152.
-- Shoulder-width MAD: 0.014723.
-- Raw-coordinate SHA-256 values are recorded in the normalization metadata.
-- The raw hand, pose, and metadata hashes remained unchanged during downstream processing.
+Summary:
 
-**INTERPRETATION**
+- gap count: 3;
+- longest gap: 10 frames;
+- median gap length: 9 frames;
+- interpolated frames: 1; and
+- unresolved frames: 19, or 5.72%.
 
-The reference sequence supports a complete per-frame body-relative coordinate transform. This reduces the direct effect of where the performer appears in the frame and their apparent scale.
+Interpretation:
 
-**LIMITATION**
+The one-frame internal gap meets the predefined rule. The edge gaps lack valid observations on both sides and remain missing by design.
 
-The coordinate system remains sensitive to camera viewpoint, body orientation, occlusion, detector behavior, and MediaPipe's depth convention.
+Limitation:
 
-### Temporal diagnostics
+The representation does not reconstruct movement outside the detected interval. A future renderer must preserve that uncertainty or use a separately reviewed editing decision.
 
-**FACT**
+## Normalization results
 
-For the dominant-hand wrist, using centered three-frame smoothed body-relative XYZ coordinates:
+Facts:
 
-- Valid consecutive transitions: 312
-- Missing transitions: 19
-- Median frame displacement: 0.019707 shoulder widths
-- Maximum frame displacement: 0.280319 shoulder widths
-- Normalized trajectory length: 11.643874 shoulder widths
-- Robust abrupt-jump threshold: 0.113406 shoulder widths
-- Abrupt-jump count: 20 of 312 valid transitions, or 6.41%
+- valid shoulder references: 332 of 332 frames;
+- median shoulder width in MediaPipe coordinate space: 0.310152;
+- shoulder-width median absolute deviation: 0.014723;
+- normalized origin: shoulder midpoint;
+- normalized scale: shoulder width; and
+- smoothing window: 3 frames.
 
-Across the wrist and five fingertips, the highest abrupt-transition rate is 8.01%.
+The normalization metadata records the raw-input hashes and states that downstream processing did not overwrite those sources.
 
-**INTERPRETATION**
+Interpretation:
 
-The sequence preserves a continuous detected-and-interpolated interval from frames 9 through 321. The robust flags identify transition regions that merit comparison with the source video; they do not determine whether the motion is correct or incorrect.
+The full sequence supports a per-frame shoulder-relative transform.
 
-**LIMITATION**
+Limitation:
 
-There is no ground-truth motion-capture reference. The POC therefore cannot separate intentional rapid movement from detector instability based on displacement alone.
+The POC has no multi-camera or viewpoint-invariance test.
 
-### Structured technical quality assessment
+## Wrist results
 
-| Dimension | Status | Evidence-led reason |
-|---|---|---|
-| A. Detection coverage | PASS | `EXTRACTION_PASS`: 100.00% pose and 93.98% hand coverage |
-| B. Missing-data continuity | PARTIAL | 19 frames, or 5.72%, remain unresolved |
-| C. Short-gap recoverability | PASS | The only internal gap is one frame and was interpolated |
-| D. Body-relative stability | PASS | A finite positive shoulder reference exists for 100% of frames |
-| E. Temporal smoothness | PARTIAL | Maximum robust-flag rate across tracked landmarks is 8.01% |
-| F. Human-inspectable correspondence | PENDING EXPERT REVIEW | Plots exist; professional correspondence has not been reviewed |
+For the dominant-hand wrist:
 
-The automated overall status is `MOTION_REPRESENTATION_PARTIAL`. It is deliberately not collapsed into an unexplained score.
+- valid consecutive transitions: 312;
+- missing transitions: 19;
+- median frame displacement: 0.019707 shoulder widths;
+- maximum frame displacement: 0.280319 shoulder widths;
+- normalized trajectory length: 11.643874 shoulder widths;
+- transition threshold: 0.113406 shoulder widths;
+- flagged transitions: 20; and
+- flagged-transition rate: 6.41%.
+
+Across the wrist and five fingertips, the highest flagged-transition rate is 8.01%.
+
+Interpretation:
+
+The stored data contains a continuous detected or interpolated interval from frames 9 through 321. Flagged regions should be compared with the source and overlay.
+
+Limitation:
+
+There is no marker-based motion-capture ground truth. Displacement alone cannot separate intentional rapid movement from detector instability.
+
+## Structured quality assessment
+
+### A. Detection coverage
+
+Status: PASS.
+
+Reason: pose coverage is 100.00%, hand coverage is 93.98%, and extraction is EXTRACTION_PASS.
+
+### B. Missing-data continuity
+
+Status: PARTIAL.
+
+Reason: 19 frames, or 5.72%, remain unresolved.
+
+### C. Short-gap recoverability
+
+Status: PASS.
+
+Reason: the only internal gap contains one frame and was interpolated under the predefined maximum.
+
+### D. Body-relative stability
+
+Status: PASS.
+
+Reason: every frame has a finite positive shoulder reference.
+
+### E. Temporal smoothness
+
+Status: PARTIAL.
+
+Reason: the highest flagged-transition rate across the wrist and fingertips is 8.01%.
+
+### F. Human-inspectable correspondence
+
+Status: PENDING_EXPERT_REVIEW.
+
+Reason: plots and structured trajectories exist, but a qualified reviewer has not confirmed correspondence or sign correctness.
+
+Overall motion status: MOTION_REPRESENTATION_PARTIAL.
+
+Technical feasibility decision: Proceed with conditions.
+
+### Tracked-pose decision rule
+
+The connected MVP can offer the `Use tracked poses` route only when dominant-hand detection coverage is at least 90%. The versioned WATER result reaches 93.98%, so it clears that technical route threshold. `MOTION_REPRESENTATION_PARTIAL` and pending expert review still apply; clearing the coverage threshold does not approve the sign or prove correctness.
 
 ## What the POC demonstrates
 
-- A local MediaPipe extraction can be transformed into a complete, auditable frame/hand/landmark index.
-- Raw observations can be preserved alongside body-relative derived coordinates.
-- Body-relative normalization can be applied for every pose-valid frame.
-- Missing-data structure can be measured before interpolation.
-- A short internal gap can be interpolated under a transparent, configurable rule.
-- Edge gaps can remain explicitly unresolved rather than being silently fabricated.
-- Minimal no-lag smoothing can be stored without overwriting normalized coordinates.
-- Wrist and fingertip trajectories, displacements, missing transitions, and robust jump flags can be generated for technical and human inspection.
+- Local MediaPipe extraction can produce pose and hand records for one adult source.
+- A complete expected frame and landmark index can expose missing data.
+- Raw-evidence hashes can be preserved alongside derived output.
+- Every pose-valid frame can be converted to a shoulder-relative coordinate system.
+- Gap structure can be measured before reconstruction.
+- A short internal gap can be filled under an explicit rule.
+- Edge gaps can remain unresolved instead of being fabricated.
+- Smoothing can be stored as a separate derivative.
+- Wrist and fingertip paths, displacement, missing transitions, and transition flags can be generated for inspection.
 
 ## What the POC does not demonstrate
 
-- linguistic correctness
-- Baby Sign, ASL, or LSE correctness
-- clinical or developmental benefit
-- semantic sign recognition
-- full viewpoint invariance
-- avatar generation
-- motion retargeting
-- final synthetic-video or motion-preservation fidelity
-- generalization across signs, performers, cameras, lighting, clothing, or backgrounds
-- product-market fit
-
-PASS language is bounded. An extraction pass indicates that coverage meets the predefined threshold for analysis. A future motion-representation pass would indicate only that the representation meets predefined technical feasibility criteria for further experimentation.
+- Baby Sign, ASL, LSE, or other linguistic correctness;
+- semantic sign recognition;
+- clinical or developmental benefit;
+- automatic child assessment;
+- full viewpoint invariance;
+- avatar generation or retargeting;
+- final synthetic-video fidelity;
+- generalisation across signs, performers, devices, lighting, clothing, backgrounds, or viewpoints;
+- production performance; or
+- product-market fit.
 
 ## Human validation checkpoint
 
-Computer Vision can quantify and structure observed movement.
+Computer Vision can quantify and structure observed movement. It cannot decide whether the sign is professionally correct.
 
-It cannot determine whether the sign is professionally correct without expert review.
+A qualified reviewer must compare the selected reference, plots, overlay, and any future reconstruction before the movement can support released educational content.
 
-A qualified reviewer must compare the validated reference, diagnostic plots, and any future reconstruction before the representation can be used as a trusted motion source. Human review is an architecture stage, not a post-launch disclaimer.
+The automated status must remain separate from professional review, visual review, printable eligibility, publication, and school availability.
 
-## Privacy / governance
+## Relationship to the current MORE MVP
 
-- Processing remains local.
-- The reference video is not uploaded to external AI services.
-- Adult reference material is used.
-- Child video is not required for this feasibility experiment.
-- Git excludes `poc/input/*.mp4`, `poc/input/*.mov`, raw landmark CSVs, normalized CSVs, private preview MP4s, virtual environments, macOS metadata, Python bytecode, and cache directories.
-- Public evidence is limited to non-video metadata, JSON diagnostics, and technical plots that do not reconstruct a person.
-- The reference performer and sign material must have appropriate consent and usage rights before any wider distribution.
+The local MORE demo is separate from this POC. Its successful ignored run reports 285 frames, 100.00% pose coverage, 91.93% dominant-hand coverage, EXTRACTION_PASS, and MOTION_REPRESENTATION_PARTIAL.
+
+The MORE run does not replace the versioned WATER evidence. Neither result proves cross-sign performance.
+
+On 4 September 2026, the six POC unit tests passed. The opt-in MORE integration failed before frame processing in the current headless macOS session because MediaPipe could not create the required graphics context. The application recorded a controlled error. This runtime limitation concerns execution context, not the arithmetic already stored in the WATER evidence.
+
+## Privacy and governance
+
+- Processing occurs locally in this POC.
+- No external AI service receives the reference video.
+- The experiment uses an adult reference.
+- Child video is not needed.
+- The source MP4, raw landmark CSVs, normalized CSVs, and private preview video are ignored by Git.
+- Versioned public evidence is limited to metadata, summary JSON, diagnostic JSON, and technical plots.
+- Video and landmarks may still be personal data when linked to an identifiable performer.
+- The performer and sign material require appropriate consent, provenance, and usage rights before external display or reuse.
+- The landmarks are not used to identify a person.
+
+## Separate Round 1 workflow evidence
+
+The closed Computer Vision POC does not call n8n or LangSmith. Those tools have separate Round 1 evidence paths and do not validate landmark extraction, movement representation, or sign correctness.
+
+The exact inactive 12-node n8n export is documented in [the workflow guide](../workflow/kinder_signs_n8n_workflow.md). It is importable design evidence; no final target-runtime execution is claimed. The [LangSmith dry-run summary](../workflow/langsmith_dry_run_summary.json) records `DRY_RUN` with network calls false for the optional wording evaluation path. It is not a live trace and is not part of the Computer Vision processing loop.
 
 ## Next technical step
 
-### Technical feasibility: Proceed with conditions
+Proceed only with these conditions:
 
-The evidence supports further controlled motion-representation experimentation, not avatar production.
+1. Obtain qualified professional review of the source and correspondence evidence.
+2. Keep leading, trailing, and longer internal gaps unresolved unless a separate reviewed rule is adopted.
+3. Compare every flagged transition with the reference.
+4. Repeat the method across multiple reviewed signs, adult performers, viewpoints, and capture conditions.
+5. Test future rendering against the structured reference before making a fidelity claim.
+6. Validate a supported runtime for headless or hosted execution.
 
-Conditions:
+## Evidence paths
 
-- professional sign validation remains mandatory
-- flagged transitions must be compared with the source video
-- leading, trailing, and long internal gaps must not be automatically reconstructed
-- the method must be tested across multiple validated signs, adult performers, capture conditions, and viewpoints
-- future rendering must be evaluated against the structured reference before any fidelity claim
+Versioned evidence:
 
-Avatar generation, n8n orchestration, and LangSmith evaluation are outside this closed POC and should not begin until these conditions and the human-validation checkpoint are accepted.
+- poc/output/validation_summary.json;
+- poc/output/landmarks/sign_reference_metadata.json;
+- poc/output/normalized/sign_reference_normalization_metadata.json;
+- poc/output/diagnostics/sign_reference_missing_frames.json;
+- poc/output/diagnostics/sign_reference_motion_displacements.json;
+- poc/output/diagnostics/sign_reference_motion_summary.json;
+- poc/output/diagnostics/sign_reference_detection_timeline.png;
+- poc/output/diagnostics/sign_reference_wrist_trajectory.png;
+- poc/output/diagnostics/sign_reference_fingertip_trajectories.png;
+- assets/registry/sign_asset_registry.json;
+- poc/src; and
+- poc/tests.
 
-## Reproducibility and evidence map
+Local ignored inputs and intermediate records:
 
-Run from the repository root:
+- poc/input/sign_reference.mp4;
+- poc/output/landmarks/sign_reference_hand_landmarks.csv;
+- poc/output/landmarks/sign_reference_pose_landmarks.csv;
+- poc/output/normalized/sign_reference_hand_normalized.csv; and
+- poc/output/normalized/sign_reference_pose_normalized.csv.
 
-```bash
-python poc/src/extract_landmarks.py --video poc/input/sign_reference.mp4
-python poc/src/normalize_landmarks.py --video-name sign_reference
-python poc/src/analyse_motion.py --video-name sign_reference
-python -m unittest discover -s poc/tests -v
-```
+## Reproduction boundary
 
-The extraction baseline uses MediaPipe's 0.10 legacy Solutions API. Use Python 3.11 or 3.12 and install the bounded dependency range in `poc/requirements.txt`; MediaPipe 1.x is not compatible with this unchanged extractor.
+The code and non-video evidence are versioned. A full extraction rerun also requires the authorised local WATER MP4 and the compatible MediaPipe environment.
 
-Key evidence:
+The environment used for the current local prototype is poc_env with Python 3.9.6 and MediaPipe 0.10.14. A clean Python 3.11 or 3.12 environment remains a target, not a result of this verification.
 
-- `poc/output/validation_summary.json`
-- `poc/output/landmarks/sign_reference_metadata.json`
-- `poc/output/normalized/sign_reference_normalization_metadata.json`
-- `poc/output/diagnostics/sign_reference_missing_frames.json`
-- `poc/output/diagnostics/sign_reference_motion_displacements.json`
-- `poc/output/diagnostics/sign_reference_motion_summary.json`
-- `poc/output/diagnostics/sign_reference_detection_timeline.png`
-- `poc/output/diagnostics/sign_reference_wrist_trajectory.png`
-- `poc/output/diagnostics/sign_reference_fingertip_trajectories.png`
+The POC test suite runs from the repository root with:
+
+    poc_env/bin/python -m unittest discover -s poc/tests -v
+
+Verified result on 4 September 2026: 6 tests passed.

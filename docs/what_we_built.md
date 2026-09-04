@@ -1,138 +1,268 @@
-# What we built
+# What KinderFlow built
 
-These are working notes, not final Round 2 submission prose. They describe the repository as it exists on 2 September 2026.
+Repository status reviewed on 4 September 2026.
 
-## Kinder Signs in one sentence
+## Product summary
 
-Kinder Signs tests whether one controlled sign source can become reusable school-and-family material without asking each school to create or manage the content-production process.
+Kinder Signs tests whether one reviewed adult sign reference can become reusable nursery and family material without asking each school to operate the technical content-production process.
 
-## The product flow
+The repository joins real local Computer Vision, human evidence selection, deterministic draft visuals, printable and story proofs, content-governance code, and synthetic school and family pages. It does not complete production publication or delivery.
 
-### 1. Reference sign video
+## Product route map
 
-**What it does:** Provides the movement source for a sign-production run.
+The prototype has 12 HTML routes:
 
-**Why we need it:** The movement must come from a known reference rather than be invented by a visual generator.
+1. index.html: KinderFlow platform overview.
+2. kinder-signs.html: Kinder Signs product overview.
+3. admin.html: internal operations overview.
+4. content-studio.html: internal workspace selector.
+5. create-sign.html: connected sign-production flow.
+6. library.html: content and readiness review.
+7. flashcards.html: Flashcard and Routine Card builder.
+8. print-card.html: A5 print proof.
+9. create-story.html: MORE story prototype.
+10. create-song.html: Coming soon page.
+11. school.html: Little Steps Nursery assignment demonstration.
+12. family.html: basic family-facing preview.
 
-**What it does not do:** A video is not approved merely because it can be uploaded. Source rights, sign identity and professional suitability still need confirmation.
+When served by mvp/app.py, the root route opens create-sign.html. A static prototype server opens index.html at its root.
 
-### 2. MediaPipe landmark extraction
+## Reference intake
 
-**What it does:** Extracts body and hand points from each readable video frame.
+### What it does
 
-**Why we need it:** Those points turn visible movement into structured data that software can inspect over time.
+The local MVP accepts one adult MP4 through upload, a registered MORE demo shortcut, or a bounded public direct-MP4 URL.
 
-**What it does not do:** It does not certify linguistic sign correctness or assess a child.
+### Why it exists
 
-### 3. Movement evidence and skeleton representation
+Movement must come from a selected source rather than a visual generator.
 
-**What it does:** Keeps the extracted points in time order and creates a landmark-overlay preview and diagnostic plots.
+### Boundary
 
-**Why we need it:** An operator can compare the reference video with the structured movement evidence.
+The operator selects the sign identity. The software does not recognise the sign. Source identity, rights, and professional suitability remain human responsibilities.
 
-**What it does not do:** The skeleton is not a finished avatar or family-facing sign asset.
+The direct URL path accepts a public MP4 only. It validates scheme, port, DNS result, redirects, MIME type, size, and timeout; rejects local or private targets; stages a temporary file safely; and removes query data from stored provenance. It is not a webpage scraper.
 
-### 4. Technical checks
+## MediaPipe extraction
 
-**What it does:** Reports capture signals such as frames analysed, hand and pose coverage, gaps and abrupt transitions.
+### What it does
 
-**Why we need it:** Weak or incomplete capture should be visible before content moves to human review.
+The pipeline extracts 33 pose landmarks and 21 landmarks per detected hand for each readable frame. It preserves timestamps and the dominant detected hand.
 
-**What it does not do:** A technical pass is not “sign accuracy.” The current reference produced 93.98% dominant-hand detection coverage, not 93.98% sign correctness.
+### Why it exists
 
-### 5. Visual and flashcard layer
+The coordinates make observed movement inspectable over time.
 
-**What it does:** Keeps family-facing illustration and printable layout separate from the movement-processing layer.
+### Boundary
 
-**Why we need it:** The same approved source should be reusable in consistent materials without changing the movement evidence.
+Landmark coverage is not sign correctness, language recognition, or child assessment.
 
-**What it does not do:** The repository does not contain final production avatar generation or a professionally reviewed MORE hand-pose asset.
+## Movement representation
 
-### 6. Flashcard content
+### What it does
 
-**What it does:** Combines a sign label, routine, short family guidance and a visual placeholder in predefined layouts.
+The POC:
 
-**Why we need it:** Families need short material connected to a real school routine, not technical CV output.
+- preserves raw coordinates;
+- creates a complete frame and landmark index;
+- normalizes hand coordinates to shoulder midpoint and width;
+- interpolates only internal gaps of no more than three frames;
+- leaves leading, trailing, and longer gaps unresolved;
+- applies a centered three-frame smoothing window; and
+- creates wrist and fingertip displacement diagnostics.
 
-**What it does not do:** It does not let the school create or validate the underlying sign. It is not a free-form design tool.
+### Why it exists
 
-### 7. Deterministic checks
+An operator can compare the reference, pose preview, coverage timeline, and hand path before selecting evidence for the visual.
 
-**What it does:** Normal code checks objective facts: required fields, allowed states, asset readiness, banned wording and the presence of human approval.
+### Boundary
 
-**Why we need it:** A true/false rule should not depend on a language model’s judgement.
+The representation is not a family-facing avatar and is not fully viewpoint invariant.
 
-**What it does not do:** Passing required-field checks does not prove that the educational content is professionally correct.
+## Technical evidence
 
-### 8. Optional LLM wording support
+### Versioned WATER evidence
 
-**What it does:** The workflow can ask a language model to turn supplied, approved source text into a short family draft.
+The Round 1 JSON and plot artifacts describe WATER:
 
-**Why we need it:** It may reduce repetitive editing when several family-facing variants are needed.
+- 332 frames;
+- 100.00% pose coverage;
+- 93.98% dominant right-hand coverage;
+- 20 missing hand frames;
+- 1 interpolated frame;
+- 19 unresolved frames;
+- EXTRACTION_PASS; and
+- MOTION_REPRESENTATION_PARTIAL.
 
-**What it does not do:** It does not create hand shape, movement, sign correctness or publication approval. Current content-operations manifests use human-authored copy, so the LLM is not required for the core sign flow.
+The source video is local and ignored by Git. The evidence JSON, plots, and asset-registry record are versioned.
 
-### 9. LangSmith evaluation
+### Local MORE evidence
 
-**What it does:** The dry-run shows what would be traced and which checks would apply to LLM-assisted wording.
+The ignored successful run at mvp/runs/run_20260904T061136125509Z_eb661bc3 records:
 
-**Why we need it:** If an LLM is used, the team needs to see its input, output and evaluation evidence.
+- 285 frames;
+- 100.00% pose coverage;
+- 91.93% dominant-hand coverage;
+- 25 missing dominant-hand frames;
+- 4 interpolated frames;
+- 21 unresolved frames;
+- EXTRACTION_PASS; and
+- MOTION_REPRESENTATION_PARTIAL.
 
-**What it does not do:** It does not evaluate the video, MediaPipe, hands, movement fidelity or linguistic correctness. A live trace has not been run as repository evidence.
+It is local evidence only. Do not combine its numbers with the WATER result.
 
-### 10. Human review
+### Current verification
 
-**What it does:** Keeps approval and publication under explicit human control.
+Standard discovery ran 184 tests on 4 September 2026: 183 passed and one opt-in MVP integration test was skipped. Running that integration explicitly failed before frame processing because MediaPipe could not create a graphics context in the current headless macOS session. The service returned a controlled error. The prior local MORE run was not reproduced during this check.
 
-**Why we need it:** Technical capture and generated wording cannot decide whether educational sign content is suitable for release.
+## Reference review and pose selection
 
-**What it does not do:** The local buttons do not provide reviewer identity, authentication or a production audit trail.
+### What it does
 
-### 11. Signs & Flashcards Library
+The Create a Sign interface presents five steps:
 
-**What it does:** Represents the intended destination for a reviewed, published sign and its family assets.
+1. Sign & reference.
+2. Review reference.
+3. Choose poses.
+4. Approve visual.
+5. Family materials.
 
-**Why we need it:** Kinder Signs can prepare one governed asset centrally and make it available to more than one entitled school.
+Pass, Review needed, and Fail translate technical states into operator routing. The three evidence choices are Use tracked poses, Choose reference frames, and Use reviewed references.
 
-**What it does not do:** The current repository does not contain a production database or a completed approved five-sign library. The five-sign regression report currently blocks all five from publication.
+Tracked poses require at least 90% dominant-hand coverage. The frame route supports one or two generated suggestions. The reviewed-reference route requires a written reason. EAT can use that route when near-face occlusion leaves partial but reviewable evidence.
 
-### 12. School assignment
+### Boundary
 
-**What it does:** The static school prototype shows selecting existing library items and assigning them to groups or a fictional child.
+The action Create family materials accepts an evidence route for visual preparation. It does not approve or publish the sign.
 
-**Why we need it:** The school should operate a simple distribution flow, not CV, LLM or content production.
+## Visual preparation
 
-**What it does not do:** It does not persist assignments beyond browser session storage, enforce permissions, contact families or integrate with a school platform.
+### What it does
 
-### 13. Family output
+The canonical registry covers MORE, HELP, EAT, SLEEP, MILK, and WATER. Each package offers two initial SVG options and one deterministic additional option. The fixed Open Peeps bust defines the character style; custom arm, hand, and movement layers differ by sign.
 
-**What it does:** Shows short guidance and printable material linked to the same routine used at school.
+### Why it exists
 
-**Why we need it:** School-home continuity is the product proposition.
+Operators need a consistent visual system whose sign-specific details remain visible for review.
 
-**What it does not do:** It is not clinical advice, a developmental assessment or a promise of faster development.
+### Boundary
 
-### 14. Pilot measurement
+All 18 options are drafts. Open Peeps does not validate the sign. No visual has qualified hand-pose review, printable approval, publication approval, or school availability.
 
-**What it does:** Defines future privacy-minimised events for assignment, viewing, printing and review operations.
+## Illustrative motion preview
 
-**Why we need it:** A pilot must test actual use, effort and commercial interest rather than rely on prototype reactions.
+### What it does
 
-**What it does not do:** The schema is not live instrumentation and contains no pilot results.
+The service can display local pre-generated Gemini FX files for three signs:
 
-## How the parts fit
+- MORE maps to mas.mp4;
+- HELP maps to ayuda.mp4; and
+- MILK maps to leche.mp4.
 
-```text
-Validated reference material
-→ local CV processing
-→ technical evidence
-→ content + visual preparation
-→ deterministic checks
-→ human review
-→ published library item
-→ entitled school assignment
-→ family output
-→ future pilot evidence
-```
+### Boundary
 
-The current repository proves parts of this chain. It does not prove the whole production service or the market.
+EAT, SLEEP, and WATER have no current file. These videos were prepared separately as illustrative motion previews. They are not generated automatically from the current MediaPipe run or its landmarks. Usage rights, external-display permission, fidelity, and professional suitability remain unresolved.
+
+## Flashcard and Routine Card
+
+### What they do
+
+These deterministic routes combine the exact session-approved draft visual with controlled bilingual wording and layout. The operator chooses Flashcard or Routine Card and Bilingual or Spanish.
+
+### Boundary
+
+The approval state is APPROVED_FOR_INTERNAL_PRINTABLE and publication remains DRAFT. Browser Print or Save as PDF through the A5 proof route is the only export. There is no PNG action, server PDF service, or completed saved-PDF visual review.
+
+## Story and Song
+
+### Story
+
+The Story route uses the exact session-approved visual and creates a deterministic English or Spanish draft for MORE. It has local checks and review actions.
+
+No live LLM, n8n, or LangSmith call runs from the page. Other signs fail closed.
+
+### Song
+
+Song is marked Coming soon and Not available yet. No song generation is implemented.
+
+## Content Operations
+
+### What it does
+
+The Content Operations module keeps source, technical, wording, visual, hand review, deterministic gate, human review, publication, and library state separate. It records hashes, package identity, and local events.
+
+### Evidence-set boundary
+
+Its five records are MORE, EAT, WATER, ALL DONE, and HELP. The canonical visual registry has six different records. The five-record set is a wording and readiness regression fixture. All five records are blocked.
+
+The versioned MORE package proves deterministic package construction. It remains Draft and blocked.
+
+## Optional LLM wording and LangSmith
+
+### What they do
+
+The Content Pack service can use approved human copy or an optional LLM-assisted path under one schema. Deterministic checks remain separate. LangSmith is scoped only to the optional wording step.
+
+### Current evidence
+
+Dry-run and mocked provider-path behavior are tested. The repository contains a LangSmith dry-run summary and five evaluation cases.
+
+### Boundary
+
+No live external model output or live LangSmith trace is committed. Neither tool evaluates MediaPipe, movement fidelity, or sign correctness.
+
+## n8n orchestration
+
+### What it does
+
+The exact JSON export describes a manual flow from an approved sign object and bounded CV summary to a draft pending professional review. It includes schema checks, a model node, deterministic quality routing, and rejected and pending-review outcomes.
+
+### Boundary
+
+The export is inactive. The repository contains no final adapter execution record from a target n8n runtime and no automatic publication connection.
+
+## Content Library
+
+### What it does
+
+The interface shows wording readiness, asset state, and blocking reasons.
+
+### Boundary
+
+No production database or published library exists. The asset registry reports all six signs as UNAVAILABLE to schools.
+
+## Little Steps Nursery assignment
+
+### What it does
+
+The synthetic school page offers six sign previews and supports selecting a group, materials, and either everyone in the group or one child. It blocks an exact duplicate and supports editing and removing active assignments.
+
+### Boundary
+
+Assignments remain in browser session storage. No permission engine, account, family notification, or backend delivery exists.
+
+## Family View
+
+### What it does
+
+The family page reads the browser-session assignment fixture, filters it to a selected synthetic family context, and combines materials by sign. If no assignment state exists, it supplies a synthetic MORE example.
+
+### Boundary
+
+A family-facing guidance prototype exists. A personalised assignment-driven family library remains a next product iteration. Real family identity, access control, persistent data, notifications, and school integration are pending.
+
+## Tableau decision support
+
+The packaged Tableau workbook contains four views about Spanish institutional access, Madrid digital readiness, adult age-cohort GenAI proxies, and competitive positioning. It supports a pilot discussion only. It does not show live product telemetry, market share, demand, or willingness to pay.
+
+## Current publication state
+
+The repository has no published production sign:
+
+- reviewed static visuals: 0;
+- approved Flashcard outputs: 0;
+- approved Routine Card outputs: 0;
+- signs available to schools: 0; and
+- live school or family deliveries: 0.
+
+The work demonstrates a connected local prototype and an inspectable governance design. A controlled pilot must close source rights, professional review, runtime, privacy, security, delivery, and measurement gaps.

@@ -1,602 +1,638 @@
-# KinderFlow — ROI & Risk Assessment
+# KinderFlow ROI and Risk Assessment
 
-## Executive takeaway
+Document status: final capstone reconciliation
+Decision status: PROCEED WITH CONDITIONS
+Currency: EUR
+Model boundary: controlled validation and early per-centre service economics, not a production-company valuation
+Pilot boundary: 8 to 9 weeks total, including a 3 to 4 week controlled service test with 2 to 3 nursery schools and 3 to 5 signs
 
-Kinder Signs has enough technical evidence to justify modelling a controlled commercial pilot, but it is too early to claim a validated return on investment.
+## Executive assessment
 
-The current business case should therefore be treated as a **decision model**, not a forecast. The purpose of this document is to make the assumptions visible, quantify what would need to be true for the product to become viable, and identify the risks that must be controlled before a real-school pilot.
+KinderFlow has enough technical and operating evidence to justify a narrow pilot. It does not yet have enough commercial, family-use, rights, reviewer-capacity, or production-cost evidence to support an unconditional launch.
 
-**Current recommendation: PROCEED WITH CONDITIONS**
+The financial case is presented through two separate lenses:
 
-The local evidence is sufficient to justify pilot-readiness work. A real pilot remains conditional on confirmed reference rights, reviewed sign assets, operational human review, security and privacy controls. Commercial viability, willingness to pay, content-production throughput and school adoption are not yet evidenced.
+1. Nursery value lens: whether a nursery gains useful, safe workflow and family-service value at a proportionate price.
+2. KinderFlow provider lens: whether subscription contribution can recover validation, recurring operating, variable service, and reusable-content costs.
 
----
+The Low, Base, and High cases are calculated input bundles. They are not probability-weighted forecasts. The recommended decision is PROCEED WITH CONDITIONS because:
 
-# 1. What this assessment is testing
+- the Base case remains negative at 12 months;
+- the Base case becomes positive over 36 months only if centre growth, price, reuse, and recurring costs perform near the stated assumptions;
+- modest adverse changes to price or centre count remove the Base-case return;
+- production build cost is still TBD and is excluded from the core scenarios;
+- customer acquisition cost, retention, willingness to pay, and reviewer throughput have no observed baseline.
 
-This document answers two questions:
+## Evidence and calculation rules
 
-1. **Can Kinder Signs create enough recurring value to justify the cost of building and operating it?**
-2. **What could prevent the product from reaching that value?**
+Evidence labels used in this assessment:
 
-The assessment separates:
+- Founder-observed: supplied from direct operating knowledge and not independently audited.
+- Public evidence: limited to the claim supported by a cited public source.
+- Calculated scenario: arithmetic from stated inputs, not an observed result.
+- Benchmark: an external reference point, not proof of KinderFlow demand.
+- Project estimate: a planning allowance, not a quote or invoice.
+- Pilot hypothesis: an assumption or threshold the pilot is designed to test.
+- TBD: unknown and excluded until measured.
 
-- current evidence;
-- project estimates;
-- pilot assumptions;
-- market hypotheses;
-- unresolved variables.
+Core equations:
 
-No commercial outcome is presented as validated.
+> Annual revenue = annual price per centre x average paying centres
 
----
+> Annual variable cost = variable cost per active centre-year x average paying centres
 
-# 2. Business model in scope
+> Net benefit = revenue - total cost
 
-Kinder Signs follows a **school-led B2B / B2B2C model**.
+> ROI = net benefit / total cost
 
-### Primary customer
+> Annual contribution per centre = annual subscription price - variable cost per active centre-year
 
-Nursery school / school group.
+> Steady-state break-even centres = ceiling((annual fixed cost + annual reusable-content cost) / annual contribution per centre)
 
-### Operational users
+> Year 1 all-in break-even centres = ceiling((upfront validation investment + annual fixed cost + annual reusable-content cost) / annual contribution per centre)
 
-- school directors;
-- educators;
-- KinderFlow content operations.
+Calculation conventions:
 
-### Beneficiaries
+- listed centre counts are average paying centres for each year;
+- revenue and recurring costs are recognised evenly through each year for break-even month calculations;
+- year 1 centre counts do not change the 2 to 3 nursery controlled pilot start;
+- add-on adoption and add-on revenue are EUR 0 in every case;
+- taxes, financing, bad debt, discounting, inflation, churn, and residual value are excluded;
+- current prototype effort is sunk, unpriced, and excluded;
+- production build cost is TBD and excluded;
+- totals are rounded to the nearest EUR 10 where shown and ROI to one decimal place.
 
-- families / caregivers;
-- children.
+## Lens 1: nursery value and affordability
 
-### Commercial logic
+### Little Steps case boundary
 
-KinderFlow creates and governs content centrally.
+This is a pseudonymised operating case. It is not audited client financial information.
 
-The school receives access to approved content and decides which available material to assign to its groups or individual children.
+Founder-observed context:
 
-The intended value chain is:
+- Little Steps has capacity for 42 children across groups of 8, 14, and 20.
+- Approximately 38 children represents 90% occupancy.
+- Cleo, the owner and director, combines administration, Baby Sign support, teaching, family questions, quality checks, and commercial relationships.
+- Staff already use baby signs.
+- Families ask for sign lists or materials.
+- Current monetisation is one-off training or courses, not a recurring structured digital service.
 
-```text
-Validated reference content
-→ central KinderFlow production
-→ reusable sign asset
-→ flashcards / stories / future content
-→ school access
-→ family use
-```
+The selected planning envelope is approximately EUR 195,000 to EUR 238,000 per year, from about 90% occupancy over 10 months to full capacity over 11 months. The 85% occupancy case is a lower sensitivity outside these selected endpoints. The envelope is not profit or a software budget.
 
-This model is designed to avoid requiring each school to create or manage its own AI or Computer Vision workflow.
+### Price proportionality
 
----
+Pilot price hypotheses:
 
-# 3. Evidence status
+- Low: EUR 600 per centre per year, or EUR 50 per month.
+- Base: EUR 1,200 per centre per year, or EUR 100 per month.
+- High: EUR 1,800 per centre per year, or EUR 150 per month.
 
-| Area | Current status | Evidence type |
-|---|---|---|
-| Computer Vision feasibility | Observed in evidenced local environment | Real MediaPipe processing and run-specific outputs; current `poc_env` is Python 3.9.6 / MediaPipe 0.10.14; target clean Python 3.11/3.12 remains to be revalidated |
-| Flashcard production | Local functional MVP | English/Spanish deterministic preview; browser Print / Save as PDF path implemented; final saved-PDF visual QA pending; PNG disabled |
-| Content governance | Local functional MVP | Structured contracts, deterministic checks, human-review states |
-| Content Engine modes | Local functional evidence | HUMAN and LLM_ASSISTED exist; DRY_RUN evidenced; NOT_APPLICABLE used for human-only content; LIVE external execution not evidenced |
-| Current MORE publication | Draft / blocked | Source confirmation, artwork, hand review, content approval and human publication approval remain incomplete |
-| School assignment | Static / interactive prototype | Local UI behavior |
-| Family delivery | Static / interactive prototype | Local preview only |
-| Pricing | Pilot hypothesis | Not yet validated |
-| Willingness to pay | TBD | Must be tested in pilot |
-| School retention | TBD | Must be tested post-pilot |
-| Add-on uptake | TBD | Must be tested |
-| Production operating cost | Partial estimate | Needs pilot data |
-| Product-market fit | Not validated | Outside current MVP evidence |
+Calculated share of the Little Steps tuition envelope:
 
-The current architecture is designed for central reuse, but no sign has reached production published status or school availability.
+- EUR 600: approximately 0.25% to 0.31%.
+- EUR 1,200: approximately 0.50% to 0.62%.
+- EUR 1,800: approximately 0.76% to 0.92%.
 
----
+This comparison answers only a scale question. It does not prove affordability, budget availability, profit impact, willingness to pay, or renewal.
 
-# 4. ROI model principles
+Public category benchmarks include approximate EUR 30 to EUR 50 self-guided family plans, about EUR 180 educator training, observed platform access for one year, live training with format-dependent pricing, and school training with some prices unavailable. Sources conflict on five versus six sessions, so no precise session-count benchmark is used. These observations show that adjacent offers are paid for. They do not determine KinderFlow's price, buyer, or contract value.
 
-## 4.1 ROI formula
+Paid Spanish-language content and training already exist. Spanish-language content alone is not a defensible differentiation. The investment case must instead test school-led continuity, governed and versioned content, sign-specific provenance, group or audience assignment, reusable family materials, and measurable reuse economics.
 
-```text
-ROI = (Net Benefit / Total Cost) × 100
-```
+### Nursery value categories
 
-Where:
+Potential nursery value should be measured in four categories:
 
-```text
-Net Benefit = Total Benefit - Total Cost
-```
+1. Workflow: assignment completion, repeat use, clarification, and support burden.
+2. Family service: delivery, access, repeat access, clarity, usefulness, and questions.
+3. Governance: provenance, rights, review status, exceptions, and incident avoidance.
+4. Commercial service: whether the nursery sees sufficient value to continue at a stated annual price.
 
----
+No financial saving is currently claimed. Released time may be reallocated to care, teaching, family support, or quality work rather than removed from the cost base.
 
-## 4.2 Break-even
+### Time-release hypothesis
 
-KinderFlow should report break-even in two ways:
+Pilot hypothesis:
 
-### Time to break-even
+- Cleo time potentially in scope: 6 to 8 hours per month.
+- Classroom time potentially in scope: 5 to 7 hours per month.
+- Combined central case: 13 hours per month.
 
-How many months are required before cumulative contribution exceeds cumulative cost?
+Calculated 11-month scenarios:
 
-### School break-even
+- 30% release: 3.9 hours per month or 42.9 hours across 11 months.
+- 40% release: 5.2 hours per month or 57.2 hours across 11 months.
+- 50% release: 6.5 hours per month or 71.5 hours across 11 months.
 
-How many paying schools are required to recover the fixed investment?
+These are workload hypotheses, not observed savings. The pilot must record actual baseline time, task frequency, released time, and whether the released time can be redeployed. No wage value is assigned because loaded role costs and replacement assumptions are TBD.
 
-```text
-Break-even schools =
-Fixed / upfront cost
-÷
-Annual contribution per school
-```
+### Nursery value decision
 
-Where:
+The nursery lens supports GO only if:
 
-```text
-Annual contribution per school =
-Annual revenue per school
--
-Variable annual cost per school
-```
+- first assignment is completed in 2 minutes or less;
+- at least 80% of educators complete it without help;
+- all 3 Little Steps groups activate;
+- each group records at least 2 repeat assignments;
+- family access and clarity meet signed pilot thresholds;
+- no critical content, privacy, or delivery boundary is breached;
+- at least 2 participating schools state credible continuation intent at a specific tested price.
 
----
+Workflow value without a viable paid path leads to ITERATE. Failure to operate safely or secure content rights leads to STOP.
 
-# 5. Cost structure
+## Lens 2: KinderFlow provider economics
 
-## 5.1 Upfront costs
+### Scenario input bundles
 
-Round 1 estimated a focused validation phase at approximately:
+The input bundles are intentionally monotonic. A higher case assumes a higher price and more paying centres, but also a higher validation, operating, variable, and content-cost base.
 
-**€5.5k–€17.3k**
+#### Low case inputs
 
-This was explicitly a **validation budget**, not a full commercial launch budget.
+- Annual price per centre: EUR 600.
+- Average paying centres, years 1, 2, and 3: 3, 5, and 8.
+- Upfront validation investment: EUR 5,500.
+- Annual fixed operating cost: EUR 2,400.
+- Variable cost per active centre-year: EUR 180.
+- Annual reusable-content production: EUR 3,000.
+- Add-on revenue: EUR 0.
 
-For Round 2 and the pilot model, upfront cost should be separated into the following categories:
+#### Base case inputs
 
-| Upfront cost area | Current evidence | Classification |
-|---|---|---|
-| MVP / product refinement | Existing capstone implementation | Project estimate |
-| Computer Vision refinement | Existing POC/MVP work | Project estimate |
-| Initial sign content production | 3–5 sign pilot concept | Pilot assumption |
-| Human / expert content review | Required by product governance | Pilot assumption |
-| UX / pilot preparation | Required before live-school use | Project estimate |
-| Legal / compliance review | Required before pilot | Pilot assumption |
-| Pilot onboarding / discovery | Required for schools | Pilot assumption |
-| Initial support / training materials | Required for pilot | Pilot assumption |
+- Annual price per centre: EUR 1,200.
+- Average paying centres, years 1, 2, and 3: 6, 15, and 30.
+- Upfront validation investment: EUR 11,400.
+- Annual fixed operating cost: EUR 4,800.
+- Variable cost per active centre-year: EUR 240.
+- Annual reusable-content production: EUR 4,000.
+- Add-on revenue: EUR 0.
 
-### Current modelling range
+#### High case inputs
 
-Until a detailed pilot budget is approved, use:
+- Annual price per centre: EUR 1,800.
+- Average paying centres, years 1, 2, and 3: 10, 30, and 60.
+- Upfront validation investment: EUR 17,300.
+- Annual fixed operating cost: EUR 6,000.
+- Variable cost per active centre-year: EUR 300.
+- Annual reusable-content production: EUR 6,000.
+- Add-on revenue: EUR 0.
 
-- **Low upfront scenario:** €5,500
-- **Base upfront scenario:** to be agreed
-- **High upfront scenario:** €17,300
+### 12-month results
 
-The Base scenario should be selected only after reviewing what is genuinely required for the controlled pilot.
+Calculated Low result:
 
----
+- Revenue: EUR 1,800.
+- Total cost: EUR 11,440.
+- Net benefit: negative EUR 9,640.
+- ROI: negative 84.3%.
 
-## 5.2 Ongoing costs
+Calculated Base result:
 
-Potential recurring costs include:
+- Revenue: EUR 7,200.
+- Total cost: EUR 21,640.
+- Net benefit: negative EUR 14,440.
+- ROI: negative 66.7%.
 
-- hosting / infrastructure;
-- LLM usage where enabled;
-- monitoring / observability;
-- content review;
-- new sign production;
-- maintenance;
-- customer support;
-- school onboarding;
-- compliance / governance administration;
-- asset / visual production;
-- vendor costs where relevant.
+Calculated High result:
 
-The current MVP is local and therefore does not provide reliable production operating-cost evidence.
+- Revenue: EUR 18,000.
+- Total cost: EUR 32,300.
+- Net benefit: negative EUR 14,300.
+- ROI: negative 44.3%.
 
-These items should initially be modelled as assumptions and replaced with pilot data.
+Interpretation:
 
----
+- all three cases are investment-negative in the first 12 months;
+- the model should not be presented as a first-year payback case;
+- the first-year decision depends on learning quality, rights clearance, safe operations, and a credible route to recurring revenue.
 
-# 6. Value drivers
+### 36-month results
 
-Kinder Signs can create value through several mechanisms.
+Calculated Low result:
 
-## 6.1 Subscription revenue
+- Revenue: EUR 9,600.
+- Total cost: EUR 24,580.
+- Net benefit: negative EUR 14,980.
+- ROI: negative 60.9%.
 
-Primary recurring value driver:
+Calculated Base result:
 
-```text
-Number of paying schools
-×
-annual subscription per school
-```
+- Revenue: EUR 61,200.
+- Total cost: EUR 50,040.
+- Net benefit: EUR 11,160.
+- ROI: 22.3%.
 
-The product should not assume direct family payment for the core service.
+Calculated High result:
 
----
+- Revenue: EUR 180,000.
+- Total cost: EUR 83,300.
+- Net benefit: EUR 96,700.
+- ROI: 116.1%.
 
-## 6.2 Add-on revenue
+Interpretation:
 
-Potential optional school-level or classroom-level add-ons include:
+- the Low case does not reach viability in the 36-month horizon;
+- the Base case supports a modest positive return only if the stated price, centre count, contribution, and reuse assumptions hold;
+- the High case is an aggressive scale case and should not be described as expected performance;
+- none of the cases includes a production build, tax, financing, churn, or measured acquisition cost.
 
-- Flashcards;
-- Stories;
-- future content formats.
+### Break-even results
 
-Add-on revenue must remain a hypothesis until tested.
+Calculated annual contribution per centre:
 
----
+- Low: EUR 420.
+- Base: EUR 960.
+- High: EUR 1,500.
 
-## 6.3 Content reuse
+Calculated steady-state break-even active centres:
 
-A key operating-model advantage is that KinderFlow creates content centrally.
+- Low: 13 centres.
+- Base: 10 centres.
+- High: 8 centres.
 
-One reviewed sign can potentially support:
+Calculated year 1 all-in break-even active centres:
 
-- multiple schools;
-- multiple groups;
-- bilingual Flashcards;
-- Routine Cards;
-- Stories;
-- future additional formats.
+- Low: 26 centres.
+- Base: 22 centres.
+- High: 20 centres.
 
-This may reduce marginal content-production effort compared with recreating content independently for every school.
+Calculated break-even month under linear recognition:
 
-**This is an operating-model hypothesis, not yet a measured saving.**
+- Low: beyond 36 months; no break-even in the model horizon.
+- Base: month 29.3.
+- High: month 17.2.
 
----
+Break-even is an accounting scenario, not a cash forecast. It assumes the listed average centre counts are achieved and revenue and recurring costs accrue evenly.
 
-## 6.4 Product differentiation
+## Sensitivity analysis
 
-Potential commercial value may also come from:
+Sensitivity uses the 36-month Base case as the reference:
 
-- stronger school-family continuity;
-- differentiation for nursery schools;
-- more structured family guidance;
-- reusable premium content;
-- reduced content-design burden on educators.
+- Revenue: EUR 61,200.
+- Cost: EUR 50,040.
+- Net benefit: EUR 11,160.
+- ROI: 22.3%.
 
-These should be validated qualitatively and quantitatively during the pilot.
+### Price sensitivity
 
----
+Calculated scenario with price 20% lower:
 
-# 7. ROI scenario model
+- Annual price: EUR 960.
+- Revenue: EUR 48,960.
+- Cost: EUR 50,040.
+- Net benefit: negative EUR 1,080.
+- ROI: negative 2.2%.
 
-The final financial model should use three scenarios.
+Calculated scenario with price 20% higher:
 
-## 7.1 Variables
+- Annual price: EUR 1,440.
+- Revenue: EUR 73,440.
+- Cost: EUR 50,040.
+- Net benefit: EUR 23,400.
+- ROI: 46.8%.
 
-| Variable | Low | Base | High | Evidence status |
-|---|---:|---:|---:|---|
-| Paying schools — Year 1 | TBD | TBD | TBD | Pilot assumption |
-| Paying schools — Year 3 | TBD | TBD | TBD | Market hypothesis |
-| Annual school subscription | TBD | TBD | TBD | Pricing hypothesis |
-| Add-on adoption | TBD | TBD | TBD | Pilot assumption |
-| Average annual add-on revenue / school | TBD | TBD | TBD | Pilot assumption |
-| Upfront cost | €5,500 | TBD | €17,300 | Reconciled Round 1 estimate range |
-| Annual fixed operating cost | TBD | TBD | TBD | Pilot / production estimate |
-| Variable annual cost / school | TBD | TBD | TBD | Pilot estimate |
-| Annual content-production cost | TBD | TBD | TBD | Pilot estimate |
+### Paying-centre sensitivity
 
----
+Calculated scenario with centre-years 25% lower:
 
-# 8. Revenue model
+- Revenue: EUR 45,900.
+- Cost: EUR 46,980.
+- Net benefit: negative EUR 1,080.
+- ROI: negative 2.3%.
 
-For each scenario:
+Calculated scenario with centre-years 25% higher:
 
-```text
-Core subscription revenue =
-Paying schools × annual school subscription
-```
+- Revenue: EUR 76,500.
+- Cost: EUR 53,100.
+- Net benefit: EUR 23,400.
+- ROI: 44.1%.
 
-```text
-Add-on revenue =
-Paying schools × add-on adoption rate × average add-on revenue
-```
+Fractional centre-years are used only to show sensitivity. They are not a customer forecast.
 
-```text
-Total revenue =
-Core subscription revenue + add-on revenue
-```
+### Operating-cost sensitivity
 
----
+Calculated scenario with annual fixed and variable operating costs 25% higher:
 
-# 9. Cost model
+- Revenue: EUR 61,200.
+- Cost: EUR 56,700.
+- Net benefit: EUR 4,500.
+- ROI: 7.9%.
 
-```text
-Year 1 total cost =
-Upfront cost
-+ annual fixed operating cost
-+ variable cost per school
-+ annual content-production cost
-```
+### Content and review-cost sensitivity
 
-```text
-Year 2+ total cost =
-Annual fixed operating cost
-+ variable cost per school
-+ annual content-production cost
-```
+Calculated scenario with reusable-content production 25% higher:
 
----
+- Revenue: EUR 61,200.
+- Cost: EUR 53,040.
+- Net benefit: EUR 8,160.
+- ROI: 15.4%.
 
-# 10. ROI at 12 months
+### Production-build sensitivity
 
-For each scenario:
+Production build cost is TBD and excluded from the core scenarios. Its omission is material.
 
-```text
-12-month net benefit =
-Year 1 total revenue - Year 1 total cost
-```
+Calculated Base-case illustration:
 
-```text
-12-month ROI =
-12-month net benefit
-÷
-Year 1 total cost
-× 100
-```
+- adding EUR 10,000 of production build cost produces EUR 60,040 total cost, EUR 1,160 net benefit, and 1.9% ROI;
+- adding EUR 20,000 produces EUR 70,040 total cost, negative EUR 8,840 net benefit, and negative 12.6% ROI.
 
-### 12-month result
+This illustration does not estimate the production build. It shows why that cost must be scoped before a launch investment decision.
 
-| Scenario | Revenue | Cost | Net benefit | ROI |
-|---|---:|---:|---:|---:|
-| Low | TBD | TBD | TBD | TBD |
-| Base | TBD | TBD | TBD | TBD |
-| High | TBD | TBD | TBD | TBD |
+### Sensitivity conclusion
 
----
+The Base case has limited headroom. A 20% price reduction or a 25% reduction in centre-years removes the 36-month positive return. The pilot must therefore test both price credibility and repeatable centre activation, while the next technical phase must estimate production build and support cost.
 
-# 11. ROI at 36 months
+## Content-reuse economics
 
-Use cumulative 36-month revenue and cumulative 36-month cost.
+Reusable content is a central economic hypothesis. It is not yet an observed saving.
 
-```text
-36-month net benefit =
-Cumulative 36-month revenue
--
-Cumulative 36-month cost
-```
+Formula:
 
-```text
-36-month ROI =
-36-month net benefit
-÷
-cumulative 36-month cost
-× 100
-```
+> Allocated content cost per school = (creation + API + review + rework) / schools using the approved asset
 
-### 36-month result
+Pilot-hypothesis example:
 
-| Scenario | Cumulative revenue | Cumulative cost | Net benefit | ROI |
-|---|---:|---:|---:|---:|
-| Low | TBD | TBD | TBD | TBD |
-| Base | TBD | TBD | TBD | TBD |
-| High | TBD | TBD | TBD | TBD |
+- fully loaded approved sign asset: EUR 1,000.
 
----
+Calculated sensitivity:
 
-# 12. Break-even analysis
+- 1 school: EUR 1,000 per school.
+- 3 schools: approximately EUR 333 per school.
+- 10 schools: EUR 100 per school.
+- 30 schools: approximately EUR 33 per school.
 
-The final model should calculate:
+The pilot must record creation, API, review, and rework as separate components. A HUMAN-mode run may have EUR 0 provider API cost but still carries staff and review cost. The EUR 1,000 illustration is not added to the scenario model because the annual reusable-content line already carries a content allowance.
 
-| Measure | Low | Base | High |
-|---|---:|---:|---:|
-| Break-even paying schools | TBD | TBD | TBD |
-| Break-even month | TBD | TBD | TBD |
+Reuse is realised only when:
 
-### Interpretation
+- the rights permit reuse;
+- the professional record remains valid;
+- the family presentation is appropriate for the receiving nursery;
+- version changes are controlled;
+- reviewer and adaptation effort do not offset the allocation benefit.
 
-A credible 8–9 week validation programme should not be judged on achieving break-even. The controlled service-test portion is approximately 3–4 weeks within that programme.
+## Customer acquisition cost and lifetime value
 
-The pilot should instead determine whether the assumptions used in the break-even model are realistic.
+Customer acquisition cost formula:
 
-The most important variables to validate are:
+> CAC = (sales labour + demonstrations + travel + onboarding) / new paying centres
 
-- willingness to pay;
-- educator adoption;
-- family engagement;
-- human-review cost;
-- content-production throughput;
-- variable operating cost per school.
+Contribution lifetime value formula:
 
----
+> LTV = annual contribution per centre x expected retained years - incremental support cost
 
-# 13. Sensitivity analysis
+Required measurements:
 
-ROI is likely to be particularly sensitive to:
+- sales and founder time by prospect;
+- travel, demonstration, onboarding, and trial cost;
+- lead-to-pilot and pilot-to-paid conversion;
+- retained years and churn;
+- support cost by centre;
+- price discounts and payment failure;
+- content and review effort attributable to a centre.
 
-1. annual subscription price;
-2. number of paying schools;
-3. content-review cost;
-4. new-sign production cost;
-5. customer retention;
-6. add-on adoption;
-7. ongoing support cost.
+Current evidence:
 
-The final ROI model should show how results change if these assumptions move materially.
+- observed paying centres: 0;
+- measured CAC: no observations;
+- measured retention: no observations;
+- measured LTV: no observations;
+- observed add-on adoption: no observations.
 
-At minimum test:
+No numeric CAC to LTV ratio is reported. A subscription price is not lifetime value, and a founder-led pilot is not a scalable acquisition channel.
 
-- school count ±25%;
-- price ±20%;
-- operating cost +25%;
-- content-review cost +25%.
+## Cost baseline
 
----
+Project estimate for incremental pilot readiness:
 
-# 14. Risk scoring method
+- technical proof-of-concept refinement: EUR 1,000 to EUR 3,000;
+- nursery workflow refinement: EUR 500 to EUR 1,500;
+- LangSmith and evaluation setup: EUR 200 to EUR 800;
+- subtotal: EUR 1,700 to EUR 5,300.
 
-Likelihood and impact are scored from 1 to 5.
+Project estimate for controlled pilot and service work:
 
-```text
-Risk score = Likelihood × Impact
-```
+- expert or domain review: EUR 800 to EUR 2,500;
+- user research: EUR 1,000 to EUR 3,000;
+- visual and content production: EUR 1,000 to EUR 4,000;
+- pilot coordination: EUR 1,000 to EUR 2,500;
+- subtotal: EUR 3,800 to EUR 12,000.
 
-### Suggested interpretation
+Calculated total validation range:
 
-| Score | Level |
-|---:|---|
-| 1–4 | Low |
-| 5–9 | Moderate |
-| 10–14 | High |
-| 15–25 | Critical |
+- EUR 5,500 to EUR 17,300.
 
-The score does not replace judgment. A lower-probability legal or child-safety issue may still require action before pilot.
+The high line items sum to EUR 17,300. EUR 17,800 is not a supported total.
 
----
+Exclusions:
 
-# 15. Risk matrix
+- current prototype effort, which is sunk and unpriced;
+- production build;
+- production hosting, security, identity, support, and monitoring;
+- legal or privacy external review unless purchased from a listed line;
+- taxes and financing;
+- recurring content expansion beyond the scenario allowance.
 
-| # | Risk | Category | Likelihood | Impact | Score | Mitigation | Residual risk | Pilot gate |
-|---|---|---|---:|---:|---:|---|---|---|
-| 1 | Movement capture does not preserve enough usable technical evidence | Technical | 3 | 5 | 15 | Use validated adult reference material; capture guidance; Pass / Review needed / Fail states; human review; test multiple signs before pilot | Medium | **Must resolve before pilot for pilot sign set** |
-| 2 | Technical metrics are mistaken for sign-language correctness | Ethical / Technical | 3 | 5 | 15 | Never label detection coverage as accuracy; explain CV limits in UI/docs; human publication gate | Medium | **Must resolve before pilot** |
-| 3 | Generated family content contains unsupported or misleading wording | AI / Ethical | 3 | 4 | 12 | Structured contracts; deterministic quality gates; restricted claims; human review; dry-run/live mode transparency | Medium | **Pilot control** |
-| 4 | Human review becomes superficial or inconsistent | Operational / Ethical | 3 | 5 | 15 | Define reviewer responsibilities; review checklist; evidence requirements; escalate Review needed cases; monitor review workload | Medium | **Must resolve before pilot** |
-| 5 | Real-school processing creates GDPR gaps, especially involving children | Regulatory / Privacy | 3 | 5 | 15 | Keep child video out of core flow; minimise child metadata; complete RoPA, legal basis, retention, rights, DPIA and processor mapping before pilot | Medium | **Must resolve before pilot** |
-| 6 | EU AI Act obligations are misclassified because the product operates in education | Regulatory | 2 | 5 | 10 | Perform step-by-step prohibited/high-risk screening based on actual functionality; document provider/deployer roles; reassess if future features change | Low–Medium | **Must resolve before pilot** |
-| 7 | Reference-sign content rights are not sufficiently documented | IP / Legal | 3 | 5 | 15 | Record provenance and permission for every reference source; separate reference rights from final asset rights; do not distribute reference material | Medium | **Must resolve before pilot** |
-| 8 | Visual/character asset governance is incomplete | IP / Product | 2 | 4 | 8 | Verify licence and attribution requirements and retain the resulting evidence before runtime or commercial use; separately review sign-specific hand/pose suitability; block publication until visual review | Low–Medium | **Must resolve for published pilot assets** |
-| 9 | Content-production capacity does not scale economically | Operational / Commercial | 3 | 4 | 12 | Measure time per sign, review effort and downstream reuse during pilot; standardise templates and reusable components | Medium | **Can validate during pilot** |
-| 10 | Educators do not use the assignment workflow consistently | Adoption / Operational | 3 | 4 | 12 | Keep school workflow simple; pilot onboarding; track assignment adoption; interview educators; reduce administrative steps | Medium | **Can validate during pilot** |
-| 11 | Families receive content but do not use it | Adoption / Commercial | 3 | 4 | 12 | Measure open/access and qualitative usage signals; test content format; simplify family materials; gather parent feedback | Medium | **Can validate during pilot** |
-| 12 | Schools do not perceive enough value to pay | Commercial | 4 | 5 | 20 | Run willingness-to-pay discovery; test pricing in pilot; measure perceived differentiation and renewal intent | High | **Core pilot hypothesis** |
-| 13 | Local MVP runtime does not translate cleanly to production infrastructure | Technical / Operational | 3 | 4 | 12 | Validate Python/MediaPipe runtime, browser video support and deployment approach before scale; keep pilot infrastructure controlled | Medium | **Pilot control / production requirement** |
-| 14 | Vendor or model dependency creates cost, availability or governance problems | Technical / Commercial | 2 | 4 | 8 | Use deterministic methods where possible; isolate provider-specific logic; retain HUMAN/dry-run fallback; document dependencies | Low–Medium | **Production requirement** |
+If an excluded service becomes necessary for pilot safety or compliance, the estimate must be rebaselined before purchase.
 
----
+## Risk scoring method
 
-# 16. Top risks for executive presentation
+Likelihood and impact use a 1 to 5 scale:
 
-The full matrix should remain in documentation.
+- 1: very low;
+- 2: low;
+- 3: medium;
+- 4: high;
+- 5: very high.
 
-For the final presentation, prioritise three risks.
+Score equals likelihood x impact.
 
-## 1. Movement fidelity and content quality
+Treatment bands:
 
-**Why it matters:**  
-If the movement or final visual is wrong, trust is damaged.
+- 1 to 4: monitor;
+- 5 to 9: manage;
+- 10 to 15: mitigate before or during pilot as specified;
+- 16 to 25: decision-critical.
 
-**Control:**  
-Validated source material + technical movement evidence + human review.
+Residual risk is a qualitative rating after current controls and planned mitigation. It is not a guarantee.
 
----
+## Risk register
 
-## 2. Privacy and child-data governance
+### Risk 1: sign fidelity and content quality
 
-**Why it matters:**  
-The product operates in an early-childhood context.
+- Category: product, safety, and trust.
+- Description: computer vision or drafted interpretation may misrepresent a sign, overstate certainty, or fail under different people, camera conditions, or sign variants.
+- Likelihood: 4.
+- Impact: 5.
+- Score: 20.
+- Current control: traceable evidence, run manifests, explicit review status, deterministic HUMAN mode, and blocked-content logic.
+- Mitigation: limit the pilot to 3 to 5 signs; use cleared adult references; appoint a qualified reviewer; test variants; record exceptions and rework; prevent publication without approval.
+- Owner: technical lead and qualified content reviewer.
+- Residual risk: Medium.
+- Pilot gate: every pilot sign has approved evidence, provenance, rights status, and reviewer sign-off before family delivery; critical content incidents must remain at 0.
 
-**Control:**  
-No child video in the core workflow, data minimisation, pilot GDPR controls and DPIA screening.
+### Risk 2: willingness to pay and adoption
 
----
+- Category: commercial.
+- Description: nursery interest may not convert into paid continuation at a price that supports the cost base.
+- Likelihood: 4.
+- Impact: 5.
+- Score: 20.
+- Current control: explicit school-led buyer model and three stated annual price hypotheses.
+- Mitigation: interview named budget owners; test EUR 600, EUR 1,200, and EUR 1,800; ask for a specific continuation decision; record objections, budget source, procurement path, and conditions.
+- Owner: commercial lead and nursery sponsor.
+- Residual risk: High.
+- Pilot gate: at least 2 participating schools must identify a budget owner and state credible paid-continuation intent at a tested price for a GO decision.
 
-## 3. Commercial adoption
+### Risk 3: source and presentation rights
 
-**Why it matters:**  
-A technically strong product still fails if schools do not use or pay for it.
+- Category: legal, content operations, and brand.
+- Description: a reference may be technically traceable but not licensed for processing, reuse, or family presentation.
+- Likelihood: 3.
+- Impact: 5.
+- Score: 15.
+- Current control: source register, provenance fields, evidence hashes, and explicit review records.
+- Mitigation: document permission basis, reuse scope, presentation rights, attribution, expiry, and withdrawal route for every pilot asset; replace any unresolved asset.
+- Owner: content operations owner with external legal advice if required.
+- Residual risk: Medium.
+- Pilot gate: rights and provenance complete for 100% of pilot signs before processing or delivery.
 
-**Control:**  
-8–9 week validation programme, including approximately 3–4 weeks of controlled service testing, measuring educator use, family engagement and willingness to pay before any deployment decision.
+### Risk 4: privacy scope creep
 
----
+- Category: privacy and safeguarding.
+- Description: a pilot may collect unnecessary family or child data, connect data to external AI providers, or retain it without a clear purpose.
+- Likelihood: 3.
+- Impact: 5.
+- Score: 15.
+- Current control: child-video prohibition, no child scoring, minimal event design, synthetic identifiers, and no personal data in model prompts or traces.
+- Mitigation: approve purpose, lawful basis, consent or notice route, access roles, retention, deletion, withdrawal, processor records, and incident response before live data; minimise event payloads.
+- Owner: privacy owner and technical lead.
+- Residual risk: Medium.
+- Pilot gate: privacy review complete before participant data; personal child or family data sent to a language model or LangSmith must remain at 0.
 
-# 17. Risk treatment priorities
+### Risk 5: reviewer cost and throughput
 
-## Must resolve before a real pilot
+- Category: operations and unit economics.
+- Description: qualified review, exception handling, and rework may be too slow or expensive to support the service model.
+- Likelihood: 3.
+- Impact: 4.
+- Score: 12.
+- Current control: explicit review states and a limited pilot content set.
+- Mitigation: time creation, review, exception handling, and rework separately; record reviewer skill; set service-level targets before launch; test reuse across schools.
+- Owner: content operations lead and qualified reviewer.
+- Residual risk: Medium.
+- Pilot gate: review-throughput and cost targets must be signed before activity and measured for every pilot sign.
 
-- GDPR pilot data flow and legal basis;
-- reviewer responsibilities;
-- reference-content rights;
-- pilot sign movement / visual review;
-- EU AI Act classification reasoning;
-- clear distinction between technical metrics and sign correctness.
+### Risk 6: runtime reliability
 
-## Controls to operate during the pilot
+- Category: technical operations.
+- Description: the local proof of concept may fail in controlled service use, produce inconsistent outputs, or lack sufficient recovery and audit evidence.
+- Likelihood: 3.
+- Impact: 4.
+- Score: 12.
+- Current control: deterministic modes, versioned manifests, evidence artefacts, status logic, and local validation.
+- Mitigation: freeze pilot versions; rehearse failure and recovery; monitor processing success, latency, and incomplete runs; maintain manual fallback; retain a traceable run package.
+- Owner: technical lead.
+- Residual risk: Medium.
+- Pilot gate: all pilot references must produce reviewable evidence or route to a documented manual fallback before nursery activity.
 
-- review quality;
-- educator adoption;
-- family engagement;
-- technical processing reliability;
-- content-production effort;
-- incident / issue logging.
+### Risk 7: trust and liability
 
-## Can validate during the pilot
+- Category: governance and reputation.
+- Description: families or educators may treat guidance as clinical, diagnostic, therapeutic, or universally correct.
+- Likelihood: 3.
+- Impact: 5.
+- Score: 15.
+- Current control: professional-versus-family separation, review status, explicit non-diagnostic scope, and human approval.
+- Mitigation: use plain limitations; train staff; provide complaint, correction, withdrawal, and escalation routes; avoid universal sign-language claims; review family wording.
+- Owner: product owner, nursery sponsor, and qualified reviewer.
+- Residual risk: Medium.
+- Pilot gate: approved participant wording and incident route must be in place; critical trust or safety incidents must remain at 0.
 
-- willingness to pay;
-- preferred pricing model;
-- add-on demand;
-- school retention intent;
-- content-production throughput.
+### Risk 8: external provider dependency
 
-## Production-stage requirements
+- Category: vendor and continuity.
+- Description: model, tracing, hosting, or storage providers may change price, availability, data terms, or output behaviour.
+- Likelihood: 2.
+- Impact: 4.
+- Score: 8.
+- Current control: HUMAN mode, deterministic core workflow, provider separation, and local artefacts.
+- Mitigation: document providers and versions; set data-transfer rules; retain manual fallback; monitor usage and cost; define an exit path before production procurement.
+- Owner: technical and product leads.
+- Residual risk: Low to Medium.
+- Pilot gate: no provider is permitted to receive personal child or family data; fallback must be rehearsed.
 
-- authentication;
-- persistent permissions;
-- production audit trail;
-- scalable infrastructure;
-- production monitoring;
-- vendor governance;
-- formal operational support model.
+### Risk 9: educator workflow fit
 
----
+- Category: user adoption and operations.
+- Description: assignment, review, or explanation may add steps and fail under normal nursery workload.
+- Likelihood: 3.
+- Impact: 4.
+- Score: 12.
+- Current control: local assignment prototype and direct access to the Little Steps operating case.
+- Mitigation: observe first use; capture completion and help; test all three groups; record repeat assignments; remove unnecessary steps; define support ownership.
+- Owner: product lead and nursery pilot lead.
+- Residual risk: Medium.
+- Pilot gate: first assignment in 2 minutes or less, at least 80% without help, all 3 groups activated, and at least 2 repeat assignments per group.
 
-# 18. Which pilot metrics will replace which ROI assumptions?
+### Risk 10: family value and delivery
 
-The pilot should collect evidence that directly replaces assumptions in this document.
+- Category: user value and service operations.
+- Description: the static family preview may not translate into delivered, accessible, understandable, and repeatedly used guidance.
+- Likelihood: 3.
+- Impact: 4.
+- Score: 12.
+- Current control: reviewed family presentation exists as a prototype.
+- Mitigation: add the personalised assignment-driven family mini-library; test consented delivery and access; measure access, repeat use, clarity, questions, accessibility, and withdrawal; offer a support route.
+- Owner: product lead, nursery pilot lead, and privacy owner.
+- Residual risk: Medium.
+- Pilot gate: signed family thresholds and delivery controls must be met with 0 blocked or unreviewed items delivered.
 
-| Pilot evidence | ROI assumption replaced | Baseline now | Target | Owner | Cost category | Decision use |
-|---|---|---|---|---|---|---|
-| Reviewer time per accepted sign | Content operating cost | Not yet evidenced | TBD before pilot | KinderFlow Content Operations + Qualified Content / Sign Reviewer | Expert review | GO/ITERATE/STOP on review viability |
-| Support time and issues per school | Variable cost per school | No real schools supported | TBD before pilot | School Pilot Lead | Pilot onboarding/support | GO/ITERATE/STOP on service burden |
-| Price interviews and budget-owner response | Subscription price | Willingness to pay not yet evidenced | TBD before pilot | KinderFlow Product Owner + School Director | User research | GO/ITERATE/STOP on paid continuation |
-| Continuation decision from each participating school | Retention assumption | No real pilot retention evidence | TBD before pilot | KinderFlow Product Owner | User research | GO/ITERATE/STOP on recurring value |
-| Reviewed downstream assets created per sign | Content-reuse unit economics | No published production signs | TBD before pilot | KinderFlow Content Operations | Visual/content production | GO/ITERATE/STOP on content economics |
-| Educator repeat assignment | Adoption assumption | 0 production educators | TBD before pilot | School Pilot Lead + Educator | Pilot onboarding/user research | GO/ITERATE/STOP on repeat use |
-| Family access to delivered material | End-user usage assumption | 0 real family deliveries | TBD before pilot | School Pilot Lead + Privacy / Governance Owner | User research | GO/ITERATE/STOP on family value |
-| Number of schools that accept a paid continuation proposal | Acquisition/revenue scenario | 0 paying schools | TBD before pilot | KinderFlow Product Owner | Commercial discovery | GO/ITERATE/STOP on revenue hypothesis |
+## Priority risks and response
 
-Targets must be agreed before launch. These observations populate the Low / Base / High model; they do not themselves prove ROI.
+The three decision priorities are:
 
----
+1. Fidelity: incorrect or overstated guidance can invalidate the service and damage trust.
+2. Willingness to pay: a useful workflow without a viable recurring buyer path does not support the business model.
+3. Rights and provenance: traceability alone is insufficient if presentation, adaptation, or distribution rights are incomplete.
 
-# 19. Bottom line
+Privacy, secure family delivery, reviewer burden, runtime reliability, educator fit, and family value remain material gates and must be measured in the same pilot.
 
-## Current assessment
+## Decision framework
 
-**PROCEED WITH CONDITIONS**
+### GO
 
-The current local evidence is strong enough to justify pilot-readiness work, but not a real-school pilot until the stated governance, asset, privacy and security gates are closed. It is not sufficient to justify full commercial deployment.
+GO means proceed from controlled pilot to a separately scoped next phase only when:
 
-The pilot should be used to replace the most important assumptions in this financial model with real evidence.
+- all hard boundaries remain at zero breaches;
+- teacher workflow targets are met;
+- signed family value targets are met;
+- content rights, provenance, and review gates are complete;
+- at least 2 participating schools show credible paid-continuation intent at a tested price;
+- review, support, and runtime burden are understood well enough to update unit economics;
+- production build and operating costs are scoped before further investment.
 
-The business case will become credible only when KinderFlow can answer:
+### ITERATE
 
-- how much one school is willing to pay;
-- how much one school costs to support;
-- how much content-production and review effort is required;
-- whether educators use the product;
-- whether families engage;
-- whether schools intend to continue.
+ITERATE means preserve the narrow pilot learning and correct a specific gap when:
 
-Until those variables are measured, ROI should remain a transparent scenario model rather than a forecast.
+- safety and rights controls hold;
+- users show material value;
+- one or more workflow, family, price, review-burden, or reliability targets miss;
+- there is a bounded corrective experiment with an owner, cost, and decision date.
 
----
+### STOP
 
-# 20. Open decisions required to complete the ROI calculation
+STOP means do not proceed to a broader service when:
 
-Before final submission, confirm:
+- child-data, content-safety, privacy, or rights boundaries cannot be maintained;
+- qualified review cannot be secured;
+- the workflow remains unusable after bounded correction;
+- families receive unclear or unsafe guidance that cannot be corrected;
+- no participating school can identify a credible paid path;
+- production or content economics remain structurally incompatible with tested pricing.
 
-1. Proposed annual or monthly school price.
-2. Whether pricing is per centre, classroom group or tier.
-3. Low / Base / High school counts at 12 months.
-4. Low / Base / High school counts at 36 months.
-5. Expected add-on model, if any.
-6. Base upfront pilot investment inside the reconciled €5.5k–€17.3k range.
-7. Estimated annual fixed operating cost.
-8. Estimated variable cost per school.
-9. Estimated annual content-production / human-review cost.
-10. Any expected pilot-to-paid conversion assumption.
+## Final recommendation
 
-Once these are agreed, the 12-month ROI, 36-month ROI and break-even can be calculated without changing the structure of this document.
+PROCEED WITH CONDITIONS.
+
+The pilot is economically justified as a bounded evidence purchase within EUR 5,500 to EUR 17,300, not as a proven return. The go-forward case depends on safe content operations, a real assignment-driven family mini-library, explicit paid-continuation evidence, measured review and support burden, and a production-cost estimate. The current Base case is positive over 36 months but fragile under ordinary sensitivity and should not be used as an unconditional investment promise.
