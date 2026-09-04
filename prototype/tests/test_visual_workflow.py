@@ -52,7 +52,7 @@ class VisualWorkflowTests(unittest.TestCase):
             "Approve selected visual",
             "Reject visual",
             "Create family materials",
-            "Add to library or use later",
+            "See supporting materials",
             "Sources and permissions",
         ):
             self.assertIn(text, implementation)

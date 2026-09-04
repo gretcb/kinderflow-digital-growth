@@ -180,6 +180,7 @@ make("#cancel-assignment-edit", "button", { hidden: true });
 const activeList = make("#active-sign-list");
 make("#view-active-assignment", "button");
 make("#change-assignment-materials", "button");
+make("#view-family-experience", "a", { href: "family.html" });
 
 const groupAudience = Object.assign(new Element("audience-group", "input"), {
   name: "audience", value: "group", checked: true
@@ -207,9 +208,10 @@ const document = {
 };
 
 const storage = new Map();
+if (process.argv[2]) storage.set("kinderflowPrintableApproval", process.argv[2]);
 const context = {
   document,
-  window: { location: { search: "" }, matchMedia: () => ({ matches: false }) },
+  window: { location: { search: process.argv[3] || "" }, matchMedia: () => ({ matches: false }) },
   sessionStorage: {
     getItem(key) { return storage.has(key) ? storage.get(key) : null; },
     setItem(key, value) { storage.set(key, String(value)); }
@@ -232,12 +234,24 @@ const storedAssignments = () => JSON.parse(storage.get("kinderflowSchoolAssignme
 const findCard = (id) => activeList.children.find((card) => card.dataset.assignmentId === id);
 const findAction = (card, key, id) => card.walk().find((item) => item.dataset[key] === id);
 
+const initialSelection = {
+  sign: signSelect.value,
+  group: groupSelect.value,
+  materials: materialChoices.walk()
+    .filter((item) => item.name === "materials" && item.checked)
+    .map((item) => item.value),
+  focused: signSelect.focused,
+  validation: nodes.get("#assignment-validation").textContent
+};
+
 const initialCount = snapshot().length;
 assignmentForm.dispatch("submit");
 const afterFirstShare = snapshot();
 const toddlerAssignment = afterFirstShare.find((item) => item.id !== "seed-more-babies");
 const firstResultVisible = !assignmentResult.hidden;
 const firstStoredCount = storedAssignments().length;
+const firstFamilyContext = JSON.parse(storage.get("kinderflowFamilyPreviewAssignmentId") || "null");
+const firstFamilyHref = nodes.get("#view-family-experience")?.href || "";
 
 assignmentForm.dispatch("submit");
 const duplicateCount = snapshot().length;
@@ -287,10 +301,13 @@ const afterRemove = snapshot();
 const storedAfterRemove = storedAssignments();
 
 process.stdout.write(JSON.stringify({
+  initialSelection,
   initialCount,
   firstShareCount: afterFirstShare.length,
   firstStoredCount,
   firstResultVisible,
+  firstFamilyContext,
+  firstFamilyHref,
   toddlerAssignment,
   duplicateCount,
   duplicateShown,
@@ -340,20 +357,33 @@ process.stdout.write(JSON.stringify(context.__restored));
 
 class FinalProductUxStaticTests(unittest.TestCase):
     def test_studio_navigation_keeps_family_formats_as_outputs(self) -> None:
-        for page in ("content-studio.html", "create-sign.html", "create-story.html", "create-song.html"):
+        for page in (
+            "admin.html",
+            "content-studio.html",
+            "create-sign.html",
+            "flashcards.html",
+            "create-story.html",
+            "create-song.html",
+            "library.html",
+        ):
             html = source(page)
             nav = re.search(r"<nav\b[^>]*>(.*?)</nav>", html, re.IGNORECASE | re.DOTALL)
             self.assertIsNotNone(nav, page)
             navigation = nav.group(1) if nav else ""
-            for label in ("Studio overview", "Create sign", "Master Library", "Schools"):
+            for label in ("Overview", "Kinder Signs", "Content Library", "Schools"):
                 self.assertIn(label, navigation, page)
+            self.assertIn('href="admin.html"', navigation, page)
+            self.assertIn('href="content-studio.html"', navigation, page)
+            self.assertIn('href="library.html"', navigation, page)
+            self.assertIn('href="school.html"', navigation, page)
             for removed in ("Create Flashcard", "Create Story", "Create Song"):
                 self.assertNotIn(removed, navigation, page)
 
         family = element_body(source("create-sign.html"), "section", "id", "downstream-section")
         for heading in ("Flashcard", "Routine Card", "Story", "Song"):
             self.assertRegex(family, rf"<h3>{re.escape(heading)}</h3>")
-        self.assertIn("Turn the reviewed sign into materials families can use at home.", family)
+        self.assertIn("Continue from the same reviewed sign; no reference work is lost.", family)
+        self.assertNotIn("library.html", family.lower())
         song = re.search(
             r'<article\b[^>]*is-coming-soon[^>]*>(.*?)</article>',
             family,
@@ -363,6 +393,106 @@ class FinalProductUxStaticTests(unittest.TestCase):
         song_body = song.group(1) if song else ""
         self.assertIn("Coming soon", song_body)
         self.assertNotRegex(song_body, r"<(?:a|button)\b")
+
+    def test_platform_and_product_bridge_present_one_clear_story(self) -> None:
+        platform = source("index.html")
+        product = source("kinder-signs.html")
+        studio = source("content-studio.html")
+
+        for label in ("KinderFlow", "Products", "How it works", "For nurseries"):
+            self.assertIn(label, element_body(platform, "nav", "aria-label", "Platform navigation"))
+            self.assertIn(label, element_body(product, "nav", "aria-label", "Platform navigation"))
+        self.assertRegex(platform, r'href="kinder-signs\.html"[^>]*>Explore Kinder Signs</a>')
+        for copy in (
+            "Bring nursery learning home.",
+            "Nursery centres",
+            "Children reached",
+            "Signs available",
+            "Video tutorials",
+            "KinderFlow prepares",
+            "The nursery chooses",
+            "Families use it at home",
+        ):
+            self.assertIn(copy, platform)
+        for copy in (
+            "Save production time",
+            "Reuse your expertise",
+            "Create new revenue opportunities",
+            "MediaPipe landmarks",
+            "Human review",
+            "Create a sign",
+            "Open sign library",
+        ):
+            self.assertIn(copy, product)
+        self.assertEqual(product.count('data-sign-id="'), 6)
+        self.assertIn("Choose the product your team wants to create or manage.", studio)
+        self.assertIn("Kinder Signs", studio)
+        self.assertEqual(studio.count('class="studio-product-card '), 3)
+        self.assertEqual(studio.count("Coming soon"), 2)
+        studio_headings = re.findall(r"<h3>(.*?)</h3>", studio, re.IGNORECASE | re.DOTALL)
+        self.assertFalse(any(re.search(r"Flashcard|Story|Song", heading) for heading in studio_headings))
+
+    def test_three_profiles_have_distinct_navigation(self) -> None:
+        platform = element_body(source("index.html"), "nav", "aria-label", "Platform navigation")
+        team = element_body(source("content-studio.html"), "nav", "aria-label", "KinderFlow Team navigation")
+        nursery = element_body(source("school.html"), "nav", "aria-label", "Nursery navigation")
+        family = element_body(source("family.html"), "nav", "aria-label", "Family navigation")
+        for nav, expected in (
+            (platform, ("KinderFlow", "Products", "How it works", "For nurseries")),
+            (team, ("Overview", "Kinder Signs", "Content Library", "Schools")),
+            (nursery, ("Home", "Available content", "Share", "Active", "Families")),
+            (family, ("Your signs", "Your materials")),
+        ):
+            labels = tuple(re.sub(r"<[^>]+>", "", value).strip() for value in re.findall(r"<a\b[^>]*>(.*?)</a>", nav, re.DOTALL))
+            self.assertEqual(labels, expected)
+        self.assertEqual(len({platform, team, nursery, family}), 4)
+
+    def test_create_sign_has_five_visible_stages_and_preserves_evidence(self) -> None:
+        html = source("create-sign.html")
+        script = source("create-sign.js")
+        self.assertEqual(html.count("data-product-step="), 5)
+        for copy in (
+            "Sign &amp; reference",
+            "Review reference",
+            "Choose poses",
+            "Approve visual",
+            "Family materials",
+            "Step 1 of 5",
+            "View processing details",
+        ):
+            self.assertIn(copy, html)
+        processing = element_body(html, "details", "class", "processing-details")
+        self.assertIn('id="processing-stages"', processing)
+        for protected_id in (
+            "reference-video-preview",
+            "movement-video-preview",
+            "metric-frames",
+            "metric-pose",
+            "metric-hand",
+            "metric-missing",
+            "metric-unresolved",
+            "detection-timeline",
+            "wrist-trajectory",
+            "suggested-reference-frames",
+            "technical-review-rationale",
+            "illustrative-video",
+        ):
+            self.assertIn(f'id="{protected_id}"', html)
+        self.assertIn("TRACKED_POSE_MINIMUM_PERCENT = 90", script)
+        self.assertEqual(script.count('textContent = "Pose choice saved"'), 2)
+        self.assertNotIn('textContent = "Family materials ready"', script)
+        self.assertLess(html.index('id="visual-review-section"'), html.index('id="illustrative-motion-section"'))
+        self.assertLess(html.index('id="illustrative-motion-section"'), html.index('id="downstream-section"'))
+        self.assertIn("This illustrative video was prepared separately with Google Labs / Gemini.", html)
+        stages = element_body(html, "ol", "aria-label", "Create a Sign production stages")
+        self.assertNotIn("Library", stages)
+        family_video = html.index('id="illustrative-motion-section"')
+        flashcard = html.index('id="create-printable-link"')
+        self.assertLess(family_video, flashcard)
+        self.assertRegex(
+            script,
+            r'view === "family-materials" && !illustrativeMotionSection\.hidden[\s\S]*?\? illustrativeMotionSection',
+        )
 
     def test_reference_review_copy_status_and_details_contract(self) -> None:
         html = source("create-sign.html")
@@ -439,6 +569,25 @@ class FinalProductUxStaticTests(unittest.TestCase):
             "Back to family materials",
         ):
             self.assertIn(copy, printables)
+        for copy in (
+            "Next AI visual milestone",
+            "Use generative AI to create and refine KinderFlow-style sign illustrations",
+            "Make available to a nursery",
+            "Create another sign",
+        ):
+            self.assertIn(copy, printables)
+        for field in (
+            "sign_id",
+            "sign_label_en",
+            "sign_label_es",
+            "approved_visual",
+            "illustrative_video_available",
+            "selected_materials",
+            "audience_type",
+            "assignment_id",
+        ):
+            self.assertIn(field, printables)
+        self.assertIn('focus: "share"', printables)
         self.assertNotRegex(printables, re.compile(r"\bPNG\b", re.IGNORECASE))
 
     def test_school_library_and_assignment_structure(self) -> None:
@@ -447,33 +596,37 @@ class FinalProductUxStaticTests(unittest.TestCase):
         script = source("school.js")
         self.assertIn("Little Steps Nursery", html)
         self.assertIn("Kinder Signs workspace", html)
-        self.assertIn("Manage the Kinder Signs content available to your nursery.", html)
+        self.assertIn("Share Kinder Signs with your families", html)
+        self.assertIn("Choose a sign, select the materials and decide who should receive them.", html)
         self.assertNotRegex(html, re.compile(r"\bSchool A\b|fictional records", re.IGNORECASE))
         self.assertIn("<summary>Demo details</summary>", html)
-        self.assertIn(
-            "the canonical registry currently marks them unavailable for school distribution",
-            html,
-        )
+        for metric_id in (
+            "school-metric-groups",
+            "school-metric-families",
+            "school-metric-materials",
+            "school-metric-assignments",
+        ):
+            self.assertIn(f'id="{metric_id}"', html)
 
         expected_formats = {
-            "more": {"Video", "Flashcard", "Routine Card", "Story"},
-            "help": {"Video", "Flashcard", "Routine Card"},
-            "eat": {"Video", "Flashcard", "Routine Card"},
-            "sleep": {"Video", "Flashcard", "Routine Card"},
-            "milk": {"Video", "Flashcard", "Routine Card"},
-            "water": {"Video", "Flashcard", "Routine Card"},
+            "more": {"Baby Sign video tutorial", "Flashcard", "Routine Card", "Story"},
+            "help": {"Baby Sign video tutorial", "Flashcard", "Routine Card"},
+            "eat": {"Flashcard", "Routine Card"},
+            "sleep": {"Flashcard", "Routine Card"},
+            "milk": {"Baby Sign video tutorial", "Flashcard", "Routine Card"},
+            "water": {"Flashcard", "Routine Card"},
         }
         self.assertEqual(html.count('class="school-library-card"'), 6)
-        self.assertEqual(html.count('class="status-pill status-neutral">Preview</span>'), 6)
+        self.assertEqual(html.count('class="status-pill status-neutral">Demo preview</span>'), 6)
         for sign_id, formats in expected_formats.items():
             card = element_body(html, "article", "data-school-sign-card", sign_id)
             rendered = set(re.findall(r"<li>([^<]+)</li>", card))
             self.assertEqual(rendered, formats, sign_id)
-            self.assertIn("Preview", card)
-            self.assertRegex(card, rf'aria-label="Preview {sign_id.upper()} formats"')
+            self.assertIn("Demo preview", card)
+            self.assertRegex(card, rf'aria-label="{sign_id.upper()} available formats"')
             self.assertNotIn("Song", card)
 
-        for label in ("Choose a sign", "Choose a group", "Choose materials", "Who should receive it?"):
+        for label in ("Sign", "Group", "Materials", "Audience"):
             self.assertIn(label, html)
         child_panel = re.search(
             r'<div\b[^>]*id="assignment-child-panel"[^>]*>(.*?)</div>',
@@ -487,21 +640,18 @@ class FinalProductUxStaticTests(unittest.TestCase):
         materials = element_body(html, "div", "id", "assignment-materials")
         self.assertNotIn("Song", materials)
         for copy in (
-            "This content is already shared with this group.",
+            "This exact sign, audience and material combination is already active.",
             "View active assignment",
             "Change materials",
             "Edit",
             "Remove",
+            "View family experience",
+            "Share another sign",
+            "Who has access to what",
         ):
             self.assertIn(copy, html + script)
-        self.assertIn(
-            'aria-label="Edit MORE / MÁS assignment for Babies · 0–1 · Everyone in the group"',
-            html,
-        )
-        self.assertIn(
-            'aria-label="Remove MORE / MÁS assignment for Babies · 0–1 · Everyone in the group"',
-            html,
-        )
+        self.assertIn('sessionStorage.setItem("kinderflowFamilyPreviewAssignmentId"', script)
+        self.assertIn('sessionStorage.setItem("kinderflowSchoolAssignments"', script)
 
         self.assertRegex(css, r"\.school-library-grid\s*\{[^}]*repeat\(3,")
         self.assertRegex(
@@ -513,9 +663,125 @@ class FinalProductUxStaticTests(unittest.TestCase):
             re.compile(r"@media \(max-width: 760px\)[\s\S]*?\.school-library-grid[\s\S]*?grid-template-columns: 1fr", re.MULTILINE),
         )
 
+    def test_library_and_family_use_truthful_shared_materials(self) -> None:
+        library = source("library.html")
+        family = source("family.html")
+        family_script = source("app.js")
+        self.assertEqual(library.count("data-library-sign-card="), 6)
+        for sign in ("MORE", "HELP", "MILK", "EAT", "SLEEP", "WATER"):
+            self.assertIn(sign, library)
+        for sign in ("more", "help", "milk"):
+            card = element_body(library, "article", "data-library-sign-card", sign)
+            self.assertIn("Illustrative preview available", card)
+        for sign in ("eat", "sleep", "water"):
+            card = element_body(library, "article", "data-library-sign-card", sign)
+            self.assertIn("Not available yet", card)
+
+        self.assertIn("Your Kinder Signs", family)
+        self.assertIn("Shared by Little Steps Nursery", family)
+        self.assertIn("No Kinder Signs have been shared with this family yet.", family)
+        for forbidden in ("landmarks", "review status", "add-ons", "packs", "internal approval"):
+            self.assertNotIn(forbidden, family.lower())
+        self.assertNotRegex(family, re.compile(r"\bAI\b|\bplan\b", re.IGNORECASE))
+        for copy in (
+            "Say the word with the sign",
+            "Keep it natural",
+            "Follow your child’s interest",
+            "Never force repetition",
+        ):
+            self.assertIn(copy, family)
+        self.assertIn('sessionStorage.getItem("kinderflowSchoolAssignments")', family_script)
+        self.assertIn("if (raw === null)", family_script)
+        self.assertIn("Array.isArray(parsed)", family_script)
+        self.assertIn("Video tutorial not available yet. Use the Flashcard or Routine Card instead.", family_script)
+
 
 @unittest.skipUnless(shutil.which("node"), "Node is unavailable")
 class FinalProductAssignmentLogicTests(unittest.TestCase):
+    def test_printable_handoff_preselects_sign_formats_group_and_share_focus(self) -> None:
+        handoff = {
+            "status": "PRINTABLE_READY",
+            "publication_status": "DRAFT",
+            "sign_id": "more",
+            "card_type": "flashcard",
+            "language": "en",
+            "routine_context": {"en": "Snack time", "es": "La merienda"},
+            "selected_materials": ["video", "flashcard"],
+            "group": "Group 1–2",
+            "audience_type": "group",
+            "child_id": "",
+        }
+        runtime = node_json(
+            SCHOOL_ASSIGNMENT_HARNESS,
+            PROTOTYPE_ROOT / "school.js",
+            json.dumps(handoff),
+            "?sign=more&focus=share",
+        )
+        initial = runtime["initialSelection"]
+        self.assertEqual(initial["sign"], "more")
+        self.assertEqual(initial["group"], "Group 1–2")
+        self.assertEqual(initial["materials"], ["video", "flashcard"])
+        self.assertTrue(initial["focused"])
+        self.assertIn("prepared formats are ready to share", initial["validation"])
+
+    def test_family_library_filters_the_same_assignment_state_and_respects_empty(self) -> None:
+        harness = r'''
+const fs = require("fs");
+const vm = require("vm");
+const storage = new Map();
+const context = {
+  document: { querySelector: () => null },
+  window: { location: { search: "" }, matchMedia: () => ({ matches: false }) },
+  __storage: storage,
+  sessionStorage: {
+    getItem(key) { return storage.has(key) ? storage.get(key) : null; },
+    setItem(key, value) { storage.set(key, String(value)); }
+  },
+  URLSearchParams,
+  console
+};
+vm.createContext(context);
+const code = fs.readFileSync(process.argv[1], "utf8");
+vm.runInContext(code + `
+;globalThis.__familyContract = {
+  snapshot(saved, pointer, requestedSign = "") {
+    globalThis.__storage.clear();
+    if (saved !== null) globalThis.__storage.set("kinderflowSchoolAssignments", JSON.stringify(saved));
+    if (pointer) globalThis.__storage.set("kinderflowFamilyPreviewAssignmentId", JSON.stringify(pointer));
+    const source = readAssignments();
+    const familyContext = readFamilyContext(source.fallback, source.assignments, requestedSign);
+    const visible = combineSigns(source.assignments.filter((item) => belongsToFamily(item, familyContext)));
+    return { fallback: source.fallback, visible };
+  }
+};`, context);
+const records = [
+  { id: "a", signId: "more", groupId: "Group 0–1", audienceType: "group", childId: "", materials: ["video", "flashcard"] },
+  { id: "b", signId: "help", groupId: "Group 1–2", audienceType: "group", childId: "", materials: ["video"] },
+  { id: "c", signId: "eat", groupId: "Group 1–2", audienceType: "group", childId: "", materials: ["video", "flashcard"] },
+  { id: "d", signId: "milk", groupId: "Group 1–2", audienceType: "child", childId: "Child C", materials: ["routine-card"] },
+  { id: "e", signId: "water", groupId: "Group 1–2", audienceType: "child", childId: "Child D", materials: ["flashcard"] }
+];
+const pointer = { assignmentId: "d", groupId: "Group 1–2", audienceType: "child", childId: "Child C" };
+process.stdout.write(JSON.stringify({
+  absent: context.__familyContract.snapshot(null, null),
+  empty: context.__familyContract.snapshot([], pointer),
+  childFamily: context.__familyContract.snapshot(records, pointer),
+  afterRemoval: context.__familyContract.snapshot([records[0]], pointer)
+}));
+'''
+        runtime = node_json(harness, PROTOTYPE_ROOT / "app.js")
+        self.assertTrue(runtime["absent"]["fallback"])
+        self.assertEqual([item["signId"] for item in runtime["absent"]["visible"]], ["more"])
+        self.assertFalse(runtime["empty"]["fallback"])
+        self.assertEqual(runtime["empty"]["visible"], [])
+        self.assertEqual(
+            [item["signId"] for item in runtime["childFamily"]["visible"]],
+            ["help", "eat", "milk"],
+        )
+        eat = next(item for item in runtime["childFamily"]["visible"] if item["signId"] == "eat")
+        self.assertEqual(eat["materials"], ["flashcard"])
+        self.assertEqual(runtime["afterRemoval"]["visible"], [])
+
     def test_exact_duplicate_is_blocked_but_context_changes_are_allowed(self) -> None:
         harness = r'''
 const fs = require("fs");
@@ -590,6 +856,10 @@ process.stdout.write(JSON.stringify({
             runtime["toddlerAssignment"]["materials"],
             ["video", "flashcard", "routine-card"],
         )
+        self.assertEqual(runtime["firstFamilyContext"]["assignmentId"], runtime["toddlerAssignment"]["id"])
+        self.assertEqual(runtime["firstFamilyContext"]["groupId"], "Group 1–2")
+        self.assertEqual(runtime["firstFamilyContext"]["audienceType"], "group")
+        self.assertEqual(runtime["firstFamilyHref"], "family.html?sign=more")
 
         self.assertEqual(runtime["duplicateCount"], runtime["firstShareCount"])
         self.assertTrue(runtime["duplicateShown"])

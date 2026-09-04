@@ -1297,10 +1297,10 @@ class Prompt2CReviewUxTests(unittest.TestCase):
         preparation = self.tree.by_id("visual-preparation-section")
         self.assertRegex(
             compact(self.html),
-            re.compile(r"Prepare\s*<span[^>]*>MORE</span>\s*family materials"),
+            re.compile(r"Prepare the\s*<span[^>]*>MORE</span>\s*visual"),
         )
         self.assertIn(
-            "KinderFlow combines the reviewed sign guidance and selected poses to prepare reusable family materials.",
+            "KinderFlow combines the reviewed sign guidance and selected poses to prepare visual options for human review.",
             preparation.all_text(),
         )
         cards = [

@@ -1,12 +1,79 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="KinderFlow Master Content Library prototype across signs, flashcards, stories and songs."><title>KinderFlow Admin | Master Content Library</title><link rel="icon" href="data:,"><link rel="stylesheet" href="styles.css"><script src="library.js" defer></script><script src="content-engine.js" defer></script><script src="character-review.js" defer></script><script src="content-operations.js" defer></script>
+    <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Internal Kinder Signs library for reviewing sign and family-material readiness."><title>KinderFlow Team | Content Library</title><link rel="icon" href="data:,"><link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="product-ui-safe.css"><script src="library.js" defer></script><script src="content-engine.js" defer></script><script src="character-review.js" defer></script><script src="content-operations.js" defer></script>
+      <script src="product-ui-safe.js" defer></script>
   </head>
   <body class="admin-page library-page">
-    <header class="site-header admin-header"><a class="brand" href="admin.html" aria-label="KinderFlow Admin overview"><span class="brand-mark" aria-hidden="true">K</span><span>KinderFlow Admin</span></a><nav aria-label="KinderFlow Admin navigation"><a href="admin.html">Overview</a><a href="content-studio.html">Master Content Studio</a><a href="admin.html#clients">Clients / Schools</a><a href="library.html" aria-current="page">Master Content Library</a><a href="admin.html#metrics">Metrics</a></nav><a class="prototype-label page-switch" href="index.html">KinderFlow Hub</a></header>
+    <header class="site-header admin-header"><a class="brand" href="content-studio.html" aria-label="KinderFlow Team overview"><span class="brand-mark" aria-hidden="true">K</span><span>KinderFlow Team</span></a><nav aria-label="KinderFlow Team navigation"><a href="admin.html">Overview</a><a href="content-studio.html">Kinder Signs</a><a href="library.html" aria-current="page">Content Library</a><a href="school.html">Schools</a></nav><a class="prototype-label page-switch" href="index.html">KinderFlow platform</a></header>
     <main>
-      <section class="workspace-hero section-shell" aria-labelledby="master-library-title"><div><p class="eyebrow">KinderFlow Admin / Master Content Library</p><h1 id="master-library-title">Master Content Library</h1><p>Review content status, school access and usage signals across KinderFlow content types.</p></div><a class="button button-secondary" href="content-studio.html">Return to Master Content Studio</a></section>
+      <section class="workspace-hero section-shell" aria-labelledby="master-library-title"><div><p class="eyebrow">KinderFlow Team · Kinder Signs</p><h1 id="master-library-title">Content Library</h1><p>See which signs and family materials exist, what is ready and what needs attention next.</p></div><a class="button button-primary" href="create-sign.html">Create a sign</a></section>
+      <section class="workspace-section section-shell" aria-labelledby="sign-library-title">
+        <div class="workspace-heading"><div><p class="eyebrow">Sign library</p><h2 id="sign-library-title">Six signs, one clear operational view</h2></div><p>Availability reflects the current local demo. Every visual and family material still requires human review before nursery distribution.</p></div>
+        <div class="school-library-grid sign-library-grid">
+          <article class="school-library-card sign-library-card" data-library-sign-card="more">
+            <span class="status-pill status-review">Hand review needed</span>
+            <img class="school-sign-thumbnail" src="assets/signs/more-a.svg" alt="MORE sign illustration preview">
+            <div class="school-sign-copy"><h3>MORE</h3><p class="school-sign-translation">MÁS</p><p class="school-sign-routine">Snack time · Mealtime · Playtime</p></div>
+            <ul class="availability-list" aria-label="MORE material availability"><li><span>Baby Sign video tutorial</span><strong>Illustrative preview available</strong></li><li><span>Flashcard</span><strong>After visual approval</strong></li><li><span>Routine Card</span><strong>After visual approval</strong></li><li><span>Story</span><strong>After visual approval</strong></li></ul>
+            <p class="panel-note"><strong>Next action:</strong> Complete the hand and visual review.</p>
+            <a class="button button-secondary" href="create-sign.html">Open Create Sign</a>
+          </article>
+
+          <article class="school-library-card sign-library-card" data-library-sign-card="help">
+            <span class="status-pill status-review">Visual review needed</span>
+            <img class="school-sign-thumbnail" src="assets/signs/help-a.svg" alt="HELP sign illustration preview">
+            <div class="school-sign-copy"><h3>HELP</h3><p class="school-sign-translation">AYUDA</p><p class="school-sign-routine">Getting ready · Getting dressed</p></div>
+            <ul class="availability-list" aria-label="HELP material availability"><li><span>Baby Sign video tutorial</span><strong>Illustrative preview available</strong></li><li><span>Flashcard</span><strong>After visual approval</strong></li><li><span>Routine Card</span><strong>After visual approval</strong></li><li><span>Story</span><strong>Not available yet</strong></li></ul>
+            <p class="panel-note"><strong>Next action:</strong> Review the reference and choose a visual.</p>
+            <a class="button button-secondary" href="create-sign.html">Open Create Sign</a>
+          </article>
+
+          <article class="school-library-card sign-library-card" data-library-sign-card="milk">
+            <span class="status-pill status-review">Visual review needed</span>
+            <img class="school-sign-thumbnail" src="assets/signs/milk-a.svg" alt="MILK sign illustration preview">
+            <div class="school-sign-copy"><h3>MILK</h3><p class="school-sign-translation">LECHE</p><p class="school-sign-routine">Milk time</p></div>
+            <ul class="availability-list" aria-label="MILK material availability"><li><span>Baby Sign video tutorial</span><strong>Illustrative preview available</strong></li><li><span>Flashcard</span><strong>After visual approval</strong></li><li><span>Routine Card</span><strong>After visual approval</strong></li><li><span>Story</span><strong>Not available yet</strong></li></ul>
+            <p class="panel-note"><strong>Next action:</strong> Review the reference and choose a visual.</p>
+            <a class="button button-secondary" href="create-sign.html">Open Create Sign</a>
+          </article>
+
+          <article class="school-library-card sign-library-card" data-library-sign-card="eat">
+            <span class="status-pill status-review">Reference review needed</span>
+            <img class="school-sign-thumbnail" src="assets/signs/eat-a.svg" alt="EAT sign illustration preview">
+            <div class="school-sign-copy"><h3>EAT</h3><p class="school-sign-translation">COMER</p><p class="school-sign-routine">Mealtime</p></div>
+            <ul class="availability-list" aria-label="EAT material availability"><li><span>Baby Sign video tutorial</span><strong>Not available yet</strong></li><li><span>Flashcard</span><strong>After visual approval</strong></li><li><span>Routine Card</span><strong>After visual approval</strong></li><li><span>Story</span><strong>Not available yet</strong></li></ul>
+            <p class="panel-note"><strong>Next action:</strong> Review the reference and choose a visual.</p>
+            <a class="button button-secondary" href="create-sign.html">Open Create Sign</a>
+          </article>
+
+          <article class="school-library-card sign-library-card" data-library-sign-card="sleep">
+            <span class="status-pill status-review">Reference review needed</span>
+            <img class="school-sign-thumbnail" src="assets/signs/sleep-a.svg" alt="SLEEP sign illustration preview">
+            <div class="school-sign-copy"><h3>SLEEP</h3><p class="school-sign-translation">DORMIR</p><p class="school-sign-routine">Bedtime</p></div>
+            <ul class="availability-list" aria-label="SLEEP material availability"><li><span>Baby Sign video tutorial</span><strong>Not available yet</strong></li><li><span>Flashcard</span><strong>After visual approval</strong></li><li><span>Routine Card</span><strong>After visual approval</strong></li><li><span>Story</span><strong>Not available yet</strong></li></ul>
+            <p class="panel-note"><strong>Next action:</strong> Review the reference and choose a visual.</p>
+            <a class="button button-secondary" href="create-sign.html">Open Create Sign</a>
+          </article>
+
+          <article class="school-library-card sign-library-card" data-library-sign-card="water">
+            <span class="status-pill status-review">Evidence review needed</span>
+            <img class="school-sign-thumbnail" src="assets/signs/water-a.svg" alt="WATER sign illustration preview">
+            <div class="school-sign-copy"><h3>WATER</h3><p class="school-sign-translation">AGUA</p><p class="school-sign-routine">Drink break · Mealtime</p></div>
+            <ul class="availability-list" aria-label="WATER material availability"><li><span>Baby Sign video tutorial</span><strong>Not available yet</strong></li><li><span>Flashcard</span><strong>After visual approval</strong></li><li><span>Routine Card</span><strong>After visual approval</strong></li><li><span>Story</span><strong>Not available yet</strong></li></ul>
+            <p class="panel-note"><strong>Next action:</strong> Review the registered WATER evidence.</p>
+            <a class="button button-secondary" href="create-sign.html">Open Create Sign</a>
+          </article>
+        </div>
+      </section>
+
+      <section class="workspace-section section-tint" aria-labelledby="internal-library-details-title">
+        <div class="section-shell">
+          <div class="workspace-heading"><div><p class="eyebrow">Internal tools and evidence</p><h2 id="internal-library-details-title">Review queues and technical details</h2></div><p>Open this area when you need the format queue, content tooling, source information, governance or detailed readiness evidence.</p></div>
+          <details class="technical-details library-technical-details">
+            <summary>View internal tools and technical details</summary>
+            <div class="library-technical-content">
       <section class="workspace-section section-shell" aria-labelledby="library-results-title">
         <div class="library-toolbar"><div><p class="card-label">Content type</p><div class="filter-tabs" role="group" aria-label="Filter master library by content type"><button type="button" data-library-filter="all" aria-pressed="true">All</button><button type="button" data-library-filter="sign" aria-pressed="false">Signs</button><button type="button" data-library-filter="flashcard" aria-pressed="false">Flashcards</button><button type="button" data-library-filter="story" aria-pressed="false">Stories</button><button type="button" data-library-filter="song" aria-pressed="false">Songs</button></div></div><p id="library-result-count" aria-live="polite">4 items shown</p></div>
         <h2 class="sr-only" id="library-results-title">Library results</h2>
@@ -71,7 +138,11 @@
         <p class="prototype-boundary">Deterministic local demo. The report is generated by <code>python -m content_ops</code>. Review actions on this page are illustrative and are not persisted.</p>
         </div></details>
       </section>
+            </div>
+          </details>
+        </div>
+      </section>
     </main>
-    <footer><span>KinderFlow Master Content Library</span><span>Example content and review states</span></footer>
+    <footer><span>KinderFlow Team · Content Library</span><span>Local demo content and review states</span></footer>
   </body>
 </html>

@@ -10,13 +10,14 @@
     <script src="create-sign.js" defer></script>
   </head>
   <body class="admin-page create-sign-page">
+    <a class="product-skip-link create-sign-skip-link" href="#main-content">Skip to main content</a>
     <header class="site-header admin-header">
-      <a class="brand" href="content-studio.html" aria-label="Back to Master Content Studio"><span class="brand-mark" aria-hidden="true">K</span><span>Master Content Studio</span></a>
-      <nav aria-label="Master Content Studio navigation"><a href="content-studio.html">Studio overview</a><a href="create-sign.html" aria-current="page">Create sign</a><a href="library.html">Master Library</a><a href="school.html">Schools</a></nav>
-      <a class="prototype-label page-switch" href="admin.html">KinderFlow Admin</a>
+      <a class="brand" href="content-studio.html" aria-label="KinderFlow Content Studio"><span class="brand-mark" aria-hidden="true">K</span><span>KinderFlow Team</span></a>
+      <nav aria-label="KinderFlow Team navigation"><a href="admin.html">Overview</a><a href="content-studio.html" aria-current="page">Kinder Signs</a><a href="library.html">Content Library</a><a href="school.html">Schools</a></nav>
+      <a class="prototype-label page-switch" href="index.html">View platform</a>
     </header>
 
-    <main>
+    <main id="main-content">
       <section class="workspace-hero section-shell create-sign-hero" aria-labelledby="create-sign-title">
         <div><p class="eyebrow">Master Content Studio</p><h1 id="create-sign-title">Create a sign</h1><p>Turn a clear reference video into a reviewed sign and useful family materials.</p></div>
         <div class="principle-card"><span>Product principle</span><strong>The character defines the look.<br>The reference video defines the sign.</strong></div>
@@ -24,8 +25,17 @@
 
       <section class="sign-flow-shell section-shell" aria-labelledby="workflow-title">
         <div class="workspace-heading compact-heading"><div><p class="eyebrow">Guided steps</p><h2 id="workflow-title">From reference to family materials</h2></div><p>Each stage has one clear task and preserves the decisions already made.</p></div>
-        <ol class="sign-production-flow" aria-label="Create a Sign production stages">
-          <li><span>01</span>Choose the sign</li><li><span>02</span>Add the reference</li><li><span>03</span>Review the sign reference</li><li><span>04</span>Choose the clearest poses</li><li><span>05</span>Create family materials</li><li><span>06</span>Create visual options</li><li><span>07</span>Approve the clearest visual</li><li><span>08</span>Create family materials</li><li><span>09</span>Add to library / use later</li>
+        <div class="sign-progress-mobile" aria-live="polite">
+          <span id="sign-progress-count">Step 1 of 5</span>
+          <strong id="sign-progress-label">Sign &amp; reference</strong>
+          <span class="sign-progress-track" aria-hidden="true"><span id="sign-progress-bar"></span></span>
+        </div>
+        <ol class="sign-production-flow connected-sign-flow" aria-label="Create a Sign production stages">
+          <li data-product-step="1" class="is-current" aria-current="step"><span class="product-step-marker" aria-hidden="true">01</span><div><strong>Sign &amp; reference</strong><small>Choose the sign and add a clear reference.</small></div></li>
+          <li data-product-step="2"><span class="product-step-marker" aria-hidden="true">02</span><div><strong>Review reference</strong><small>Compare the video, landmarks and evidence.</small></div></li>
+          <li data-product-step="3"><span class="product-step-marker" aria-hidden="true">03</span><div><strong>Choose poses</strong><small>Select the clearest tracked poses or frames.</small></div></li>
+          <li data-product-step="4"><span class="product-step-marker" aria-hidden="true">04</span><div><strong>Approve visual</strong><small>Check the sign illustration before reuse.</small></div></li>
+          <li data-product-step="5"><span class="product-step-marker" aria-hidden="true">05</span><div><strong>Family materials</strong><small>Use the reviewed sign in family formats.</small></div></li>
         </ol>
       </section>
 
@@ -77,9 +87,15 @@
       </section>
 
       <section class="workspace-section section-shell processing-section" id="processing-section" aria-labelledby="processing-title">
-        <div class="workspace-heading"><div><p class="eyebrow">Step 3</p><h2 id="processing-title">Review the sign reference</h2></div><p id="service-state">Preparing the reference review…</p></div>
-        <ol class="processing-stages" id="processing-stages" aria-label="Reference review progress"></ol>
-        <p class="processing-note" id="processing-note" role="status" aria-live="polite">Waiting for a reference video.</p>
+        <div class="workspace-heading"><div><p class="eyebrow">Reference review</p><h2 id="processing-title">Reviewing the sign reference…</h2></div><p id="service-state">Preparing the reference review…</p></div>
+        <div class="processing-current-stage">
+          <span class="processing-pulse" aria-hidden="true"></span>
+          <p class="processing-note" id="processing-note" role="status" aria-live="polite">Waiting for a reference video.</p>
+        </div>
+        <details class="processing-details">
+          <summary>View processing details</summary>
+          <ol class="processing-stages" id="processing-stages" aria-label="Reference review progress"></ol>
+        </details>
       </section>
 
       <section class="workspace-section section-tint result-section" id="result-section" aria-labelledby="result-title" hidden>
@@ -134,47 +150,9 @@
         </div>
       </section>
 
-      <section class="workspace-section section-tint illustrative-motion-section" id="illustrative-motion-section" aria-labelledby="illustrative-motion-title" hidden>
-        <div class="section-shell">
-          <div class="workspace-heading"><div><p class="eyebrow">Optional motion preview</p><h2 id="illustrative-motion-title">Preview the future motion experience</h2></div><p>This optional preview sits after pose selection and never replaces the reviewed reference.</p></div>
-          <div class="illustrative-motion-card">
-            <div class="illustrative-media" id="illustrative-video-available" hidden>
-              <span class="status-pill status-neutral">Illustrative video preview</span>
-              <video id="illustrative-video" controls muted playsinline preload="metadata" aria-describedby="illustrative-primary-disclosure"></video>
-              <p id="illustrative-video-status" role="status" aria-live="polite">Preparing the illustrative preview…</p>
-            </div>
-            <div class="illustrative-missing" id="illustrative-video-missing" hidden>
-              <span class="status-pill status-neutral">Illustrative video preview</span>
-              <h3>Video preview not available for this sign yet.</h3>
-              <p>Continue with the reviewed illustration and family materials.</p>
-            </div>
-            <div class="illustrative-copy">
-              <p id="illustrative-primary-disclosure">This preview was prepared separately to demonstrate the intended motion experience. It is not generated automatically from this reference review.</p>
-              <p>The reference review helps KinderFlow preserve clear poses and movement cues for the materials created next.</p>
-              <details id="illustrative-technical-details">
-                <summary>Technical demo details</summary>
-                <dl>
-                  <div><dt>Provider</dt><dd id="illustrative-provider">Google Labs FX / Gemini FX</dd></div>
-                  <div><dt>Asset</dt><dd>Pre-generated demo asset</dd></div>
-                  <div><dt>Preparation</dt><dd>Prepared separately from this reference review</dd></div>
-                  <div><dt>Current run</dt><dd>Not generated by this MediaPipe run</dd></div>
-                  <div><dt>Movement data</dt><dd>Not automatically driven by current landmark coordinates</dd></div>
-                  <div><dt>Purpose</dt><dd>Demo only</dd></div>
-                  <div><dt>Review</dt><dd>Human review required</dd></div>
-                  <div><dt>Certification</dt><dd>Not linguistically certified</dd></div>
-                  <div><dt>Usage</dt><dd id="illustrative-usage">Usage confirmation needed</dd></div>
-                </dl>
-              </details>
-              <p class="research-milestone"><strong>Next R&amp;D milestone:</strong> connect reviewed movement data to a controlled avatar/video pipeline and validate motion fidelity with specialist support.</p>
-              <button class="button button-primary" id="continue-to-family-materials" type="button">Continue to family materials</button>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <section class="workspace-section section-tint visual-preparation-section" id="visual-preparation-section" aria-labelledby="visual-preparation-title" hidden>
         <div class="section-shell">
-          <div class="workspace-heading"><div><p class="eyebrow">Step 6 · Family materials</p><h2 id="visual-preparation-title">Prepare <span data-active-sign>MORE</span> family materials</h2></div><p>KinderFlow combines the reviewed sign guidance and selected poses to prepare reusable family materials.</p></div>
+          <div class="workspace-heading"><div><p class="eyebrow">Step 4 · Approve visual</p><h2 id="visual-preparation-title">Prepare the <span data-active-sign>MORE</span> visual</h2></div><p>KinderFlow combines the reviewed sign guidance and selected poses to prepare visual options for human review.</p></div>
           <div class="grounding-summary" aria-label="Information used to prepare the sign visual">
             <article><span class="grounding-number">01</span><div><h3 id="grounding-source">Reviewed sign guidance</h3><p id="grounding-source-note">The reviewed sign information is ready.</p></div><span class="grounding-status status-ready" id="grounding-source-status">Ready</span></article>
             <article><span class="grounding-number">02</span><div><h3 id="grounding-motion">Reference poses</h3><p id="grounding-motion-note">The clearest movement moments are ready.</p></div><span class="grounding-status status-ready" id="grounding-motion-status">Ready</span></article>
@@ -189,7 +167,7 @@
       </section>
 
       <section class="workspace-section section-shell visual-review-section" id="visual-review-section" aria-labelledby="visual-review-title" hidden>
-        <div class="workspace-heading"><div><p class="eyebrow">Step 7 · Visual review</p><h2 id="visual-review-title">Choose the clearest visual</h2></div><p>Check that the hands, body position and movement are easy to understand.</p></div>
+        <div class="workspace-heading"><div><p class="eyebrow">Step 4 · Approve visual</p><h2 id="visual-review-title">Choose the clearest visual</h2></div><p>Check that the hands, body position and movement are easy to understand.</p></div>
         <div class="visual-candidates" id="visual-candidates" role="radiogroup" aria-label="Visual options"></div>
         <details class="visual-review-criteria">
           <summary>Technical and source details</summary>
@@ -202,16 +180,59 @@
         <p class="prototype-boundary">Review the hands, body position and movement cue before approving the visual.</p>
       </section>
 
+      <section class="workspace-section section-tint illustrative-motion-section family-video-stage" id="illustrative-motion-section" aria-labelledby="illustrative-motion-title" hidden>
+        <div class="section-shell">
+          <div class="workspace-heading"><div><p class="eyebrow">Step 5 · Family materials</p><h2 id="illustrative-motion-title">Family materials</h2></div><p>The reviewed sign is ready to reuse in formats for nursery and home.</p></div>
+          <div class="family-material-context" aria-label="Current reviewed sign"><strong><span data-active-sign>MORE</span> / <span data-active-sign-es>MÁS</span></strong><span data-active-routine>Snack time</span><span class="status-pill status-ready">Reviewed sign</span></div>
+          <div class="illustrative-motion-card">
+            <div class="illustrative-media" id="illustrative-video-available" hidden>
+              <span class="status-pill status-neutral">Illustrative tutorial</span>
+              <video id="illustrative-video" controls muted playsinline preload="metadata" aria-describedby="illustrative-primary-disclosure"></video>
+              <p id="illustrative-video-status" role="status" aria-live="polite">Preparing the illustrative preview…</p>
+            </div>
+            <div class="illustrative-missing" id="illustrative-video-missing" hidden>
+              <span class="status-pill status-neutral">Baby Sign video tutorial</span>
+              <h3>Video tutorial not available yet.</h3>
+              <p>Use the Flashcard or Routine Card instead.</p>
+            </div>
+            <div class="illustrative-copy">
+              <p class="card-label">First family material</p>
+              <h3>Baby Sign video tutorial</h3>
+              <p>A short visual guide families can use before practising the sign during an everyday routine.</p>
+              <details class="family-preview-disclosure">
+                <summary>About this preview</summary>
+                <p id="illustrative-primary-disclosure">This illustrative video was prepared separately with Google Labs / Gemini. It is not generated automatically from the current reference review.</p>
+              </details>
+              <details id="illustrative-technical-details">
+                <summary>Technical demo details</summary>
+                <dl>
+                  <div><dt>Provider</dt><dd id="illustrative-provider">Google Labs FX / Gemini FX</dd></div>
+                  <div><dt>Asset</dt><dd>Pre-generated demo asset</dd></div>
+                  <div><dt>Preparation</dt><dd>Prepared separately from this reference review</dd></div>
+                  <div><dt>Current run</dt><dd>Not generated by this MediaPipe run</dd></div>
+                  <div><dt>Movement data</dt><dd>Not automatically driven by current landmark coordinates</dd></div>
+                  <div><dt>Purpose</dt><dd>Demo only</dd></div>
+                  <div><dt>Review</dt><dd>Human review required</dd></div>
+                  <div><dt>Certification</dt><dd>Not linguistically certified</dd></div>
+                  <div><dt>Usage</dt><dd id="illustrative-usage">Usage confirmation needed</dd></div>
+                </dl>
+              </details>
+              <aside class="research-milestone"><strong>Next product milestone</strong><p>Connect reviewed MediaPipe hand and pose landmarks to a reusable KinderFlow avatar, then validate handshape, palm orientation, timing, contact and coordinated movement with specialist support.</p></aside>
+              <button class="button button-primary" id="continue-to-family-materials" type="button">See supporting materials</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section class="workspace-section section-tint downstream-section" id="downstream-section" aria-labelledby="downstream-title" hidden>
         <div class="section-shell">
-          <div class="workspace-heading"><div><p class="eyebrow">Step 8 · Family materials</p><h2 id="downstream-title">Create family materials</h2></div><p>Turn the reviewed sign into materials families can use at home.</p></div>
+          <div class="workspace-heading"><div><p class="eyebrow">Supporting family materials</p><h2 id="downstream-title">Choose what to prepare next</h2></div><p>Continue from the same reviewed sign; no reference work is lost.</p></div>
           <div class="downstream-grid family-material-options">
-            <article class="family-material-option"><span class="content-type-tag">Printable</span><h3>Flashcard</h3><p>Recognise the sign and connect it with a familiar context.</p><a class="button button-primary" id="create-printable-link" href="flashcards.html">Create flashcard</a></article>
-            <article class="family-material-option"><span class="content-type-tag">Printable</span><h3>Routine Card</h3><p>Use the sign naturally in one everyday routine.</p><a class="button button-secondary" id="create-routine-link" href="flashcards.html?type=routine">Create routine card</a></article>
-            <article class="family-material-option" id="story-material-option"><span class="content-type-tag">Shared reading</span><h3>Story</h3><p>Reinforce a familiar sign through a short shared-reading story.</p><a class="button button-secondary" id="create-story-link" href="create-story.html">Create story</a><small class="material-availability-note" id="story-availability-note" hidden>Story is currently available for MORE.</small></article>
-            <article class="family-material-option is-coming-soon"><span class="status-pill status-neutral">Coming soon</span><h3>Song</h3><p>Use repetition and rhythm to practise familiar signs.</p></article>
+            <article class="family-material-option"><span class="content-type-tag">Printable</span><h3>Flashcard</h3><p>A visual reminder families can keep or print.</p><a class="button button-primary" id="create-printable-link" href="flashcards.html">Create flashcard</a></article>
+            <article class="family-material-option"><span class="content-type-tag">Printable</span><h3>Routine Card</h3><p>A simple prompt for using the sign during a familiar routine.</p><a class="button button-secondary" id="create-routine-link" href="flashcards.html?type=routine">Create routine card</a></article>
+            <article class="family-material-option" id="story-material-option"><span class="content-type-tag">Shared reading</span><h3>Story</h3><p>Reinforce the sign through a short everyday story.</p><a class="button button-secondary" id="create-story-link" href="create-story.html">Create story</a><small class="material-availability-note" id="story-availability-note" hidden>Story is currently available for MORE.</small></article>
+            <article class="family-material-option is-coming-soon"><span class="status-pill status-neutral">Coming soon</span><h3>Song</h3><p>Practise familiar signs through repetition and rhythm.</p></article>
           </div>
-          <div class="family-material-actions"><a class="text-link" id="review-library-link" href="library.html">Add to library or use later</a></div>
         </div>
       </section>
 

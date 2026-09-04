@@ -51,6 +51,8 @@ const MOVEMENT_COPY = {
   water: { en: "START · END", es: "INICIO · FINAL" }
 };
 
+const ILLUSTRATIVE_VIDEO_SIGNS = new Set(["more", "help", "milk"]);
+
 const SVG_TEXT_ES = {
   "START": "INICIO",
   "END": "FINAL",
@@ -571,6 +573,10 @@ const updateReturnLinks = () => {
   document.querySelector("#empty-back-to-visual-options").href = visualReturn;
   document.querySelector("#back-to-family-materials").href = `create-sign.html?${new URLSearchParams({ ...base, view: "family-materials" }).toString()}`;
   document.querySelector("#choose-another-sign").href = "create-sign.html#setup-title";
+  const sign = selectedSign();
+  document.querySelector("#make-available-to-nursery").href = sign
+    ? `school.html?${new URLSearchParams({ sign: sign.sign_id, focus: "share" }).toString()}`
+    : "school.html#assign";
 };
 
 const populateSignSelect = () => {
@@ -711,13 +717,25 @@ reviewButton.addEventListener("click", () => {
   printButton.disabled = typeof window.print !== "function";
   builder.printableApproval = {
     sign_id: sign.sign_id,
+    sign_label_en: sign.display_name,
+    sign_label_es: sign.spanish_label,
     candidate_id: builder.activeCandidate.id,
+    approved_visual: builder.activeCandidate.id,
     asset: builder.activeCandidate.asset,
     content_hash: builder.activeCandidate.content_hash || builder.approvedVisual?.content_hash || null,
     card_type: builder.cardType,
     language: builder.language,
     routine_context: builder.routineContext,
     family_guidance: builder.familyGuidance,
+    illustrative_video_available: ILLUSTRATIVE_VIDEO_SIGNS.has(sign.sign_id),
+    selected_materials: [
+      ...(ILLUSTRATIVE_VIDEO_SIGNS.has(sign.sign_id) ? ["video"] : []),
+      builder.cardType === "routine" ? "routine-card" : "flashcard"
+    ],
+    group: "Group 1–2",
+    audience_type: "group",
+    child_id: "",
+    assignment_id: null,
     status: "PRINTABLE_READY",
     publication_status: "DRAFT",
     approved_at: new Date().toISOString()

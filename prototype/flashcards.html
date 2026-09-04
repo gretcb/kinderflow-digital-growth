@@ -7,13 +7,15 @@
     <title>Create a printable | KinderFlow Admin</title>
     <link rel="icon" href="data:,">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="product-ui-safe.css">
     <script src="flashcards.js" defer></script>
+      <script src="product-ui-safe.js" defer></script>
   </head>
   <body class="flashcard-page">
     <header class="site-header admin-header builder-header">
-      <a class="brand" href="content-studio.html" aria-label="Back to Master Content Studio"><span class="brand-mark" aria-hidden="true">K</span><span>KinderFlow Admin</span></a>
-      <nav aria-label="Master Content Studio navigation"><a href="content-studio.html">Studio overview</a><a href="create-sign.html">Create sign</a><a href="library.html">Master Library</a><a href="school.html">Schools</a></nav>
-      <a class="prototype-label page-switch" href="library.html">Master Content Library</a>
+      <a class="brand" href="content-studio.html" aria-label="KinderFlow Content Studio"><span class="brand-mark" aria-hidden="true">K</span><span>KinderFlow Team</span></a>
+      <nav aria-label="KinderFlow Team navigation"><a href="admin.html">Overview</a><a href="content-studio.html" aria-current="page">Kinder Signs</a><a href="library.html">Content Library</a><a href="school.html">Schools</a></nav>
+      <a class="prototype-label page-switch" href="index.html">View platform</a>
     </header>
 
     <main class="builder-main">
@@ -37,11 +39,23 @@
             <fieldset class="builder-choice"><legend>Card type</legend><div class="builder-segments builder-segments-two"><label><input type="radio" name="card_type" value="flashcard" checked><span>Flashcard<small>Recognition</small></span></label><label><input type="radio" name="card_type" value="routine"><span>Routine Card<small>Guidance in context</small></span></label></div></fieldset>
           </section>
 
+          <aside class="builder-ai-milestone" aria-labelledby="ai-visual-milestone-title">
+            <p class="card-label">Roadmap</p>
+            <h3 id="ai-visual-milestone-title">Next AI visual milestone</h3>
+            <p>Use generative AI to create and refine KinderFlow-style sign illustrations from reviewed reference frames and MediaPipe hand and pose landmarks. Human review will verify finger shape, palm orientation, contact and arm-to-hand continuity before the process is scaled across the full sign library.</p>
+          </aside>
+
           <section class="builder-step builder-review-step" aria-labelledby="review-export-title">
             <div class="builder-step-heading"><span aria-hidden="true">3</span><h3 id="review-export-title">Finish your printable</h3></div>
             <div class="builder-review-summary"><span>Printable status</span><strong id="review-state-text">Ready for approval</strong><small>Check the layout and content, then approve the printable before saving it as a PDF.</small></div>
             <div class="builder-actions builder-actions-studio" id="pre-approval-actions"><button class="button button-primary" id="review-flashcard" type="button">Approve printable</button><a class="button button-secondary" id="back-to-visual-options" href="create-sign.html">Back to visual options</a><a class="text-link" id="choose-another-sign" href="create-sign.html">Choose another sign</a></div>
-            <div class="builder-actions builder-actions-studio" id="post-approval-actions" hidden><button class="button button-primary" id="print-flashcard" type="button">Print / Save as PDF</button><button class="text-link-button" id="create-another" type="button">Create another format</button><a class="text-link" id="back-to-family-materials" href="create-sign.html">Back to family materials</a></div>
+            <div class="builder-actions builder-actions-studio builder-handoff-actions" id="post-approval-actions" hidden>
+              <a class="button button-primary" id="make-available-to-nursery" href="school.html?sign=more&amp;focus=share">Make available to a nursery</a>
+              <button class="button button-secondary" id="print-flashcard" type="button">Print / Save as PDF</button>
+              <a class="button button-secondary" id="create-another-sign" href="content-studio.html?product=kinder-signs">Create another sign</a>
+              <button class="text-link-button" id="create-another" type="button">Create another format</button>
+              <a class="text-link" id="back-to-family-materials" href="create-sign.html">Back to family materials</a>
+            </div>
             <p class="builder-status" id="builder-status" role="status" aria-live="polite">Loading the sign library…</p>
           </section>
         </aside>

@@ -1,17 +1,59 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Kinder Signs guidance and printable materials shared with a family by their school."><title>Kinder Signs | Family guidance</title><link rel="icon" href="data:,"><link rel="stylesheet" href="styles.css"><script src="app.js" defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Kinder Signs and family materials shared by Little Steps Nursery.">
+    <title>Your Kinder Signs | Little Steps Nursery</title>
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="product-ui-safe.css">
+    <script src="app.js" defer></script>
+    <script src="product-ui-safe.js" defer></script>
   </head>
   <body class="family-page">
-    <header class="site-header family-header"><a class="brand" href="family.html" aria-label="Kinder Signs family guidance"><span class="brand-mark" aria-hidden="true">K</span><span>Kinder Signs · Family Guidance</span></a><nav aria-label="Family guidance navigation"><a href="#active-family-sign" aria-current="page">Sign guidance</a><a href="#family-materials">Shared materials</a></nav><a class="prototype-label page-switch" href="school.html">Little Steps Nursery</a></header>
-    <main>
-      <section class="family-hero section-shell" aria-labelledby="family-title"><div><p class="eyebrow">Shared by Little Steps Nursery</p><h1 id="family-title">The same sign at nursery and home</h1><p>Use this reviewed guidance to repeat the nursery’s familiar sign during everyday routines at home.</p></div><span class="status-pill status-ready">Family material</span></section>
-      <section class="section section-shell" id="active-family-sign" aria-labelledby="active-family-title"><div class="section-heading compact-heading"><div><p class="eyebrow">Your sign</p><h2 id="active-family-title">MORE</h2></div><p data-family-routine>Used by the group during snack time and available to continue at home.</p></div>
-        <article class="tutor-card family-sign-card"><div class="tutor-card-header"><div><p class="card-label">Sign guidance</p><h3 data-sign-name>More</h3></div><span class="channel-label">Shared by Little Steps Nursery</span></div><div class="tutor-card-body"><div class="video-placeholder video-placeholder-small" role="img" aria-label="Sign video unavailable"><span class="play-mark" aria-hidden="true"></span><span class="video-caption">Sign video is not available yet</span></div><div class="guidance-grid"><div><h4>When to use it</h4><p data-family-guidance>Use it during snack time or playtime when your child wants more of something.</p></div><div><h4>How to model it</h4><p>Say the word while showing the sign. Repeat it naturally in the routine.</p></div><div><h4>Nursery-home connection</h4><p data-school-home-copy>The group uses the same sign during the same routine, creating one familiar cue.</p></div><div><h4>Keep in mind</h4><p>Follow your child’s interest, keep it playful, and never force repetition.</p></div></div></div><button class="button button-secondary" id="open-routine" type="button" aria-expanded="false">Show routine card</button><div class="routine-detail" id="routine-detail" hidden><strong>Try it in context:</strong> <span data-family-try>Try it during snack time.</span></div></article>
+    <header class="site-header family-header">
+      <a class="brand" href="family.html" aria-label="Your Kinder Signs"><span class="brand-mark" aria-hidden="true">K</span><span>Family</span></a>
+      <nav aria-label="Family navigation"><a href="#family-library" aria-current="page">Your signs</a><a href="#family-materials">Your materials</a></nav>
+      <a class="prototype-label page-switch" href="school.html">Little Steps Nursery</a>
+    </header>
+
+    <main id="main-content">
+      <section class="family-hero section-shell" aria-labelledby="family-title">
+        <div><p class="eyebrow">Family</p><h1 id="family-title">Your Kinder Signs</h1><p>Shared by Little Steps Nursery. The signs and materials chosen for your family are ready for everyday routines at home.</p></div>
       </section>
-      <section class="section section-tint" id="family-materials" aria-labelledby="family-materials-title"><div class="section-shell"><div class="section-heading compact-heading"><div><p class="eyebrow">Shared by Little Steps Nursery</p><h2 id="family-materials-title">Your family materials</h2></div><p>Simple guidance and printable material for the selected sign.</p></div><div class="family-material-grid"><article><span class="offer-type">Sign guidance</span><h3>Family sign card</h3><p>Routine context and simple family guidance.</p><button class="button button-secondary" id="print-family-card" type="button">Print family card</button></article><article><span class="offer-type add-on">Flashcards pack</span><h3>Printable flashcard</h3><p>A matching printable card is included when the pack is active.</p><strong class="material-ready">Printable material</strong></article><article><span class="offer-type add-on">Family sharing</span><h3>Extra caregiver</h3><p>The same guidance can be shared with an additional caregiver when access is active.</p></article></div><p class="prototype-boundary">Ask Little Steps Nursery if you need help with this sign or access to family materials.</p></div></section>
+
+      <section class="section section-shell family-library-section" id="family-library" aria-labelledby="family-library-title">
+        <div class="section-heading compact-heading"><div><p class="eyebrow">Your mini-library</p><h2 id="family-library-title">Signs shared with you</h2></div><p id="family-library-status" role="status" aria-live="polite">Preparing your sign library…</p></div>
+        <div class="family-sign-grid" id="family-sign-list" aria-live="polite"></div>
+        <div class="family-empty-state" id="family-empty-state" hidden><h3>No Kinder Signs have been shared with this family yet.</h3><p>Little Steps Nursery will let you know when something new is ready.</p></div>
+        <p class="family-demo-note" id="family-demo-note" hidden>Local demo example · no real family record is connected.</p>
+      </section>
+
+      <section class="section section-tint family-detail-section" id="family-materials" aria-labelledby="family-detail-title" hidden>
+        <div class="section-shell">
+          <article class="tutor-card family-sign-card" id="family-sign-detail" tabindex="-1">
+            <header class="family-detail-header">
+              <div><p class="eyebrow">Shared by Little Steps Nursery</p><h2 id="family-detail-title">MORE / MÁS</h2><p id="family-detail-routine">Snack time</p></div>
+              <div class="family-detail-materials" id="family-detail-materials" aria-label="Shared materials"></div>
+            </header>
+
+            <div class="family-video-material" id="family-video-material" hidden></div>
+
+            <div class="family-guidance-layout">
+              <section aria-labelledby="family-when-title"><h3 id="family-when-title">When to use it</h3><p id="family-when-copy">Use the sign during a familiar everyday routine.</p></section>
+              <section aria-labelledby="family-try-title"><h3 id="family-try-title">Try it at home</h3><p id="family-try-copy">Say the word while showing the sign.</p><ul class="family-support-list"><li>Say the word with the sign</li><li>Keep it natural</li><li>Follow your child’s interest</li><li>Never force repetition</li></ul></section>
+            </div>
+
+            <div class="family-assigned-materials" id="family-assigned-materials">
+              <section class="family-material-panel" id="family-flashcard-material" hidden aria-labelledby="family-flashcard-title"><img id="family-sign-image" src="assets/signs/more-a.svg" alt=""><div><p class="card-label">Printable</p><h3 id="family-flashcard-title">Flashcard</h3><p>A visual reminder for the word and sign.</p><button class="button button-secondary" id="print-family-card" type="button">Print family card</button></div></section>
+              <section class="family-material-panel" id="family-routine-material" hidden aria-labelledby="family-routine-title"><div class="family-routine-icon" aria-hidden="true">◇</div><div><p class="card-label">Everyday prompt</p><h3 id="family-routine-title">Routine Card</h3><p id="family-routine-copy">Use the sign naturally during the routine.</p></div></section>
+              <section class="family-material-panel" id="family-story-material" hidden aria-labelledby="family-story-title"><div><p class="card-label">Shared reading</p><h3 id="family-story-title">A little more?</h3><p>Lina asks for more during snack time. Her family says the word, shows the familiar sign and keeps the moment relaxed.</p></div></section>
+            </div>
+          </article>
+        </div>
+      </section>
     </main>
-    <footer><span>Kinder Signs family guidance</span><span>Shared by Little Steps Nursery</span></footer>
+    <footer><span>Your Kinder Signs</span><span>Shared by Little Steps Nursery</span></footer>
   </body>
 </html>

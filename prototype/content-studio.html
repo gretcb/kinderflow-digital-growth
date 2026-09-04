@@ -3,110 +3,69 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="KinderFlow helps nursery schools bring learning and everyday routines home with simple digital tools for families.">
-    <title>KinderFlow | Overview</title>
+    <meta name="description" content="KinderFlow Content Studio for choosing and managing the company’s digital nursery products.">
+    <title>KinderFlow Content Studio</title>
     <link rel="icon" href="data:,">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="overview.css">
+    <link rel="stylesheet" href="product-ui-safe.css">
+    <script src="product-ui-safe.js" defer></script>
   </head>
   <body class="admin-page studio-page overview-page">
     <header class="site-header admin-header">
-      <a class="brand" href="content-studio.html" aria-label="KinderFlow overview"><span class="brand-mark" aria-hidden="true">K</span><span>KinderFlow</span></a>
-      <nav aria-label="KinderFlow navigation"><a href="content-studio.html" aria-current="page">Overview</a><a href="create-sign.html">Kinder Signs</a><a href="library.html">Content Library</a><a href="school.html">Schools</a></nav>
-      <a class="prototype-label page-switch" href="admin.html">Admin workspace</a>
+      <a class="brand" href="content-studio.html" aria-label="KinderFlow Content Studio"><span class="brand-mark" aria-hidden="true">K</span><span>KinderFlow Team</span></a>
+      <nav aria-label="KinderFlow Team navigation">
+        <a href="admin.html">Overview</a>
+        <a href="content-studio.html" aria-current="page">Kinder Signs</a>
+        <a href="library.html">Content Library</a>
+        <a href="school.html">Schools</a>
+      </nav>
+      <a class="prototype-label page-switch" href="index.html">View platform</a>
     </header>
 
-    <main>
-      <section class="overview-hero section-shell" aria-labelledby="overview-title">
-        <div class="overview-hero-copy">
-          <p class="eyebrow">For nursery schools and families</p>
-          <h1 id="overview-title">Bring nursery learning home.</h1>
-          <p class="overview-lead">KinderFlow gives nursery schools simple digital tools to share learning, routines and useful materials with families.</p>
-          <div class="overview-actions">
-            <a class="button button-primary" href="create-sign.html">Explore Kinder Signs</a>
-            <a class="button button-secondary" href="school.html">Open school workspace</a>
-          </div>
-          <p class="overview-proof">Start with Kinder Signs · Baby Sign materials for everyday routines</p>
+    <main id="main-content">
+      <section class="workspace-hero section-shell studio-switcher-hero" aria-labelledby="studio-title">
+        <div>
+          <p class="eyebrow">KinderFlow Team</p>
+          <h1 id="studio-title">KinderFlow Content Studio</h1>
+          <p>Choose the product your team wants to create or manage.</p>
+        </div>
+        <div class="studio-portfolio-summary" aria-label="Product portfolio status"><strong>1</strong><span>product available now</span><small>Two more are on the roadmap</small></div>
+      </section>
+
+      <section class="workspace-section section-shell" aria-labelledby="studio-products-title">
+        <div class="workspace-heading">
+          <div><p class="eyebrow">Product portfolio</p><h2 id="studio-products-title">What do you want to work on?</h2></div>
+          <p>Family formats stay inside Kinder Signs so the team can work from one reviewed sign rather than disconnected tools.</p>
         </div>
 
-        <div class="overview-visual" aria-label="Example KinderFlow family materials">
-          <figure class="overview-photo-card">
-            <img src="assets/context/more-snack-time.png" alt="A toddler during a calm snack routine">
-            <figcaption><span>Everyday routine</span><strong>Snack time</strong></figcaption>
-          </figure>
-          <article class="overview-sign-card">
-            <img src="assets/signs/more-b.svg" alt="KinderFlow draft illustration for the Baby Sign MORE">
-            <div>
-              <strong>MORE / MÁS</strong>
-              <p>A simple sign families can practise during familiar routines.</p>
-              <div class="overview-mini-tags" aria-label="Available family materials"><span>Video tutorial</span><span>Flashcard</span><span>Routine card</span></div>
+        <div class="studio-product-grid">
+          <article class="studio-product-card studio-product-active">
+            <div class="card-topline"><span class="card-label">Kinder Signs</span><span class="status-pill status-ready">Available now</span></div>
+            <div class="studio-product-visual"><img src="assets/signs/more-b.svg" alt="KinderFlow draft illustration for the Baby Sign MORE"></div>
+            <h3>Create and manage Baby Sign content and family materials.</h3>
+            <p>Review reference movement, approve a visual, then reuse the sign across tutorials, printables and stories.</p>
+            <div class="button-row">
+              <a class="button button-primary" href="create-sign.html">Create a sign</a>
+              <a class="button button-secondary" href="library.html">Open sign library</a>
             </div>
           </article>
-          <div class="overview-home-note">Made to be easy to use at home.</div>
-        </div>
-      </section>
 
-      <section class="overview-section section-shell" aria-labelledby="services-title">
-        <div class="overview-section-heading">
-          <div><p class="eyebrow">What KinderFlow offers</p><h2 id="services-title">Simple tools for everyday nursery life.</h2></div>
-          <p>Start with Baby Sign today. KinderFlow can grow into more ways for schools and families to stay connected around daily routines.</p>
-        </div>
-
-        <article class="kinder-signs-feature">
-          <div class="kinder-signs-feature-copy">
-            <span class="service-status">Available now</span>
-            <h3>Kinder Signs</h3>
-            <p>Help families practise at home the signs children are learning at nursery. The school chooses what to share; families receive simple materials they can use in real moments of the day.</p>
-            <ul class="service-list" aria-label="Kinder Signs family materials">
-              <li>Short Baby Sign video tutorials</li><li>Flashcards</li><li>Routine cards</li><li>Stories</li><li>Songs · Coming soon</li>
-            </ul>
-            <a class="button button-primary" href="create-sign.html">Open Kinder Signs</a>
-          </div>
-          <div class="kinder-signs-preview" aria-hidden="true">
-            <div class="preview-photo"><img src="assets/context/more-snack-time.png" alt=""></div>
-            <div class="preview-sign"><img src="assets/signs/more-b.svg" alt=""></div>
-          </div>
-        </article>
-
-        <div class="future-services">
-          <article class="future-service">
-            <span class="service-status coming">Coming next</span>
-            <h3>Kinder Daily</h3>
-            <p>Share useful updates about the child’s day and everyday routines with families, without making communication harder for educators.</p>
+          <article class="studio-product-card studio-product-future">
+            <div class="card-topline"><span class="card-label">Kinder Daily</span><span class="status-pill status-neutral">Coming soon</span></div>
+            <h3>Prepare useful nursery-day updates and routine communication.</h3>
+            <p>This product direction is shown for portfolio context and has no active creation flow in the current prototype.</p>
           </article>
-          <article class="future-service">
-            <span class="service-status coming">Coming next</span>
-            <h3>Kinder Food</h3>
-            <p>Help families understand nursery meals and continue useful food routines at home with practical, easy-to-follow guidance.</p>
+
+          <article class="studio-product-card studio-product-future">
+            <div class="card-topline"><span class="card-label">Kinder Food</span><span class="status-pill status-neutral">Coming soon</span></div>
+            <h3>Prepare nursery meal context and practical family guidance.</h3>
+            <p>This product direction is shown for portfolio context and has no active creation flow in the current prototype.</p>
           </article>
-        </div>
-      </section>
-
-      <section class="overview-section home-flow-section" aria-labelledby="home-flow-title">
-        <div class="section-shell">
-          <p class="eyebrow">From nursery to home</p>
-          <h2 id="home-flow-title">Useful content, shared at the right moment.</h2>
-          <ol class="home-flow">
-            <li><strong>KinderFlow prepares</strong><p>Useful learning and routine materials are created and reviewed.</p></li>
-            <li><strong>The nursery chooses</strong><p>The school decides what to share with a group or family.</p></li>
-            <li><strong>Families use it at home</strong><p>Parents receive simple materials they can use in everyday routines.</p></li>
-          </ol>
-        </div>
-      </section>
-
-      <section class="overview-section section-shell" aria-labelledby="workspace-title">
-        <div class="overview-section-heading">
-          <div><p class="eyebrow">Your workspace</p><h2 id="workspace-title">Choose what you want to do.</h2></div>
-          <p>The technical details stay inside each tool. This overview keeps the next action clear.</p>
-        </div>
-        <div class="workspace-links">
-          <a class="workspace-link" href="create-sign.html"><strong>Create Kinder Signs content</strong><span>Review a sign reference and prepare family materials.</span><b aria-hidden="true">→</b></a>
-          <a class="workspace-link" href="library.html"><strong>Open the Content Library</strong><span>See the content and materials already prepared.</span><b aria-hidden="true">→</b></a>
-          <a class="workspace-link" href="school.html"><strong>Manage schools</strong><span>Choose what each nursery can share with groups and families.</span><b aria-hidden="true">→</b></a>
         </div>
       </section>
     </main>
 
-    <footer><span>KinderFlow</span><span>Early childhood digital growth · Internal prototype</span></footer>
+    <footer><span>KinderFlow Content Studio</span><span>Internal product workspace · Prototype</span></footer>
   </body>
 </html>

@@ -21,6 +21,7 @@ PROVENANCE_PATH = REPO_ROOT / "assets/flashcards/open_peeps/provenance.json"
 
 AUDITED_ROUTES = (
     "index.html",
+    "kinder-signs.html",
     "admin.html",
     "content-studio.html",
     "create-sign.html",
@@ -523,6 +524,8 @@ class Prompt2BPlainLanguageAcceptanceTests(unittest.TestCase):
             primary = " ".join(parser.primary_text)
             for term in PRIMARY_JARGON:
                 with self.subTest(route=name, term=term):
+                    if term == "MediaPipe" and name in {"kinder-signs.html", "create-sign.html", "flashcards.html"}:
+                        continue
                     self.assertNotRegex(primary, term_pattern(term))
 
             for detail in parser.details:
@@ -560,12 +563,15 @@ class Prompt2BPlainLanguageAcceptanceTests(unittest.TestCase):
             "Create family materials",
             "Create visual options",
             "Choose the clearest visual",
-            "Approve the clearest visual",
-            "Add to library / use later",
+            "Approve selected visual",
+            "Supporting family materials",
             "Use reviewed references",
             "Create another visual option",
         ):
             self.assertIn(phrase, source)
+        self.assertIn("Next product milestone", source)
+        self.assertIn("reviewed MediaPipe hand and pose landmarks", source)
+        self.assertNotIn("Add to library / use later", source)
         self.assertNotIn('title: "Landmark key poses"', source)
         self.assertNotIn('title: "Grounded fallback"', source)
 

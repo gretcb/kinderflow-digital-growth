@@ -77,6 +77,31 @@ const scrollToSection = (element, block = "start") => element.scrollIntoView({
   block
 });
 
+const PRODUCT_STAGE_LABELS = [
+  "Sign & reference",
+  "Review reference",
+  "Choose poses",
+  "Approve visual",
+  "Family materials"
+];
+
+const setProductStage = (currentStep) => {
+  const safeStep = Math.min(PRODUCT_STAGE_LABELS.length, Math.max(1, Number(currentStep) || 1));
+  document.querySelectorAll("[data-product-step]").forEach((item) => {
+    const step = Number(item.dataset.productStep);
+    const marker = item.querySelector(".product-step-marker");
+    item.classList.toggle("is-complete", step < safeStep);
+    item.classList.toggle("is-current", step === safeStep);
+    item.classList.toggle("is-upcoming", step > safeStep);
+    if (step === safeStep) item.setAttribute("aria-current", "step");
+    else item.removeAttribute("aria-current");
+    if (marker) marker.textContent = step < safeStep ? "✓" : String(step).padStart(2, "0");
+  });
+  setText("#sign-progress-count", `Step ${safeStep} of ${PRODUCT_STAGE_LABELS.length}`);
+  setText("#sign-progress-label", PRODUCT_STAGE_LABELS[safeStep - 1]);
+  document.querySelector("#sign-progress-bar").style.width = `${safeStep / PRODUCT_STAGE_LABELS.length * 100}%`;
+};
+
 const renderStages = (stages = STAGES.map(([key, label]) => ({ key, label, status: "Waiting" }))) => {
   stageList.replaceChildren(...stages.map((stage, index) => {
     const item = document.createElement("li");
@@ -229,6 +254,7 @@ const resetRun = () => {
   renderStages();
   processingNote.textContent = state.source ? "Reference selected. Ready to run." : "Waiting for a reference video.";
   formMessage.textContent = state.source ? "Ready to review the reference." : "Select an MP4 or use the demo reference.";
+  setProductStage(1);
 };
 
 const clearReference = () => {
@@ -359,6 +385,7 @@ form.addEventListener("submit", async (event) => {
   formMessage.textContent = "Preparing the reference review…";
   processingNote.textContent = "Starting the reference review. Processing may take about a minute.";
   renderStages(STAGES.map(([key, label], index) => ({ key, label, status: index === 0 ? "Running" : "Waiting" })));
+  setProductStage(2);
   scrollToSection(document.querySelector("#processing-section"));
   try {
     const response = await requestRun(selection);
@@ -630,7 +657,6 @@ const updateFamilyMaterialLinks = () => {
   storyLink.hidden = !storyIsAvailable;
   storyAvailabilityNote.hidden = storyIsAvailable;
   if (storyIsAvailable) storyLink.href = `create-story.html?${new URLSearchParams(common).toString()}`;
-  document.querySelector("#review-library-link").href = `library.html?${new URLSearchParams({ sign: sign.name, source_run: state.run.run_id }).toString()}`;
 };
 
 const markReferenceReviewComplete = () => {
@@ -902,12 +928,15 @@ const finishRun = (run, { scroll = true } = {}) => {
     !reviewIsUsable ? "Choose another reference video to continue." : "Choose another sign and add its reference video."
   );
   sessionStorage.setItem("kinderflowReferenceReview", JSON.stringify(run));
+  setProductStage(canPrepare ? 3 : 2);
   if (scroll) scrollToSection(resultSection);
 };
 
 const renderVisualPreparation = () => {
   const signPackage = state.activePackage;
   document.querySelectorAll("[data-active-sign]").forEach((element) => { element.textContent = signPackage.labels.en; });
+  document.querySelectorAll("[data-active-sign-es]").forEach((element) => { element.textContent = signPackage.labels.es; });
+  document.querySelectorAll("[data-active-routine]").forEach((element) => { element.textContent = state.run.sign.routine_context; });
   setText("#grounding-source", "Reviewed sign guidance");
   setText("#grounding-source-note", "The reviewed sign information is ready.");
   setText("#grounding-source-status", "Ready");
@@ -983,14 +1012,14 @@ document.querySelector("#approve-sign").addEventListener("click", (event) => {
     internal_printable_eligible: false
   });
   event.currentTarget.disabled = true;
-  event.currentTarget.textContent = "Family materials ready";
+  event.currentTarget.textContent = "Pose choice saved";
   document.querySelector("#use-another-reference").hidden = true;
   markReferenceReviewComplete();
-  renderIllustrativeVideo();
   renderVisualPreparation();
-  illustrativeMotionSection.hidden = false;
+  illustrativeMotionSection.hidden = true;
   visualPreparationSection.hidden = false;
-  scrollToSection(illustrativeMotionSection);
+  setProductStage(4);
+  scrollToSection(visualPreparationSection);
 });
 
 const createCandidateCard = (candidate, index) => {
@@ -1087,8 +1116,11 @@ const showApprovedVisual = ({ persist = true, scroll = true } = {}) => {
     }));
   }
   updateFamilyMaterialLinks();
+  renderIllustrativeVideo();
+  illustrativeMotionSection.hidden = false;
   downstreamSection.hidden = false;
-  if (scroll) scrollToSection(downstreamSection);
+  setProductStage(5);
+  if (scroll) scrollToSection(illustrativeMotionSection);
 };
 
 document.querySelector("#generate-visual-candidates").addEventListener("click", (event) => {
@@ -1158,6 +1190,8 @@ document.querySelector("#approve-visual").addEventListener("click", (event) => {
 
 document.querySelector("#reject-visual").addEventListener("click", () => {
   state.selectedCandidate = null;
+  illustrativeMotionSection.hidden = true;
+  clearIllustrativeVideo();
   downstreamSection.hidden = true;
   const approveVisual = document.querySelector("#approve-visual");
   approveVisual.disabled = true;
@@ -1174,6 +1208,7 @@ document.querySelector("#reject-visual").addEventListener("click", () => {
   visualState.textContent = "Visual review";
   visualState.className = "status-pill status-review";
   setText("#visual-review-status", "Visual rejected. Choose another option, create a different option, or choose a different pose.");
+  setProductStage(4);
   persistWorkflowRecord({
     selected_candidate_id: null,
     visual_review_status: "REJECTED",
@@ -1239,6 +1274,7 @@ const resetToPoseSelection = () => {
   setText("#review-title", "Choose one or two reference poses");
   setText("#review-guidance", "Select the clearest moments to guide the visual.");
   setText("#review-message", "Choose a different pose. Your reference review is still complete.");
+  setProductStage(3);
   scrollToSection(reviewSection);
 };
 
@@ -1359,12 +1395,12 @@ const restoreWorkflowFromSession = async () => {
   }
   markReferenceReviewComplete();
   document.querySelector("#approve-sign").disabled = true;
-  document.querySelector("#approve-sign").textContent = "Family materials ready";
+  document.querySelector("#approve-sign").textContent = "Pose choice saved";
   document.querySelector("#use-another-reference").hidden = true;
-  renderIllustrativeVideo();
   renderVisualPreparation();
-  illustrativeMotionSection.hidden = false;
+  illustrativeMotionSection.hidden = true;
   visualPreparationSection.hidden = false;
+  setProductStage(4);
   const visualWasGenerated = ["REVIEW_REQUIRED", "REJECTED", "APPROVED_FOR_INTERNAL_PRINTABLE"].includes(
     workflow.visual_review_status
   );
@@ -1405,18 +1441,19 @@ const restoreWorkflowFromSession = async () => {
     }
   }
   const view = parameters.get("view");
-  const target = view === "family-materials" && !downstreamSection.hidden
-    ? downstreamSection
+  const target = view === "family-materials" && !illustrativeMotionSection.hidden
+    ? illustrativeMotionSection
     : visualReviewSection.hidden ? reviewSection : visualReviewSection;
   scrollToSection(target);
   return true;
 };
 
 document.querySelector("#continue-to-family-materials").addEventListener("click", () => {
-  scrollToSection(visualPreparationSection);
+  scrollToSection(downstreamSection);
 });
 
 syncReferenceInputMode("upload", { clearSelection: false });
+setProductStage(1);
 
 Promise.allSettled([loadVisualPackages(), loadIllustrativeVideoCatalog(), checkService()]).then(async (results) => {
   const packageResult = results[0];

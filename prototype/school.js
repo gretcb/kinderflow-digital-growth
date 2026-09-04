@@ -1,17 +1,17 @@
 "use strict";
 
 const SCHOOL_CONTENT = {
-  more: { en: "MORE", es: "MÁS", materials: ["video", "flashcard", "routine-card", "story"] },
-  help: { en: "HELP", es: "AYUDA", materials: ["video", "flashcard", "routine-card"] },
-  eat: { en: "EAT", es: "COMER", materials: ["video", "flashcard", "routine-card"] },
-  sleep: { en: "SLEEP", es: "DORMIR", materials: ["video", "flashcard", "routine-card"] },
-  milk: { en: "MILK", es: "LECHE", materials: ["video", "flashcard", "routine-card"] },
-  water: { en: "WATER", es: "AGUA", materials: ["video", "flashcard", "routine-card"] }
+  more: { en: "MORE", es: "MÁS", routine: "Snack time · Mealtime · Playtime", materials: ["video", "flashcard", "routine-card", "story"] },
+  help: { en: "HELP", es: "AYUDA", routine: "Getting ready", materials: ["video", "flashcard", "routine-card"] },
+  eat: { en: "EAT", es: "COMER", routine: "Mealtime", materials: ["flashcard", "routine-card"] },
+  sleep: { en: "SLEEP", es: "DORMIR", routine: "Bedtime", materials: ["flashcard", "routine-card"] },
+  milk: { en: "MILK", es: "LECHE", routine: "Milk time", materials: ["video", "flashcard", "routine-card"] },
+  water: { en: "WATER", es: "AGUA", routine: "Drink break", materials: ["flashcard", "routine-card"] }
 };
 
 const SCHOOL_PLAN = new Set(["video", "flashcard", "routine-card", "story"]);
 const MATERIAL_LABELS = {
-  video: "Video",
+  video: "Baby Sign video tutorial",
   flashcard: "Flashcard",
   "routine-card": "Routine Card",
   story: "Story"
@@ -40,6 +40,24 @@ const assignmentIdIsSafe = (id) => typeof id === "string"
   && (DEFAULT_ASSIGNMENT_IDS.has(id) || GENERATED_ASSIGNMENT_ID.test(id));
 
 const storageAvailable = typeof sessionStorage !== "undefined";
+const readStoredPayload = (key) => {
+  if (!storageAvailable) return null;
+  try {
+    return JSON.parse(sessionStorage.getItem(key) || "null");
+  } catch (_error) {
+    return null;
+  }
+};
+const printableHandoff = (() => {
+  const value = readStoredPayload("kinderflowPrintableApproval");
+  return value?.status === "PRINTABLE_READY"
+    && value?.publication_status === "DRAFT"
+    && SCHOOL_CONTENT[value?.sign_id]
+    && ["flashcard", "routine"].includes(value?.card_type)
+    && ["en", "es"].includes(value?.language)
+    ? value
+    : null;
+})();
 const preferredScrollBehavior = (
   typeof window !== "undefined"
   && window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches
@@ -102,6 +120,23 @@ const duplicatePanel = document.querySelector("#duplicate-assignment");
 const assignAnother = document.querySelector("#assign-another");
 const cancelEdit = document.querySelector("#cancel-assignment-edit");
 const activeList = document.querySelector("#active-sign-list");
+const familyExperienceLink = document.querySelector("#view-family-experience");
+
+const setMetric = (selector, value) => {
+  const element = document.querySelector(selector);
+  if (element) element.textContent = String(value);
+};
+
+const renderWorkspaceMetrics = () => {
+  const familyCount = Object.values(GROUPS).reduce((total, group) => total + group.children.length, 0);
+  const sharedMaterialCount = assignments.reduce((total, assignment) => total + assignment.materials.length, 0);
+  setMetric("#school-metric-groups", Object.keys(GROUPS).length);
+  setMetric("#school-metric-families", familyCount);
+  setMetric("#school-metric-materials", sharedMaterialCount);
+  setMetric("#school-metric-assignments", assignments.length);
+};
+
+const handoffForSign = (signId) => printableHandoff?.sign_id === signId ? printableHandoff : null;
 
 const contentFor = (signId) => SCHOOL_CONTENT[signId] || null;
 const availableMaterialsFor = (signId) => (contentFor(signId)?.materials || []).filter((material) => SCHOOL_PLAN.has(material));
@@ -159,14 +194,23 @@ const toggleChildSelector = ({ clear = false } = {}) => {
   if (clear || !oneChild) childSelect.value = "";
 };
 
-const draftAssignment = () => ({
-  id: editingAssignmentId || "",
-  signId: signSelect.value,
-  groupId: groupSelect.value,
-  audienceType: selectedAudience(),
-  childId: selectedAudience() === "child" ? childSelect.value : "",
-  materials: normaliseMaterials(selectedMaterials())
-});
+const draftAssignment = () => {
+  const signId = signSelect.value;
+  const handoff = handoffForSign(signId);
+  return {
+    id: editingAssignmentId || "",
+    signId,
+    groupId: groupSelect.value,
+    audienceType: selectedAudience(),
+    childId: selectedAudience() === "child" ? childSelect.value : "",
+    materials: normaliseMaterials(selectedMaterials()),
+    routineContext: String(handoff?.routine_context?.en || contentFor(signId)?.routine || "").slice(0, 180),
+    language: ["en", "es"].includes(handoff?.language) ? handoff.language : "en",
+    approvedVisual: String(handoff?.approved_visual || handoff?.candidate_id || "").slice(0, 120),
+    illustrativeVideoAvailable: handoff?.illustrative_video_available === true
+      || contentFor(signId)?.materials.includes("video") === true
+  };
+};
 
 const updateAssignmentSummary = () => {
   assignmentResult.hidden = true;
@@ -261,18 +305,33 @@ const createAssignmentCard = (assignment) => {
 };
 
 const renderActiveAssignments = () => {
+  renderWorkspaceMetrics();
   if (!assignments.length) {
     const empty = document.createElement("article");
     empty.className = "active-assignment-empty";
     const title = document.createElement("h3");
-    title.textContent = "No active assignments";
+    title.textContent = "No content has been shared with this group yet.";
     const copy = document.createElement("p");
-    copy.textContent = "Choose available content to share with one of your groups or families.";
+    copy.textContent = "Choose a sign to get started.";
     empty.append(title, copy);
     activeList.replaceChildren(empty);
     return;
   }
   activeList.replaceChildren(...assignments.map(createAssignmentCard));
+};
+
+const prepareFamilyExperience = (assignment) => {
+  if (!assignment) return;
+  if (storageAvailable) sessionStorage.setItem("kinderflowFamilyPreviewAssignmentId", JSON.stringify({
+    assignmentId: assignment.id,
+    groupId: assignment.groupId,
+    audienceType: assignment.audienceType,
+    childId: assignment.childId || ""
+  }));
+  if (familyExperienceLink) {
+    familyExperienceLink.href = `family.html?${new URLSearchParams({ sign: assignment.signId }).toString()}`;
+    familyExperienceLink.dataset.assignmentId = assignment.id;
+  }
 };
 
 const startEditingAssignment = (assignmentId) => {
@@ -358,19 +417,23 @@ if (assignmentForm) {
       duplicatePanel.focus();
       return;
     }
+    let savedAssignment;
     if (editingAssignmentId) {
       const index = assignments.findIndex((assignment) => assignment.id === editingAssignmentId);
       if (index === -1) return;
       assignments[index] = { ...draft, id: editingAssignmentId };
+      savedAssignment = assignments[index];
       assignmentStatus.textContent = `${bilingualLabel(draft.signId)} assignment updated.`;
     } else {
       const id = nextAssignmentId();
-      assignments.push({ ...draft, id });
+      savedAssignment = { ...draft, id };
+      assignments.push(savedAssignment);
       const recipient = draft.audienceType === "child" ? draft.childId : GROUPS[draft.groupId].short;
-      assignmentStatus.textContent = `${bilingualLabel(draft.signId)} was shared with ${recipient}.`;
+      assignmentStatus.textContent = `${bilingualLabel(draft.signId)} has been shared with ${recipient}.`;
     }
     persistAssignments();
     renderActiveAssignments();
+    prepareFamilyExperience(savedAssignment);
     editingAssignmentId = null;
     cancelEdit.hidden = true;
     updateAssignmentSummary();
@@ -438,9 +501,25 @@ if (assignmentForm && typeof window !== "undefined") {
   const requestedSign = String(reviewedDelivery?.sign_id || parameters.get("sign") || "").trim().toLowerCase();
   if (requestedSign && contentFor(requestedSign)) {
     signSelect.value = requestedSign;
-    renderMaterialChoices();
+    const handoff = handoffForSign(requestedSign);
+    if (handoff && GROUPS[handoff.group]) groupSelect.value = handoff.group;
+    populateChildren();
+    const audienceType = handoff?.audience_type === "child" ? "child" : "group";
+    const audienceControl = document.querySelector(`input[name="audience"][value="${audienceType}"]`);
+    if (audienceControl) audienceControl.checked = true;
+    document.querySelectorAll('input[name="audience"]').forEach((input) => {
+      if (input !== audienceControl) input.checked = false;
+    });
+    toggleChildSelector();
+    if (audienceType === "child" && GROUPS[groupSelect.value]?.children.includes(handoff?.child_id)) {
+      childSelect.value = handoff.child_id;
+    }
+    const preparedMaterials = normaliseMaterials(handoff?.selected_materials)
+      .filter((material) => availableMaterialsFor(requestedSign).includes(material));
+    renderMaterialChoices(preparedMaterials.length ? preparedMaterials : null);
     updateAssignmentSummary();
-    if (reviewedDelivery) assignmentValidation.textContent = `${bilingualLabel(requestedSign)} is ready to share with your groups or families.`;
+    if (handoff) assignmentValidation.textContent = `${bilingualLabel(requestedSign)} and its prepared formats are ready to share.`;
+    else if (reviewedDelivery) assignmentValidation.textContent = `${bilingualLabel(requestedSign)} is ready to share with your groups or families.`;
   } else if (requestedSign) {
     const unsupportedOption = new Option(`${requestedSign.toUpperCase()} — Not available`, "__unsupported__", true, true);
     signSelect.prepend(unsupportedOption);
@@ -449,6 +528,10 @@ if (assignmentForm && typeof window !== "undefined") {
     updateAssignmentSummary();
     assignmentSummary.textContent = "Choose an available sign to continue.";
     assignmentValidation.textContent = "This reviewed sign is not available in your nursery content.";
+  }
+  if (parameters.get("focus") === "share") {
+    assignmentForm.scrollIntoView({ behavior: preferredScrollBehavior, block: "start" });
+    signSelect.focus({ preventScroll: true });
   }
 }
 
