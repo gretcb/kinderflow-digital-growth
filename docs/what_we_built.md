@@ -6,7 +6,7 @@ Repository status reviewed on 4 September 2026.
 
 Kinder Signs tests whether one reviewed adult sign reference can become reusable nursery and family material without asking each school to operate the technical content-production process.
 
-The repository joins real local Computer Vision, human evidence selection, deterministic draft visuals, printable and story proofs, content-governance code, and synthetic school and family pages. It does not complete production publication or delivery.
+The repository joins real local Computer Vision, human evidence selection, deterministic draft visuals, printable and story proofs, content-governance code, and a synthetic school assignment that drives a session-based Family Experience and mini-library. It does not complete production publication or identity-backed delivery.
 
 ## Product route map
 
@@ -23,9 +23,13 @@ The prototype has 12 HTML routes:
 9. create-story.html: MORE story prototype.
 10. create-song.html: Coming soon page.
 11. school.html: Little Steps Nursery assignment demonstration.
-12. family.html: basic family-facing preview.
+12. family.html: session-based, assignment-driven Family Experience and mini-library.
 
 When served by mvp/app.py, the root route opens create-sign.html. A static prototype server opens index.html at its root.
+
+The Python application default remains port 8000. The final presentation used `poc_env/bin/python mvp/app.py --port 8765` and demonstrated `http://127.0.0.1:8765/index.html`, `http://127.0.0.1:8765/kinder-signs.html`, `http://127.0.0.1:8765/create-sign.html`, `http://127.0.0.1:8765/school.html?sign=more&focus=share`, and `http://127.0.0.1:8765/family.html`.
+
+The locally evidenced presentation environment used Python 3.9.6 and MediaPipe 0.10.14. The separate deployment pin in `poc/requirements.txt` is MediaPipe 0.10.21; it is not the environment used for those historical measurements and does not prove hosted deployment. Python 3.11 or 3.12 remains the clean future rebuild target.
 
 ## Reference intake
 
@@ -209,7 +213,7 @@ Dry-run and mocked provider-path behavior are tested. The repository contains a 
 
 ### Boundary
 
-No live external model output or live LangSmith trace is committed. Neither tool evaluates MediaPipe, movement fidelity, or sign correctness.
+No live external model output from the later final MVP adapter or live LangSmith trace is committed. The historical n8n screenshot proves the governed workflow succeeded, but not its request and response payload or later-adapter execution. LangSmith does not evaluate hand movement, MediaPipe output, movement fidelity, sign correctness, linguistic correctness, or professional approval.
 
 ## n8n orchestration
 
@@ -217,9 +221,11 @@ No live external model output or live LangSmith trace is committed. Neither tool
 
 The exact JSON export describes a manual flow from an approved sign object and bounded CV summary to a draft pending professional review. It includes schema checks, a model node, deterministic quality routing, and rejected and pending-review outcomes.
 
-### Boundary
+### Execution evidence and boundary
 
-The export is inactive. The repository contains no final adapter execution record from a target n8n runtime and no automatic publication connection.
+The exact 12-node export is versioned at `workflow/kinder_signs_n8n_workflow.json`. The screenshot at `workflow/evidence/n8n_successful_execution_2026-08-31.png` evidences a successful historical runtime execution of `Kinder Signs — Governed Family Draft (Example)` on 31 August 2026: status Succeeded, execution ID #21441, and duration 14.499 seconds. Evidence status: COMPLETE AT CAPSTONE LOW-CODE POC SCOPE.
+
+The run remained a governed draft workflow. It was not autonomous publication or production deployment, and it does not prove that the later final MVP Content Pack adapter was exercised. The OpenAI course credential used at that time was removed or revoked and is no longer available, so a fresh provider-backed rerun requires a new authorised credential. This reproducibility limit does not invalidate the historical execution.
 
 ## Content Library
 
@@ -235,7 +241,7 @@ No production database or published library exists. The asset registry reports a
 
 ### What it does
 
-The synthetic school page offers six sign previews and supports selecting a group, materials, and either everyone in the group or one child. It blocks an exact duplicate and supports editing and removing active assignments.
+The synthetic school page offers six sign previews and supports selecting a group, materials, and either everyone in the group or one fictional child. It blocks an exact duplicate with `This exact sign, audience and material combination is already active.` and supports editing and removing active assignments.
 
 ### Boundary
 
@@ -245,11 +251,11 @@ Assignments remain in browser session storage. No permission engine, account, fa
 
 ### What it does
 
-The family page reads the browser-session assignment fixture, filters it to a selected synthetic family context, and combines materials by sign. If no assignment state exists, it supplies a synthetic MORE example.
+The family page reads the browser-session assignment fixture, filters it to a selected synthetic family context, and combines materials by sign. If no assignment state exists, it supplies a synthetic MORE example. This is an implemented assignment-driven mini-library at local, session-based MVP scope.
 
 ### Boundary
 
-A family-facing guidance prototype exists. A personalised assignment-driven family library remains a next product iteration. Real family identity, access control, persistent data, notifications, and school integration are pending.
+Real family identities and accounts, authentication and authorisation, durable cross-session and cross-device persistence, notifications and delivery, production school accounts, tenant isolation, production correction and deletion workflows, and external nursery-platform integration are pending.
 
 ## Tableau decision support
 

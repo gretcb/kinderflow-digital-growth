@@ -7,7 +7,7 @@
 | Landmark | One detected point, such as a wrist or fingertip | Stores where a joint appears in each frame |
 | Skeleton | Lines connecting selected landmarks into a simple body/hand view | Makes structured movement visible for inspection |
 | Movement representation | Movement stored as ordered data rather than only pixels | Keeps landmarks, timestamps and derived trajectories from the reference |
-| Hand coverage | The share of video frames where the expected hand landmarks were detected | The known reference has 93.98% dominant-hand coverage; this is not sign accuracy |
+| Hand coverage | The share of video frames where the expected hand landmarks were detected | The versioned WATER reference has 93.98% dominant-hand coverage; this is not sign accuracy |
 | Trajectory | The path a point follows over time | Measures how the wrist or fingertips move between frames |
 | State machine | Rules defining which status changes are allowed | Allows Draft → Review → Approved → Published, but blocks Draft → Published |
 | Deterministic rule | A normal code rule that gives the same answer for the same input | Checks required fields, banned claims and human-approval presence |

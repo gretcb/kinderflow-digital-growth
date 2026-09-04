@@ -2,7 +2,7 @@
 
 ## Platform overview
 
-Create a Sign converts a selected adult reference into inspectable movement evidence, a human-selected pose route, and draft family-material options. It centralises content preparation so a nursery does not need to operate Computer Vision or design sign assets.
+Create a Sign converts a selected adult reference into inspectable movement evidence, a human-selected pose route, and draft family-material options. It centralises content preparation so a nursery does not need to operate Computer Vision or design sign assets. The connected local product also carries a synthetic nursery assignment into a session-based Family Experience and mini-library.
 
 The repository demonstrates this flow locally. It has no published sign, production library, or real school-to-family delivery.
 
@@ -24,7 +24,7 @@ Little Steps Nursery can simulate choosing an available sign, one of three synth
 
 ### Family
 
-Family View can read local or session-based demonstration state and show basic sign guidance. A family-facing guidance prototype exists. A personalised assignment-driven family library remains a next product iteration. No current screen proves real identity, access control, notification, cross-session persistence, or delivery.
+Family View reads the synthetic assignment stored by School Admin in browser session state and shows the corresponding sign and materials. The assignment-driven Family Experience and mini-library is implemented at local, session-based MVP scope. It does not prove real family identity or accounts, authentication or authorisation, durable cross-session or cross-device persistence, notification or delivery, production correction or deletion, tenant isolation, or external nursery-platform integration.
 
 ## Route map
 
@@ -44,7 +44,7 @@ The local service root opens Create a Sign and serves 12 HTML routes:
 | `/create-story.html` | MORE Story prototype | Deterministic local text only |
 | `/create-song.html` | Song page | Coming soon; no active generation |
 | `/school.html` | Little Steps Nursery assignment demonstration | Synthetic and session-based |
-| `/family.html` | Basic family-facing guidance preview | No real account or delivery |
+| `/family.html` | Session-based assignment-driven Family Experience and mini-library | No real account or delivery |
 
 ## Functional architecture
 
@@ -59,6 +59,8 @@ The local service root opens Create a Sign and serves 12 HTML routes:
     → deterministic visual options
     → local visual review
     → family-material proof
+    → synthetic nursery assignment in browser session state
+    → assignment-driven Family Experience and mini-library
 
 Content Pack generation is a separate service path:
 
@@ -219,11 +221,11 @@ The Story route creates fixed-template English or Spanish text locally. It does 
 
 The Content Library demonstrates wording and readiness checks for the five-record Content Operations set: MORE, EAT, WATER, ALL DONE, and HELP. That regression set is separate from the six-sign visual registry. Local content approval creates a reviewed version but does not publish it. All visual packages remain DRAFT and unavailable to schools as production content.
 
-The Little Steps Nursery route uses three synthetic groups and six fictional children. An educator can choose a sign, group, material set, and either a whole-group or one-child audience. The interface shows a review summary, blocks an exact duplicate, permits Edit and Remove, and can start another assignment while preserving the group.
+The Little Steps Nursery route uses three synthetic groups and six fictional children. An educator can choose a sign, group, material set, and either a whole-group or one-child audience. The interface shows a review summary, blocks an exact duplicate with `This exact sign, audience and material combination is already active.`, permits Edit and Remove, and can start another assignment while preserving the group.
 
-Assignment state remains in browser session storage. The Family View script can filter that synthetic state by the selected group or child context and combine material types by sign. If no school state exists, it shows a synthetic MORE example. The visible `Your mini-library` label names this demonstration screen; it is not evidence of a completed personalised library.
+Assignment state remains in browser session storage. The Family View script can filter that synthetic state by the selected group or child context and combine material types by sign. If no school state exists, it shows a synthetic MORE example. The visible `Your mini-library` is an implemented assignment-driven local experience, not a claim of production personalisation or delivery.
 
-No content is sent to a real family account or external school platform. Identity, authorisation, cross-session persistence, notifications, delivery, correction, deletion, and a personalised assignment-driven family mini-library remain pending.
+No content is sent to a real family account or external school platform. Real family identities and accounts, authentication and authorisation, durable cross-session and cross-device persistence, real notifications and delivery, production school accounts, tenant isolation, production correction and deletion workflows, and external nursery-platform integrations remain pending.
 
 ## Illustrative motion previews
 
@@ -241,15 +243,16 @@ These videos were prepared separately as illustrative motion previews. They are 
 
 The recommended connected demonstration uses the registered local MORE reference and keeps its identity explicit:
 
-1. Select MORE and Use demo reference.
-2. Select Review the sign reference.
-3. Compare Reference video, Pose preview, metrics, and decision charts.
-4. Choose Use tracked poses because the recorded local result exceeds the 90% dominant-hand threshold, or demonstrate a human-selected alternative.
-5. Compare distinct deterministic draft visuals and record local visual approval.
-6. Select Create family materials.
-7. Open a Flashcard or Routine Card, then demonstrate the synthetic nursery assignment and basic Family View.
+1. Open the KinderFlow overview, then Kinder Signs.
+2. Open Create a Sign, select MORE and Use demo reference, and select Review the sign reference.
+3. Compare the adult Reference video, Pose preview, Computer Vision metrics, and decision charts.
+4. Choose Use tracked poses because the recorded local result exceeds the 90% dominant-hand threshold, or demonstrate a human-selected evidence or pose alternative.
+5. Compare deterministic draft visuals, approve the selected local visual, and select Create family materials.
+6. Open Little Steps Nursery and select the sign, materials, group, and either the group or a fictional child.
+7. Share the assignment, then choose View family experience and continue to family.html.
+8. Confirm that Family View shows the corresponding sign and materials from the current browser session.
 
-This path shows one coherent local flow. It does not turn the ignored MORE metrics into versioned evidence, make the visual professionally approved, or complete real family delivery. The separately prepared Gemini preview is optional and remains demonstration material.
+This path shows one coherent local assignment-driven flow. It does not turn the ignored MORE metrics into versioned evidence, make the visual professionally approved, or complete identity-backed real family delivery. The separately prepared Gemini preview is optional and remains demonstration material.
 
 ## Distinct evidence sets
 
@@ -302,7 +305,7 @@ Running the skipped demo integration explicitly produced one failure before fram
 
 ## Run instructions
 
-The locally evidenced environment is `poc_env` with Python 3.9.6 and MediaPipe 0.10.14. Python 3.11 or 3.12 remains the target for a clean rebuild. The default Python 3.13 installation does not expose the same legacy MediaPipe Solutions API.
+The locally evidenced presentation environment is `poc_env` with Python 3.9.6 and MediaPipe 0.10.14. The deployment dependency file `poc/requirements.txt` pins MediaPipe 0.10.21; that pin is not the environment used for the historical local measurements and is not evidence of a successful hosted deployment. Python 3.11 or 3.12 remains the target for a clean rebuild. The default Python 3.13 installation does not expose the same legacy MediaPipe Solutions API.
 
 From the repository root:
 
@@ -310,7 +313,21 @@ From the repository root:
 poc_env/bin/python mvp/app.py
 ```
 
-Open `http://127.0.0.1:8000/create-sign.html`. The service root at `http://127.0.0.1:8000` opens the same connected route.
+The application default remains port 8000. Open `http://127.0.0.1:8000/create-sign.html`; the service root at `http://127.0.0.1:8000` opens the same connected route.
+
+The canonical final presentation command uses an explicit demo port without changing that default:
+
+```bash
+poc_env/bin/python mvp/app.py --port 8765
+```
+
+The demonstrated routes are:
+
+- `http://127.0.0.1:8765/index.html`;
+- `http://127.0.0.1:8765/kinder-signs.html`;
+- `http://127.0.0.1:8765/create-sign.html`;
+- `http://127.0.0.1:8765/school.html?sign=more&focus=share`; and
+- `http://127.0.0.1:8765/family.html`.
 
 Run the standard suites from the repository root:
 
@@ -330,7 +347,15 @@ The Content Pack service supports human source copy and an optional LLM-assisted
 
 Approval records a generic human_reviewer action and creates a reviewed local content version. Repeated approval is idempotent. It does not publish and cannot populate a printable without a matching locally approved visual.
 
-Provider-path tests use mocks. A real external LIVE model call and a live LangSmith trace are not committed evidence.
+Provider-path tests use mocks. A real external LIVE model call and a live LangSmith trace are not committed evidence. LangSmith is limited to optional wording observability; it does not validate hand movement, MediaPipe output, sign correctness, linguistic correctness, or professional approval.
+
+## Formal low-code POC boundary
+
+The formal low-code POC is the governed n8n workflow, not the Computer Vision feasibility artifact. The exact 12-node workflow export is versioned at `workflow/kinder_signs_n8n_workflow.json` and documented at `workflow/kinder_signs_n8n_workflow.md`.
+
+The screenshot at `workflow/evidence/n8n_successful_execution_2026-08-31.png` evidences a successful historical execution of `Kinder Signs — Governed Family Draft (Example)` on 31 August 2026: status Succeeded, execution ID #21441, duration 14.499 seconds. Evidence status: COMPLETE AT CAPSTONE LOW-CODE POC SCOPE. The run remained a governed draft workflow; it was not autonomous publication or production deployment, and it is not proof that the later final MVP Content Pack adapter was exercised.
+
+The OpenAI course credential used at that time was removed or revoked shortly afterwards and is no longer available. A new authorised credential would be required for a fresh provider-backed rerun. That current reproducibility boundary does not invalidate the historical execution.
 
 ## What the MVP proves
 
@@ -342,7 +367,7 @@ Provider-path tests use mocks. A real external LIVE model call and a live LangSm
 - Six signs can resolve to distinct deterministic draft visuals.
 - An exact local visual can pass to printable and story proofs.
 - Content checks and human review states can remain separate from publication.
-- Synthetic school and family screens can demonstrate intended interaction.
+- A synthetic school assignment can drive the corresponding Family Experience and mini-library in the same browser session, with exact-duplicate control.
 
 ## What the MVP does not prove
 
@@ -353,8 +378,8 @@ Provider-path tests use mocks. A real external LIVE model call and a live LangSm
 - repeatability across multiple performers and conditions;
 - a reliable headless or hosted MediaPipe runtime;
 - production security, scalability, retention, or audit operations;
-- real school accounts, assignments, or family delivery;
-- a personalised family mini-library;
+- real school or family accounts, durable assignments, cross-device persistence, notifications, or delivery;
+- production identity, access, tenant, correction, deletion, and nursery-platform integration for the family experience;
 - commercial demand or product-market fit; or
 - legal approval for a live pilot.
 
@@ -368,8 +393,8 @@ Provider-path tests use mocks. A real external LIVE model call and a live LangSm
 | Family materials | Local Flashcard, Routine Card, and MORE Story proofs | Final saved-PDF QA, accessibility review, and approved distribution |
 | Song | Coming soon page | Define only if user evidence justifies it |
 | Nursery workflow | Synthetic, session-based assignment and duplicate control | Authenticated nursery identity, authorization, persistence, and audit trail |
-| Family View | Basic local guidance preview | Personalised assignment-driven mini-library, verified access, real delivery, correction, and deletion |
+| Family View | Assignment-driven mini-library from synthetic browser-session state | Real identities, verified access, durable cross-session and cross-device persistence, notifications, delivery, correction, deletion, and tenant isolation |
 | Content operations | Local states, gates, provenance, hashes, and five-record regression set | Reconcile with the six-sign registry and operate an identity-backed review ledger |
-| n8n | Valid inactive importable 12-node export | Target-runtime execution record if the workflow is retained |
+| n8n | Exact versioned 12-node export and successful historical execution evidence from 31 August 2026, ID #21441, 14.499 seconds | New authorised credential for a fresh provider-backed rerun; any final-adapter integration or production deployment must be separately evidenced |
 | LangSmith and LLM | Local dry-run and mocked provider-path tests | Live evidence only if needed, permitted, non-personal, traced, evaluated, and reviewed |
 | Deployment | None | Optional production scope only after a successful controlled pilot decision |

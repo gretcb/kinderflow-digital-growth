@@ -11,9 +11,9 @@ The current repository is a local prototype. It does not yet operate as a produc
 - KinderFlow prepares reference evidence, content, draft visuals, and publication records.
 - A qualified reviewer must assess movement, hand pose, wording, and suitability before release.
 - Little Steps Nursery represents the school buyer and educator workflow with synthetic data.
-- The family page demonstrates basic guidance and materials.
+- The family page demonstrates an assignment-driven sign-and-material mini-library from synthetic browser-session state.
 
-A family-facing guidance prototype exists. A personalised assignment-driven family library remains a next product iteration.
+The Family Experience and mini-library is implemented at local, session-based MVP scope. It is not a production service and has no real family identity, account, access, persistence, notification, or delivery layer.
 
 ## Current local flow
 
@@ -25,9 +25,16 @@ A family-facing guidance prototype exists. A personalised assignment-driven fami
     → choose tracked poses, reference frames, or reviewed references
     → create and review deterministic visual options
     → record local internal-printable approval
-    → open a Flashcard, Routine Card, or MORE Story proof
+    → create a Flashcard, Routine Card, or MORE Story proof
+    → open Little Steps Nursery
+    → select the sign, materials, group, and group or fictional-child audience
+    → share the synthetic assignment
+    → choose View family experience
+    → inspect the corresponding sign and materials on family.html
 
 The Create a Sign page presents five steps: Sign & reference; Review reference; Choose poses; Approve visual; Family materials.
+
+The Python application default remains port 8000. The final presentation used `poc_env/bin/python mvp/app.py --port 8765` and the routes `http://127.0.0.1:8765/index.html`, `http://127.0.0.1:8765/kinder-signs.html`, `http://127.0.0.1:8765/create-sign.html`, `http://127.0.0.1:8765/school.html?sign=more&focus=share`, and `http://127.0.0.1:8765/family.html`.
 
 ## Technical evidence
 
@@ -62,6 +69,8 @@ One successful ignored MORE run records:
 This is local run evidence, not committed proof. A fresh opt-in integration run failed before frame processing in the current headless session because MediaPipe could not create the required graphics context.
 
 Computer Vision supports movement review. It does not identify or certify a sign.
+
+The locally evidenced presentation environment used Python 3.9.6 and MediaPipe 0.10.14. `poc/requirements.txt` separately pins MediaPipe 0.10.21 for deployment; that pin is not the environment used for the historical measurements and is not evidence of a successful hosted deployment. Python 3.11 or 3.12 remains the clean future rebuild target.
 
 ## Visual and family-material state
 
@@ -100,14 +109,18 @@ The repository contains:
 - deterministic quality-gate code and passing sample evidence;
 - human and optional LLM-assisted content-pack paths;
 - LangSmith dry-run evidence for the optional wording step;
-- an exact, inactive n8n workflow export; and
-- no live external LLM trace or target-runtime n8n execution record.
+- the exact versioned 12-node n8n workflow export at `workflow/kinder_signs_n8n_workflow.json`; and
+- the screenshot at `workflow/evidence/n8n_successful_execution_2026-08-31.png` of the successful historical n8n execution of `Kinder Signs — Governed Family Draft (Example)` on 31 August 2026: status Succeeded, execution ID #21441, and duration 14.499 seconds.
+
+Evidence status: COMPLETE AT CAPSTONE LOW-CODE POC SCOPE. The historical run remained a governed draft workflow, not autonomous publication or production deployment, and does not prove that the later final MVP Content Pack adapter was exercised. Its former OpenAI course credential was removed or revoked and is unavailable, so a fresh provider-backed rerun needs a new authorised credential.
+
+LangSmith is separate and has only committed dry-run evidence, not a live trace. It does not validate hand movement, MediaPipe output, sign correctness, linguistic correctness, or professional approval.
 
 ## School and family prototype
 
-The Little Steps Nursery route uses three synthetic groups and six fictional child records. It supports sign, group, materials, and audience selection, duplicate control, and assignment edit or removal. Assignments remain in browser session storage.
+The Little Steps Nursery route uses three synthetic groups and six fictional child records. It supports sign, group, materials, and audience selection, assignment edit or removal, and the exact duplicate control `This exact sign, audience and material combination is already active.` Assignments remain in browser session storage.
 
-The family route can read that session state and filter or combine relevant assignments. It also supplies a synthetic MORE fallback when no assignment state exists. This behavior demonstrates interface logic only. It does not provide identity, authorisation, real delivery, persistence, or notifications.
+The family route reads that session state and filters or combines relevant assignments. It also supplies a synthetic MORE fallback when no assignment state exists. This implements the assignment-driven mini-library at local/session MVP scope. It does not provide real family identities or accounts, authentication or authorisation, durable cross-session or cross-device persistence, real notifications or delivery, production school accounts, tenant isolation, production correction or deletion workflows, or external nursery-platform integrations.
 
 ## Evidence status
 
@@ -128,8 +141,9 @@ Pending:
 - qualified sign, hand-pose, visual, and content review;
 - a production avatar tied to reviewed landmarks;
 - published library assets;
-- real accounts, access control, storage, delivery, and audit records;
-- live n8n and LangSmith evidence;
-- a personalised family mini-library;
+- real accounts, access control, durable storage, delivery, and audit records;
+- a new authorised provider credential for any fresh n8n rerun, evidence of any final-adapter execution, and any production deployment;
+- a live LangSmith trace only if separately needed, authorised, and safely scoped;
+- production identity, persistence, notification, correction, deletion, tenant, and nursery-integration support for the implemented family mini-library;
 - a live pilot; and
 - commercial validation.

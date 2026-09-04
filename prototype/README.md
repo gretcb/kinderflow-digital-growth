@@ -2,7 +2,7 @@
 
 ## Purpose
 
-The prototype shows KinderFlow as an early-childhood digital platform and Kinder Signs as its first active AI-enabled product. It separates internal content preparation, a nursery assignment demonstration, and a basic family-facing view.
+The prototype shows KinderFlow as an early-childhood digital platform and Kinder Signs as its first active AI-enabled product. It separates internal content preparation, a nursery assignment demonstration, and a browser/session-based assignment-driven Family Experience.
 
 Kinder Daily and Kinder Food are future products.
 
@@ -17,7 +17,7 @@ The interface demonstrates the proposed roles:
 
 No real content is published or delivered. Every canonical sign remains unavailable to schools in the asset registry.
 
-A family-facing guidance prototype exists. A personalised assignment-driven family library remains a next product iteration.
+School Admin stores a synthetic assignment in browser/session state. Family View reads that state and displays the matching sign and materials as an assignment-driven mini-library. This is implemented at local/session-based MVP scope, not as a production family service.
 
 ## Run modes
 
@@ -38,6 +38,12 @@ From the repository root:
 
 Open http://127.0.0.1:8000/create-sign.html. The service root also opens this page.
 
+The application default remains port 8000. The final presentation/demo used:
+
+    poc_env/bin/python mvp/app.py --port 8765
+
+with `http://127.0.0.1:8765/index.html`, `http://127.0.0.1:8765/kinder-signs.html`, `http://127.0.0.1:8765/create-sign.html`, `http://127.0.0.1:8765/school.html?sign=more&focus=share`, and `http://127.0.0.1:8765/family.html`.
+
 ## Route map
 
 The prototype has 12 HTML routes:
@@ -53,7 +59,7 @@ The prototype has 12 HTML routes:
 - create-story.html: deterministic MORE story prototype;
 - create-song.html: Song Coming soon page;
 - school.html: Little Steps Nursery assignment demonstration; and
-- family.html: basic family-facing preview.
+- family.html: session-based assignment-driven Family Experience and mini-library.
 
 ## Product architecture
 
@@ -130,6 +136,8 @@ The committed Round 1 JSON and plot evidence belongs to WATER:
 - 100.00% pose coverage;
 - 93.98% dominant right-hand coverage;
 - 20 missing hand frames;
+- 1 interpolated frame;
+- 19 unresolved frames;
 - EXTRACTION_PASS; and
 - MOTION_REPRESENTATION_PARTIAL.
 
@@ -143,6 +151,8 @@ The successful run mvp/runs/run_20260904T061136125509Z_eb661bc3 reports:
 - 100.00% pose coverage;
 - 91.93% dominant-hand coverage;
 - 25 missing hand frames;
+- 4 interpolated frames;
+- 21 unresolved frames;
 - EXTRACTION_PASS; and
 - MOTION_REPRESENTATION_PARTIAL.
 
@@ -221,13 +231,13 @@ The connected service can package approved human copy or use an optional LLM-ass
 
 Local content approval creates a reviewed version but does not publish. A printable handoff also requires the exact locally approved visual.
 
-No real external LIVE LLM generation or live LangSmith trace is committed.
+No real external LIVE LLM generation or live LangSmith trace is committed. LangSmith does not validate hand movement, MediaPipe output, sign correctness, linguistic correctness, or professional approval.
 
 ## n8n boundary
 
-The repository contains an exact inactive n8n JSON export that describes schema checks, optional wording generation, deterministic routing, and a draft-pending-professional-review outcome. It is an importable orchestration design.
+The repository contains the exact importable 12-node n8n JSON export, currently marked `active: false`, that describes schema checks, optional wording generation, deterministic routing, and a draft-pending-professional-review outcome. The versioned screenshot at `workflow/evidence/n8n_successful_execution_2026-08-31.png` records **Kinder Signs — Governed Family Draft (Example)** on 31 August 2026 at 21:30:27, status **Succeeded**, execution ID #21441, and duration 14.499 seconds. Evidence status: **COMPLETE AT CAPSTONE LOW-CODE POC SCOPE**.
 
-Execution of the final adapter contract in a target n8n runtime is not evidenced. The pass branch is not connected to publication.
+The historical run is not production deployment and does not prove execution of the later final MVP Content Pack adapter. Its former OpenAI course credential was removed/revoked and is unavailable; a fresh provider-backed rerun requires a new authorised credential. The pass branch is not connected to publication.
 
 ## Content Library readiness
 
@@ -253,15 +263,15 @@ The assignment interaction supports:
 - Edit and Remove; and
 - Share another sign while preserving the group.
 
-State remains in browser session storage. No content is sent to a family account or external school platform.
+An exact duplicate is blocked with: "This exact sign, audience and material combination is already active." State remains in browser session storage. No content is sent to a family account or external school platform.
 
 ## Family View
 
 The family route uses the headings Your Kinder Signs, Your mini-library, and Signs shared with you. Its script reads the school session fixture, filters by the selected synthetic group or child context, and combines material sets by sign. If no school state exists, it inserts a synthetic MORE example.
 
-This is interface behavior, not final delivery. A family-facing guidance prototype exists. A personalised assignment-driven family library remains a next product iteration.
+This is a local/session-based assignment-driven Family Experience and mini-library, not final delivery to real family accounts.
 
-Pending work includes real identity, access control, persistent assignment data, family accounts, notifications, and school integration.
+Pending work includes real identity and accounts, authentication and authorisation, durable cross-session and cross-device assignment data, notifications and delivery, production school accounts, tenant isolation, correction/deletion workflows, and external nursery-platform integration.
 
 ## Data and technology boundaries
 

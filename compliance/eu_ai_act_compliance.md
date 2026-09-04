@@ -1,7 +1,8 @@
 # KinderFlow EU AI Act Preliminary Intended-Purpose Assessment
 
 **Assessment date:** 4 September 2026
-**Frozen repository baseline:** 8eb0742, Freeze connected KinderFlow capstone demo
+**Functional evidence baseline:** 8eb0742, Freeze connected KinderFlow capstone demo
+**Round 2 closure context:** `release/capstone-demo` adds the deployment pin, reconciled documentation, and final submission evidence without changing the demonstrated product baseline
 **Assessment type:** Preliminary intended-purpose assessment
 **Decision use:** Controlled pilot planning
 
@@ -9,7 +10,7 @@ This document is a product and governance assessment. It is not legal advice, a 
 
 ## Executive conclusion
 
-Kinder Signs uses Computer Vision to turn an adult reference video into technical movement evidence for human review. It can also prepare bounded family wording through an optional model path, although the repository proves only deterministic and dry-run evaluation evidence, not a live external model run. The product prototype includes six sign records, draft sign visuals, nursery assignment interactions, and a basic family-facing guidance preview.
+Kinder Signs uses Computer Vision to turn an adult reference video into technical movement evidence for human review. It can also prepare bounded family wording through an optional model path. The repository preserves deterministic checks and a LangSmith dry-run for the current adapter, plus the exact 12-node n8n export and a successful historical governed-draft execution. That execution is capstone low-code POC evidence, not proof that the later final MVP Content Pack adapter ran. The product prototype includes six sign records, draft sign visuals, nursery assignment interactions, and a local/session assignment-driven Family Experience.
 
 The current intended purpose does not:
 
@@ -29,7 +30,7 @@ The product is not ready for an external pilot on regulatory documentation alone
 
 ## Scope and evidence
 
-The assessment covers the repository state at 8eb0742.
+The functional assessment starts from repository state `8eb0742` and incorporates the final evidence and documentation added on `release/capstone-demo`.
 
 | Component | Current evidence | Evidence state |
 | --- | --- | --- |
@@ -37,10 +38,10 @@ The assessment covers the repository state at 8eb0742.
 | Computer Vision | MediaPipe pose and hand landmarks, OpenCV processing, normalization, diagnostics, and reviewer-facing previews | Functional technical evidence |
 | Six-sign registry | MORE, HELP, EAT, SLEEP, MILK, and WATER | Evidence present |
 | Static sign visuals | Three Open Peeps-derived SVG candidates for each of six signs | Draft evidence; human review pending |
-| Optional family-copy model path | Structured prompt, schema checks, deterministic quality gate, n8n design, and LangSmith dry-run | Partial evidence; no live run claimed |
+| Optional family-copy model path | Structured prompt, schema checks, deterministic quality gate, exact 12-node n8n export, historical execution screenshot, and LangSmith dry-run | n8n POC execution complete; later MVP adapter and live LangSmith trace not evidenced |
 | Gemini FX motion previews | MORE maps to mas.mp4, HELP to ayuda.mp4, and MILK to leche.mp4 | Separate demo files; rights and fidelity gates open |
 | Nursery assignment | Little Steps Nursery fixture with synthetic records and session-based state | Local prototype |
-| Family View | Basic family-facing guidance preview | Local prototype; personalised library pending |
+| Family View | Reads the synthetic assignment's sign and materials from browser/session state | Assignment-driven mini-library implemented locally; production identity and delivery pending |
 
 Primary repository evidence:
 
@@ -53,6 +54,7 @@ Primary repository evidence:
 - [Visual sign packages](../prototype/data/visual_sign_packages.json)
 - [Content operations manifests](../content_ops/signs/)
 - [n8n workflow export](../workflow/kinder_signs_n8n_workflow.json)
+- [n8n successful execution evidence](../workflow/evidence/n8n_successful_execution_2026-08-31.png)
 - [LangSmith dry-run record](../workflow/langsmith_dry_run_summary.json)
 
 ## Intended purpose
@@ -68,16 +70,16 @@ The current workflow is:
 3. The service creates technical metrics and previews.
 4. A human reviews the reference and selects or reviews a pose.
 5. A human reviews a draft static visual and family material.
-6. The Little Steps Nursery prototype simulates assignment.
-7. Family View displays a basic local guidance preview.
+6. The Little Steps Nursery prototype stores a synthetic group or fictional-child assignment and rejects an exact duplicate.
+7. Family View reads that browser/session state and displays the corresponding sign and materials.
 
 Computer Vision supports content review. It does not recognise a sign, certify linguistic correctness, evaluate a child, or approve publication.
 
 ### Current product boundary
 
-A family-facing guidance prototype exists. A personalised assignment-driven family library remains a next product iteration.
+The assignment-driven family mini-library is implemented at local, session-based MVP scope. It uses fictional Little Steps Nursery records and synthetic child labels.
 
-The current prototype has no production nursery accounts, family accounts, notifications, persistent cross-session assignment service, or real delivery to caregivers. It uses fictional Little Steps Nursery records and synthetic child labels.
+The current prototype has no production nursery or family accounts, authentication or authorisation, notifications, durable cross-session or cross-device assignment service, tenant isolation, production correction or deletion operations, external nursery-platform integration, or real delivery to caregivers.
 
 ### Out-of-scope uses
 
@@ -102,12 +104,12 @@ These exclusions must appear in product requirements, operator training, contrac
 | MediaPipe landmark extraction | AI system component | Converts adult video frames into pose and hand landmarks | No identity, emotion, child assessment, or sign certification |
 | OpenCV and ffmpeg | Supporting software | Frame processing and browser-compatible preview preparation | Not treated as AI by themselves |
 | Normalization and thresholds | Deterministic logic | Produces body-relative technical evidence and routes review states | Technical coverage is not sign correctness |
-| Optional language-model path | AI system component when used live | Drafts bounded family wording from approved sign and routine data | No live external run or personal-data transfer is evidenced |
-| LangSmith path | Monitoring design | Describes evaluation of the optional wording step | Dry-run only; does not validate Computer Vision or sign fidelity |
-| n8n workflow | Orchestration design | Defines steps, branching, quality gates, and review preparation | Importable export; final target-runtime execution is not evidenced |
+| Optional language-model path | AI system component when used live | Drafts bounded family wording from approved sign and routine data | Historical n8n provider-backed execution is separate from the later final MVP adapter; no personal-data transfer is evidenced |
+| LangSmith path | Separate monitoring and evaluation component | Describes evaluation of the optional wording step | Dry-run only; does not validate hand movement, MediaPipe output, sign or linguistic correctness, or professional approval |
+| n8n workflow | Low-code orchestration POC | Defines 12 nodes covering steps, branching, quality gates, and review preparation | Exact export and successful historical runtime screenshot; governed draft only, not autonomous publication or production deployment |
 | Open Peeps-derived SVGs | Deterministic visual composition | Supplies a consistent character and line grammar | Open Peeps does not determine sign mechanics |
 | Gemini FX files | Pre-generated synthetic media | Illustrative motion direction for three signs | Separate from current landmarks; rights and professional review pending |
-| Nursery and Family Views | Product interface | Simulates selection and basic family guidance | No production delivery or personalised family library |
+| Nursery and Family Views | Product interface | Implements synthetic assignment and an assignment-driven Family Experience in browser/session state | No real accounts, durable persistence, tenant isolation, notifications, or production delivery |
 
 ## Actors and role allocation
 
@@ -117,7 +119,7 @@ Role allocation depends on who develops, places, operates, and controls each sys
 | --- | --- | --- |
 | KinderFlow | Likely provider of the Kinder Signs system if it places the system under its name | Confirm legal entity, intended purpose, instructions, monitoring, and post-market duties |
 | KinderFlow content team | Operator of internal Computer Vision and content workflow | Define competence, approval authority, escalation, and logging |
-| Nursery school | Potential deployer if it operates an AI-enabled feature; content recipient if it only uses reviewed static material | Fix the actual pilot architecture and contract |
+| Nursery school | Content recipient and interface user in the current design; it does not operate MediaPipe, an LLM, n8n, or LangSmith | Preserve that boundary or reassess any changed pilot architecture and contract |
 | Educator or administrator | Authorised human user | Define training, allowed actions, and override or escalation route |
 | Families and children | Affected persons or recipients of reviewed content, depending on the final flow | Provide clear notices and a correction route |
 | Upstream model or tool provider | Third-party provider or processor depending on service and data flow | Record terms, instructions, location, transparency marks, and change notices |
@@ -176,9 +178,9 @@ Operator documentation should say that MediaPipe extracts landmarks and that the
 
 ### Optional model-generated wording
 
-The current Family View is not an autonomous chatbot. The repository shows a bounded drafting path and a dry-run quality evaluation, not a live conversation or live external trace.
+The current Family View is not an autonomous chatbot. The repository shows a bounded drafting path and a LangSmith dry-run, not a live conversation or live LangSmith trace. The separate historical n8n execution does not change those LangSmith or Family View boundaries.
 
-If a live language model is introduced, KinderFlow must:
+If a live language model is reintroduced into the current MVP or used in the pilot, KinderFlow must:
 
 - disclose AI assistance where Article 50 or consumer expectations require it;
 - identify the reviewed source and version;
@@ -284,6 +286,8 @@ Before pilot, KinderFlow must reconcile sign IDs and evidence ownership, bind cu
 
 Current local runs record technical inputs, run identifiers, metrics, artifacts, and redacted provenance. Registry files preserve asset paths, classifications, hashes, sign mappings, and limitations. Git preserves versioned evidence.
 
+The exact 12-node n8n export is versioned. The execution screenshot records **Kinder Signs — Governed Family Draft (Example)** succeeding on 31 August 2026 at 21:30:27, execution ID #21441, in 14.499 seconds. Status: **COMPLETE AT CAPSTONE LOW-CODE POC SCOPE**. It is a real historical execution, not autonomous publication or production deployment, and it does not prove that the later final MVP Content Pack adapter was exercised. The OpenAI course credential used at the time was removed or revoked shortly afterwards; a fresh provider-backed rerun requires a new authorised credential, and the former key must not be reconstructed, exposed, or committed.
+
 ### Production gaps
 
 The repository does not evidence:
@@ -295,8 +299,9 @@ The repository does not evidence:
 - change approval;
 - incident and withdrawal records;
 - deployed monitoring;
-- a live LangSmith trace; or
-- a final n8n runtime execution.
+- a live LangSmith trace;
+- production n8n deployment; or
+- execution of the later final MVP Content Pack adapter against the historical n8n workflow.
 
 These are not optional proof points if KinderFlow relies on them in pilot governance.
 

@@ -1,14 +1,15 @@
 # KinderFlow Responsible AI Audit
 
 **Audit date:** 4 September 2026
-**Frozen repository baseline:** 8eb0742, Freeze connected KinderFlow capstone demo
+**Functional evidence baseline:** 8eb0742, Freeze connected KinderFlow capstone demo
+**Round 2 closure context:** `release/capstone-demo` adds the deployment pin, reconciled documentation, and final submission evidence without changing the demonstrated product baseline
 **Scope:** Kinder Signs local MVP, documented workflow, assets, and proposed controlled pilot
 
 This audit reports evidence states. It is not a safety certificate, professional sign-language approval, legal advice, or proof that the product is ready for production.
 
 ## Executive assessment
 
-Kinder Signs has a defensible narrow purpose: help a human content team turn an adult sign reference into reviewable technical evidence and reusable family material. Computer Vision is the strongest active AI evidence. The repository also contains an optional model-assisted wording path, but only local and dry-run evaluation is evidenced. It does not prove a live external model run.
+Kinder Signs has a defensible narrow purpose: help a human content team turn an adult sign reference into reviewable technical evidence and reusable family material. Computer Vision is the strongest active AI evidence. For the later final MVP Content Pack adapter, only local, mocked-provider, and dry-run evaluation is evidenced; no live external run of that adapter is proved. Separately, the exact n8n low-code POC has a successful historical execution screenshot.
 
 The product includes meaningful controls: local processing, bounded inputs, deterministic validation, explicit review routes, source registries, versioned assets, and no autonomous publication. It also has material gaps: no production reviewer identity or approval ledger, no qualified sign approval for the current draft visuals, incomplete source and Gemini usage rights, no production correction process, no secure family-account system, and a mismatch between the six-sign registry and the older five-sign content package.
 
@@ -47,9 +48,9 @@ The product does not assess a child. It does not recognise emotion, establish bi
 
 ### Current Family View boundary
 
-The Little Steps Nursery assignment experience uses synthetic records and local or session-based state. Family View displays a basic guidance prototype.
+The Little Steps Nursery assignment experience uses synthetic records and local or session-based state. School Admin stores an assignment, and Family View reads it to display the corresponding sign and materials as an assignment-driven mini-library.
 
-A family-facing guidance prototype exists. A personalised assignment-driven family library remains a next product iteration. Current screens do not prove real delivery, account identity, access control, or cross-session persistence.
+This Family Experience is implemented at local/session-based MVP scope. It does not prove real family identities or accounts, authentication or authorisation, durable cross-session or cross-device persistence, real notifications or delivery, production school accounts, tenant isolation, production correction/deletion workflows, or external nursery-platform integrations.
 
 ### Foreseeable harms
 
@@ -71,12 +72,12 @@ A family-facing guidance prototype exists. A personalised assignment-driven fami
 | MediaPipe | Extracts adult pose and hand landmarks | Local pipeline and versioned WATER evidence | Sign correctness, identity, emotion, or child ability |
 | OpenCV | Reads and processes video frames | Local pipeline | AI intelligence or linguistic validity |
 | Deterministic normalization and thresholds | Converts landmarks to body-relative evidence and review states | Code and tests | Professional approval |
-| Optional language model | Can draft bounded family wording from supplied sign and routine content | Provider path, schema, samples, deterministic evaluation | Live execution, truth, publication approval, or CV quality |
-| LangSmith path | Defines trace and evaluation for the optional wording step | Dry-run summary with network calls false | A live trace or evaluation of movement fidelity |
-| n8n | Represents fixed orchestration and review preparation | Exact importable JSON and documentation | A proven final target-runtime run |
+| Optional language model | Can draft bounded family wording from supplied sign and routine content | Later-adapter path, schemas, samples, mocked-provider tests, and dry-run; separate historical n8n execution | A live run of the later final adapter, truth, publication approval, or CV quality |
+| LangSmith path | Defines trace and evaluation for the optional wording step | Dry-run summary with network calls false | A live trace or validation of hand movement, MediaPipe output, sign correctness, linguistic correctness, or professional approval |
+| n8n | Represents fixed orchestration and review preparation | Exact 12-node export plus a separate successful historical execution screenshot | Production deployment, autonomous publication, current provider-backed reproducibility, or execution of the later final MVP adapter |
 | Deterministic SVG composition | Creates repeatable visual candidates | Six sign packages and 18 files | Correct fingers, palms, contact, direction, or readability |
 | Gemini FX files | Provide pre-generated illustrative motion direction | Three registered local MP4 files | Current-run output, landmark control, rights, or sign certification |
-| Nursery and Family Views | Simulate product handoff | Local interfaces and synthetic data | Production assignment or secure family delivery |
+| Nursery and Family Views | Implement an assignment-driven mini-library in browser/session state | Local interfaces, synthetic data, and deterministic tests | Production assignment, identity, durable persistence, or secure family delivery |
 
 ## Technical evidence interpretation
 
@@ -88,8 +89,10 @@ The committed Round 1 WATER reference records:
 - 100.00 percent pose coverage;
 - 93.98 percent dominant right-hand coverage;
 - 20 missing hand frames;
-- extraction status pass; and
-- motion representation partial.
+- 1 interpolated frame;
+- 19 unresolved frames;
+- `EXTRACTION_PASS`; and
+- `MOTION_REPRESENTATION_PARTIAL`.
 
 Evidence:
 
@@ -101,7 +104,7 @@ The 93.98 percent value is hand-detection coverage in that reference run. It is 
 
 ### Current MORE evidence boundary
 
-The registered MORE reference input is present and hash-mapped. The canonical registry does not assign the versioned WATER diagnostics to MORE. A current MORE run with 285 frames, 100 percent pose coverage, and 91.93 percent dominant-hand coverage was observed only in an ignored local run directory. That local record must not be presented as versioned repository evidence.
+The registered MORE reference input is present and hash-mapped. The canonical registry does not assign the versioned WATER diagnostics to MORE. The connected local MORE demonstration reports 285 frames, 100.00 percent pose coverage, 91.93 percent dominant-hand coverage, 25 missing hand frames, 4 interpolated frames, 21 unresolved frames, `EXTRACTION_PASS`, and `MOTION_REPRESENTATION_PARTIAL`. It was observed only in an ignored local run directory and must not be presented as versioned repository evidence.
 
 The registry therefore describes MORE as having a reference input without a canonical analysed run. This separation prevents metrics from one sign being used to support another.
 
@@ -303,11 +306,13 @@ The repository contains:
 - an optional provider call;
 - JSON Schema validation;
 - banned-claim and source-adherence checks;
-- an importable n8n workflow design;
+- the exact importable 12-node n8n workflow design and a separate screenshot of successful historical execution on 31 August 2026 (`#21441`, 14.499 seconds);
 - evaluation cases; and
 - a LangSmith dry-run with network calls false.
 
 LangSmith covers the optional wording step only. It does not validate MediaPipe, hand shape, movement fidelity, or sign correctness.
+
+The n8n evidence is complete at capstone low-code POC scope. It is not production deployment or proof that the later final MVP Content Pack adapter ran. The OpenAI course credential used historically was removed/revoked, so a fresh provider-backed rerun requires a new authorised credential; the former key must never be reconstructed or exposed.
 
 ### Responsible-use rules
 
@@ -447,6 +452,8 @@ Hard pilot boundaries:
 - [Visual sign packages](../../prototype/data/visual_sign_packages.json)
 - [Content operations reports](../../content_ops/reports/)
 - [LangSmith dry-run](../../workflow/langsmith_dry_run_summary.json)
+- [Exact 12-node n8n export](../../workflow/kinder_signs_n8n_workflow.json)
 - [n8n workflow documentation](../../workflow/kinder_signs_n8n_workflow.md)
+- [Successful historical n8n execution](../../workflow/evidence/n8n_successful_execution_2026-08-31.png)
 - [GDPR record](../../compliance/gdpr_documentation.md)
 - [EU AI Act assessment](../../compliance/eu_ai_act_compliance.md)

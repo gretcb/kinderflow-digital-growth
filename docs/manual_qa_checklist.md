@@ -1,6 +1,8 @@
 # Kinder Signs manual QA checklist
 
-Use `poc_env/bin/python mvp/app.py`, then open `http://127.0.0.1:8000/create-sign.html`. Use fictional records only.
+Use fictional records only. The application default remains port 8000: run `poc_env/bin/python mvp/app.py`, then open `http://127.0.0.1:8000/create-sign.html`.
+
+For the final demonstrated route set, run `poc_env/bin/python mvp/app.py --port 8765` and check `http://127.0.0.1:8765/index.html`, `kinder-signs.html`, `create-sign.html`, `school.html?sign=more&focus=share`, and `family.html`.
 
 ## Create a Sign
 
@@ -67,13 +69,13 @@ Use `poc_env/bin/python mvp/app.py`, then open `http://127.0.0.1:8000/create-sig
 - [ ] Leave `Everyone in the group` selected and confirm both the summary and CTA name the selected group.
 - [ ] Select a child and confirm both the summary and CTA name that child.
 - [ ] Share to a group and a child; confirm the concise success message uses the correct destination.
-- [ ] Submit an exact duplicate; confirm no record is added and `View active assignment` / `Change materials` are offered.
+- [ ] Submit an exact duplicate; confirm no record is added, the message `This exact sign, audience and material combination is already active.` appears, and `View active assignment` / `Change materials` are offered.
 - [ ] Share the same sign with another group or material set; confirm a distinct record is added.
 - [ ] Edit an active assignment’s materials, then remove it; confirm the same record is updated before removal.
 - [ ] Select `Share another sign`; confirm the group is preserved and the child resets to everyone in the group.
 - [ ] Confirm reviewed family wording appears without MediaPipe, LangSmith or quality-gate metadata.
 - [ ] Confirm the flashcard pack is conditional and the visual remains preview-only until hand review.
-- [ ] From Family Preview, confirm `Return to School Admin` goes back to the school surface.
+- [ ] From Family View, confirm the synthetic browser/session assignment is filtered to the selected group or fictional child, the corresponding sign and materials form the local mini-library, and `Return to School Admin` goes back to the school surface.
 
 ## UX freeze viewport review
 

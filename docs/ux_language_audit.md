@@ -4,7 +4,7 @@ Date: 4 September 2026
 
 ## Scope
 
-The prototype contains 12 HTML routes. The local MVP service maps its root route to create-sign.html. A basic static server maps its root to index.html.
+The prototype contains 12 HTML routes. The local MVP service maps its root route to create-sign.html. A basic static server maps its root to index.html. The Python application default remains port 8000; the final presentation used `poc_env/bin/python mvp/app.py --port 8765` and explicitly opened index.html, kinder-signs.html, create-sign.html, school.html?sign=more&focus=share, and family.html on port 8765.
 
 The audit distinguishes visible product language from internal stored values. Exact UI labels take priority in user instructions. Raw statuses and provenance remain available through Technical and source details where the interface exposes them.
 
@@ -16,7 +16,7 @@ Role: platform overview for prospective schools and reviewers.
 
 Primary heading: Bring nursery learning home.
 
-Boundary: the statement that families receive active materials describes the intended experience. Real assignment delivery is not implemented.
+Boundary: a synthetic assignment does drive the session-based Family Experience and mini-library. Real identity-backed assignment delivery is not implemented.
 
 ### kinder-signs.html
 
@@ -112,19 +112,19 @@ Role: Little Steps Nursery educator or administrator.
 
 Primary heading: Share Kinder Signs with your families.
 
-The interface supports selecting a sign, group, materials, and audience. The audience can be everyone in the group or one child. It blocks an exact duplicate and supports edit and removal for active assignments.
+The interface supports selecting a sign, group, materials, and audience. The audience can be everyone in the group or one fictional child. It blocks an exact duplicate with `This exact sign, audience and material combination is already active.` and supports edit and removal for active assignments.
 
 Boundary: synthetic data and browser session storage only. Share is demonstration copy, not proof of real delivery.
 
 ### family.html
 
-Role: family-facing preview.
+Role: local/session-based, assignment-driven Family Experience and mini-library.
 
 Primary heading: Your Kinder Signs.
 
 The page labels its collection Your mini-library and Signs shared with you. It can filter and combine assignments from the current browser session. If no stored assignment exists, it inserts a synthetic MORE example.
 
-Boundary: a family-facing guidance prototype exists. A personalised assignment-driven family library remains a next product iteration.
+Boundary: the assignment-driven Family Experience and mini-library is implemented at local, session-based MVP scope. Real family identities and accounts, authentication and authorisation, durable cross-session and cross-device persistence, real notifications and delivery, production school accounts, tenant isolation, production correction and deletion workflows, and external nursery-platform integrations remain future work.
 
 ## Presentation mappings
 

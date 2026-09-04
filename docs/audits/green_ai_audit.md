@@ -1,7 +1,8 @@
 # KinderFlow Green AI Audit
 
 **Audit date:** 4 September 2026
-**Frozen repository baseline:** 8eb0742, Freeze connected KinderFlow capstone demo
+**Functional evidence baseline:** 8eb0742, Freeze connected KinderFlow capstone demo
+**Round 2 closure context:** `release/capstone-demo` adds the deployment pin, reconciled documentation, and final submission evidence without changing the demonstrated product baseline
 **Scope:** Current Kinder Signs local MVP and proposed controlled pilot
 
 This audit distinguishes architecture choices from measured environmental results. KinderFlow has not measured energy use, carbon emissions, embodied hardware impact, water use, or avoided impact. No environmental-benefit claim is supported.
@@ -28,7 +29,7 @@ Three pre-generated Gemini FX videos also exist. Their generation energy, provid
 | Does the current app use RAG? | Evidence present | No |
 | Does the current app use autonomous agent loops? | Evidence present | No |
 | Is Computer Vision processing local? | Evidence present | Yes |
-| Is optional LLM use bounded? | Partial evidence | Design and dry-run exist; no live execution record |
+| Is optional LLM use bounded? | Partial evidence | Later final adapter has design, mocked-provider tests, and dry-run only; a separate historical n8n POC execution exists without resource telemetry |
 | Is content reused in production? | Measurement gap | Reuse is designed but published production signs equal zero |
 | Are energy and carbon measured? | Measurement gap | No |
 | Is Gemini generation impact known? | Measurement gap | No |
@@ -63,10 +64,10 @@ The audit does not have measured data for upstream model training, MediaPipe mod
 | Landmark plots and previews | Implemented | CPU and local storage | Run artifacts and POC output | File size may be observed; energy unmeasured |
 | Deterministic SVG composition | Implemented | Small local compute and file storage | 18 draft sign candidates | Energy unmeasured |
 | Exact sign retrieval | Implemented | Small JSON read and browser work | Six-sign data and registry | Energy unmeasured |
-| Optional LLM wording | Code and dry-run evidence | Potential external inference and network | Schema, n8n design, LangSmith dry-run | No live workload or provider data |
+| Optional LLM wording | Code, dry-run evidence, and separate historical n8n POC execution | Potential external inference and network | Schema, exact n8n export and execution screenshot, LangSmith dry-run | No token, energy, carbon, retry, or provider telemetry preserved |
 | Story draft | Deterministic prototype | Browser compute | Prototype code | Not current GenAI |
 | Gemini FX output generation | Performed separately before runtime | Unknown provider inference | Three local demo MP4 files | Provider impact unknown |
-| Family View | Local prototype | Browser rendering and local assets | Basic one-sign or session-based preview | No production traffic data |
+| Family View | Local/session-based MVP | Browser rendering and local assets | Assignment-driven mini-library using synthetic session state | No production traffic data |
 
 ## Architecture evidence
 
@@ -102,7 +103,7 @@ RAG should remain out of scope until a larger approved multilingual library crea
 
 ### Fixed workflow instead of agentic loops
 
-The current n8n design has explicit steps, branches, quality gates, and review preparation. It is not an autonomous planning agent.
+The current n8n design has explicit steps, branches, quality gates, and review preparation. The exact export and its separate successful historical execution evidence are versioned. It is not an autonomous planning agent or a production deployment.
 
 This fixed structure limits repeated tool calls and makes retries easier to count. Agentic orchestration should remain out of scope unless content volume and exception handling create a measured need.
 
@@ -110,7 +111,7 @@ This fixed structure limits repeated tool calls and makes retries easier to coun
 
 The optional model path transforms approved sign and routine data into concise family wording. The core Computer Vision and static family-material path do not depend on it.
 
-Current evidence includes local samples, JSON Schema checks, deterministic quality gates, an importable n8n design, and a LangSmith dry-run with network calls false. There is no live provider call, token count, latency, energy, carbon, or retry record.
+Current evidence includes local samples, JSON Schema checks, deterministic quality gates, the exact 12-node n8n export, a screenshot of its successful historical governed-draft execution on 31 August 2026, and a LangSmith dry-run with network calls false. The historical n8n evidence does not preserve token count, provider telemetry, energy, carbon, or retry measurements; it is not production deployment or proof of the later final MVP adapter. A fresh provider-backed rerun requires a new authorised credential because the former OpenAI course credential is unavailable.
 
 Before live use:
 
@@ -297,6 +298,7 @@ Every future environmental claim needs a defined baseline, functional unit, meas
 - [Visual sign packages](../../prototype/data/visual_sign_packages.json)
 - [LangSmith dry-run](../../workflow/langsmith_dry_run_summary.json)
 - [n8n workflow](../../workflow/kinder_signs_n8n_workflow.json)
+- [Successful historical n8n execution](../../workflow/evidence/n8n_successful_execution_2026-08-31.png)
 - [Family View prototype](../../prototype/family.html)
 - [GDPR retention and data-flow record](../../compliance/gdpr_documentation.md)
 

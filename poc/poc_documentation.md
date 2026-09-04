@@ -12,7 +12,7 @@ The experiment evaluates extraction coverage and representation quality. It does
 
 ## Evidence identity and version status
 
-The Round 1 POC result belongs to WATER.
+The Round 1 Computer Vision feasibility result belongs to WATER.
 
 The local file poc/input/sign_reference.mp4 is byte-identical to the registered local WATER input at ../resources/video_input/water.mp4. Both have:
 
@@ -336,7 +336,7 @@ The automated status must remain separate from professional review, visual revie
 
 ## Relationship to the current MORE MVP
 
-The local MORE demo is separate from this POC. Its successful ignored run reports 285 frames, 100.00% pose coverage, 91.93% dominant-hand coverage, EXTRACTION_PASS, and MOTION_REPRESENTATION_PARTIAL.
+The local MORE demo is separate from this POC. Its successful ignored run reports 285 frames, 100.00% pose coverage, 91.93% dominant-hand coverage, 25 missing dominant-hand frames, 4 interpolated frames, 21 unresolved frames, EXTRACTION_PASS, and MOTION_REPRESENTATION_PARTIAL.
 
 The MORE run does not replace the versioned WATER evidence. Neither result proves cross-sign performance.
 
@@ -354,11 +354,15 @@ On 4 September 2026, the six POC unit tests passed. The opt-in MORE integration 
 - The performer and sign material require appropriate consent, provenance, and usage rights before external display or reuse.
 - The landmarks are not used to identify a person.
 
-## Separate Round 1 workflow evidence
+## Separate formal low-code POC evidence
 
-The closed Computer Vision POC does not call n8n or LangSmith. Those tools have separate Round 1 evidence paths and do not validate landmark extraction, movement representation, or sign correctness.
+The Computer Vision feasibility artifact does not call n8n or LangSmith. Those tools have separate evidence paths and do not validate landmark extraction, movement representation, sign correctness, linguistic correctness, or professional approval.
 
-The exact inactive 12-node n8n export is documented in [the workflow guide](../workflow/kinder_signs_n8n_workflow.md). It is importable design evidence; no final target-runtime execution is claimed. The [LangSmith dry-run summary](../workflow/langsmith_dry_run_summary.json) records `DRY_RUN` with network calls false for the optional wording evaluation path. It is not a live trace and is not part of the Computer Vision processing loop.
+The formal low-code POC is the governed n8n workflow. Its exact 12-node export is versioned at [workflow/kinder_signs_n8n_workflow.json](../workflow/kinder_signs_n8n_workflow.json), and [the workflow guide](../workflow/kinder_signs_n8n_workflow.md) documents it. The screenshot at [workflow/evidence/n8n_successful_execution_2026-08-31.png](../workflow/evidence/n8n_successful_execution_2026-08-31.png) evidences a successful historical execution of `Kinder Signs — Governed Family Draft (Example)` on 31 August 2026: status Succeeded, execution ID #21441, duration 14.499 seconds. Evidence status: COMPLETE AT CAPSTONE LOW-CODE POC SCOPE.
+
+That historical execution remains a governed family-draft workflow, not autonomous publication or production deployment. It is not evidence that the later final MVP Content Pack adapter was exercised. The OpenAI course credential used then was removed or revoked shortly afterwards and is no longer available; a fresh provider-backed rerun would require a new authorised credential. This current reproducibility limit does not invalidate the historical execution.
+
+The [LangSmith dry-run summary](../workflow/langsmith_dry_run_summary.json) separately records `DRY_RUN` with network calls false for the optional wording evaluation path. It is not a live trace and is not part of the Computer Vision processing loop.
 
 ## Next technical step
 
@@ -400,7 +404,7 @@ Local ignored inputs and intermediate records:
 
 The code and non-video evidence are versioned. A full extraction rerun also requires the authorised local WATER MP4 and the compatible MediaPipe environment.
 
-The environment used for the current local prototype is poc_env with Python 3.9.6 and MediaPipe 0.10.14. A clean Python 3.11 or 3.12 environment remains a target, not a result of this verification.
+The environment used for the locally evidenced historical measurements is poc_env with Python 3.9.6 and MediaPipe 0.10.14. The deployment dependency file `poc/requirements.txt` now pins MediaPipe 0.10.21; that pin is not the environment used for those measurements and is not evidence of a successful hosted deployment. A clean Python 3.11 or 3.12 environment remains a future rebuild target, not a result of this verification.
 
 The POC test suite runs from the repository root with:
 

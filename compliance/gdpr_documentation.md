@@ -1,14 +1,15 @@
 # KinderFlow GDPR Data-Flow and Pilot Readiness Record
 
 **Assessment date:** 4 September 2026
-**Frozen repository baseline:** 8eb0742, Freeze connected KinderFlow capstone demo
+**Functional evidence baseline:** 8eb0742, Freeze connected KinderFlow capstone demo
+**Round 2 closure context:** `release/capstone-demo` adds the deployment pin, reconciled documentation, and final submission evidence without changing the demonstrated product baseline
 **Scope:** Current local MVP and proposed controlled pilot
 
 This record supports product and pilot decisions. It is not legal advice, a completed record of processing activities for a legal entity, or a compliance certificate. The controller must confirm the real purposes, roles, legal bases, contracts, retention periods, recipients, transfers, and safeguards before processing pilot data.
 
 ## Executive conclusion
 
-The current local MVP has a narrow data footprint. It processes an adult reference video locally and creates technical run artifacts. It uses synthetic Little Steps Nursery, family, and child records. It has no real child accounts, no production family delivery, and no evidenced live transfer of personal data to an LLM or LangSmith.
+The current local MVP has a narrow data footprint. It processes an adult reference video locally and creates technical run artifacts. It uses synthetic Little Steps Nursery, family, and child records. Its assignment-driven Family Experience is implemented only in browser/session state; it has no real child or family accounts, no production family delivery, and no evidenced live transfer of personal data to an LLM or LangSmith.
 
 The bounded direct MP4 route adds an external source to the current flow. The remote host receives network request data, and the local service receives the adult video. The service strips the query string from persisted provenance, but that control does not establish source rights or consent.
 
@@ -57,7 +58,7 @@ The current service does not use landmarks to uniquely identify anyone. It does 
 | 3. Local processing | OpenCV and MediaPipe read frames and extract landmarks | Local run directory | No cloud Computer Vision service is evidenced |
 | 4. Technical evidence | Service writes raw and normalized landmarks, summaries, plots, and previews | Local MVP run artifacts | Git ignores the run directory; that is not a retention or security control |
 | 5. Review | Operator views evidence and chooses a route or pose | Local process and browser state | No authenticated reviewer ledger |
-| 6. Product prototype | Synthetic assignment and family-preview records move between local pages | Browser session or static fixtures | No real accounts, durable service, or production delivery |
+| 6. Product prototype | A synthetic group or fictional-child assignment moves from School Admin to the corresponding Family View | Browser/session state | Assignment-driven mini-library works locally; no real accounts, durable service, or production delivery |
 | 7. Optional wording evaluation | Approved sign and routine content can enter deterministic checks or dry-run evaluation | Local JSON evidence | No live LLM or LangSmith personal-data transfer is evidenced |
 
 The direct URL implementation:
@@ -82,9 +83,9 @@ Evidence:
 
 ### Current synthetic product records
 
-The nursery and Family View use fictional Little Steps Nursery records, group labels, and Child A to Child F examples. Assignment state is local or session-based. This proves interface behaviour only.
+The nursery and Family View use fictional Little Steps Nursery records, group labels, and Child A to Child F examples. Assignment state is local or session-based. School Admin stores the selected sign, materials, and group or fictional child; Family View reads that state, and exact duplicate assignments are blocked. This proves the assignment-driven mini-library at local/session MVP scope only.
 
-A family-facing guidance prototype exists. A personalised assignment-driven family library remains a next product iteration. The current preview is not evidence of real delivery, family identity verification, access control, or account separation.
+The current experience is not evidence of real delivery, family identity verification, authentication, authorisation, durable cross-session or cross-device persistence, account or nursery separation, notifications, or production correction and deletion operations.
 
 ### Current asset and model boundaries
 
@@ -129,7 +130,7 @@ The pilot should not collect child video, voice, photographs, health data, devel
 7. Pilot reporting uses aggregated or pseudonymous measures.
 8. No school, family, or child identifier enters the Computer Vision, LLM, or LangSmith content path.
 
-The final personalised assignment-driven family mini-library does not exist in the current product. The pilot plan must build and test it before claiming end-to-end delivery.
+The local/session assignment-driven family mini-library exists. The pilot plan must build and test the identity, access, durable persistence, tenant separation, notification, delivery, correction, and deletion layers before claiming production end-to-end family delivery.
 
 ## Controller and processor assumptions
 
@@ -155,7 +156,7 @@ The current repository does not settle these roles.
 | Adult reference intake | Create technical movement evidence | Adult image, movement, possible voice, source metadata | KinderFlow controller assumption | Consent, contract, or legitimate interests must be assessed against the actual relationship | Local operator and service; remote host supplies direct-URL file | Manual deletion; no automatic limit evidenced |
 | Computer Vision run | Extract and review landmarks and previews | Adult video, landmarks, metrics, artifacts | Same as source activity | Same purpose and basis; necessity must be documented | Local process only | Manual deletion |
 | Direct URL retrieval | Receive one public MP4 | Source URL, request metadata, adult video | KinderFlow controller assumption | Authority to retrieve and use content must be documented | Public source host sees request metadata | Query stripped in stored provenance; local video follows run retention |
-| Synthetic product demonstration | Demonstrate nursery, assignment, and Family View interactions | Fictional records only | Not a real personal-data activity on current evidence | Not applicable to synthetic fixtures | Local browser and service | Session or static fixture |
+| Synthetic product demonstration | Demonstrate assignment-driven nursery and Family View interactions | Fictional records only | Not a real personal-data activity on current evidence | Not applicable to synthetic fixtures | Local browser and service | Browser/session state |
 | Optional family-copy dry-run | Test bounded output and quality rules | Approved sign and routine content | Internal development | No personal data should be used | Local files; no live LangSmith or LLM call evidenced | Versioned sample evidence |
 | Asset registry | Preserve identity, mapping, provenance, and rights status | Asset metadata; may include creator attribution | KinderFlow controller assumption | Legitimate documentation purpose to confirm | Repository reviewers | Versioned while evidence is needed |
 
@@ -235,6 +236,8 @@ The controller must approve or replace these values after checking legal obligat
 ### Current recipients
 
 Current identifiable adult content remains on the local machine in the evidenced flow. The local operator and operating-system processes can access it. A direct video host receives the fetch request and network metadata. The repository does not evidence a live upload of the adult video, landmarks, or school or family data to OpenAI, LangSmith, Google, or another model provider.
+
+A separate [screenshot](../workflow/evidence/n8n_successful_execution_2026-08-31.png) evidences a successful historical n8n governed-family-draft execution on 31 August 2026 at 21:30:27 (execution #21441, 14.499 seconds). It does not evidence that adult, child, family, or nursery personal data was transferred, that the later final MVP Content Pack adapter was exercised, or that n8n was deployed to production. The OpenAI course credential used at that time was removed or revoked shortly afterwards; a new authorised credential would be required for a fresh provider-backed rerun, and the former key must not be reconstructed or exposed.
 
 The Gemini FX output files were prepared before or outside the current runtime. Their provider-side source, account, processing location, retention, and transfer history are not documented here.
 
@@ -372,7 +375,7 @@ The DPIA is not complete until the actual architecture, controllers, vendors, co
 | Roles are assumptions | Sign controller, processor, and sub-processor allocation | All purposes assigned before data collection | Legal and privacy owners | No real data until complete |
 | Legal bases remain undecided | Complete purpose-by-purpose Article 6 analysis | Decision and rationale recorded for every activity | Controller | Do not rely on bundled consent |
 | Retention is manual | Implement and test deletion | One hundred percent of test records follow approved schedule | Engineering and privacy owner | No pilot if deletion cannot be demonstrated |
-| Family delivery is not implemented | Build secure access and relationship verification | Cross-family and cross-nursery access tests pass | Engineering and security owner | Zero wrong-recipient access |
+| Production family identity and delivery are not implemented | Build secure access, durable persistence, tenant isolation, and relationship verification around the local/session mini-library | Cross-family and cross-nursery access tests pass | Engineering and security owner | Zero wrong-recipient access |
 | Vendor and transfer map is empty | Complete DPA, sub-processor, location, and transfer review | Written evidence for every vendor | Privacy and procurement owners | No undeclared recipient |
 | DPIA is only a short screen | Complete the DPIA and residual-risk decision | Signed before live pilot | Controller and DPO or adviser | Stop if high residual risk lacks a lawful resolution |
 | Rights and incident processes do not exist | Test requests, revocation, breach handling, correction, and withdrawal | Exercise completed before launch | Privacy, security, and Content Operations | No pilot without accountable owners |

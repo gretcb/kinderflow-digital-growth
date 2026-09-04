@@ -31,7 +31,7 @@ This review asks whether each part earns its place now. The goal is a smaller, c
 
 ## Reproducibility issue to fix, not defer
 
-The working local `poc_env` currently reports Python 3.9.6, while the MVP documentation specifies Python 3.11/3.12. The default Python 3.13 installation cannot load the required legacy MediaPipe Solutions API. Before external hand-off, rebuild the environment on a documented supported version, install from the locked requirements and rerun the real demo integration test.
+This pre-final review identified that the locally evidenced `poc_env` uses Python 3.9.6 and MediaPipe 0.10.14, while Python 3.11 or 3.12 is the clean future rebuild target. The separate deployment requirements now pin MediaPipe 0.10.21; that was not the environment used for the historical local measurements. The default Python 3.13 installation cannot load the required legacy MediaPipe Solutions API. Before a future production-oriented handoff, rebuild on a documented supported version, install the pinned requirements, and rerun the real demo integration test.
 
 ## Main cut recommendation
 

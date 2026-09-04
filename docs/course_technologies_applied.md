@@ -113,13 +113,13 @@ Evidence statuses used in this document:
 
 **What problem it solves:** Makes a repeatable content-operations sequence visible through explicit steps, branching, structured handoffs, quality-gate routing, and human-review preparation.
 
-**Where it appears:** `workflow/kinder_signs_n8n_workflow.json`, `workflow/kinder_signs_n8n_workflow.md`, and `content_ops/contracts/n8n_content_operations_contract.json`.
+**Where it appears:** `workflow/kinder_signs_n8n_workflow.json`, `workflow/kinder_signs_n8n_workflow.md`, `workflow/evidence/n8n_successful_execution_2026-08-31.png`, and `content_ops/contracts/n8n_content_operations_contract.json`.
 
 **Why it fits:** A visual workflow can make ownership and exceptions easier to inspect when content volume grows beyond local manual coordination.
 
-**Current evidence status:** **PARTIAL**. The repository contains an exact, valid, inactive 12-node importable export plus its contract and documentation. No execution in a target n8n runtime is claimed.
+**Current evidence status:** **VERSIONED EVIDENCE / COMPLETE AT CAPSTONE LOW-CODE POC SCOPE**. The repository contains the exact valid 12-node importable export (currently `active: false`), its contract and documentation, and a screenshot of **Kinder Signs — Governed Family Draft (Example)** on 31 August 2026 at 21:30:27, status **Succeeded**, execution ID #21441, and duration 14.499 seconds.
 
-**What it does not do:** n8n is not the product, does not validate sign accuracy, and cannot approve or publish a sign autonomously.
+**What it does not do:** n8n is not the product, does not validate sign accuracy, and cannot approve or publish a sign autonomously. The historical run is not production deployment or proof that the later final MVP Content Pack adapter ran. The former OpenAI course credential is unavailable, so a fresh provider-backed rerun requires a new authorised credential.
 
 ## LangSmith observability
 
@@ -131,7 +131,7 @@ Evidence statuses used in this document:
 
 **Current evidence status:** **PARTIAL**. A local `DRY_RUN` summary exists with network calls false. No live external trace is claimed.
 
-**What it does not do:** LangSmith does not assess MediaPipe coverage, hand mechanics, sign correctness, visual rights, or professional approval.
+**What it does not do:** LangSmith does not assess hand movement, MediaPipe output, sign correctness, linguistic correctness, visual rights, or professional approval.
 
 ## Optional LLM content drafting
 
@@ -141,7 +141,7 @@ Evidence statuses used in this document:
 
 **Why it fits:** It is limited to a reversible text draft while deterministic rules and people retain approval authority.
 
-**Current evidence status:** **PARTIAL**. Prompt, optional live script path, sample output, evaluation cases, and deterministic checks exist. The current content manifests use human-authored copy, and no live model call is evidenced for the final workflow.
+**Current evidence status:** **PARTIAL**. Prompt, optional live script path, sample output, evaluation cases, and deterministic checks exist. The current content manifests use human-authored copy, and no live model call is evidenced for the later final MVP Content Pack adapter. The separate historical n8n POC execution does not prove that adapter ran.
 
 **What it does not do:** It does not invent sign mechanics, interpret movement, certify content, approve rights, or publish automatically.
 
@@ -209,11 +209,11 @@ Evidence statuses used in this document:
 
 **What problem it solves:** Preserves versions of code, documentation, contracts, source records, exports, and evidence so a reviewer can trace changes to an exact checkpoint.
 
-**Where it appears:** The repository history and the frozen checkpoint `8eb0742dae49d8a1ac032d0f53d4475cc694c8b2` on `feature/final-overview-polish`.
+**Where it appears:** The repository history, the shared functional checkpoint `8eb0742dae49d8a1ac032d0f53d4475cc694c8b2`, and the final `release/capstone-demo` line that combines the deployment pin, reconciled documentation, and submission artifacts.
 
 **Why it fits:** Capstone claims are more reproducible when they point to versioned artifacts and an exact baseline.
 
-**Current evidence status:** **CURRENT WORKING** for local version control and evidence preservation. This reconciliation changes documentation only and is not committed or pushed.
+**Current evidence status:** **CURRENT WORKING** for local version control and evidence preservation. The release branch preserves exact exported artifacts, historical execution evidence, and the current prototype separately.
 
 **What it does not do:** Git history alone does not prove a live service ran, an external right exists, a reviewer was qualified, or a product claim is valid.
 
@@ -277,7 +277,7 @@ Evidence statuses used in this document:
 | Open Peeps | Character and line grammar | VERSIONED EVIDENCE | Style does not determine the sign |
 | Deterministic SVG | Repeatable visual candidates | PARTIAL | All 18 candidates require review |
 | Gemini FX | Illustrative motion preview | DEMO ONLY | Separate from the current run and landmarks |
-| n8n | Visible workflow orchestration | PARTIAL | Importable export, no target-runtime proof |
+| n8n | Visible workflow orchestration | VERSIONED EVIDENCE | Exact export plus historical successful execution; not production or later-adapter proof |
 | LangSmith | Optional LLM trace and evaluation | PARTIAL | Local dry-run, no live trace |
 | Optional LLM | Bounded family-copy draft | PARTIAL | No sign mechanics or publication authority |
 | JSON Schema | Structured handoffs | CURRENT WORKING | Valid shape does not prove content correctness |

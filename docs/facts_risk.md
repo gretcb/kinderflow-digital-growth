@@ -1,6 +1,6 @@
 # Kinder Signs Risk Facts
 
-**Frozen baseline:** 8eb0742
+**Functional evidence baseline:** 8eb0742; final closure evidence is recorded on `release/capstone-demo`
 **Use:** Canonical evidence and wording for risk, pilot, and presentation documents
 
 This file does not certify product safety, legal compliance, sign correctness, or pilot readiness.
@@ -10,11 +10,11 @@ This file does not certify product safety, legal compliance, sign correctness, o
 - A technical extraction pass is not sign approval.
 - Detection coverage is not sign accuracy.
 - A registry hash is not proof of ownership, consent, or complete security.
-- An importable n8n export is not a live workflow run.
+- An importable n8n export alone is not a live workflow run; KinderFlow separately preserves a successful historical runtime screenshot.
 - A LangSmith dry-run is not a live external trace.
 - A separately prepared Gemini video is not current landmark-generated output.
 - A screen prototype is not production delivery.
-- A family preview is not a personalised assignment-driven family library.
+- A local, session-based assignment-driven family mini-library is not authenticated, durable production family delivery.
 - A successful schema or hash check is not publication approval.
 
 ## Technical evidence
@@ -25,12 +25,20 @@ The committed Round 1 WATER run records:
 - 100.00 percent pose coverage;
 - 93.98 percent dominant right-hand coverage;
 - 20 missing hand frames;
-- extraction pass; and
-- motion representation partial.
+- 1 interpolated frame;
+- 19 unresolved frames;
+- `EXTRACTION_PASS`; and
+- `MOTION_REPRESENTATION_PARTIAL`.
 
 The 93.98 percent value is hand-detection coverage for WATER. It is not sign correctness.
 
-The registered MORE input is present and hash-mapped. The canonical registry does not assign the WATER diagnostics to MORE. A current MORE run with 285 frames, 100 percent pose coverage, and 91.93 percent dominant-hand coverage exists only as ignored local-run evidence and must be labelled local-only if cited.
+The registered MORE input is present and hash-mapped. The connected local MORE demonstration records 285 processed frames, 100.00 percent pose coverage, 91.93 percent dominant-hand coverage, 25 missing dominant-hand frames, 4 interpolated frames, 21 unresolved frames, `EXTRACTION_PASS`, and `MOTION_REPRESENTATION_PARTIAL`. It is local demonstration evidence, not the versioned WATER run. The canonical registry does not assign the WATER diagnostics to MORE.
+
+## Low-code workflow evidence
+
+The exact 12-node [n8n export](../workflow/kinder_signs_n8n_workflow.json) is versioned. The [execution screenshot](../workflow/evidence/n8n_successful_execution_2026-08-31.png) records **Kinder Signs — Governed Family Draft (Example)** succeeding on 31 August 2026 at 21:30:27, execution ID #21441, in 14.499 seconds. Status: **COMPLETE AT CAPSTONE LOW-CODE POC SCOPE**.
+
+This is evidence of a real historical governed-draft execution, not autonomous publication or production deployment. It does not prove that the later final MVP Content Pack adapter was exercised. The OpenAI course credential used at the time was removed or revoked shortly afterwards; a fresh provider-backed rerun is not currently possible without a new authorised credential. The former key must not be reconstructed, exposed, or committed. LangSmith remains separate observability and evaluation evidence; its committed record is a dry-run, not a live trace, and it does not validate hand movement, MediaPipe output, sign or linguistic correctness, or professional approval.
 
 ## Current asset facts
 
@@ -70,7 +78,7 @@ The local service checks file identity and mapping. It accepts a null demo-displ
 | Six-sign registry and five-sign package disagree | The wrong sign can inherit evidence or publication data | Canonical registry identifies WATER correctly | Present contradiction | Regenerate package with zero cross-sign evidence links |
 | Direct URL retrieves unsuitable content | Transport controls do not establish lawful or safe use | Public-target, redirect, MIME, size, time, filename, cleanup, and redaction controls | Partial evidence | Authorised sources, HTTPS or controlled storage, identity, rate, isolation, logs, and deletion |
 | Child or family data enters an AI path | Vulnerable-person data could be exposed or reused | Synthetic data and no live personal-data model call | Current evidence present; future risk | Zero personal child or family data sent to LLM or LangSmith |
-| Wrong family sees an assignment | Reveals a child relationship and damages trust | No real delivery in current prototype | Cannot be tested yet | Secure identity, nursery separation, relationship checks, and deny-by-default access |
+| Wrong family sees an assignment | Reveals a child relationship and damages trust | Synthetic session-based assignment handoff exists; no real identities or production delivery | Cannot be tested with real families yet | Secure identity, nursery separation, relationship checks, and deny-by-default access |
 | Unreviewed content reaches a user | Removes the principal safety control | Current registry blocks all signs; review UX exists | Partial evidence | Authenticated publication gate and zero unreviewed delivery |
 | Unsupported family wording sounds clinical | May create unsafe expectations | Banned-claim and source-adherence checks | Partial evidence | Live-provider evaluation and human approval |
 | Reviewer decisions vary | Quality and throughput may be unstable | Review prompts | Measurement gap | Training, rubric, second review, disagreement and exception measures |
@@ -78,7 +86,7 @@ The local service checks file identity and mapping. It accepts a null demo-displ
 | Accessibility is insufficient | Families may not understand or use material | Spanish and bilingual formats | Partial evidence | Keyboard, screen-reader, contrast, print, caption, and comprehension testing |
 | Energy or carbon benefit is overstated | Creates unsupported sustainability claims | Green AI audit states measurement gap | Evidence present for gap | No benefit claim until functional-unit measurement exists |
 | Educators do not repeat assignments | Product may not solve the operational problem | Local assignment prototype | Pilot hypothesis | Measure time, support, repeat use, and abandonment |
-| Families do not use or value guidance | Preview does not prove value | Basic Family View | Pilot hypothesis | Measure authorised access, repeat use, clarity, and usefulness |
+| Families do not use or value guidance | Local session behaviour does not prove real-family value | Assignment-driven Family View at local/session scope | Pilot hypothesis | Measure authorised access, repeat use, clarity, and usefulness |
 | Buyers will not pay | A working asset may not support a business | Pricing and ROI scenarios only | Commercial evidence gap | Test decision-maker budget, willingness to pay, and continuation |
 
 ## Three priority risks
@@ -121,7 +129,7 @@ Decision rule: block every asset with an unknown external-use status.
 
 ## Material gate outside the top three: secure family delivery
 
-Client fact: Family View is a local preview, not a personalised account service.
+Client fact: Family View is an assignment-driven local/session mini-library, not an authenticated, durable or tenant-separated family account service.
 
 Action: build and test group-first, role-based, nursery-separated family access.
 
@@ -145,6 +153,8 @@ Decision rule: stop the pilot on any wrong-recipient access or unauthorised AI t
 ## Evidence
 
 - [WATER POC evidence](../poc/output/)
+- [Exact 12-node n8n export](../workflow/kinder_signs_n8n_workflow.json)
+- [Successful historical n8n execution](../workflow/evidence/n8n_successful_execution_2026-08-31.png)
 - [Current MVP reality check](mvp_reality_check.md)
 - [Local pipeline](../mvp/pipeline.py)
 - [Current tests](../mvp/tests/)

@@ -1,5 +1,8 @@
-# KinderFlow Round 1 technical requirements
-# Python 3.11 recommended
+# KinderFlow shared local-development requirements
+# Clean future rebuild target: Python 3.11 or 3.12.
+# Locally evidenced final-presentation environment: Python 3.9.6 with MediaPipe 0.10.14.
+# Deployment is pinned separately to MediaPipe 0.10.21 in poc/requirements.txt;
+# that deployment pin was not the environment used for the historical measurements.
 
 # Computer Vision POC
 opencv-python>=4.8.0
@@ -8,7 +11,8 @@ pandas>=2.0.0
 numpy>=1.24.0
 matplotlib>=3.7.0
 
-# Optional: LangSmith live evaluation
+# Optional evaluation SDKs. Committed LangSmith evidence is a dry-run only;
+# no live LangSmith trace is claimed.
 langsmith>=0.1.0
 openai>=1.0.0
 python-dotenv>=1.0.0

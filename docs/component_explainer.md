@@ -86,15 +86,15 @@ Purpose: trace and evaluate only optional LLM wording.
 
 Current state: documented evaluation path and committed dry-run summary.
 
-Boundary: no live external trace; no evaluation of video, MediaPipe, movement, or professional correctness.
+Boundary: no live external trace; no evaluation of hand movement, MediaPipe output, sign correctness, linguistic correctness, or professional approval.
 
 ### n8n
 
 Purpose: describe repeatable orchestration from approved inputs to a draft awaiting professional review.
 
-Current state: exact inactive JSON export and node documentation.
+Current state: exact importable 12-node JSON export (currently `active: false`), node documentation, and `workflow/evidence/n8n_successful_execution_2026-08-31.png`. The screenshot records **Kinder Signs — Governed Family Draft (Example)** on 31 August 2026 at 21:30:27, status **Succeeded**, execution ID #21441, and duration 14.499 seconds. Evidence status: **COMPLETE AT CAPSTONE LOW-CODE POC SCOPE**.
 
-Boundary: final adapter execution in a target n8n runtime is not evidenced. The workflow cannot publish autonomously.
+Boundary: the historical run is not production deployment, does not evidence the later final MVP Content Pack adapter, and cannot publish autonomously. Its former OpenAI course credential is unavailable; a new authorised credential is required for a fresh provider-backed rerun.
 
 ## Delivery components
 
@@ -108,7 +108,7 @@ Current state: local interface and blocked package records. The registry reports
 
 Purpose: demonstrate a low-effort school workflow for selecting a sign, group, materials, and audience.
 
-Current state: synthetic session-based behavior with duplicate control, editing, and removal.
+Current state: synthetic session-based behavior with editing and removal. Exact duplicates are blocked with: "This exact sign, audience and material combination is already active."
 
 Boundary: no production account, permission service, database, or real delivery.
 
@@ -116,9 +116,9 @@ Boundary: no production account, permission service, database, or real delivery.
 
 Purpose: show short guidance and selected material in family language.
 
-Current state: basic browser prototype that can read synthetic assignment state.
+Current state: browser/session-based Family Experience that reads synthetic assignment state and displays the corresponding sign and material set as a mini-library.
 
-Boundary: a personalised assignment-driven family mini-library, family accounts, notifications, and persistent delivery remain future work.
+Boundary: the assignment-driven mini-library is implemented only at local/session-based MVP scope. Real identities and family accounts, authentication and authorisation, notifications, durable cross-session and cross-device persistence, production school accounts, tenant isolation, production correction/deletion workflows, and external nursery-platform integration remain future work.
 
 ### Pilot measurement
 

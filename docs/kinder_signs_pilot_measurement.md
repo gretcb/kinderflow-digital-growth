@@ -26,16 +26,14 @@ Current evidence:
 
 - a local computer vision evidence path exists;
 - a professional interpretation and explicit review status exist;
-- a local nursery assignment flow exists;
-- a family-facing guidance preview exists.
+- a local nursery assignment flow exists, including exact-duplicate assignment control;
+- an assignment-driven Family Experience reads the selected synthetic sign and materials from browser/session state.
+
+The assignment-driven mini-library is implemented at local, session-based MVP scope. It is not a completed production delivery service: it has no real family identities or accounts, authentication or authorisation, durable cross-session or cross-device persistence, real notifications, production tenant isolation, or production correction and deletion operations.
 
 Required pilot iteration:
 
-> A family-facing guidance prototype exists. A personalised assignment-driven family library remains a next product iteration.
-
-The pilot must add and test a small assignment-driven family mini-library. It must not describe a static or session-based preview as a completed personalised delivery service.
-
-The mini-library must:
+The pilot must harden and test the demonstrated mini-library for authorised family delivery. The production-capable service must:
 
 - show only signs assigned to the relevant nursery group or authorised pilot family context;
 - show reviewed family wording, source status, and correction state;

@@ -8,7 +8,7 @@ The local service connects three internal prototype areas:
 - governed Content Pack generation and review; and
 - the static KinderFlow product routes.
 
-It reuses the Round 1 POC and Content Operations contracts. It does not publish a sign or deliver content to a real school or family.
+It reuses the separate Round 1 Computer Vision feasibility artifact and Content Operations contracts. It does not publish a sign or deliver content to a real school or family.
 
 ## Evidenced environment
 
@@ -20,7 +20,7 @@ The frozen local environment uses:
 - ffmpeg 8.1.2 with an H.264 encoder; and
 - the repository-local poc_env.
 
-Python 3.11 or 3.12 remains the preferred clean-environment target, but that setup was not revalidated in this evidence pass. The local MediaPipe runtime may require a macOS graphics context even when inference uses the CPU delegate.
+These locally demonstrated measurements came from Python 3.9.6 and MediaPipe 0.10.14. The separate deployment dependency file `poc/requirements.txt` pins MediaPipe 0.10.21; it is not the environment used for those historical measurements and does not prove a successful hosted deployment. Python 3.11 or 3.12 remains the preferred clean-environment target, but that setup was not revalidated in this evidence pass. The local MediaPipe runtime may require a macOS graphics context even when inference uses the CPU delegate.
 
 The demo shortcut also requires the local, ignored MORE file registered at ../resources/video_input/more.mp4.
 
@@ -30,9 +30,19 @@ From the repository root:
 
     poc_env/bin/python mvp/app.py
 
-Open http://127.0.0.1:8000/create-sign.html.
+The application default remains port 8000. Open http://127.0.0.1:8000/create-sign.html. The service root at http://127.0.0.1:8000 also opens create-sign.html.
 
-The service root at http://127.0.0.1:8000 also opens create-sign.html.
+The final presentation used this explicit command without changing the application default:
+
+    poc_env/bin/python mvp/app.py --port 8765
+
+Canonical demonstrated routes:
+
+- http://127.0.0.1:8765/index.html
+- http://127.0.0.1:8765/kinder-signs.html
+- http://127.0.0.1:8765/create-sign.html
+- http://127.0.0.1:8765/school.html?sign=more&focus=share
+- http://127.0.0.1:8765/family.html
 
 ## Page routes
 
@@ -49,7 +59,7 @@ The service exposes these prototype files:
 - /create-story.html: deterministic MORE story prototype;
 - /create-song.html: Coming soon page;
 - /school.html: Little Steps Nursery assignment demonstration; and
-- /family.html: family-facing preview.
+- /family.html: session-based, assignment-driven Family Experience and mini-library.
 
 ## Create a Sign path
 
@@ -211,6 +221,14 @@ After local visual approval:
 
 There is no PNG export, server PDF service, or live LLM call from the Story page.
 
+## School assignment and Family Experience
+
+The demonstrated local flow continues from family-material creation to Little Steps Nursery. The school page uses synthetic groups and fictional children. An educator selects the sign, materials, group, and either the whole group or a fictional child, then shares the assignment into browser session state. The exact duplicate guard says: `This exact sign, audience and material combination is already active.`
+
+Family View reads that session state and displays the corresponding sign and materials in `Your mini-library`. This assignment-driven family mini-library is implemented at local, session-based MVP scope. It is not merely a static mock-up.
+
+The implementation does not provide real family identities or accounts, authentication or authorisation, durable cross-session or cross-device persistence, real notifications or delivery, production school accounts, tenant isolation, production correction or deletion workflows, or external nursery-platform integrations.
+
 ## Content Pack API
 
 POST /api/content-packs/generate accepts a GENERATE_CONTENT_PACK object under the shared schema.
@@ -221,6 +239,8 @@ POST /api/content-packs/generate accepts a GENERATE_CONTENT_PACK object under th
 - Every attempt is stored under an isolated ignored mvp/runs/content_packs directory.
 - Deterministic checks run before human review.
 
+The committed LangSmith evidence is a dry-run only, not a live trace. LangSmith is limited to optional wording observability and does not validate hand movement, MediaPipe output, sign correctness, linguistic correctness, or professional approval.
+
 Review endpoints:
 
 - POST /api/content-packs/{content_id}/approve
@@ -229,6 +249,14 @@ Review endpoints:
 - GET /api/content-packs/{content_id}
 
 Local approval records the generic actor type human_reviewer and creates a reviewed content version. It does not publish a library item.
+
+## Formal low-code POC
+
+The formal low-code POC is the governed n8n workflow, separate from the Computer Vision feasibility artifact and the later MVP Content Pack adapter. The exact 12-node export is versioned at `workflow/kinder_signs_n8n_workflow.json`, with documentation at `workflow/kinder_signs_n8n_workflow.md`.
+
+`workflow/evidence/n8n_successful_execution_2026-08-31.png` evidences a successful historical execution of `Kinder Signs — Governed Family Draft (Example)` on 31 August 2026: status Succeeded, execution ID #21441, and duration 14.499 seconds. Evidence status: COMPLETE AT CAPSTONE LOW-CODE POC SCOPE. It is not production deployment, autonomous publication, or proof that the final MVP adapter was exercised.
+
+The OpenAI course credential used for that historical run was removed or revoked and is no longer available. A fresh provider-backed rerun would require a new authorised credential; this does not invalidate the historical execution.
 
 ## Reference and asset API
 
@@ -271,4 +299,4 @@ The skipped integration invokes private local media and MediaPipe. Its separate 
 
 ## Production gaps
 
-The service has no authentication, production database, reviewer identity, tenant isolation, cloud store, enforced retention policy, real publication, school integration, family accounts, notifications, payment, or production monitoring. It processes adult references only and performs no child scoring, language recognition, or autonomous educational decision.
+The service has no authentication or authorisation, production database, reviewer identity, tenant isolation, cloud store, enforced retention policy, real publication, production school accounts, external nursery-platform integration, real family accounts, durable cross-session or cross-device assignment persistence, notifications or delivery, production correction or deletion workflow, payment, or production monitoring. It processes adult references only and performs no child scoring, language recognition, or autonomous educational decision.

@@ -9,7 +9,7 @@ Evidence rule: each quantitative statement is labelled as a founder-observed fac
 
 KinderFlow should proceed to a small, controlled pilot, subject to the gates in this document. The opportunity is not yet a proven software business. It is a supported service hypothesis for nursery schools that already use or want to use baby signs and need a clearer way to review signs, assign them to groups, and give families consistent guidance.
 
-The first paying customer is expected to be a nursery school or small nursery group. The economic buyer is the owner or director. Educators and support staff are daily users. In the intended service, families receive reviewed guidance through the nursery; they are not the core payer. The current product provides only a basic family-facing guidance preview.
+The first paying customer is expected to be a nursery school or small nursery group. The economic buyer is the owner or director. Educators and support staff are daily users. In the intended service, families receive reviewed guidance through the nursery; they are not the core payer. The current product implements a synthetic, session-based assignment-driven Family Experience and mini-library, but it does not provide real family identity, access, or delivery.
 
 The immediate decision is whether a 2 to 3 nursery, 3 to 5 sign pilot can demonstrate:
 
@@ -161,9 +161,9 @@ AI is not required for nursery assignment, family access, review-state enforceme
 
 ## Current evidence and product boundary
 
-### Proof of concept
+### Computer Vision technical feasibility artifact
 
-The proof of concept is a local evidence pipeline. It demonstrates that a controlled adult sign reference can produce:
+The separate Computer Vision feasibility artifact is a local evidence pipeline. It demonstrates that a controlled adult sign reference can produce:
 
 - extracted visual and pose evidence;
 - versioned manifests and audit artefacts;
@@ -173,22 +173,31 @@ The proof of concept is a local evidence pipeline. It demonstrates that a contro
 
 Historical WATER evidence and the current MORE demo path are technical evidence only. They do not establish sign-language correctness across signs, environments, people, or camera conditions. All output remains subject to qualified review.
 
+### Formal low-code proof of concept
+
+The formal low-code POC is the governed 12-node n8n workflow. Its exact export is versioned at `workflow/kinder_signs_n8n_workflow.json`, and its design is documented at `workflow/kinder_signs_n8n_workflow.md`.
+
+The screenshot at `workflow/evidence/n8n_successful_execution_2026-08-31.png` evidences a successful historical runtime execution of `Kinder Signs — Governed Family Draft (Example)` on 31 August 2026: status Succeeded, execution ID #21441, duration 14.499 seconds. Evidence status: COMPLETE AT CAPSTONE LOW-CODE POC SCOPE. It remains a governed draft workflow, not autonomous publication or production deployment, and the screenshot does not prove that the later final MVP Content Pack adapter was exercised.
+
+The OpenAI course credential used for that historical run was removed or revoked shortly afterwards and is no longer available. A fresh provider-backed rerun would require a new authorised credential; the loss of that credential does not invalidate the historical execution. LangSmith remains a separate optional wording-observability component. Only a committed dry-run exists, not a live trace, and LangSmith does not validate hand movement, MediaPipe output, sign correctness, linguistic correctness, or professional approval.
+
 ### Minimum viable workflow
 
 The repository also contains a local nursery workflow that can:
 
 - display a reviewed professional record;
-- assign a sign to a nursery group in session state;
-- show a family-facing guidance preview;
+- assign a sign and materials to a nursery group or fictional child in session state;
+- reject an exact duplicate with `This exact sign, audience and material combination is already active.`;
+- show the corresponding assignment-driven Family Experience and mini-library; and
 - preserve a local audit trail for the demonstrated flow.
 
-This is a workflow prototype, not a hosted multi-tenant service. Authentication, durable accounts, production access control, persistent assignments, real delivery, notifications, and operational integrations are not complete.
+This is a workflow prototype, not a hosted multi-tenant service. Authentication and authorisation, real family identities and accounts, production school accounts, tenant isolation, durable cross-session and cross-device persistence, real notifications and delivery, production correction and deletion workflows, and external nursery-platform integrations are not complete.
 
 ### Family-facing boundary
 
-A family-facing guidance prototype exists. A personalised assignment-driven family library remains a next product iteration.
+A session-based, assignment-driven Family Experience and mini-library is implemented at local MVP scope. School Admin stores a synthetic assignment in browser session state, and Family View reads that state to display the corresponding sign and materials.
 
-The controlled pilot must therefore add and test a small assignment-driven family mini-library. It must not describe the current static or session-based preview as a completed personalised delivery product.
+The controlled pilot must therefore adapt and test that local interaction with consented real users and production-appropriate identity, access, persistence, delivery, notification, correction, deletion, and tenant controls. The implemented local mini-library must not be described as a completed production delivery product.
 
 ### Content inventory boundary
 
@@ -290,7 +299,7 @@ Round 2 is not a broader feature build. It is an evidence-focused pilot that mus
 2. select and clear 3 to 5 signs;
 3. complete pilot readiness in 8 to 9 weeks overall;
 4. run a controlled service test for 3 to 4 weeks within that period;
-5. add the assignment-driven family mini-library;
+5. adapt the implemented local assignment-driven family mini-library for a consented controlled service;
 6. collect teacher, family, content-operations, technical, and commercial evidence;
 7. end with a GO, ITERATE, or STOP decision.
 
@@ -311,8 +320,8 @@ Each pilot decision applies the Tejal specificity pattern: client fact, baseline
 ### Family value
 
 - Client fact: families have asked for sign lists or materials.
-- Baseline: no assignment-driven family library and no observed family access data.
-- Action: deliver a reviewed mini-library linked to actual nursery assignments.
+- Baseline: a synthetic session-based assignment-driven mini-library exists, but there are no real family identities, durable delivery, or observed family access data.
+- Action: operationalise the reviewed mini-library for consented pilot families and link it to actual nursery assignments.
 - Target: meet the signed family access, repeat-use, and clarity thresholds in the pilot measurement plan with no blocked or unreviewed delivery.
 - Owner: product lead, nursery pilot lead, and privacy owner.
 - Cost: included in workflow refinement, user research, and coordination.
@@ -372,4 +381,4 @@ The following remain outside the controlled pilot unless separately approved:
 
 PROCEED WITH CONDITIONS.
 
-The current evidence is sufficient for a narrow, instrumented pilot, but not for production launch or an investment claim. The conditions are complete rights and review gates, an assignment-driven family mini-library, exact teacher and family measurement, explicit price testing, and zero breach of the stated hard boundaries.
+The current evidence is sufficient for a narrow, instrumented pilot, but not for production launch or an investment claim. The conditions are complete rights and review gates, a consented and identity-backed pilot delivery layer for the implemented family experience, exact teacher and family measurement, explicit price testing, and zero breach of the stated hard boundaries.

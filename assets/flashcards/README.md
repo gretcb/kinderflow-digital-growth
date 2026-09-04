@@ -76,7 +76,7 @@ The illustration safe area must keep both hands visible, separated from the body
 
 ## School and family output rule
 
-Kinder Signs is designed to create a flashcard from an approved sign package; educators do not design the asset. The current School Admin and Family View use local or session-based prototype state. They do not prove automatic family delivery or a personalised assignment-driven mini-library. The controlled pilot must build and test that handoff before claiming that an active pack reaches a real family account. No billing is implemented here.
+Kinder Signs is designed to create a flashcard from an approved sign package; educators do not design the asset. School Admin stores synthetic assignments in browser/session state, and Family View reads that state to display the corresponding sign and materials. This implements the assignment-driven mini-library at local/session-based MVP scope. It does not prove automatic delivery to real family identities or accounts, durable cross-session or cross-device persistence, authentication or authorisation, notifications, production school accounts, tenant isolation, production correction/deletion workflows, or external nursery-platform integration. No billing is implemented here.
 
 ## Remaining manual asset work
 

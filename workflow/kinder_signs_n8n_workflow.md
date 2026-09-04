@@ -2,11 +2,13 @@
 
 ## Evidence status
 
-workflow/kinder_signs_n8n_workflow.json is the exact n8n export stored in the repository. It parses as JSON, contains 12 nodes, and has active set to false.
+**COMPLETE AT CAPSTONE LOW-CODE POC SCOPE.** `workflow/kinder_signs_n8n_workflow.json` is the exact n8n export stored in the repository. It parses as JSON, contains 12 nodes, has `active` set to `false`, and is named **Kinder Signs — Governed Family Draft (Example)**.
 
-The repository contains an importable n8n orchestration design and its exact export. Live execution of the final adapter contract is not claimed.
+`workflow/evidence/n8n_successful_execution_2026-08-31.png` records a real historical n8n execution of that named governed workflow on 31 August 2026 at 21:30:27. The screenshot shows status **Succeeded**, duration 14.499 seconds, execution ID `#21441`, and the visible successful governed path.
 
-The export has no execution history, target-version compatibility record, or proof that it called the current Content Pack endpoint. It contains a placeholder credential reference but no API key.
+The exact export and the execution screenshot are separate evidence artifacts. Together they satisfy the capstone low-code POC requirement, but they are not production-deployment evidence, a current reproducibility record, or proof that the later final MVP Content Pack endpoint was called. The export contains a placeholder credential reference but no API key.
+
+The course OpenAI credential used at the time of the historical execution was removed or revoked shortly afterwards and is no longer available. A fresh provider-backed rerun requires a new authorised credential. The former key must never be reconstructed, exposed, or committed.
 
 ## Purpose
 
@@ -90,7 +92,7 @@ Type: LangChain OpenAI chat-model subnode.
 
 Purpose: provides the optional model to Family Draft after a local credential is selected.
 
-Evidence boundary: the node exists in the export. No final live call is evidenced.
+Evidence boundary: the node exists in the exact export, and the named governed workflow has a successful historical execution record. The screenshot does not establish the request or response payload, current reproducibility, or use of the later final MVP adapter.
 
 ### Quality Gate
 
@@ -185,21 +187,21 @@ The committed dry-run records no network calls and no API keys. It uses dataset 
 - evaluation tags; and
 - gate results.
 
-LangSmith does not evaluate:
+LangSmith does not evaluate or validate:
 
 - the reference MP4;
 - MediaPipe;
-- hand or pose detection;
+- hand movement, hand or pose detection, or MediaPipe output;
 - movement fidelity;
-- Baby Sign correctness;
-- professional validity; or
+- Baby Sign or linguistic correctness;
+- professional validity or approval; or
 - publication readiness.
 
 No live external trace is committed.
 
-## Import and validation procedure
+## Fresh-run and integration validation procedure
 
-When a target n8n version is selected:
+The successful 31 August 2026 execution is historical evidence. If current reproducibility or the later adapter needs to be tested, obtain a new authorised provider credential and then:
 
 1. Import workflow/kinder_signs_n8n_workflow.json.
 2. Confirm all 12 nodes load without substitution.
@@ -213,7 +215,7 @@ When a target n8n version is selected:
 10. Confirm no publication system is connected.
 11. Save a non-sensitive execution record if the final adapter contract is exercised.
 
-Do not report runtime execution until the saved record corresponds to the current export and final adapter contract.
+Do not present the historical screenshot as proof of the later adapter. Report a current adapter execution only when a new saved record corresponds to the current export and final adapter contract.
 
 ## Content Operations adapter
 
@@ -240,7 +242,7 @@ The intended flow is:
 
 The operation key joins sign_id, sign_version, and operation. Repeating the same operation should reuse or update the same package instead of creating a duplicate version.
 
-The local Python Content Operations module demonstrates deterministic package identity. The n8n export does not prove persistence or execution of this adapter.
+The local Python Content Operations module demonstrates deterministic package identity. The historical n8n execution does not prove persistence or execution of this later adapter.
 
 ## GENERATE_CONTENT_PACK adapter
 
@@ -258,7 +260,7 @@ The local path can:
 - record an isolated local run; and
 - expose local human-review actions.
 
-The repository has tests with injected provider behavior, but no committed real external LIVE run. The n8n export has not been executed against the final endpoint contract.
+The repository has tests with injected provider behavior, but no committed real external `LIVE` run of this adapter. The historical n8n execution is not evidence that the final endpoint contract was exercised.
 
 Generation method and generation mode describe how a draft was prepared. They do not approve it.
 

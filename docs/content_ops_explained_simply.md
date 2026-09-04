@@ -41,7 +41,7 @@ The current MORE record deliberately says its source identity still needs confir
 
 ## What hashes are used for
 
-A SHA-256 hash is a digital fingerprint. The content-operations test records fingerprints for the current `signs.json` and POC summary. If one changes, its fingerprint changes and the old provenance check no longer matches.
+A SHA-256 hash is a digital fingerprint. The content-operations test records fingerprints for the current `signs.json` and POC summary. The summary is the versioned WATER artifact; its link from the older blocked MORE package is a known identity mismatch and must not support a MORE technical claim. The separate local MORE demonstration is ignored run evidence. If a hashed input changes, its fingerprint changes and the old provenance check no longer matches.
 
 The hash does not prove ownership, correctness or security by itself. It only helps detect a change.
 

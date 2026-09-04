@@ -5,7 +5,8 @@ Status: Ready for founder QA — not approved
 ## Evidence to compare
 
 - Registered functional MORE reference: available externally and used for mechanics only
-- No MORE-specific movement diagnostics are claimed; the current local demo diagnostics belong to WATER
+- The committed/versioned diagnostics belong to WATER: 332 frames, 100.00% pose coverage, 93.98% dominant-hand coverage, 20 missing dominant-hand frames, 1 interpolated frame, and 19 unresolved frames
+- A separate connected local MORE run reports 285 frames, 100.00% pose coverage, 91.93% dominant-hand coverage, 25 missing dominant-hand frames, 4 interpolated frames, and 21 unresolved frames; it remains ignored local evidence rather than the committed WATER artifact
 - Candidate A, Candidate B and deterministic regeneration candidate: generated as draft SVGs
 
 ## Review checks

@@ -25,7 +25,7 @@ The pilot is limited to:
 - 2 to 3 nursery schools;
 - 3 to 5 reviewed signs;
 - the three Little Steps nursery groups;
-- a personalised assignment-driven family mini-library as the next product iteration.
+- production hardening and controlled testing of the implemented local, session-based assignment-driven Family Experience.
 
 The strategic decision after the pilot is GO, ITERATE, or STOP. Any GO is permission to scope the next phase, not permission for an unrestricted public launch.
 
@@ -96,7 +96,7 @@ The selected central-to-upper tuition planning envelope is approximately EUR 195
 
 ### Buyer, users, and beneficiaries
 
-The initial buyer and payer is the nursery owner or director purchasing a per-centre subscription. KinderFlow Team members and qualified reviewers prepare and govern content; nursery directors and educators choose and assign available material. Families use the basic guidance experience and are direct service beneficiaries. Children may benefit indirectly from consistent adult guidance, but KinderFlow does not profile, score, diagnose, or use their video in the core scope.
+The initial buyer and payer is the nursery owner or director purchasing a per-centre subscription. KinderFlow Team members and qualified reviewers prepare and govern content; nursery directors and educators choose and assign available material. In the demonstrated architecture, the school does not operate MediaPipe, a language model, n8n, or LangSmith. Families use the guidance experience and are direct service beneficiaries. Children may benefit indirectly from consistent adult guidance, but KinderFlow does not profile, score, diagnose, or use their video in the core scope.
 
 ### Cleo's job to be done
 
@@ -124,21 +124,20 @@ The repository demonstrates:
 - traceable artefacts and versioned run records;
 - a professional interpretation with explicit status;
 - deterministic HUMAN mode and optional provider-backed modes;
-- a local nursery assignment flow;
-- a family-facing guidance preview;
+- a local nursery assignment flow with exact-duplicate assignment control;
+- a session-based Family Experience that reads the selected sign and materials from the synthetic assignment;
 - review and content-state controls.
 
 Historical WATER evidence and the current MORE demonstration are technical examples. They do not prove performance across signs, users, cameras, nurseries, or sign variants.
 
 ### POC and MVP evidence
 
-The Computer Vision POC proves one versioned adult-reference evidence path with explicit gaps, diagnostics, and limits. The local MVP connects reference intake, review metrics, a human-selected evidence route, deterministic draft visuals, family-material proofs, synthetic nursery assignment, and a basic family preview. Neither artifact proves production reliability, qualified sign approval, real delivery, or commercial adoption.
+The Computer Vision POC proves one versioned adult-reference evidence path with explicit gaps, diagnostics, and limits. The local MVP connects reference intake, review metrics, a human-selected evidence route, deterministic draft visuals, family-material proofs, synthetic nursery assignment, exact-duplicate control, and an assignment-driven Family Experience. Neither artifact proves production reliability, qualified sign approval, real-family delivery, or commercial adoption.
 
 ### What remains incomplete
 
-- production identity, access, durable storage, and multi-site tenancy;
-- real family delivery and notification;
-- personalised assignment-driven family library;
+- real family identities and accounts, authentication and authorisation, and durable cross-session or cross-device assignment access;
+- notifications, production delivery, tenant isolation, production correction and deletion, and nursery-platform integrations;
 - production security, monitoring, support, and incident operations;
 - complete rights and presentation clearance for a pilot set;
 - measured reviewer throughput and cost;
@@ -149,9 +148,9 @@ The Computer Vision POC proves one versioned adult-reference evidence path with 
 
 ### Family boundary
 
-A family-facing guidance prototype exists. A personalised assignment-driven family library remains a next product iteration.
+The assignment-driven Family Experience is implemented at local, session-based MVP scope. School Admin stores a synthetic group or fictional-child assignment in browser/session state, and Family View reads that state to display the corresponding sign and materials. The exact-duplicate rule also blocks an already-active sign, audience, and material combination.
 
-The pilot must add and test the mini-library. Current session state or static preview must not be represented as a completed personalised family service.
+This is not a production family service. The pilot must add and test real identity, authentication, authorisation, durable cross-session and cross-device persistence, tenant isolation, notifications, correction and deletion operations, and any external nursery-platform integration before claiming secure personalised delivery.
 
 ### Content boundary
 
@@ -171,7 +170,7 @@ Public providers, training products, family plans, and school offers show an act
 
 ### User confidence: LOW
 
-The Little Steps case and prior research support the problem direction. Evidence is concentrated in one founder-led context, and no real assignment-driven family service has been tested.
+The Little Steps case and prior research support the problem direction. Evidence is concentrated in one founder-led context, and no production service with real family accounts or delivery has been tested.
 
 ### Competitive confidence: MEDIUM
 
@@ -227,8 +226,8 @@ Must have:
 - qualified review;
 - visible professional and family boundaries;
 - educator assignment;
-- personalised assignment-driven family mini-library;
-- minimal consented access;
+- authenticated, tenant-separated, durable family access built from the local assignment-driven mini-library;
+- minimal authorised access;
 - corrections, withdrawal, and support route;
 - event and manual evidence capture;
 - runtime fallback;
@@ -442,7 +441,7 @@ Actions:
 
 - refine technical evidence and fallback;
 - refine review and assignment;
-- add the personalised assignment-driven family mini-library;
+- harden the local, session-based mini-library into authenticated, tenant-separated, durable pilot delivery;
 - clear 3 to 5 signs;
 - configure minimal evaluation;
 - rehearse delivery, correction, withdrawal, failure, and incident paths;
@@ -633,8 +632,8 @@ Each workstream follows client fact, baseline, action, target, owner, cost, and 
 ### Family service
 
 - Client fact: families ask for sign lists or materials.
-- Baseline: static or session preview only; no personalised assignment-driven library.
-- Action: add and test the controlled mini-library.
+- Baseline: an assignment-driven mini-library works locally with synthetic browser/session state; there are no real family accounts, durable cross-device access, notifications, or production delivery.
+- Action: harden and test secure, authorised pilot access while preserving the demonstrated assignment-to-Family-View behaviour.
 - Target: signed delivery, access, repeat-use, clarity, and accessibility thresholds with zero blocked or unreviewed delivery.
 - Owner: product lead, research lead, nursery pilot lead, and privacy owner.
 - Cost: workflow refinement, content production, research, and coordination.
@@ -697,7 +696,7 @@ The controlled programme depends on:
 2. a qualified reviewer;
 3. source and presentation rights for 3 to 5 signs;
 4. approved privacy, safeguarding, retention, correction, and withdrawal routes;
-5. the assignment-driven family mini-library;
+5. production-capable identity, access, persistence, and delivery around the demonstrated assignment-driven family mini-library;
 6. measurable educator, family, technical, review, support, and commercial events;
 7. a 3 to 4 week controlled service test;
 8. a signed GO, ITERATE, or STOP review in week 8 or 9.
@@ -706,8 +705,8 @@ If a rights, reviewer, privacy, or evidence dependency slips, reduce content or 
 
 ### Product roadmap
 
-- Now: local POC, local assignment workflow, reviewed family preview, and pilot preparation.
-- Pilot: 3 to 5 cleared signs, 2 to 3 nurseries, family mini-library, measured use, and price-specific continuation evidence.
+- Now: local POC, local assignment workflow, session-based assignment-driven Family Experience, and pilot preparation.
+- Pilot: 3 to 5 cleared signs, 2 to 3 nurseries, secure persistent family access, measured use, and price-specific continuation evidence.
 - After GO: production architecture, identity, tenancy, delivery, monitoring, support, security, and durable content operations.
 - After paid retention evidence: broader nursery acquisition and library expansion.
 - Separate future cases: Kinder Daily and Kinder Food.
@@ -769,4 +768,4 @@ Expansion beyond Kinder Signs requires a separate evidence case.
 
 PROCEED WITH CONDITIONS.
 
-The next step is the 8 to 9 week controlled programme, including a 3 to 4 week service test with 2 to 3 nursery schools and 3 to 5 cleared signs. The conditions are a real assignment-driven family mini-library, qualified review, complete rights and provenance, exact teacher and family measurement, price-specific buyer evidence, and zero breach of the stated hard boundaries.
+The next step is the 8 to 9 week controlled programme, including a 3 to 4 week service test with 2 to 3 nursery schools and 3 to 5 cleared signs. The conditions are production-capable identity, access, persistence, and delivery around the demonstrated local mini-library, qualified review, complete rights and provenance, exact teacher and family measurement, price-specific buyer evidence, and zero breach of the stated hard boundaries.

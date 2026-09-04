@@ -12,7 +12,7 @@ Supported claim: Kinder Signs addresses school-home continuity through a school-
 
 Remaining proof: nursery demand, educator adoption, family use, and willingness to pay.
 
-## Stronger POC
+## Computer Vision technical POC
 
 Evidence:
 
@@ -24,7 +24,7 @@ Evidence:
 - poc/output/diagnostics/sign_reference_wrist_trajectory.png; and
 - poc/poc_documentation.md.
 
-Supported claim: the versioned WATER result contains 332 frames, 100.00% pose coverage, 93.98% dominant right-hand coverage, EXTRACTION_PASS, and MOTION_REPRESENTATION_PARTIAL. The method preserves raw evidence, normalizes to the shoulders, fills only short internal gaps, and exposes movement diagnostics.
+Supported claim: the versioned WATER result contains 332 frames, 100.00% pose coverage, 93.98% dominant-hand coverage, 20 missing dominant-hand frames, one interpolated frame, 19 unresolved frames, `EXTRACTION_PASS`, and `MOTION_REPRESENTATION_PARTIAL`. The method preserves raw evidence, normalizes to the shoulders, fills only short internal gaps, and exposes movement diagnostics.
 
 Remaining proof: professional correspondence review and repeat tests across more signs, performers, viewpoints, and capture conditions.
 
@@ -42,11 +42,20 @@ Evidence:
 - assets/registry/sign_asset_registry.json; and
 - the standard test suites.
 
-Supported claim: the local service processes an adult reference, reports run-specific evidence, supports three human evidence routes, prepares deterministic draft visuals, and hands an exact local visual to printable or story proofs. School and family pages demonstrate browser-session behavior with synthetic data.
+Supported claim: the local service processes an adult reference, reports run-specific evidence, supports three human evidence routes, prepares deterministic draft visuals, and hands an exact local visual to printable or story proofs. School Admin stores a synthetic assignment in browser/session state; Family View reads it and displays the corresponding sign and materials. Exact duplicate assignments are blocked.
 
-The successful MORE run with 285 frames is ignored local evidence. It is not part of the committed proof. On 4 September 2026, standard discovery ran 184 tests: 183 passed and one opt-in integration test was skipped. Running that integration separately failed in the headless session before frame processing because MediaPipe could not create the required graphics context.
+The connected MORE demonstration is local evidence: 285 frames, 100.00% pose coverage, 91.93% dominant-hand coverage, 25 missing dominant-hand frames, four interpolated frames, 21 unresolved frames, `EXTRACTION_PASS`, and `MOTION_REPRESENTATION_PARTIAL`. It is separate from the committed WATER proof. On 4 September 2026, standard discovery ran 184 tests: 183 passed and one opt-in integration test was skipped. Running that integration separately failed in the headless session before frame processing because MediaPipe could not create the required graphics context.
 
-Remaining proof: confirmed source and display rights, professional visual and sign review, completed saved-PDF quality review, a hosted runtime, real persistence, and real delivery.
+The application default remains port 8000. The final demonstrated command and routes use port 8765:
+
+- `poc_env/bin/python mvp/app.py --port 8765`;
+- `http://127.0.0.1:8765/index.html`;
+- `http://127.0.0.1:8765/kinder-signs.html`;
+- `http://127.0.0.1:8765/create-sign.html`;
+- `http://127.0.0.1:8765/school.html?sign=more&focus=share`; and
+- `http://127.0.0.1:8765/family.html`.
+
+Remaining proof: confirmed source and display rights, professional visual and sign review, completed saved-PDF quality review, a hosted runtime, real family and school identities, authentication and authorisation, durable cross-session and cross-device persistence, notifications and delivery, tenant isolation, production correction/deletion workflows, and external nursery-platform integration.
 
 ## Visual assets
 
@@ -79,13 +88,16 @@ Evidence:
 
 - workflow/kinder_signs_n8n_workflow.json;
 - workflow/kinder_signs_n8n_workflow.md;
+- workflow/evidence/n8n_successful_execution_2026-08-31.png;
 - workflow/langsmith_dry_run_summary.json;
 - workflow/evaluation_cases.json; and
 - workflow/quality_gate.py.
 
-Supported claim: the repository contains an exact inactive n8n export, a deterministic passing sample gate, five evaluation cases, and LangSmith dry-run evidence for optional LLM wording.
+Supported claim: the repository contains the exact inactive 12-node export for **Kinder Signs — Governed Family Draft (Example)**. A separate screenshot evidences a real successful historical execution on 31 August 2026 at 21:30:27, lasting 14.499 seconds, as execution `#21441`, with the successful governed path visible. This is **COMPLETE AT CAPSTONE LOW-CODE POC SCOPE**.
 
-Remaining proof: final adapter execution in the target n8n runtime, a live external model call if retained, and a live LangSmith trace.
+Boundary: the workflow remains a governed draft path, not autonomous publication or production deployment. The screenshot does not prove that the later final MVP Content Pack adapter ran. The OpenAI course credential used then was removed or revoked and is no longer available; a fresh provider-backed rerun requires a new authorised credential. Never reconstruct, expose, or commit the former key.
+
+LangSmith remains separate. The committed evidence is a network-free dry-run, not a live trace. It does not validate hand movement, MediaPipe output, sign or linguistic correctness, or professional approval.
 
 ## Tableau decision support
 
@@ -134,11 +146,13 @@ Remaining proof: final controller and processor roles, contracts, retention rule
 
 Evidence:
 
-- presentation/kinder_signs_deck.pptx;
+- presentation.pptx;
+- presentation/kinderflow_demo.mp4;
+- presentation/kinder_signs_deck.pptx (preserved historical deck);
 - presentation/demo_script.md;
 - presentation/qa_preparation.md; and
 - presentation/source_notes.md.
 
-Supported claim: the presentation can demonstrate the local flow and bounded evidence.
+Supported claim: the final presentation file is present at the repository root and the presentation has been delivered. The final demo recording is present under `presentation/` and was used/prepared for the final presentation. The older deck remains preserved as historical/versioned presentation evidence.
 
-Remaining proof: a desktop-session backup recording, current screenshots, and rehearsal of the failure fallback. The personalised family mini-library must remain a future step.
+Boundary: readable-package and video-metadata validation are not visual end-to-end review. Do not claim that review unless it was actually performed. The assignment-driven family mini-library is implemented at local/session MVP scope; production identities, accounts, authentication, authorisation, durable cross-device state, real notifications and delivery, tenant isolation, correction/deletion workflows, and integrations remain future work.

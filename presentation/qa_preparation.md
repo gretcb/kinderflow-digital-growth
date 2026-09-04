@@ -42,11 +42,23 @@ The EUR 5.5k-EUR 17.3k range comes from the current cost line items. Price, cust
 
 ## Why n8n?
 
-n8n makes the bounded content steps, branches and human-review handoff visible. The exact export exists and is importable, but a final target-runtime execution record does not. Python and manual steps can still run the core product. Evidence: `../workflow/kinder_signs_n8n_workflow.json` and `../workflow/kinder_signs_n8n_workflow.md`.
+n8n makes the bounded content steps, branches, and human-review handoff visible. The exact inactive 12-node export is versioned, and a separate screenshot records the named governed workflow succeeding on 31 August 2026 at 21:30:27 in 14.499 seconds as execution `#21441`. This is complete at capstone low-code POC scope. It is not autonomous publication, production deployment, or proof that the later final MVP Content Pack adapter ran. Evidence: `../workflow/kinder_signs_n8n_workflow.json`, `../workflow/kinder_signs_n8n_workflow.md`, and `../workflow/evidence/n8n_successful_execution_2026-08-31.png`.
+
+## Can the n8n provider path be rerun now?
+
+Not with the former credential. The OpenAI course credential used at the time was removed or revoked shortly afterwards and is no longer available. A fresh provider-backed rerun requires a new authorised key. The historical execution remains valid evidence; the old key must never be reconstructed, exposed, or committed.
 
 ## Why LangSmith if it is only a dry-run?
 
-It demonstrates the proposed trace and evaluation boundary for optional LLM wording, including source adherence and schema checks. It is honest preparatory evidence, not live monitoring. LangSmith does not assess MediaPipe or sign correctness. Evidence: `../workflow/langsmith_dry_run_summary.json`.
+It demonstrates the proposed trace and evaluation boundary for optional LLM wording, including source adherence and schema checks. It is preparatory evidence, not a live trace or production monitoring. LangSmith does not validate hand movement, MediaPipe output, sign correctness, linguistic correctness, or professional approval. Evidence: `../workflow/langsmith_dry_run_summary.json`.
+
+## Is the assignment-driven family mini-library implemented?
+
+Yes, at local/session-based MVP scope. School Admin stores a synthetic assignment in browser/session state; Family View reads it and displays the corresponding sign and materials. The exact duplicate combination is blocked. This does not provide real family identities or accounts, authentication, authorisation, durable cross-session or cross-device persistence, notifications, production delivery, tenant isolation, production correction/deletion, or nursery-platform integrations. Evidence: `../prototype/school.js`, `../prototype/family.html`, and `../prototype/tests/test_final_product_ux.py`.
+
+## Why do the docs mention both ports 8000 and 8765?
+
+Port 8000 remains the application default. The delivered demonstration used `poc_env/bin/python mvp/app.py --port 8765`, so the canonical demonstrated routes use `127.0.0.1:8765`. This is a launch-time override, not a default-code change. Evidence: `../mvp/app.py` and `demo_script.md`.
 
 ## Why Open Peeps?
 
@@ -66,4 +78,4 @@ The connected prototype is ahead of the operational and commercial evidence. No 
 
 ## What would you do next?
 
-Close rights, review, privacy and security readiness; build the minimum assignment-driven family library; freeze targets; then run an 8-9 week programme with 2-3 centres, 3-5 reviewed signs and about 3-4 weeks of controlled service testing. Decide GO, ITERATE or STOP from observed use, quality, cost and paid-continuation evidence. Evidence: `../strategic_plan.md`.
+Close rights, qualified review, privacy, and security readiness; define minimum real identities, access, persistence, delivery, tenancy, and correction/deletion controls; freeze targets; then run an 8-9 week programme with 2-3 centres, 3-5 reviewed signs, and about 3-4 weeks of controlled service testing. Decide GO, ITERATE, or STOP from observed use, quality, cost, and paid-continuation evidence. Evidence: `../strategic_plan.md`.

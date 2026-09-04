@@ -93,13 +93,13 @@ Current repository evidence:
 
 - a local computer vision path produces traceable evidence and explicit status;
 - HUMAN mode provides a deterministic option;
-- a local nursery assignment flow exists;
-- a family-facing guidance preview exists;
+- a local nursery assignment flow exists, with exact-duplicate assignment control;
+- an assignment-driven Family Experience reads the selected synthetic sign and materials from browser/session state;
 - production accounts, durable assignments, real delivery, and production access controls are incomplete.
 
 Approved boundary statement:
 
-> A family-facing guidance prototype exists. A personalised assignment-driven family library remains a next product iteration.
+> The assignment-driven family mini-library is implemented at local, session-based MVP scope. Production identity, authentication, authorisation, durable cross-session and cross-device persistence, tenant isolation, notifications, correction and deletion operations, and real family delivery remain unimplemented.
 
 Content scope:
 

@@ -47,9 +47,9 @@ The report measures engineering and product readiness. It is not sign accuracy o
 
 ## Provenance
 
-The MORE manifest records local references and SHA-256 hashes for structured sign data and technical evidence. Hashes demonstrate change detection only; they are not a claim of legal authorship, cryptographic custody or source correctness.
+The older blocked MORE manifest records local references and SHA-256 hashes for structured sign data and a POC summary. That POC summary is the versioned WATER evidence, so this known identity mismatch cannot support a technical claim for MORE. The separate connected MORE demonstration has its own ignored local run evidence and is not silently substituted into the package. Hashes demonstrate change detection only; they are not a claim of legal authorship, cryptographic custody or source correctness.
 
-The existing POC evidence is scoped as capture-pipeline evidence. Its identity is not treated here as professional linguistic evidence for MORE.
+The existing POC evidence is scoped as WATER capture-pipeline evidence. It is neither technical nor professional linguistic evidence for MORE.
 
 ## Audit log
 

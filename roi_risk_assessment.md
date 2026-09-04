@@ -577,12 +577,12 @@ Residual risk is a qualitative rating after current controls and planned mitigat
 ### Risk 10: family value and delivery
 
 - Category: user value and service operations.
-- Description: the static family preview may not translate into delivered, accessible, understandable, and repeatedly used guidance.
+- Description: the local, session-based assignment-driven Family Experience may not translate into secure, delivered, accessible, understandable, and repeatedly used guidance for real families.
 - Likelihood: 3.
 - Impact: 4.
 - Score: 12.
-- Current control: reviewed family presentation exists as a prototype.
-- Mitigation: add the personalised assignment-driven family mini-library; test consented delivery and access; measure access, repeat use, clarity, questions, accessibility, and withdrawal; offer a support route.
+- Current control: a synthetic assignment-driven mini-library exists locally, including session-state handoff from School Admin to Family View and exact-duplicate assignment control.
+- Mitigation: add real identity, authentication, authorisation, durable cross-session and cross-device persistence, tenant isolation, notifications, correction and deletion operations, and a support route; test authorised delivery and measure access, repeat use, clarity, questions, accessibility, and withdrawal.
 - Owner: product lead, nursery pilot lead, and privacy owner.
 - Residual risk: Medium.
 - Pilot gate: signed family thresholds and delivery controls must be met with 0 blocked or unreviewed items delivered.
@@ -635,4 +635,4 @@ STOP means do not proceed to a broader service when:
 
 PROCEED WITH CONDITIONS.
 
-The pilot is economically justified as a bounded evidence purchase within EUR 5,500 to EUR 17,300, not as a proven return. The go-forward case depends on safe content operations, a real assignment-driven family mini-library, explicit paid-continuation evidence, measured review and support burden, and a production-cost estimate. The current Base case is positive over 36 months but fragile under ordinary sensitivity and should not be used as an unconditional investment promise.
+The pilot is economically justified as a bounded evidence purchase within EUR 5,500 to EUR 17,300, not as a proven return. The go-forward case depends on safe content operations, production-capable identity and delivery around the demonstrated local assignment-driven mini-library, explicit paid-continuation evidence, measured review and support burden, and a production-cost estimate. The current Base case is positive over 36 months but fragile under ordinary sensitivity and should not be used as an unconditional investment promise.

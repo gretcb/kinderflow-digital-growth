@@ -1,6 +1,6 @@
 # Kinder Signs Privacy Facts
 
-**Frozen baseline:** 8eb0742
+**Functional evidence baseline:** 8eb0742; final closure evidence is recorded on `release/capstone-demo`
 **Scope:** Current local MVP and proposed controlled pilot
 
 This fact sheet is a repository writing control. It is not legal advice or a privacy certificate. Use the [full GDPR record](../compliance/gdpr_documentation.md) for the processing register, role analysis, retention, rights, recipients, transfers, security, and DPIA screen.
@@ -16,7 +16,7 @@ This fact sheet is a repository writing control. It is not legal advice or a pri
 | Nursery data | Synthetic Little Steps Nursery fixture |
 | Child and family data | Synthetic labels such as Child A to Child F; no real accounts |
 | Assignment | Local or session-based prototype |
-| Family View | Basic guidance preview, not production delivery |
+| Family View | Assignment-driven mini-library at local/session scope, not production delivery |
 | LLM and LangSmith | No evidenced live transfer of personal data |
 | Child media | None in intended core scope |
 | Age estimation | Not implemented or claimed |
@@ -41,7 +41,7 @@ The remote host still receives request metadata such as the service's public IP 
 
 ## Family View boundary
 
-A family-facing guidance prototype exists. A personalised assignment-driven family library remains a next product iteration.
+An assignment-driven Family Experience exists at local, session-based MVP scope. School Admin stores a synthetic group or fictional-child assignment in browser/session state, and Family View displays the corresponding sign and materials. This does not establish a real family identity, account, relationship, or entitlement.
 
 The current screens do not prove:
 
@@ -115,7 +115,9 @@ These are proposed design targets, not implemented policy. The controller must a
 
 The pilot needs an authenticated process for information, access, correction, deletion, restriction, portability where applicable, objection where applicable, and withdrawal where consent is used.
 
-Current local processing has no evidenced live LLM or LangSmith recipient. A public direct-video host sees the fetch request. Gemini FX files were prepared separately; their original provider-side source, location, retention, and transfer facts are not documented.
+Current local processing has no evidenced live transfer of personal data to an LLM or LangSmith recipient. A public direct-video host sees the fetch request. Gemini FX files were prepared separately; their original provider-side source, location, retention, and transfer facts are not documented.
+
+A separate [screenshot](../workflow/evidence/n8n_successful_execution_2026-08-31.png) evidences a successful historical n8n governed-draft execution on 31 August 2026 at 21:30:27 (execution #21441, 14.499 seconds). It does not evidence that adult, child, family, or nursery personal data was transferred, that the later final MVP adapter ran, or that n8n was deployed to production. The OpenAI course credential used at that time was removed or revoked; a fresh provider-backed rerun requires a new authorised credential, and the former key must not be reconstructed or exposed.
 
 Every pilot vendor needs a recorded purpose, role, data, sub-processor list, location, retention, security, deletion, and transfer mechanism.
 

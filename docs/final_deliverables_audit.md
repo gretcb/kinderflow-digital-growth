@@ -2,22 +2,23 @@
 
 ## Audit basis
 
-This audit records the frozen repository state reviewed before documentation editing.
+This audit began as a record of the frozen repository state reviewed before documentation editing. The file-audit table below is a historical pre-reconciliation diagnostic snapshot: its state, defect, gap, and action entries describe what was recorded before reconciliation unless a row explicitly says `Reconciled for final closure`, `Present`, or `Historical evidence`. It is retained for traceability, not as the current claim register. Final current truth begins at **Main reconciliation decisions** and is controlled by the current README, claims matrix, requirement matrix, and submission checklist.
 
 | Control | Result |
 |---|---|
-| Branch | `feature/final-overview-polish` |
-| HEAD | `8eb0742dae49d8a1ac032d0f53d4475cc694c8b2` |
+| Final package branch | `release/capstone-demo` |
+| Functional starting HEAD | `b003559` (`Pin MediaPipe for Render deployment`) |
+| Documentation reconciliation | Cherry-picked onto the release branch |
 | Frozen checkpoint | `8eb0742` (`Freeze connected KinderFlow capstone demo`) |
 | Initial worktree | Clean |
 | Initial `git diff --check` | Clean |
-| Permitted edits | Markdown only |
+| Closure artifacts | `presentation.pptx`; `presentation/kinderflow_demo.mp4`; `workflow/evidence/n8n_successful_execution_2026-08-31.png` |
 
 The evidence order used in this review was current code and routes, current tests and generated evidence, registries and provenance, technical documentation, historical Round 1 evidence, founder-observed context, repository research, calculated scenarios, pilot hypotheses, then roadmap items.
 
-## File audit
+## Historical pre-reconciliation file audit and closure annotations
 
-| File | Purpose | Current state at audit | Good content | Stale or inaccurate content | Missing requirement | Action | Priority | Evidence path |
+| File | Purpose | State recorded at audit or explicit closure state | Good content | Finding recorded at audit | Gap recorded at audit | Recorded action | Priority | Evidence path |
 |---|---|---|---|---|---|---|---|---|
 | `README.md` | Executive entry point | Substantive but not final | Honest technical boundaries and run instructions | Implies a stronger assignment-to-family chain than exists; ROI is still TBD | First-screen value, key evidence, decision, platform diagram, final links | Rewrite last as the navigation source of truth | Critical | `mvp/app.py`; `prototype/`; `poc/output/`; `docs/mvp_reality_check.md` |
 | `use_case_definition.md` | Define the selected use case | Substantive but stale | School-led continuity problem and stakeholder roles | Uses a 4-5 sign scope, mixes historical WATER metrics with the MVP, and overstates family delivery | Cleo, Little Steps, JTBD, four validation types, current boundary, decision pattern | Reconcile | Critical | `research/use_cases.md`; `feedback/round1_decision.md`; `prototype/school.html`; `prototype/family.html` |
@@ -44,19 +45,21 @@ The evidence order used in this review was current code and routes, current test
 | `docs/facts_risk.md` | Guardrail risk facts | Useful | Broad risk coverage | Older visual state and unclear WATER/MORE attribution | Add direct URL, Gemini and registry/package drift | Reconcile | Medium | `assets/registry/`; `mvp/runs/` local only; `poc/output/` |
 | `docs/facts_privacy.md` | Guardrail privacy facts | Useful but stale | Minimal current data inventory | Uses a legacy placeholder nursery name and understates future family-account decisions | Little Steps synthetic context, direct URL and optional child identifier | Reconcile | Medium | `mvp/pipeline.py`; `prototype/school.js`; `prototype/family.html` |
 | `docs/facts_ai_act.md` | Guardrail AI-role facts | Mostly accurate | Narrow intended purpose and human control | Does not mention current synthetic-video demo layer | Add change and disclosure boundary where useful | Reconcile only if needed | Medium | `assets/registry/source_assets_provenance.md`; `mvp/app.py` |
-| `workflow/README.md` | Run and explain workflow evidence | Useful with one broken filename | Dry-run boundary is clear | Links to a nonexistent example JSON name | Correct evidence link and retain target-runtime caveat | Reconcile | High | `workflow/kinder_signs_n8n_workflow.json`; `workflow/langsmith_dry_run_summary.json` |
-| `workflow/kinder_signs_n8n_workflow.md` | Describe the importable n8n design | Substantive | Nodes, contracts and human review are documented | Risk of reading design as executed runtime evidence | State exact export and unclaimed live execution prominently | Reconcile only where needed | Medium | `workflow/kinder_signs_n8n_workflow.json`; `content_ops/contracts/n8n_content_operations_contract.json` |
+| `workflow/README.md` | Run and explain workflow evidence | Reconciled for final closure | Exact export, successful historical execution, dry-run LangSmith boundary, and credential status are explicit | Current provider-backed reproducibility is unavailable without a new authorised key | Keep the historical n8n run separate from the later final MVP adapter | COMPLETE at capstone low-code POC scope | High | `workflow/kinder_signs_n8n_workflow.json`; `workflow/evidence/n8n_successful_execution_2026-08-31.png`; `workflow/langsmith_dry_run_summary.json` |
+| `workflow/kinder_signs_n8n_workflow.md` | Describe the exact n8n export and evidence | Reconciled for final closure | All 12 nodes, contracts, governed draft state, and historical execution are documented | Historical execution is neither production deployment nor evidence of the later Content Pack adapter | Preserve the evidence boundaries and require a new authorised key for any fresh provider-backed run | COMPLETE at capstone low-code POC scope | High | `workflow/kinder_signs_n8n_workflow.json`; `workflow/evidence/n8n_successful_execution_2026-08-31.png`; `content_ops/contracts/n8n_content_operations_contract.json` |
 | `feedback/round1_decision.md` | Preserve the historical KEEP decision | Historical evidence | Records the decision and earlier scope | Older wording calls the full 8-9 weeks a commercial pilot | Preserve history; explain the corrected scope in current documents | No rewrite unless a link is needed | Low | Current file |
 | `research/sector_research.md` | Round 1 sector research | Historical evidence | Official market context and limitations | Uses historical persona terminology | Preserve; do not rewrite to manufacture Round 2 completeness | No change | Low | `data/source_register.csv` |
 | `research/opportunities_risks.md` | Round 1 opportunity and risk work | Historical evidence | Broad opportunity and risk mapping | Uses historical persona terminology | Preserve; route current conclusions to final documents | No change | Low | Current file |
 | `research/use_cases.md` | Round 1 option assessment | Historical evidence | Three use cases, scoring and kill criteria | Earlier commercial models remain open | Preserve; state the final school-led choice elsewhere | No change | Low | Current file |
-| `presentation/kinder_signs_deck.pptx` | Final presentation | File exists, update not verified | A versioned deck is present | Current documentation alignment is not evidenced | Verified final deck remains missing | Do not edit; prepare Markdown handoff | Critical | `presentation/kinder_signs_deck.pptx` |
-| `presentation/documentation_handoff.md` | Verified slide inputs | Missing | None | Not present at audit | Ten-slide inputs and backup-slide sources | Create | High | Final reconciled documents |
-| `presentation/roi_slide_inputs.md` | Financial slide source | Missing | None | Not present at audit | One aligned scenario table and affordability view | Create | High | `roi_risk_assessment.md` |
-| `presentation/demo_script.md` | POC/MVP run of show | Missing | None | Not present at audit | Bounded POC and MVP scripts plus recording fallback | Create | High | `poc/`; `mvp/`; `prototype/` |
-| `presentation/qa_preparation.md` | Defensible Q&A | Missing | None | Not present at audit | Answers to the required product, technical, business, and compliance questions | Create | High | Final reconciled documents |
-| `presentation/source_notes.md` | Claim-level presentation evidence | Missing | None | Not present at audit | Claim-to-evidence mapping with permitted wording and limitation | Create | High | Final claims matrix |
-| `docs/submission_checklist.md` | Final manual gate | Missing | None | Not present at audit | Requirement, file, status, manual check, action, and owner | Create after reconciliation | Critical | Capstone matrix and final repository state |
+| `presentation.pptx` | Final delivered presentation | Present at repository root | Readable PowerPoint ZIP package | Package validation alone is not a new slide-by-slide visual review | Preserve as the final delivered artifact | COMPLETE as present artifact | Critical | `presentation.pptx`; `presentation/source_notes.md` |
+| `presentation/kinder_signs_deck.pptx` | Historical presentation evidence | Present and preserved | Earlier versioned deck remains available | It is not the final root presentation | Keep; do not replace or delete | PRESERVED | Medium | `presentation/kinder_signs_deck.pptx` |
+| `presentation/documentation_handoff.md` | Verified presentation inputs and evidence boundaries | Present and reconciled | Ten-part story framework plus backup-slide sources for the 19-slide PowerPoint package | Does not itself prove visual deck QA | Keep aligned with future evidence changes | COMPLETE | High | Final reconciled documents |
+| `presentation/roi_slide_inputs.md` | Financial slide source | Present | Aligned scenario and affordability inputs | Scenarios remain hypotheses, not observed ROI | Recalculate when pilot evidence exists | COMPLETE | High | `roi_risk_assessment.md` |
+| `presentation/demo_script.md` | Low-code POC, CV, and MVP run of show | Present and reconciled | Canonical 8765 command/routes and bounded evidence language | Does not prove the video was watched end to end | Preserve final path and record visual QA only if performed | COMPLETE | High | `workflow/`; `poc/`; `mvp/`; `prototype/`; `presentation/kinderflow_demo.mp4` |
+| `presentation/qa_preparation.md` | Defensible Q&A | Present and reconciled | Answers preserve n8n, LangSmith, family, and production boundaries | Requires updating if the product or evidence changes | Keep aligned with current claims matrix | COMPLETE | High | Final reconciled documents |
+| `presentation/source_notes.md` | Claim-level presentation evidence | Present and reconciled | Claim-to-evidence mapping includes final artifacts and execution evidence | Does not replace primary artifacts | Keep WATER and MORE metrics separate | COMPLETE | High | `docs/final_claims_matrix.md` |
+| `docs/submission_checklist.md` | Final manual gate | Present and reconciled | Requirement, file, status, manual check, action, and owner are recorded | Production readiness remains conditional | Re-run final QA after material changes | COMPLETE | Critical | Capstone matrix and final repository state |
+| `presentation/kinderflow_demo.mp4` | Final demo recording | Present under `presentation/` | 4:04.450 H.264 video, 1906x988, no audio stream | Metadata validation is not visual end-to-end review | Preserve as the recording used/prepared for the final presentation | COMPLETE as present artifact | Critical | `presentation/kinderflow_demo.mp4` |
 
 ## Main reconciliation decisions
 
@@ -64,6 +67,7 @@ The evidence order used in this review was current code and routes, current test
 - Use EUR 5.5k-EUR 17.3k as the canonical 8-9 week validation budget. The high line items sum to EUR 17.3k; EUR 17.8k was a historical arithmetic error.
 - Keep 2-3 nursery schools and 3-5 reviewed signs as pilot hypotheses. Keep approximately 3-4 weeks for controlled service testing inside the 8-9 week programme.
 - Treat the 332-frame WATER POC as versioned historical evidence and the 285-frame MORE run as ignored local evidence. Do not merge their metrics.
-- Treat the n8n export as importable design evidence and LangSmith as a local dry-run. Do not claim live final execution.
-- Treat the nursery assignment and Family View as local or session-based prototypes. A personalised assignment-driven family library and real delivery remain pending.
+- Treat the exact 12-node n8n export and the successful 31 August 2026 historical execution as separate evidence layers. This is complete at capstone low-code POC scope, not production deployment or proof of the later final MVP adapter. LangSmith remains a separate committed dry-run only.
+- Treat the nursery assignment and assignment-driven Family Experience as implemented at local/session MVP scope. Real family identities and accounts, authentication and authorisation, durable cross-device persistence, notifications and delivery, tenant isolation, correction/deletion workflows, and external integrations remain pending for production.
+- Treat `presentation.pptx` and `presentation/kinderflow_demo.mp4` as the final present artifacts. Preserve `presentation/kinder_signs_deck.pptx` as historical evidence, and do not equate package or metadata validation with visual end-to-end QA.
 - Treat all current sign visuals and Gemini videos as demonstration material subject to the stated review and rights gates. No sign is production-published.

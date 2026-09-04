@@ -4,6 +4,12 @@
 
 Kinder Signs is a working local product and technical prototype. It contains real MediaPipe processing, deterministic content checks, draft visual assets, and browser interaction. It is not a production service and no sign is published or available to a real school.
 
+## Run and environment boundary
+
+The Python application default remains port 8000. The final presentation used `poc_env/bin/python mvp/app.py --port 8765` and the routes `http://127.0.0.1:8765/index.html`, `http://127.0.0.1:8765/kinder-signs.html`, `http://127.0.0.1:8765/create-sign.html`, `http://127.0.0.1:8765/school.html?sign=more&focus=share`, and `http://127.0.0.1:8765/family.html`.
+
+The locally evidenced presentation environment used Python 3.9.6 and MediaPipe 0.10.14. The deployment dependency file `poc/requirements.txt` pins MediaPipe 0.10.21; it is not the environment used for those historical measurements and does not prove hosted deployment. Python 3.11 or 3.12 remains the clean future rebuild target.
+
 ## Working local capabilities
 
 ### Reference processing
@@ -37,15 +43,15 @@ There is no PNG export, server-side PDF service, production avatar, or completed
 
 ### School and family demonstrations
 
-Little Steps Nursery uses synthetic groups and fictional child records. The school page supports sign, group, material, and audience selection, exact-duplicate control, and active-assignment editing or removal. Data remains in browser session storage.
+Little Steps Nursery uses synthetic groups and fictional child records. The school page supports sign, group, material, and audience selection, active-assignment editing or removal, and the exact duplicate control `This exact sign, audience and material combination is already active.` Data remains in browser session storage.
 
-The family page can read and filter that session state, but it is still a demonstration. A family-facing guidance prototype exists. A personalised assignment-driven family library remains a next product iteration.
+The family page reads and filters that session state and displays the corresponding sign and materials. The assignment-driven Family Experience and mini-library is therefore implemented at local, session-based MVP scope. It remains a demonstration without real identities, accounts, authentication, authorisation, durable cross-session or cross-device persistence, real notifications or delivery, production school accounts, tenant isolation, production correction or deletion workflows, or external nursery-platform integrations.
 
 ## Evidence separation
 
 ### Versioned WATER result
 
-The committed Round 1 diagnostics report 332 frames, 100.00% pose coverage, 93.98% dominant right-hand coverage, 20 missing frames, EXTRACTION_PASS, and MOTION_REPRESENTATION_PARTIAL. The source video itself is local and ignored; the JSON diagnostics, plots, and registry record are versioned.
+The committed Round 1 diagnostics report 332 frames, 100.00% pose coverage, 93.98% dominant right-hand coverage, 20 missing dominant-hand frames, 1 interpolated frame, 19 unresolved frames, EXTRACTION_PASS, and MOTION_REPRESENTATION_PARTIAL. The source video itself is local and ignored; the JSON diagnostics, plots, and registry record are versioned.
 
 ### Ignored local MORE result
 
@@ -81,7 +87,9 @@ The three registered Gemini FX demonstrations map MORE to mas.mp4, HELP to ayuda
 
 Content Operations has five regression records: MORE, EAT, WATER, ALL DONE, and HELP. This differs intentionally from the six-sign visual registry. Every regression record is blocked from publication.
 
-The repository has an inactive, importable n8n JSON export and LangSmith dry-run evidence. It does not have a final n8n target-runtime execution record, a live external LLM run, or a live LangSmith trace.
+The formal low-code POC has an exact versioned 12-node n8n export at `workflow/kinder_signs_n8n_workflow.json`. The screenshot at `workflow/evidence/n8n_successful_execution_2026-08-31.png` evidences a successful historical execution of `Kinder Signs — Governed Family Draft (Example)` on 31 August 2026: status Succeeded, execution ID #21441, and duration 14.499 seconds. Evidence status: COMPLETE AT CAPSTONE LOW-CODE POC SCOPE.
+
+That run was a governed draft workflow, not autonomous publication, production deployment, or proof that the later final MVP Content Pack adapter was exercised. The OpenAI course credential used at the time was removed or revoked and is no longer available; a fresh provider-backed rerun requires a new authorised credential. LangSmith remains separate: only dry-run evidence is committed, not a live trace, and it does not validate hand movement, MediaPipe output, sign correctness, linguistic correctness, or professional approval.
 
 ## Production gaps
 
@@ -92,7 +100,8 @@ The repository has an inactive, importable n8n JSON export and LangSmith dry-run
 - no production database or media store;
 - no enforced retention or deletion service;
 - no real school or family delivery;
-- no personalised family library;
+- no real family identities or accounts, durable cross-session or cross-device persistence, notifications, or production correction and deletion workflows;
+- no production school accounts, tenant isolation, or external nursery-platform integration;
 - no live product analytics;
 - no payment or billing;
 - no tested hosted MediaPipe runtime; and

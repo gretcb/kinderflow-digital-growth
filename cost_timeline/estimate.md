@@ -18,7 +18,7 @@ The estimate has two parts:
 
 The upper bound is EUR 17,300 because the detailed high estimates sum to EUR 17,300. EUR 17,800 is not supported by the line items.
 
-This is a project estimate, not a supplier quote, purchase approval, production budget, or forecast. Work begins from an existing local proof of concept and local nursery workflow. Current prototype effort is sunk, unpriced, and excluded.
+This is a project estimate, not a supplier quote, purchase approval, production budget, or forecast. Work begins from an existing local Computer Vision technical feasibility artifact and local nursery workflow. Current prototype effort is sunk, unpriced, and excluded.
 
 ## Scope boundary
 
@@ -26,7 +26,7 @@ This is a project estimate, not a supplier quote, purchase approval, production 
 
 - refine the existing local technical evidence path for the 3 to 5 pilot signs;
 - refine the nursery review and assignment workflow;
-- add the pending personalised assignment-driven family mini-library for controlled use;
+- adapt and harden the implemented local/session assignment-driven family mini-library for consented controlled use;
 - configure minimal evaluation and trace evidence;
 - clear source, rights, provenance, and review status for every pilot sign;
 - recruit and coordinate 2 to 3 nursery schools;
@@ -54,10 +54,10 @@ The estimate does not assume a blank-sheet build.
 
 Current evidence includes:
 
-- a local computer vision proof of concept with traceable artefacts and explicit status;
+- a local Computer Vision technical feasibility artifact with traceable artefacts and explicit status;
 - deterministic HUMAN mode and optional provider-backed paths;
 - a local professional record and nursery assignment flow;
-- a static or session-based family guidance preview;
+- a session-based assignment-driven Family Experience and mini-library using synthetic groups and fictional children;
 - content review-state and provenance controls;
 - a local validation and evidence workflow.
 
@@ -65,7 +65,7 @@ Current limitations include:
 
 - no production accounts or durable multi-site assignments;
 - no real family-delivery service;
-- no personalised assignment-driven family mini-library;
+- no real family identities or accounts, authentication or authorisation, durable cross-session or cross-device persistence, notifications, tenant isolation, production correction or deletion workflows, or external nursery-platform integrations;
 - no measured pilot reliability, family use, willingness to pay, reviewer cost, or support burden;
 - incomplete sign-specific rights and presentation clearance;
 - production infrastructure and operating cost not scoped.
@@ -107,8 +107,8 @@ Evidence label: project estimate
 Work:
 
 - refine review and assignment steps for controlled service;
-- add the pending personalised assignment-driven family mini-library;
-- connect family items to actual nursery assignments;
+- adapt the implemented local/session family mini-library to consented pilot identities and access controls;
+- connect family items to actual nursery assignments with durable pilot-appropriate state;
 - add the minimum consented access, correction, withdrawal, and support path needed for the pilot;
 - prepare educator and family task scripts.
 
@@ -288,7 +288,7 @@ Outcomes:
 
 - freeze technical versions and rehearse fallback;
 - refine nursery assignment;
-- implement or configure the personalised assignment-driven family mini-library;
+- configure the implemented assignment-driven family mini-library for consented, identity-backed pilot access;
 - configure evaluation evidence;
 - prepare educator and family task scripts;
 - establish manual support and correction routes.
@@ -383,8 +383,9 @@ External or client dependencies:
 
 Internal dependencies:
 
-- the current local proof of concept remains reproducible;
+- the current local Computer Vision feasibility path remains reproducible in an approved compatible environment;
 - HUMAN mode remains available;
+- any fresh provider-backed n8n rerun obtains a new authorised credential because the historical OpenAI course credential is no longer available;
 - assignment, review status, and family access can be evidenced;
 - manual logs cover evidence not available from product events;
 - an incident owner and rollback route are available during the service test.

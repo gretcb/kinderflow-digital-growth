@@ -14,11 +14,13 @@ The workflow cannot certify movement or publish content.
 
 ## Current evidence status
 
-The repository contains an importable n8n orchestration design and its exact export. Live execution of the final adapter contract is not claimed.
+**COMPLETE AT CAPSTONE LOW-CODE POC SCOPE.** The exact export is `workflow/kinder_signs_n8n_workflow.json`. It is valid JSON, has `active` set to `false`, contains 12 nodes, and is named **Kinder Signs — Governed Family Draft (Example)**.
 
-The exact export is workflow/kinder_signs_n8n_workflow.json. It is valid JSON, has active set to false, and contains 12 nodes. Its name is Kinder Signs: Governed Family Draft (Example).
+`workflow/evidence/n8n_successful_execution_2026-08-31.png` is evidence of a real historical n8n execution of the named governed workflow on 31 August 2026 at 21:30:27. It records status **Succeeded**, duration 14.499 seconds, execution ID `#21441`, and the visible successful governed path.
 
-LangSmith observability is represented through a documented evaluation path and dry-run evidence for the optional LLM content step. No live external model output or live LangSmith trace is committed.
+These are distinct evidence layers: the JSON is the exact versioned artifact; the screenshot records a successful historical runtime execution. The screenshot is not evidence of production deployment and does not prove that the later final MVP Content Pack adapter was exercised.
+
+LangSmith observability is represented through a documented evaluation path and dry-run evidence for the optional LLM content step. No live LangSmith trace or live external model output from the later final MVP adapter is committed. The historical n8n screenshot proves the governed workflow succeeded, but it does not expose or establish the request and response payload.
 
 ## Files
 
@@ -30,8 +32,9 @@ LangSmith observability is represented through a documented evaluation path and 
 - langsmith_dry_run_summary.json: committed offline trace plan and passing gate result;
 - evaluation_cases.json: five governed evaluation cases;
 - langsmith_evaluation_plan.md: dataset and evaluation design;
-- kinder_signs_n8n_workflow.md: node, prompt, and adapter specification; and
-- kinder_signs_n8n_workflow.json: exact inactive n8n export.
+- kinder_signs_n8n_workflow.md: node, prompt, and adapter specification;
+- kinder_signs_n8n_workflow.json: exact inactive 12-node n8n export; and
+- evidence/n8n_successful_execution_2026-08-31.png: successful historical n8n execution evidence.
 
 ## Deterministic gate
 
@@ -62,7 +65,7 @@ The dry-run builds the governed prompt, loads the supplied example output, appli
 
 workflow/langsmith_eval.py includes an optional path that reads OPENAI_API_KEY, LANGSMITH_API_KEY, LANGSMITH_PROJECT, and an optional OPENAI_MODEL from the invoking environment. Credentials must not be stored in this repository.
 
-This code path is not current evidence of a live run. If it is used later, the generated draft must remain pending professional approval and the resulting trace must exclude personal data and private media.
+This code path is not current evidence of a live LangSmith trace. The course OpenAI credential used for the historical n8n execution was removed or revoked shortly afterwards and is no longer available. A fresh provider-backed rerun requires a new authorised credential. Never reconstruct, expose, or commit the former key. If the optional path is used later, the generated draft must remain pending professional approval and the resulting trace must exclude personal data and private media.
 
 ## n8n export
 
@@ -83,9 +86,9 @@ The exact inactive export contains:
 
 The export includes a placeholder credential reference, not a secret.
 
-## Manual target-runtime validation
+## Future target-runtime validation
 
-Future validation in the selected n8n installation should:
+The historical execution satisfies the capstone low-code POC evidence requirement. A fresh run is only needed to establish current reproducibility or test a changed integration. In that case:
 
 1. Import workflow/kinder_signs_n8n_workflow.json.
 2. Review node compatibility with the installed version.
@@ -96,7 +99,7 @@ Future validation in the selected n8n installation should:
 7. Leave publication systems disconnected.
 8. Save a non-sensitive execution record if the final adapter is executed.
 
-Until that record exists, describe the file as an importable design, not an executed workflow.
+Describe the present evidence precisely: the governed n8n POC executed successfully in the historical run, while the later final MVP adapter remains a designed integration without direct execution evidence.
 
 ## LangSmith scope
 
@@ -109,14 +112,14 @@ LangSmith may evaluate:
 - JSON validity; and
 - preservation of the professional-review gate.
 
-LangSmith does not evaluate:
+LangSmith does not evaluate or validate:
 
 - an MP4;
-- MediaPipe;
-- hand or pose detection;
+- MediaPipe or its output;
+- hand movement or hand or pose detection;
 - movement fidelity;
-- Baby Sign correctness;
-- professional validity; or
+- Baby Sign or linguistic correctness;
+- professional validity or approval; or
 - publication readiness.
 
 ## Content Pack adapter
@@ -138,7 +141,7 @@ The content path is:
 
 Generation method records human or llm_assisted. Generation mode records LIVE, DRY_RUN, or NOT_APPLICABLE. None of these values is publication approval.
 
-The local service stores content attempts in ignored mvp/runs/content_packs directories. Provider-path tests use mocks. The n8n export has not been executed against this final endpoint contract.
+The local service stores content attempts in ignored `mvp/runs/content_packs` directories. Provider-path tests use mocks. The historical n8n execution is not evidence that this later final endpoint contract was exercised.
 
 ## Safety boundary
 
