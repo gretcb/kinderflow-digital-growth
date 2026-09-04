@@ -1,1325 +1,387 @@
-# KinderFlow — GDPR Documentation & Privacy-by-Design Assessment
+# KinderFlow GDPR Data-Flow and Pilot Readiness Record
 
-**Project:** KinderFlow — Early Childhood Digital Growth  
-**Use case assessed:** Kinder Signs  
-**Assessment date:** 2 September 2026  
-**Jurisdiction:** European Union / Spain  
-**Assessment scope:** Current local MVP, proposed controlled pilot, and foreseeable production deployment
+**Assessment date:** 4 September 2026
+**Frozen repository baseline:** 8eb0742, Freeze connected KinderFlow capstone demo
+**Scope:** Current local MVP and proposed controlled pilot
 
-> This document is a capstone privacy assessment and implementation plan, not formal legal advice. The final controller/processor allocation and lawful bases should be confirmed against the actual pilot contracts, school type and data flows before real personal data are processed.
+This record supports product and pilot decisions. It is not legal advice, a completed record of processing activities for a legal entity, or a compliance certificate. The controller must confirm the real purposes, roles, legal bases, contracts, retention periods, recipients, transfers, and safeguards before processing pilot data.
 
----
+## Executive conclusion
 
-# 1. Executive takeaway
+The current local MVP has a narrow data footprint. It processes an adult reference video locally and creates technical run artifacts. It uses synthetic Little Steps Nursery, family, and child records. It has no real child accounts, no production family delivery, and no evidenced live transfer of personal data to an LLM or LangSmith.
 
-## Executive question
+The bounded direct MP4 route adds an external source to the current flow. The remote host receives network request data, and the local service receives the adult video. The service strips the query string from persisted provenance, but that control does not establish source rights or consent.
 
-**Can Kinder Signs move from a local MVP to a real-school pilot without introducing disproportionate privacy risk?**
+A pilot would introduce persistent nursery and user data. The safest design is group-first. A pseudonymous child assignment identifier should exist only when an individual assignment is necessary. Real pilot processing requires a completed data protection impact assessment, role and legal-basis decisions, notices, contracts, access controls, retention and deletion, recipient and transfer records, incident handling, and data-subject request operations.
 
-## Current conclusion
+## Data-protection principles
 
-**PROCEED WITH CONDITIONS**
+KinderFlow should apply the following design rule:
 
-Privacy-by-design evidence exists in the current MVP because:
+> Use the minimum personal data needed to connect approved content with the correct nursery group or authorised family account. Keep personal data out of Computer Vision, LLM, and LangSmith processing whenever the function does not require it.
 
-- child video is deliberately excluded;
-- the Computer Vision pipeline processes adult reference material;
-- the local MVP uses fictional school/child/family records;
-- the core product does not need health data, developmental diagnoses or child-performance scores;
-- Computer Vision does not identify people;
-- there is no automated decision-making about children;
-- LLM-assisted content can operate on approved sign/context data rather than personal data.
-
-Operational GDPR readiness remains incomplete. A real pilot would introduce personal data for school staff, caregivers and, if individual assignment is used, children. The pilot therefore requires a documented data model, lawful-basis analysis, controller/processor allocation, Article 28 agreements where applicable, retention rules, security controls, transparency notices, rights procedures and a DPIA before real deployment.
-
-The privacy objective should be:
-
-> **Use the minimum personal data needed to connect approved KinderFlow content with the correct school group or family — and keep personal data out of AI processing whenever it is not necessary.**
-
----
-
-# 2. Regulatory framework
-
-The main framework is:
-
-- Regulation (EU) 2016/679 — General Data Protection Regulation (GDPR);
-- Spanish Organic Law 3/2018 (LOPDGDD);
-- AEPD guidance on risk management and Data Protection Impact Assessments;
-- EDPB guidance on children's data and DPIAs.
-
-Key GDPR principles relevant to KinderFlow include:
-
-- lawfulness, fairness and transparency;
-- purpose limitation;
-- data minimisation;
-- accuracy;
-- storage limitation;
-- integrity and confidentiality;
-- accountability;
-- data protection by design and by default.
-
-Children require particular protection because they are a vulnerable group.
-
----
-
-# 3. Privacy scope by product stage
-
-KinderFlow must not treat the current local MVP, a real-school pilot and production deployment as if they were the same processing activity.
-
-| Stage | Personal-data reality | GDPR position |
-|---|---|---|
-| **Current local MVP** | Adult reference material + local technical run data; school/family/child records are fictional | Limited real-data processing |
-| **Controlled pilot** | Real school staff, caregiver and limited child-assignment data | Full GDPR governance required before launch |
-| **Production** | Persistent accounts, access, assignments, security logs, support and potentially broader analytics | Full operational privacy programme required |
-
----
-
-# 4. Current MVP — data inventory
-
-## 4.1 Adult reference video
-
-The Create a Sign MVP accepts an adult reference MP4.
-
-Potential data:
-
-- identifiable image of adult performer;
-- movement / pose data;
-- hand / body landmarks;
-- source filename;
-- technical video metadata;
-- processing timestamp;
-- run identifier;
-- processing diagnostics.
-
-### Classification
-
-If the adult is identifiable, the source video is personal data.
-
-Pose and hand landmarks can also be personal data when linked to an identifiable person.
-
-### Article 9 biometric-data boundary
-
-The GDPR treats biometric data as special-category data when it results from specific technical processing relating to physical, physiological or behavioural characteristics **and is used to allow or confirm unique identification**.
-
-KinderFlow's current MediaPipe purpose is:
-
-> movement extraction and representation.
-
-It is not:
-
-> identification or identity verification.
-
-Therefore the current landmark use should not automatically be described as Article 9 biometric identification.
-
-### Control
-
-KinderFlow must preserve this purpose boundary.
-
-If future functionality uses movement, face or body data to identify a person, the Article 9 analysis changes.
-
----
-
-# 5. Current MVP — other data
-
-## Sign/content records
-
-Examples:
-
-- sign ID;
-- sign label;
-- language;
-- approved routine/context;
-- source/provenance ID;
-- content-review state;
-- Flashcard copy.
-
-These are normally **not personal data** unless the source/provenance field contains identifiable contributor information.
-
----
-
-## Technical run data
-
-Examples:
-
-- run ID;
-- processing status;
-- frame metrics;
-- missing-landmark counts;
-- processing duration;
-- error logs.
-
-These may become personal data if linked to an identifiable operator or identifiable reference performer.
-
-Current local runs do not implement authenticated user identities.
-
----
-
-## School / child / family prototype records
-
-The current prototype uses fictional records.
-
-**No real child data should be inferred from prototype fields.**
-
-The existing School Admin demonstrates product logic such as:
-
-```text
-Child
-Group
-Parents / caregivers
-Active packs
-```
-
-These fields become personal data only when real individuals are introduced during pilot or production.
-
----
-
-# 6. Proposed pilot data model
-
-The pilot should start with the smallest possible dataset.
-
-## 6.1 School / centre data
-
-Recommended:
-
-- centre ID;
-- centre name;
-- plan / entitlement;
-- participating groups;
-- pilot status.
-
-Usually organisational data are not personal data, but contact details may identify individuals.
-
----
-
-## 6.2 School staff
-
-Minimum likely data:
-
-- staff ID;
-- name;
-- work email;
-- role;
-- school;
-- account/access status;
-- relevant activity/security logs.
-
-Avoid:
-
-- unnecessary personal phone numbers;
-- personal email where work email is available;
-- demographic profiling;
-- unrelated employment information.
-
----
-
-## 6.3 Child data
-
-### Proposed minimum if individual child assignment is included
-
-- pseudonymous child ID;
-- school/group association;
-- content assigned;
-- active content pack where needed.
-
-### Prefer not to collect
-
-- exact date of birth;
-- home address;
-- photographs;
-- videos;
-- voice recordings;
-- health information;
-- developmental diagnosis;
-- disability information;
-- detailed behavioural profiles.
-
-Age band or classroom group should be preferred over exact date of birth where sufficient.
-
-### Strong design recommendation
-
-The reason why a sign was assigned should **not** be stored as a diagnosis or developmental label.
-
-KinderFlow needs to know:
-
-> what content should be available to this child/family
-
-not:
-
-> why the child may need communication support.
-
----
-
-# 7. Caregiver / family data
-
-Likely minimum:
-
-- caregiver ID;
-- name;
-- contact email or secure access identifier;
-- relationship/access link to child;
-- school/group entitlement;
-- content-access state.
-
-Potentially useful but optional:
-
-- preferred interface language.
-
-Avoid collecting unnecessary family-profile information.
-
----
-
-# 8. Engagement and analytics data
-
-A pilot needs evidence of value, but analytics should be proportionate.
-
-## Recommended pilot signals
-
-- content assigned;
-- content accessed;
-- broad access timestamp;
-- school/group aggregate engagement;
-- completion of simple feedback survey.
-
-## Avoid
-
-- granular behavioural tracking;
-- attention scoring;
-- child-level engagement profiling;
-- inferred developmental ability;
-- emotion analytics;
-- cross-service advertising profiles.
-
-### Preferred commercial metric
-
-Instead of:
-
-> Child A accessed the MORE card 14 times at 20:42.
-
-Prefer:
-
-> 72% of participating families accessed the assigned material during the pilot period.
-
-This gives KinderFlow useful commercial evidence while reducing privacy exposure.
-
----
-
-# 9. Current and proposed data flows
-
-## 9.1 Current Computer Vision flow
-
-```text
-Validated adult reference MP4
-→ local KinderFlow MVP service
-→ MediaPipe
-→ raw landmarks
-→ normalized landmarks
-→ movement diagnostics
-→ browser-safe movement overlay
-→ human review
-→ local run storage
-```
-
-### Current boundary
-
-The MVP documentation states that reference video processing remains local.
-
-The video is not sent to the LLM or LangSmith.
-
----
-
-# 10. Pilot school-family flow
-
-Recommended architecture:
-
-```text
-School / centre record
-→ participating group
-→ pseudonymous child record
-→ caregiver access relationship
-→ educator selects approved content
-→ assignment record
-→ family receives/accesses approved material
-→ minimal aggregate engagement signal
-```
-
-The AI content-production workflow should remain separate:
-
-```text
-Approved sign/context
-→ optional LLM-assisted wording
-→ deterministic checks
-→ human review
-→ approved content asset
-```
-
-### Privacy principle
-
-**School/family/child identifiers should not be required to generate the content.**
-
-This is one of the strongest privacy-by-design opportunities in the architecture.
-
----
-
-# 11. LLM and LangSmith data boundary
-
-The current content system can generate family-facing wording from:
-
-- structured sign data;
-- approved routine/context;
-- bounded content instructions.
-
-It does not need:
-
-- child name;
-- child profile;
-- caregiver email;
-- diagnosis;
-- school-family message history.
-
-## Recommended hard rule
-
-**Do not send real child, caregiver or school-user personal data to the LLM or LangSmith in the pilot.**
-
-This materially simplifies:
-
-- purpose limitation;
-- processor governance;
-- international transfer risk;
-- data minimisation;
-- incident impact.
-
-If a future use case genuinely requires personal data in LLM processing, perform a separate privacy and processor review first.
-
----
-
-# 12. Controller / processor assessment
-
-The exact allocation is a working assumption that must be confirmed by purpose, actual data flow and contract before pilot launch.
-
-## 12.1 School-controlled child/family records
-
-For a typical school-led deployment, the school is likely to determine why its children/families are registered and why content is assigned.
-
-### Likely role
-
-**Working assumption: School as controller, subject to purpose and contract**
-
----
-
-## 12.2 KinderFlow processing school data on instruction
-
-If KinderFlow hosts:
-
-- child identifiers;
-- caregiver access;
-- school assignments;
-- engagement records;
-
-only to provide the contracted service under school instructions:
-
-### Likely role
-
-**Working assumption: KinderFlow as processor for instructed school processing, subject to purpose and contract**
-
-An Article 28 Data Processing Agreement would then be required.
-
----
-
-## 12.3 KinderFlow's own operational purposes
-
-KinderFlow may act as an independent controller for limited purposes such as:
-
-- account administration;
-- fraud/security prevention;
-- contract/contact management;
-- legal compliance;
-- its own internal staff/reviewer records.
-
-These purposes should be kept separate from school-controlled child/family processing.
-
----
-
-## 12.4 Joint controllership
-
-Joint controllership should **not** be assumed.
-
-It arises where parties jointly determine purposes and essential means.
-
-KinderFlow should prefer clear role separation rather than creating joint control unintentionally through vague product analytics or independent reuse of school data.
-
----
-
-# 13. Lawful-basis assessment — Article 6
-
-There is no single lawful basis for the entire platform.
-
-It must be identified per processing activity.
-
-| Processing activity | Likely basis to assess | Current decision |
-|---|---|---|
-| B2B account/contact administration | Contract and/or legitimate interests depending relationship | **TBD CONTRACTUALLY** |
-| School staff login/security | Legitimate interests / contract context | **TBD** |
-| Child/family service records | Determined by school controller according to school type and service purpose | **TBD BEFORE PILOT** |
-| Family access/delivery | Determined by controller and actual service relationship | **TBD BEFORE PILOT** |
-| Security logging | Legitimate interests / legal obligations where applicable | **TBD** |
-| Optional product research | Consent or legitimate interests only after balancing and design review | **DO NOT BUNDLE** |
-| Marketing to school contacts | Separate ePrivacy / LSSI + GDPR analysis | **OUTSIDE CORE PILOT** |
-
-## Important
-
-Consent should **not** be used as a catch-all solution simply because children are involved.
-
-The correct legal basis depends on:
-
-- school type;
-- contractual relationship;
-- educational purpose;
-- national/legal obligations;
-- whether the processing is necessary for the service.
-
----
-
-# 14. Children's consent — Spain
-
-Children are vulnerable data subjects generally. Under Spanish LOPDGDD Article 7, age 14 is specifically relevant when relying on the child's own consent: that consent can generally be relied on only when the child is **over 14**.
-
-Where consent is the lawful basis for a child under 14, consent must come from the holder of parental responsibility or guardianship.
-
-## KinderFlow relevance
-
-Kinder Signs is designed for children aged approximately 0–3.
-
-Therefore:
-
-> **KinderFlow must never rely on the child's own consent.**
-
-However, the pilot should also avoid assuming that parental consent is automatically the correct lawful basis for every school processing activity.
-
-The school/controller must document the correct Article 6 basis for each purpose.
-
----
-
-# 15. Article 8 — information-society services offered directly to children
-
-The current product is:
-
-- school-led;
-- operated by adults;
-- not directly contracted or operated by a 0–3-year-old child.
-
-Article 8 is therefore not the main current design route.
-
-If KinderFlow later introduces a child-facing account or service directly offered to children, the analysis must be reopened.
-
----
-
-# 16. Special-category data — Article 9
-
-The core pilot does not require:
-
-- health data;
-- disability data;
-- diagnosis;
-- genetic data;
-- data revealing protected beliefs or identity characteristics.
-
-## Risk
-
-Because Kinder Signs relates to early communication, a school might be tempted to include notes such as:
-
-- speech delay;
-- developmental condition;
-- therapy status;
-- disability;
-- clinical diagnosis.
-
-These may constitute health/special-category data.
-
-## Design rule
-
-**Do not include these fields in the core Kinder Signs data model.**
-
-If a future use case genuinely needs health or disability information:
-
-1. establish an Article 6 basis;
-2. establish an Article 9 condition;
-3. complete a new DPIA/risk assessment;
-4. implement stronger access/security controls;
-5. update transparency and retention.
-
----
-
-# 17. Automated decisions and profiling — Article 22
-
-Current Kinder Signs:
-
-- does not score children;
-- does not rank children;
-- does not determine educational placement;
-- does not infer developmental readiness;
-- does not automatically decide what services a child can access.
-
-The educator chooses what approved content to assign.
-
-## Current result
-
-**No solely automated decision with legal or similarly significant effects is identified in the current described scope.**
-
-## Hard boundary
-
-Any future child scoring, recommendation or decision engine must be assessed separately.
-
----
-
-# 18. Data minimisation assessment
-
-| Data | Necessary? | Recommendation |
-|---|---|---|
-| Child pseudonymous ID | Yes for individual assignment | Keep |
-| Child name | Possibly | Avoid if pseudonymous ID is operationally sufficient |
-| Exact date of birth | Usually no | Use age/group band |
-| Child photo | No | Do not collect |
-| Child video | No | Do not collect |
-| Child voice | No | Do not collect |
-| Health/diagnosis | No for core product | Do not collect |
-| Parent/caregiver email | Yes if direct access requires it | Keep only while needed |
-| Caregiver phone | Usually no | Avoid |
-| Educator name/work email | Likely yes | Keep |
-| Assignment history | Limited need | Define retention |
-| Family access event | Useful for pilot | Minimise/aggregate |
-| Fine-grained behaviour | No | Do not collect |
-| LLM prompt containing child data | No | Prohibit |
-
----
-
-# 19. Storage limitation and retention
-
-The current local MVP has **no formal retention policy**.
-
-This is a documented gap.
-
-## Proposed pilot retention framework
-
-Final periods must be agreed with the controller.
-
-| Data type | Pilot recommendation | End-of-pilot action |
-|---|---|---|
-| Adult reference source | Only as long as production/review/provenance requires | Retain governed source or delete according to rights/licence policy |
-| Raw CV landmarks | Keep only if needed for reproducibility/review | Review/delete or retain controlled version |
-| Technical run logs | Pilot + short audit window | Delete or anonymise |
-| Child assignment data | Active pilot/service period | Delete/return after agreed termination window |
-| Caregiver contact/access | Active access period | Delete after termination window |
-| Educator account | Active account | Disable then delete according to policy |
-| Aggregate pilot metrics | May be retained if truly anonymised | Retain as non-personal evidence |
-| Support tickets | Defined operational/legal period | Delete on schedule |
-| Security logs | Defined security period | Automatically expire |
-
-## Required before pilot
-
-Define exact periods in a retention schedule.
-
-“Keep indefinitely” is not acceptable.
-
----
-
-# 20. Privacy by design and by default — Article 25
-
-KinderFlow already has several strong design choices.
-
-## Existing controls
-
-### No child video
-
-The largest unnecessary sensitive input was removed from scope.
-
-### Central content production
-
-Schools do not need to upload their own sign videos or personal child media.
-
-### Separation of content and recipient
-
-A sign can be produced without knowing which child will receive it.
-
-### Deterministic Flashcards
-
-Flashcard rendering does not require personal data or GenAI.
-
-### Human review
-
-AI output does not autonomously reach families as published content.
-
-### No child assessment
-
-Technical movement metrics apply to adult reference content, not children.
-
----
-
-## Additional pilot controls
-
-- pseudonymous child IDs;
-- least-privilege access;
-- school-level tenancy;
-- secure caregiver access;
-- no personal data in LLM/LangSmith;
-- no unnecessary analytics;
-- automatic retention/deletion rules;
-- audit logs for sensitive administrative actions;
-- default private visibility;
-- separation of production/admin/family permissions.
-
----
-
-# 21. Record of Processing Activities — proposed structure
-
-A full Article 30 RoPA should be maintained by the relevant controller/processor where required.
-
-## Proposed KinderFlow processing inventory
-
-| Activity | Data subjects | Data categories | Purpose | Role | Recipients/subprocessors | Retention | Status |
-|---|---|---|---|---|---|---|---|
-| Adult reference processing | Adult performer | Video, landmarks, metadata | Create/review sign asset | Controller/TBD | Local processing initially | TBD | **MVP ACTIVE** |
-| Staff account administration | Educators/admins | Name, work email, role | Access/service administration | Controller or processor depending activity | Hosting/auth provider | TBD | **PILOT** |
-| Child assignment | Children | Pseudonymous ID, group, assignment | Deliver school-selected content | Likely processor | Hosting | TBD | **PILOT** |
-| Family access | Caregivers | Name/contact/access relation | Provide assigned material | Likely processor | Email/auth/hosting | TBD | **PILOT** |
-| Engagement measurement | Caregivers/school groups | Access/event data | Measure pilot adoption/value | Role depends purpose | Analytics/hosting | Short pilot period | **PILOT — MINIMISE** |
-| Content generation | Internal content | Sign/context data | Draft family content | Controller for internal ops | LLM provider if LIVE | Content lifecycle | **MVP/PILOT** |
-| AI observability | Internal content workflow | Prompt/output metadata | QA/traceability | Controller | LangSmith if LIVE | TBD | **OPTIONAL** |
-| Security logging | Platform users | Account/IP/security events | Security | Controller/processor context | Hosting/security providers | TBD | **PRODUCTION** |
-| Support | Staff/caregivers | Contact/support content | Resolve issues | Mixed/TBD | Support provider | TBD | **PILOT/PRODUCTION** |
-
----
-
-# 22. Transparency obligations — Articles 12–14
-
-Before a real pilot, data subjects must receive clear information appropriate to their role.
-
-## School staff notice
-
-Explain:
-
-- who controls the data;
-- KinderFlow's role;
-- account data processed;
-- purposes;
-- lawful bases;
-- recipients;
-- retention;
-- rights;
-- contact route;
-- relevant international transfers.
-
----
-
-## Parent / caregiver notice
-
-Use clear, non-technical language.
-
-Explain:
-
-- school/KinderFlow roles;
-- what family and child data are used;
-- why;
-- what is not collected;
-- that KinderFlow does not assess the child with AI;
-- that child video is not required;
-- how long data are kept;
-- how to exercise rights;
-- whom to contact.
-
----
-
-## Child-facing transparency
-
-For the current 0–3 product, the meaningful transparency route is primarily through parents/guardians and the school.
-
-If KinderFlow later creates a direct child-facing interface for older children, information must be age-appropriate and understandable.
-
----
-
-# 23. Data-subject rights
-
-Processes must support:
-
-- access;
-- rectification;
-- erasure;
-- restriction;
-- portability where applicable;
-- objection where applicable;
-- rights related to automated decision-making where applicable.
-
-## Operational design question
-
-If the school is controller and KinderFlow processor:
-
-```text
-Parent request
-→ school/controller
-→ KinderFlow assists under Article 28
-→ data located/exported/corrected/deleted
-→ controller responds
-```
-
-The Article 28 agreement should define this assistance.
-
----
-
-# 24. Processor requirements — Article 28
-
-Where KinderFlow acts as processor, the school agreement should cover:
-
-- subject matter and duration;
-- nature and purpose;
-- categories of personal data;
-- data subjects;
-- processing only on documented instructions;
-- confidentiality;
-- security;
-- subprocessors;
-- data-subject-right assistance;
-- breach assistance;
-- DPIA assistance;
-- deletion/return after termination;
-- audits/compliance evidence.
-
-A generic SaaS contract is not enough unless it includes these processor terms.
-
----
-
-# 25. Subprocessor and vendor register
-
-The final register depends on the pilot architecture.
-
-Potential vendors include:
-
-- hosting provider;
-- authentication provider;
-- email/delivery provider;
-- LLM provider;
-- LangSmith;
-- support/analytics tooling.
-
-## Critical privacy architecture decision
-
-If the LLM and LangSmith receive **no personal data**, their privacy exposure for child/family processing is greatly reduced.
-
-This should be a deliberate technical control, not an informal assumption.
-
----
-
-# 26. International transfers — Chapter V
-
-The current local MVP does not send the adult MP4 to an external service.
-
-A hosted pilot may introduce processors outside the EEA or international access.
-
-Before pilot, for every relevant vendor:
-
-1. identify processing location;
-2. identify transfer mechanism;
-3. check adequacy decision where applicable;
-4. otherwise confirm Standard Contractual Clauses or other valid mechanism;
-5. complete transfer-risk analysis where required;
-6. document supplementary measures;
-7. reflect the transfer in privacy information.
-
-## Important
-
-Do not claim:
-
-> “No international transfers”
-
-until the final production vendors and data routes have been audited.
-
----
-
-# 27. Security of processing — Article 32
-
-Current local MVP controls include:
-
-- isolated run identifiers;
-- sanitized filenames;
-- no raw local paths in UI;
-- no tracebacks exposed to users;
-- ignored local run directories;
-- serialized MediaPipe processing;
-- no embedded credentials in workflow export.
-
-These are useful MVP controls but are **not a production security programme**.
-
-## Pilot minimum
-
-- authenticated users;
-- role-based access;
-- tenant/school isolation;
-- TLS in transit;
-- encryption at rest where appropriate;
-- secret management;
-- secure password/authentication policy;
-- access logging;
-- backups;
-- retention/deletion controls;
-- vulnerability/patch process;
-- incident response;
-- least privilege;
-- processor security review.
-
----
-
-# 28. Personal-data breach process
-
-Before pilot:
-
-```text
-Detect
-→ contain
-→ assess affected data/data subjects
-→ document incident
-→ determine controller/processor responsibilities
-→ processor informs controller without undue delay
-→ controller assesses Article 33 notification
-→ notify supervisory authority within 72 hours where required
-→ assess Article 34 communication to individuals
-→ remediate
-```
-
-The school/KinderFlow contract must identify incident contacts and escalation paths.
-
----
-
-# 29. DPIA screening — Article 35
+| Principle | Current evidence | Pilot requirement |
+| --- | --- | --- |
+| Purpose limitation | Adult video is used for technical content review | Fix each account, assignment, support, and analytics purpose |
+| Data minimisation | Core Computer Vision needs an adult reference, not a child | Prefer group assignment; create a child ID only if necessary |
+| Accuracy | Synthetic fixtures can be corrected locally | Provide correction and relationship-verification processes |
+| Storage limitation | Runs remain local until manually removed | Approve and automate a retention schedule |
+| Integrity and confidentiality | Local bounds and direct-URL controls exist | Add identity, access, encryption, tenancy, monitoring, backup, and incident controls |
+| Accountability | Versioned documentation and registries exist | Record controller decisions, reviews, contracts, training, and requests |
 
 ## Current local MVP
 
-A full DPIA is not necessary merely to run the current fictional/local demonstration.
+### Data subjects and data categories
 
-However, the adult-reference processing still requires normal GDPR risk management if identifiable personal data are used.
+| Data subject | Data | Personal-data assessment |
+| --- | --- | --- |
+| Adult reference performer | Image, movement, pose and hand landmarks, and possible voice in source video | Personal data when the person is identifiable or linkable |
+| Operator | Local interaction and operator-declared reference status | Personal data only if linked to an identified operator; current app has no account |
+| Remote video host or service user | Network address and request metadata | The remote host can receive the local service's public IP and user-agent string |
+| Nursery staff, families, and children | Little Steps Nursery fixture, group labels, Child A to Child F, and family preview content | Synthetic prototype data, not real records |
 
----
+File names, source type, a redacted source URL, run identifier, timestamps, warnings, and review choices may also become personal data if they can be linked to an individual.
 
-## Real-school pilot
+### Video and landmark nuance
 
-**DPIA: STRONGLY RECOMMENDED BEFORE PILOT AND LIKELY TO BE REQUIRED DEPENDING ON THE FINAL PROCESSING DESIGN.**
+An identifiable adult video is personal data. Pose and hand landmarks can also be personal data when retained with identifiers or when they can reasonably be linked back to the person.
 
-Reasons include:
+The current service does not use landmarks to uniquely identify anyone. It does not compare identity templates, infer emotion, estimate age, or assess a child. On the current purpose, the landmarks are not processed as special-category biometric data for unique identification. A later identity function would require a new Article 9 analysis and a new EU AI Act assessment.
 
-- use of new/AI-enabled technology;
-- children under 14 are vulnerable data subjects;
-- persistent school-family data would be introduced;
-- the service may measure usage/engagement;
-- multiple organisations may participate in the processing chain.
+### Current data flow
 
-AEPD guidance states that a DPIA is generally mandatory where processing is likely to create high risk and notes that, in general, identifying two or more risk criteria points toward carrying one out.
+| Stage | Data movement | Storage | Current boundary |
+| --- | --- | --- | --- |
+| 1. Source selection | Operator selects registered MORE demo, uploads an MP4, or provides a public direct MP4 URL | Browser and local service | Visible `Reviewed reference` copy sends the internal `Validated reference` value; this operator declaration does not independently prove authority, consent, or licence |
+| 2. Direct URL fetch | Remote host sends MP4 bytes to the local service | Temporary local staging file | Scheme, address, redirects, MIME, size, time, and cleanup are bounded |
+| 3. Local processing | OpenCV and MediaPipe read frames and extract landmarks | Local run directory | No cloud Computer Vision service is evidenced |
+| 4. Technical evidence | Service writes raw and normalized landmarks, summaries, plots, and previews | Local MVP run artifacts | Git ignores the run directory; that is not a retention or security control |
+| 5. Review | Operator views evidence and chooses a route or pose | Local process and browser state | No authenticated reviewer ledger |
+| 6. Product prototype | Synthetic assignment and family-preview records move between local pages | Browser session or static fixtures | No real accounts, durable service, or production delivery |
+| 7. Optional wording evaluation | Approved sign and routine content can enter deterministic checks or dry-run evaluation | Local JSON evidence | No live LLM or LangSmith personal-data transfer is evidenced |
 
-AEPD's list explicitly includes processing involving vulnerable data subjects, including children under 14, as a risk criterion.
+The direct URL implementation:
 
-## Practical decision
+- accepts HTTP or HTTPS public targets;
+- rejects credentials, fragments, local names, private addresses, unsafe ports, and non-global resolved addresses;
+- pins validated addresses and revalidates redirects;
+- rejects an HTTPS-to-HTTP downgrade;
+- enforces an MP4 content type, 100 MB cap, redirect limit, and total timeout;
+- writes a generated local filename;
+- removes partial files on failure; and
+- removes the query string from persisted provenance.
 
-Rather than debating whether the smallest pilot could avoid the legal threshold, KinderFlow should:
+The remote source still sees a request, public network address, and KinderFlow user-agent. HTTP remains permitted. The service validates transport and file shape, not the performer's identity, consent, source licence, sign meaning, or malware safety.
 
-> **complete a pilot DPIA as a governance gate.**
+Evidence:
 
-This provides stronger evidence for both the capstone and a real commercial discussion.
+- [Direct URL and local processing code](../mvp/pipeline.py)
+- [Local service routes](../mvp/app.py)
+- [Current security and provenance tests](../mvp/tests/test_prompt_3.py)
+- [MVP reality check](../docs/mvp_reality_check.md)
 
----
+### Current synthetic product records
 
-# 30. Proposed DPIA structure
+The nursery and Family View use fictional Little Steps Nursery records, group labels, and Child A to Child F examples. Assignment state is local or session-based. This proves interface behaviour only.
 
-## A. Description
+A family-facing guidance prototype exists. A personalised assignment-driven family library remains a next product iteration. The current preview is not evidence of real delivery, family identity verification, access control, or account separation.
 
-- system;
-- purposes;
-- stakeholders;
-- data subjects;
-- personal data;
-- flows;
-- recipients;
-- retention;
-- technologies.
+### Current asset and model boundaries
 
-## B. Necessity and proportionality
+The six-sign registry contains reference videos, functional illustrations, source records, hashes, and draft output assets. Hashes support identity and change detection. They do not prove ownership, consent, or lawful processing.
 
-For each data field:
+Open Peeps supplies a CC0-recorded character and line grammar. It does not provide personal-data evidence or sign mechanics.
 
-> Do we genuinely need this to deliver school-home continuity?
+The three Gemini FX files are local pre-generated demo outputs:
 
-If not, remove it.
+- MORE maps to mas.mp4;
+- HELP maps to ayuda.mp4; and
+- MILK maps to leche.mp4.
 
-## C. Risks to individuals
+EAT, SLEEP, and WATER have no current Gemini FX output. The files were prepared separately and are not generated from current landmarks. Their original provider-side processing, source inputs, location, and retention are not evidenced in this repository. Do not use them externally until those facts and usage rights are recorded.
 
-Examples:
+## Proposed pilot
 
-- child assignment exposed to wrong family;
-- school-to-school data leakage;
-- unauthorised access;
-- excessive child profiling;
-- accidental health-data collection;
-- content/engagement data retained too long;
-- personal data sent to LLM vendor;
-- account takeover;
-- incorrect parent-child association;
-- sensitive inference from individual usage;
-- breach affecting vulnerable data subjects.
+### Minimum pilot data
 
-## D. Controls
+| Category | Minimum data | Excluded by default |
+| --- | --- | --- |
+| Nursery account | Nursery ID, name, status, contract reference | Unrelated business records |
+| Staff user | Name, work email, role, authentication and access events | Personal phone and free-text profile |
+| Group assignment | Group ID, sign ID, material IDs, dates, state, creator | Child identity |
+| Family access | Authorised contact or access credential only when required | Household profile, unrelated family history |
+| Individual assignment | Pseudonymous child assignment ID only when group delivery cannot meet the purpose | Child name in AI inputs, health, development, diagnosis, media |
+| Review and publication | Reviewer, source, rights record, version, decision, rationale, timestamp | Unnecessary performer or child details |
+| Support | Contact, issue category, response, resolution | Open-ended sensitive notes |
+| Security and audit | Actor, event, time, object, result, network and device data as justified | Content beyond the event purpose |
+| Measurement | Aggregated or pseudonymous assignment, access, time, and reuse measures | Behavioural profiling or child scores |
 
-- minimisation;
-- pseudonymisation;
-- access control;
-- tenant isolation;
-- human oversight;
-- LLM personal-data prohibition;
-- retention;
-- encryption;
-- vendor governance;
-- incident response.
+The pilot should not collect child video, voice, photographs, health data, developmental data, diagnostic information, free-text educator observations, emotion data, or learning scores.
 
-## E. Residual risk
+### Proposed pilot data flow
 
-Decide:
+1. KinderFlow creates an approved, versioned sign package without child or family data.
+2. An authorised nursery administrator selects an approved sign, group, material set, and audience.
+3. The assignment service stores a nursery and group assignment.
+4. If an individual assignment is necessary, the service stores a pseudonymous assignment ID separated from the nursery's identity record.
+5. An authorised family account receives access to reviewed content through a production access-control layer.
+6. The service records minimal delivery, access, correction, and security events.
+7. Pilot reporting uses aggregated or pseudonymous measures.
+8. No school, family, or child identifier enters the Computer Vision, LLM, or LangSmith content path.
 
-- GO;
-- GO WITH CONDITIONS;
-- ITERATE;
-- STOP / CONSULT AEPD where residual high risk cannot be reduced.
+The final personalised assignment-driven family mini-library does not exist in the current product. The pilot plan must build and test it before claiming end-to-end delivery.
 
----
+## Controller and processor assumptions
 
-# 31. Privacy risk register
+Roles follow actual decisions and contracts, not product labels.
 
-| Risk | Likelihood | Impact | Level | Control | Pilot gate |
-|---|---:|---:|---|---|---|
-| Wrong family receives child's assignment | 2 | 5 | High | Secure relationship mapping + access checks | **Must resolve** |
-| Cross-school data exposure | 2 | 5 | High | Tenant isolation + RBAC + tests | **Must resolve** |
-| Unnecessary child data collected | 3 | 4 | High | Minimal schema + prohibited fields | **Must resolve** |
-| Health/developmental data entered informally | 3 | 5 | Critical | No free-text diagnosis field + policy/training | **Must resolve** |
-| Personal data enters LLM/LangSmith | 2 | 5 | High | Technical/policy prohibition + redaction | **Must resolve** |
-| Excessive engagement tracking | 3 | 4 | High | Aggregate metrics by default | **Pilot design control** |
-| Data retained after pilot | 3 | 3 | Moderate | Retention schedule + deletion workflow | **Must resolve** |
-| Weak reviewer/admin authentication | 3 | 4 | High | Production auth/RBAC | **Must resolve** |
-| Vendor transfer not documented | 2 | 4 | Moderate | Vendor/SCC/transfer register | **Must resolve if applicable** |
-| Parent cannot exercise rights efficiently | 2 | 4 | Moderate | Controller/processor rights workflow | **Must resolve** |
-
----
-
-# 32. GDPR compliance matrix
-
-| Requirement | Current status | Evidence | Gap | Action |
-|---|---|---|---|---|
-| Processing inventory | **Partial evidence** | MVP architecture documented | Pilot fields not frozen | Approve pilot schema |
-| Lawful basis | **Legal confirmation required** | No real pilot yet | Must be mapped per purpose/controller | Legal review before pilot |
-| Data minimisation | **Evidence present; operational control required** | Child video removed | Persistent pilot schema TBD | Use pseudonymous/minimal model where individual assignment is included |
-| Special-category minimisation | **Design evidence present** | Not required by core use | Could enter via free text | Prohibit unnecessary health data |
-| Article 22 | **Not identified in current scope** | No child scoring/automated decisions | Future scope risk | Maintain hard boundary |
-| Controller/processor roles | **Legal confirmation required** | School-led model | Purposes and contracts not final | Confirm roles |
-| Article 28 DPA | **Operational gap** | Not required for local MVP | Required where KinderFlow is processor | Draft before pilot |
-| Transparency | **Operational gap** | Prototype copy only | Legal privacy notices missing | Draft school/caregiver notices |
-| Rights handling | **Operational gap** | No real data | Workflow not implemented | Define process |
-| Retention | **Operational gap** | Local MVP has no formal policy | Exact periods missing | Create retention schedule |
-| Privacy by design | **Evidence present** | No child video; separated content generation | Must operationalise controls | Preserve through pilot |
-| Security | **Local MVP evidence only** | Basic local safeguards | No auth/tenant isolation | Pilot security baseline |
-| Subprocessors | **Partial evidence** | Vendors identifiable | Final architecture not fixed | Vendor register/DPA review |
-| International transfers | **TBD** | Depends on vendors/data | No final transfer map | Complete before pilot |
-| DPIA | **Operational gap** | Screening now completed | Full assessment not yet done | Complete before real pilot |
-| Breach response | **Operational gap** | None operational | Contacts/process missing | Define before pilot |
-| RoPA | **Draft structure** | This document | Formal record needed | Complete before pilot |
-
----
-
-# 33. MVP → Pilot → Production privacy gates
-
-## Current MVP
-
-### Acceptable for demonstration
-
-- local adult-reference processing;
-- fictional child/family data;
-- no personal data in LLM workflow;
-- no persistent real accounts.
-
-### Remaining MVP housekeeping
-
-- document retention/deletion of local demo runs;
-- confirm reference-performer rights/provenance.
-
----
-
-## Before controlled pilot
-
-### Must have
-
-1. final personal-data schema;
-2. controller/processor allocation;
-3. lawful-basis matrix;
-4. Article 28 DPA;
-5. DPIA;
-6. parent/caregiver and staff privacy information;
-7. retention schedule;
-8. rights procedure;
-9. subprocessor register;
-10. transfer assessment;
-11. authentication/RBAC;
-12. school tenancy isolation;
-13. incident/breach procedure;
-14. LLM/LangSmith no-personal-data rule;
-15. data deletion/return procedure.
-
----
-
-## Before full production
-
-Add:
-
-- scalable security monitoring;
-- formal vendor review cycle;
-- production audit logging;
-- tested backup/recovery;
-- periodic access review;
-- privacy/security incident exercises;
-- product-change DPIA trigger;
-- data lifecycle automation;
-- formal privacy governance ownership.
+| Processing | Working assumption | Decision required |
+| --- | --- | --- |
+| KinderFlow's internal adult-reference production | KinderFlow may act as controller if it decides why and how to use the reference | Identify legal entity, source, rights, lawful basis, and retention |
+| Nursery staff and child or family relationship records | Nursery is likely controller for its educational and family-communication purposes | Confirm school type, applicable law, and purpose |
+| KinderFlow hosting school-directed assignments | KinderFlow may be processor when acting only on documented nursery instructions | Sign Article 28 terms and prohibit secondary use |
+| KinderFlow product security and service administration | KinderFlow may be independent controller for limited security and business-account purposes | Separate those purposes in notices and RoPA |
+| Model, hosting, monitoring, or support vendors | Processor or sub-processor status depends on service and data | Complete vendor and transfer review |
+| Joint product or measurement decisions | Joint controllership may arise if purposes and essential means are decided together | Avoid or document allocation transparently |
 
----
-
-# 34. Pilot-ready data architecture recommendation
-
-The preferred architecture is deliberately simple.
-
-```text
-CONTENT DOMAIN
-Validated adult reference
-→ CV processing
-→ reviewed sign
-→ approved content
-
-IDENTITY / DELIVERY DOMAIN
-School
-→ group
-→ pseudonymous child ID
-→ caregiver access
-→ assignment
+The current repository does not settle these roles.
 
-OUTPUT
-Approved content + entitlement
-→ family receives content
-```
+## Processing-activities register
 
-These domains should remain separated.
+### Current development activities
 
-The Content Engine should not need a child's identity to write a Flashcard or family guidance.
+| Activity | Purpose | Data and subjects | Working role | Legal-basis question | Recipients or transfers | Retention state |
+| --- | --- | --- | --- | --- | --- | --- |
+| Adult reference intake | Create technical movement evidence | Adult image, movement, possible voice, source metadata | KinderFlow controller assumption | Consent, contract, or legitimate interests must be assessed against the actual relationship | Local operator and service; remote host supplies direct-URL file | Manual deletion; no automatic limit evidenced |
+| Computer Vision run | Extract and review landmarks and previews | Adult video, landmarks, metrics, artifacts | Same as source activity | Same purpose and basis; necessity must be documented | Local process only | Manual deletion |
+| Direct URL retrieval | Receive one public MP4 | Source URL, request metadata, adult video | KinderFlow controller assumption | Authority to retrieve and use content must be documented | Public source host sees request metadata | Query stripped in stored provenance; local video follows run retention |
+| Synthetic product demonstration | Demonstrate nursery, assignment, and Family View interactions | Fictional records only | Not a real personal-data activity on current evidence | Not applicable to synthetic fixtures | Local browser and service | Session or static fixture |
+| Optional family-copy dry-run | Test bounded output and quality rules | Approved sign and routine content | Internal development | No personal data should be used | Local files; no live LangSmith or LLM call evidenced | Versioned sample evidence |
+| Asset registry | Preserve identity, mapping, provenance, and rights status | Asset metadata; may include creator attribution | KinderFlow controller assumption | Legitimate documentation purpose to confirm | Repository reviewers | Versioned while evidence is needed |
 
----
+### Proposed pilot activities
 
-# 35. Recommended pilot schema
+| Activity | Purpose | Data and subjects | Expected role | Candidate Article 6 basis | Recipients | Transfer and retention status |
+| --- | --- | --- | --- | --- | --- | --- |
+| Nursery account and contract | Provide and administer service | Decision-maker and staff contact data | KinderFlow controller for account administration | Contract or legitimate interests, subject to final analysis | Authorised KinderFlow staff and hosting provider | Vendor and period TBD before pilot |
+| User authentication and role access | Protect nursery and family content | User identity, credential metadata, access events | Controller or processor by context | Contract, legitimate interests, or legal obligation as applicable | Identity and hosting providers | Vendor, region, and period TBD |
+| Group assignment | Make reviewed content available to a group | Nursery, group, sign, materials, actor, status | Nursery controller; KinderFlow processor assumption | Nursery must document its basis | Authorised staff, family users, service providers | Period TBD; no model transfer |
+| Optional individual assignment | Deliver content when group assignment is insufficient | Pseudonymous child assignment ID and authorised family link | Nursery controller; KinderFlow processor assumption | Nursery must establish necessity and basis | Authorised nursery and linked family only | Separate identity mapping; period TBD |
+| Family access | Let an authorised caregiver view reviewed material | Contact or credential, content access, language choice | Role depends on account design | Contract, public task, legitimate interests, or another applicable basis | Authorised user and service providers | Period TBD |
+| Review and publication log | Prove content decision and support correction | Reviewer identity, asset, source, decision, rationale | KinderFlow controller | Legitimate interests and accountability may apply | Authorised operations, auditors, regulators where required | Proposed 12 months after withdrawal, subject to approval |
+| Security logging | Detect misuse and investigate incidents | Account, event, time, network and device data | Each party for its security purpose | Legitimate interests or legal obligation, subject to balancing | Security and hosting providers | Proposed 90 days, longer only for an active incident |
+| Support | Resolve service and rights issues | User contact, ticket, response | Role depends on issue | Contract or legitimate interests | Support provider if used | Proposed 90 days after closure |
+| Pilot measurement | Decide whether to continue | Aggregated or pseudonymous use, time, reuse, and issue measures | Define before collection | Legitimate interests or agreed pilot purpose, subject to balancing | Pilot team and nursery | Delete row-level data after pilot decision; retain approved aggregate |
 
-## Child
+Candidate bases are decision prompts, not final conclusions. The controller must document necessity, reasonable expectations, balancing, and national education law. Consent should not be used as a default when it is not freely given or when another basis better reflects the service.
 
-```text
-child_id
-school_id
-group_id
-active_content_entitlements
-```
+## Lawful-basis and special-category questions
 
-Add a display name only if user research proves it is operationally necessary.
+### Adult reference performer
 
----
+Before using a real adult reference, record:
 
-## Caregiver
+- who the person is in relation to KinderFlow;
+- who supplied the recording;
+- what uses were explained;
+- whether the recording can be adapted, reviewed, displayed, or redistributed;
+- the selected Article 6 basis and its rationale;
+- withdrawal or objection handling where relevant; and
+- the deletion date.
 
-```text
-caregiver_id
-contact_identifier
-child_access_relationship
-preferred_language (optional)
-access_status
-```
+The visible `Reviewed reference` copy maps to the internal `Validated reference` value. That operator statement is not consent evidence, a licence, professional validation, or proof of source authority.
 
----
+### Children and family accounts
 
-## Educator
+The nursery must identify the legal basis for service and family communication under its real educational context. If an information-society service is offered directly to a child and relies on consent, GDPR Article 8 and Spain's national age rule require a separate analysis. The current product has no child-directed account.
 
-```text
-staff_id
-school_id
-name
-work_email
-role
-account_status
-```
+KinderFlow should not infer a child's age. No automated minor-age estimation appears in the frozen code.
 
----
+### Special-category data
 
-## Assignment
+The pilot design should exclude health, diagnosis, disability, and other Article 9 data. Adult landmarks are not processed for unique identification in the current workflow.
 
-```text
-assignment_id
-content_id
-school_id
-group_id
-child_id (nullable)
-assigned_by
-assigned_at
-```
+If identity verification, health tailoring, or another special-category purpose is proposed, stop design work until an Article 9 condition, necessity analysis, DPIA, security design, and EU AI Act reassessment are complete.
 
-Avoid storing an explanation such as:
+### Automated decisions
 
-```text
-reason_for_assignment = speech delay
-```
+The current system makes no solely automated decision with legal or similarly significant effects on a child or adult. It does not score or assess children.
 
-The product does not need it.
+If a future recommendation affects access, placement, support, or another significant outcome, KinderFlow must reassess GDPR Article 22, transparency, contestability, human intervention, and the EU AI Act before implementation.
 
----
+## Retention and deletion
 
-# 36. Pilot privacy KPIs
+The frozen MVP has no automatic run-retention control. Git ignore rules do not delete or secure local artifacts.
 
-Privacy controls should be measurable.
+The following limits are proposed pilot targets, not implemented policy:
 
-| KPI | Target |
-|---|---|
-| Child videos processed | **0** |
-| Child health/developmental fields in core schema | **0** |
-| Personal-data fields sent to LLM | **0** |
-| Personal-data fields sent to LangSmith | **0** |
-| Unauthorised cross-school access incidents | **0** |
-| Open high-risk DPIA actions at pilot start | **0** |
-| Staff completing privacy/AI onboarding | **100% of pilot operators** |
-| Data-subject requests within required deadline | **100%** |
-| Pilot data deleted/returned according to schedule | **100%** |
+| Record | Proposed maximum | Trigger and action | Owner |
+| --- | --- | --- | --- |
+| Raw adult source and temporary direct-URL file | 30 days after review closes | Delete earlier when no longer needed | Content Operations |
+| Raw and normalized landmarks and technical previews | 90 days after final content decision | Retain only the approved evidence subset afterward | Content Operations |
+| Rejected or abandoned draft visual | 30 days after decision | Delete unless needed for an active complaint | Content Operations |
+| Published content decision and source record | Active life plus 12 months after withdrawal | Preserve correction and accountability evidence | Product Owner |
+| Nursery and staff account | Contract life plus 30 days | Delete or anonymise except required finance or legal records | Account owner |
+| Group or individual assignment | Active service need plus 90 days | Delete relationship data; retain approved aggregate only | Nursery controller |
+| Family credential or contact | Account life plus 30 days | Revoke immediately on relationship change | Nursery controller |
+| Security event | 90 days | Extend only for an active investigation | Security owner |
+| Support ticket | 90 days after closure | Remove sensitive attachments earlier | Support owner |
+| Row-level pilot measurement | Until pilot decision plus 30 days | Aggregate and delete row-level identifiers | Pilot lead |
 
----
+The controller must approve or replace these values after checking legal obligations, school calendars, complaint periods, backup behaviour, and technical feasibility. Deletion must cover active systems, local exports, temporary files, and scheduled backup expiry.
 
-# 37. What KinderFlow should say
+## Recipients, processors, and transfers
 
-## Safe
+### Current recipients
 
-> KinderFlow uses only the personal data needed to connect school-approved content with the correct families. The core Computer Vision workflow uses adult reference material and does not require child video or child-performance analysis.
+Current identifiable adult content remains on the local machine in the evidenced flow. The local operator and operating-system processes can access it. A direct video host receives the fetch request and network metadata. The repository does not evidence a live upload of the adult video, landmarks, or school or family data to OpenAI, LangSmith, Google, or another model provider.
 
-## Avoid
+The Gemini FX output files were prepared before or outside the current runtime. Their provider-side source, account, processing location, retention, and transfer history are not documented here.
 
-> KinderFlow does not process personal data.
+### Pilot due diligence
 
-False once real staff/family/child accounts are introduced.
+Before selecting a hosting, identity, analytics, support, model, or monitoring service, record:
 
----
+1. legal entity and service;
+2. data categories and purposes;
+3. controller, processor, or sub-processor role;
+4. processing and support locations;
+5. sub-processor list and change notice;
+6. retention and deletion behaviour;
+7. security measures and incident notification;
+8. training or secondary-use settings;
+9. international transfer mechanism;
+10. transfer impact assessment and supplementary measures where required; and
+11. exit, export, and deletion process.
 
-## Avoid
+No personal child, family, nursery, or staff data should enter an LLM or LangSmith during the pilot. If that rule changes, update the RoPA, notice, contracts, DPIA, transfer assessment, and EU AI Act record before the change.
 
-> KinderFlow is GDPR compliant.
+## Security controls
 
-Too broad before pilot contracts, DPIA, vendor configuration, security controls and operational procedures are complete.
+### Current evidence
 
-Use:
+- local loopback service;
+- controlled upload validation;
+- bounded direct MP4 retrieval;
+- private and local target rejection;
+- pinned public address and redirect revalidation;
+- response type, byte, and time limits;
+- generated run names and failed-run cleanup;
+- query-redacted direct-URL provenance;
+- same-origin check when an Origin header is present; and
+- registry hashes and path validation.
 
-> KinderFlow has been designed with data minimisation and privacy-by-design controls. A real-school pilot requires the additional GDPR controls documented in the pilot plan.
+### Production gaps
 
----
+- authentication and multi-factor options;
+- role-based authorisation;
+- family-to-child relationship verification;
+- nursery tenant separation;
+- encryption in transit and at rest;
+- key and secret management;
+- host allowlist or controlled object-store intake;
+- rate, quota, and concurrency controls;
+- isolated and patched media decoding;
+- malware and content-safety handling;
+- central audit and anomaly logging;
+- tested backup and deletion;
+- vulnerability and dependency management;
+- incident response and data-breach workflow; and
+- availability and disaster recovery.
 
-# 38. Slide-ready summary
+The pilot must use a production security design. The local direct-URL controls cannot be treated as that design.
 
-| Question | Answer |
-|---|---|
-| Does the core MVP require child video? | **No** |
-| Does CV assess the child? | **No** |
-| Does the LLM need child data? | **No** |
-| Are prototype child records real? | **No — fictional** |
-| Would a real pilot process child data? | **Yes, limited assignment/access data** |
-| Proposed child identifier if individual assignment is used | **Pseudonymous ID, subject to final data design** |
-| Should diagnoses be stored? | **No, not for the core service** |
-| Should personal data go to LLM/LangSmith? | **No** |
-| Is Article 22 automated decision-making present? | **No** |
-| Is a DPIA recommended? | **Yes — before pilot** |
-| Current decision | **PROCEED WITH CONDITIONS** |
+## Data-subject rights
 
----
+Before pilot, the controller must provide a route for:
 
-# 39. Bottom line
+- transparent information;
+- access;
+- correction;
+- deletion;
+- restriction;
+- portability where applicable;
+- objection where applicable;
+- withdrawal of consent where consent is used;
+- information about recipients and transfers; and
+- human contact about any automated process.
 
-## Assessment
+The operating procedure should:
 
-**PROCEED WITH CONDITIONS**
+1. authenticate the requester without collecting excessive evidence;
+2. record the request and deadline;
+3. search active systems, local exports, support records, and processor systems;
+4. coordinate controller and processor duties;
+5. apply a documented exception where lawful;
+6. respond in accessible language; and
+7. preserve a minimal accountability record.
 
-KinderFlow's current architecture contains a strong privacy-by-design decision: the product can create and distribute Kinder Signs content **without analysing child video or child performance**.
+The current prototype has no rights-request interface or operating process.
 
-This substantially reduces privacy, security and regulatory complexity.
+## Incident handling
 
-The current local MVP does not prove production GDPR compliance because the real-school data-processing layer does not yet exist.
+Before pilot, KinderFlow and each nursery should agree:
 
-A pilot should introduce only the minimum identity and assignment data necessary to connect a school, group, child and caregiver.
+- how staff report a suspected incident;
+- who contains and investigates it;
+- who decides controller notifications;
+- how processors notify the controller without undue delay;
+- how affected records, users, and versions are identified;
+- when the supervisory authority notification under Article 33 is required;
+- when communication to affected people under Article 34 is required;
+- how an incorrect sign or rights breach is withdrawn; and
+- how lessons and corrective actions enter change control.
 
-The most important privacy design principle is:
+The incident register should include facts, impact, containment, notification decision, timing, owner, and follow-up. The 72-hour GDPR notification period applies to a controller's supervisory-authority notice when the legal threshold is met. It is not a general deadline for every event.
 
-> **Keep content intelligence separate from personal identity.**
+## Short data protection impact assessment
 
-If KinderFlow maintains that separation, avoids unnecessary child/health data, prevents personal data from entering LLM/LangSmith workflows, uses pseudonymous child identifiers and implements the required contractual/security controls, a limited school pilot can be designed with materially lower privacy risk.
+### Proposed processing assessed
 
-The final gate before real personal data are used should be a completed DPIA with no unresolved high-risk actions.
+The highest-risk proposed flow is a persistent family mini-library in which an authorised caregiver sees content selected for a nursery group or, only when necessary, a pseudonymous child assignment.
 
----
+### Necessity and proportionality
 
-# 40. Official sources
+The service goal can usually be met with a group ID, approved sign ID, material ID, and authorised family access. Child identity, media, health information, developmental notes, and free text are not necessary for content preparation. Individual linkage should be an exception.
 
-1. Regulation (EU) 2016/679 — General Data Protection Regulation (GDPR)  
-   https://eur-lex.europa.eu/eli/reg/2016/679/oj
+### Risk screen
 
-2. Spanish Organic Law 3/2018 (LOPDGDD), including Article 7 on minors' consent  
-   https://www.boe.es/buscar/act.php?id=BOE-A-2018-16673
+| Risk | Potential impact | Initial level | Required control | Residual decision |
+| --- | --- | --- | --- | --- |
+| Wrong family accesses an individual assignment | Confidentiality and trust harm involving a child | High | Verified relationship, tenant isolation, deny-by-default access, access tests, rapid revocation | Must be reassessed after testing |
+| Child identity spreads into AI or monitoring tools | Loss of control and unexpected processing | High | Architectural separation, blocked fields, provider configuration, logs, contract prohibition | Pilot must stop on any transfer |
+| Persistent use enables profiling | Unfair inference or pressure on a child or family | High | No scores, no behavioural profile, aggregate measurement, purpose checks | Accept only if tests prove absence |
+| Adult reference lacks authority or consent | Rights and reputational harm | High | Source contract, purpose notice, rights record, expiry and deletion | No source enters production without evidence |
+| Incorrect sign or visual reaches a family | Safety, trust, and communication harm | High | Qualified sign review, publication gate, version withdrawal, complaints route | Unreviewed delivery must remain zero |
+| Account or support data is exposed | Identity and relationship disclosure | High | Authentication, authorisation, encryption, monitoring, incident process | Security test required |
+| Data is kept too long | Unnecessary exposure | Medium | Approved schedule, automated deletion, backup expiry tests | Measure deletion completion |
+| Vendor or international transfer is unknown | Loss of control and unlawful transfer risk | High | Vendor register, DPA, location, SCC or other mechanism, transfer assessment | No vendor until closed |
 
-3. AEPD — Data Protection Impact Assessments  
-   https://www.aepd.es/derechos-y-deberes/cumple-tus-deberes/medidas-de-cumplimiento/realizacion-de-evaluaciones-de
+### DPIA conclusion
 
-4. AEPD — When a DPIA is required  
-   https://www.aepd.es/preguntas-frecuentes/2-tus-obligaciones-como-responsable-del-tratamiento/10-evaluacion-de-impacto/FAQ-0226-en-que-supuestos-es-necesario-realizar-una-evaluacion-de-impacto
+Children are vulnerable data subjects, and the proposed service may combine new technology, persistent accounts, and targeted family access. A complete DPIA is a pilot gate even if the first pilot uses group assignments. The AEPD states that a DPIA is required when processing is likely to create high risk and notes that two or more risk criteria generally indicate that one is expected.
 
-5. AEPD — Article 35.4 DPIA risk list  
-   https://www.aepd.es/documento/listas-dpia-es-35-4.pdf
+The DPIA is not complete until the actual architecture, controllers, vendors, countries, data fields, retention, security test evidence, and residual-risk acceptance are fixed. Consult the supervisory authority if high residual risk remains and Article 36 requires it.
 
-6. AEPD — Risk management and DPIA guidance  
-   https://www.aepd.es/prensa-y-comunicacion/notas-de-prensa/aepd-publica-nueva-guia-gestionar-riesgos-y-evaluciones-impacto
+## Pilot gates
 
-7. AEPD — Consent age for minors  
-   https://www.aepd.es/preguntas-frecuentes/10-menores-y-educacion/FAQ-1001-cual-es-la-edad-para-que-los-menores-puedan-prestar-consentimiento-para-tratar-sus-datos-personales
+| Client fact | Action | Target | Owner | Decision rule |
+| --- | --- | --- | --- | --- |
+| Current nursery and family data are synthetic | Approve a minimum pilot data dictionary | No child media, health, development, emotion, or score fields | Privacy lead and nursery controller | Reject any unapproved field |
+| Individual identity is not needed for most assignments | Implement group-first assignment | Pseudonymous child ID only for documented necessity | Product Owner | Stop if the design defaults to named children |
+| Roles are assumptions | Sign controller, processor, and sub-processor allocation | All purposes assigned before data collection | Legal and privacy owners | No real data until complete |
+| Legal bases remain undecided | Complete purpose-by-purpose Article 6 analysis | Decision and rationale recorded for every activity | Controller | Do not rely on bundled consent |
+| Retention is manual | Implement and test deletion | One hundred percent of test records follow approved schedule | Engineering and privacy owner | No pilot if deletion cannot be demonstrated |
+| Family delivery is not implemented | Build secure access and relationship verification | Cross-family and cross-nursery access tests pass | Engineering and security owner | Zero wrong-recipient access |
+| Vendor and transfer map is empty | Complete DPA, sub-processor, location, and transfer review | Written evidence for every vendor | Privacy and procurement owners | No undeclared recipient |
+| DPIA is only a short screen | Complete the DPIA and residual-risk decision | Signed before live pilot | Controller and DPO or adviser | Stop if high residual risk lacks a lawful resolution |
+| Rights and incident processes do not exist | Test requests, revocation, breach handling, correction, and withdrawal | Exercise completed before launch | Privacy, security, and Content Operations | No pilot without accountable owners |
 
-8. European Data Protection Board — Children  
-   https://www.edpb.europa.eu/topics/key-gdpr-concepts/children_en
+## Official references
 
-9. European Data Protection Board — DPIA template / guidance (2026)  
-   https://www.edpb.europa.eu/public-consultations/template-for-data-protection-impact-assessment_en
+- [General Data Protection Regulation, Regulation (EU) 2016/679](https://eur-lex.europa.eu/eli/reg/2016/679/oj)
+- [AEPD guidance on when a DPIA is required](https://www.aepd.es/preguntas-frecuentes/2-tus-obligaciones-como-responsable-del-tratamiento/10-evaluacion-de-impacto/FAQ-0226-en-que-supuestos-es-necesario-realizar-una-evaluacion-de-impacto)
+- [AEPD risk and DPIA resources](https://www.aepd.es/derechos-y-deberes/cumple-tus-deberes/medidas-de-cumplimiento/realizacion-de-evaluaciones-de)
+- [European Data Protection Board guidelines](https://www.edpb.europa.eu/our-work-tools/general-guidance/guidelines-recommendations-best-practices_en)
 
----
-
-# 41. Repository evidence used
-
-This assessment was reconciled against the committed Round 2 baseline:
-
-`661c027 — Build Round 2 KinderFlow MVP and UX`
-
-Relevant repository evidence includes:
-
-- `mvp/mvp_documentation.md`
-- `prototype/README.md`
-- `prototype/school.html`
-- `prototype/school.js`
-- `prototype/family.html`
-- `prototype/create-sign.html`
-- `prototype/create-sign.js`
-- `content_ops/`
-- `workflow/kinder_signs_n8n_workflow.md`
-
-## Repository facts carried into this assessment
-
-- no child video is required;
-- adult reference video is processed locally in the current MVP;
-- school/child/family prototype records are fictional;
-- the school assignment layer is prototype-stage;
-- real authentication/persistence is not implemented;
-- local run storage has no formal retention policy;
-- content-generation inputs do not require child identity;
-- LangSmith applies to LLM content observability, not CV;
-- production security, identity and school integration remain future deployment requirements.
-
-## Documentation gap still open
-
-The root `README.md` retains some older Round 1 product wording and should be reconciled with the frozen Round 2 architecture before final submission.
+These sources do not replace purpose-specific advice for the actual legal entities and pilot design.

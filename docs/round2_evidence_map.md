@@ -1,25 +1,144 @@
 # Round 2 evidence map
 
-This is a preparation map. It does not draft or complete the final Round 2 deliverables.
+## Use Case Definition
 
-| Round 2 requirement | What we already have | Exact files / evidence | What still needs to be written | What still needs to be done |
-|---|---|---|---|---|
-| Use Case Definition | Selected Kinder Signs use case, customer/user roles, school-home problem, B2B/B2B2C model and scope limits | `use_case_definition.md`; `feedback/round1_decision.md`; `research/use_cases.md` | Condense the final definition and align it with the evidence reviewed by the founder | Confirm pilot audience and remove any stale cadence/add-on language before submission |
-| Stronger POC | Reproducible extraction, body-relative normalization, conservative interpolation, diagnostics, plots and bounded status | `poc/src/`; `poc/tests/`; `poc/output/diagnostics/`; `poc/poc_documentation.md` | Explain the evidence and limitations in the Round 2 format | Add professionally validated references across several signs/performers; complete expert correspondence review |
-| Working MVP | Real local upload/demo path, MediaPipe processing, run isolation, landmark preview, real metrics, controlled errors; functional Flashcard Studio | `mvp/`; `prototype/create-sign.html`; `prototype/create-sign.js`; `prototype/flashcards.html`; `prototype/flashcards.js`; `content_ops/` | Write a concise user/demo guide and evidence narrative | Confirm source rights/sign identity; browser/print QA; add reviewed visual/hand assets; decide which local approval controls to present |
-| ROI & Risk | Reconciled €5.5k–€17.3k validation budget estimate; 8–9 week validation programme; known cost drivers; risk inventory inputs; reusable-asset logic | `cost_timeline/estimate.md`; `feedback/round1_decision.md`; `docs/facts_business_case.md`; `docs/facts_risk.md` | Final ROI and risk assessment only after founder review | Collect time/cost baselines, pricing hypotheses, school willingness-to-pay, adoption and review/rework evidence |
-| EU AI Act | Intended-purpose boundaries, component responsibility matrix and human publication control | `content_ops/contracts/ai_responsibility_matrix.json`; `docs/facts_ai_act.md`; `docs/kinder_signs_content_operations_architecture.md` | Legal analysis, role mapping and proportionate obligations with qualified review | Confirm intended production design, deployer/provider roles and whether future functions change the assessment |
-| GDPR | No-child-video decision, local processing, synthetic/pseudonymous pilot IDs and minimum-data inventory | `feedback/round1_decision.md`; `poc/poc_documentation.md`; `content_ops/contracts/pilot_event_schema.json`; `docs/kinder_signs_pilot_measurement.md`; `docs/facts_privacy.md` | Controller/processor, lawful-basis, rights, retention and security analysis | Decide actual pilot data, vendors, access, retention/deletion, notices, contracts and DPIA need before collecting data |
-| Strategic Plan / Pilot | 8–9 week validation outline, go/change/stop questions, future event schema and metric definitions | `cost_timeline/estimate.md`; `docs/kinder_signs_pilot_measurement.md`; `content_ops/contracts/pilot_event_schema.json` | Final pilot plan, ownership, sequence and decision gates | Secure partner(s), professional reviewer, owned source assets, dates, operating process and agreed success criteria |
-| Final Presentation | Existing deck, 60–90 second MVP demo narrative, real technical evidence and readiness matrix | `presentation/kinder_signs_deck.pptx`; `mvp/README.md`; `poc/output/diagnostics/`; `content_ops/reports/golden_set_report.json` | Rewrite the final story only after evidence review; separate functional, prototype and planned | Capture current screenshots/backup recording, rehearse live path and remove any unsupported “published” implication |
+Evidence:
 
-## Highest-priority evidence gaps
+- use_case_definition.md;
+- feedback/round1_decision.md; and
+- research/use_cases.md.
 
-1. Confirmed rights, identity and professional status for reference material.
-2. Professional sign/content review evidence.
-3. Final character and reviewed sign-specific hand artwork.
-4. Multi-reference CV testing beyond the single known video.
-5. Real pilot use, educator effort and payer evidence.
-6. Production privacy/security/role decisions.
+Supported claim: Kinder Signs addresses school-home continuity through a school-led B2B or B2B2C proposition. Little Steps Nursery and Cleo are pseudonymised business-case personas.
 
-The current repository is strong evidence of a local technical and product prototype. It is not evidence of commercial validation, legal certification or an approved production library.
+Remaining proof: nursery demand, educator adoption, family use, and willingness to pay.
+
+## Stronger POC
+
+Evidence:
+
+- poc/src;
+- poc/tests;
+- poc/output/validation_summary.json;
+- poc/output/diagnostics/sign_reference_motion_summary.json;
+- poc/output/diagnostics/sign_reference_detection_timeline.png;
+- poc/output/diagnostics/sign_reference_wrist_trajectory.png; and
+- poc/poc_documentation.md.
+
+Supported claim: the versioned WATER result contains 332 frames, 100.00% pose coverage, 93.98% dominant right-hand coverage, EXTRACTION_PASS, and MOTION_REPRESENTATION_PARTIAL. The method preserves raw evidence, normalizes to the shoulders, fills only short internal gaps, and exposes movement diagnostics.
+
+Remaining proof: professional correspondence review and repeat tests across more signs, performers, viewpoints, and capture conditions.
+
+## Working MVP
+
+Evidence:
+
+- mvp/app.py and mvp/pipeline.py;
+- prototype/create-sign.html and prototype/create-sign.js;
+- prototype/flashcards.html and prototype/flashcards.js;
+- prototype/print-card.html and prototype/print-card.js;
+- prototype/create-story.html and prototype/story.js;
+- prototype/school.html and prototype/school.js;
+- prototype/family.html and prototype/app.js;
+- assets/registry/sign_asset_registry.json; and
+- the standard test suites.
+
+Supported claim: the local service processes an adult reference, reports run-specific evidence, supports three human evidence routes, prepares deterministic draft visuals, and hands an exact local visual to printable or story proofs. School and family pages demonstrate browser-session behavior with synthetic data.
+
+The successful MORE run with 285 frames is ignored local evidence. It is not part of the committed proof. On 4 September 2026, standard discovery ran 184 tests: 183 passed and one opt-in integration test was skipped. Running that integration separately failed in the headless session before frame processing because MediaPipe could not create the required graphics context.
+
+Remaining proof: confirmed source and display rights, professional visual and sign review, completed saved-PDF quality review, a hosted runtime, real persistence, and real delivery.
+
+## Visual assets
+
+Evidence:
+
+- assets/registry/sign_asset_registry.json;
+- assets/registry/sign_asset_inventory.md;
+- assets/registry/source_assets_provenance.md; and
+- prototype/data/visual_sign_packages.json.
+
+Supported claim: six signs have 18 deterministic Open Peeps-derived draft options. No sign has a reviewed static visual, distributable printable, publication approval, or school availability.
+
+Remaining proof: qualified hand-pose and visual review, rights closure, and release approval.
+
+## Content Operations
+
+Evidence:
+
+- content_ops;
+- content_ops/reports/golden_set_report.json; and
+- build/publication/more/v1.
+
+Supported claim: a separate five-record set tests state, wording, provenance, deterministic gates, and package identity. All five records remain blocked.
+
+Remaining proof: a qualified review operation and an approved publication package.
+
+## Workflow and observability
+
+Evidence:
+
+- workflow/kinder_signs_n8n_workflow.json;
+- workflow/kinder_signs_n8n_workflow.md;
+- workflow/langsmith_dry_run_summary.json;
+- workflow/evaluation_cases.json; and
+- workflow/quality_gate.py.
+
+Supported claim: the repository contains an exact inactive n8n export, a deterministic passing sample gate, five evaluation cases, and LangSmith dry-run evidence for optional LLM wording.
+
+Remaining proof: final adapter execution in the target n8n runtime, a live external model call if retained, and a live LangSmith trace.
+
+## Tableau decision support
+
+Evidence:
+
+- dashboard/tableau/Kinder Signs - Market Opportunity.twbx;
+- dashboard/tableau/kinder_signs_market_opportunity.png;
+- dashboard/dashboard_documentation.md;
+- data/tableau_master.csv;
+- data/competitive_positioning.csv; and
+- data/source_register.csv.
+
+Supported claim: a packaged Tableau workbook presents four decision views for institutional access, Madrid digital readiness, adult age-cohort GenAI proxies, and competitor positioning. Kinder Signs is a target-position hypothesis.
+
+Remaining proof: primary market interviews, demand, willingness to pay, educator adoption, and commercial results.
+
+## ROI, risk, and pilot
+
+Evidence:
+
+- roi_risk_assessment.md;
+- cost_timeline/estimate.md;
+- strategic_plan.md;
+- docs/kinder_signs_pilot_measurement.md; and
+- content_ops/contracts/pilot_event_schema.json.
+
+Supported claim: an 8 to 9 week validation programme and a EUR 5.5k-EUR 17.3k planning range are documented. They are estimates, not measured returns.
+
+Remaining proof: agreed thresholds, staff-time baselines, price interviews, partner commitment, reviewer capacity, family engagement, and paid-continuation evidence.
+
+## Compliance and responsible AI
+
+Evidence:
+
+- compliance/eu_ai_act_compliance.md;
+- compliance/gdpr_documentation.md;
+- docs/audits/responsible_ai_audit.md;
+- docs/audits/green_ai_audit.md; and
+- content_ops/contracts/ai_responsibility_matrix.json.
+
+Supported claim: the design excludes child assessment, emotion recognition, biometric identity, and autonomous publication. It minimises personal data in the current prototype and assigns professional decisions to people.
+
+Remaining proof: final controller and processor roles, contracts, retention rules, notices, security controls, reviewer procedure, AI literacy, and legal review before a real pilot.
+
+## Presentation evidence
+
+Evidence:
+
+- presentation/kinder_signs_deck.pptx;
+- presentation/demo_script.md;
+- presentation/qa_preparation.md; and
+- presentation/source_notes.md.
+
+Supported claim: the presentation can demonstrate the local flow and bounded evidence.
+
+Remaining proof: a desktop-session backup recording, current screenshots, and rehearsal of the failure fallback. The personalised family mini-library must remain a future step.

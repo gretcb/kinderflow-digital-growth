@@ -1,1135 +1,772 @@
-# KinderFlow — Strategic Deployment Plan
+# KinderFlow Strategic Plan
 
-**Project:** KinderFlow — Early Childhood Digital Growth  
-**First product:** Kinder Signs  
-**Assessment date:** 2 September 2026  
-**Current stage:** Functional local MVP / pre-pilot  
-**Recommended decision:** Proceed with an 8–9 week validation programme after closing the defined governance and operational gates; include approximately 3–4 weeks of controlled service testing
+Document status: final capstone reconciliation
+Decision horizon: controlled pilot and next-phase decision
+Primary product: Kinder Signs
+Recommendation: PROCEED WITH CONDITIONS
 
----
+## Strategic decision
 
-# 1. Executive recommendation
+KinderFlow should run a narrow, evidence-led pilot for nursery schools. It should not move directly to public production.
 
-Kinder Signs should move from the current functional MVP into a **small, controlled school pilot**, not directly into full commercial deployment.
+The strategy is to validate one school-led B2B or B2B2C service:
 
-The current evidence is sufficient to define the next business question, subject to closing pilot-readiness gates:
+- nursery owner or director is the economic buyer;
+- nursery school or group is the payer;
+- educators review, select, and assign signs;
+- families receive reviewed assignment-linked guidance;
+- qualified reviewers and content operations protect fidelity, rights, and trust;
+- KinderFlow charges a per-centre subscription if the pilot supports a paid path.
 
-> **Can a technically credible, centrally governed Kinder Signs service create enough value for nursery schools and families to justify continued investment?**
+The pilot is limited to:
 
-The pilot should not attempt to prove everything at once.
+- 8 to 9 weeks in total;
+- a 3 to 4 week controlled service test;
+- 2 to 3 nursery schools;
+- 3 to 5 reviewed signs;
+- the three Little Steps nursery groups;
+- a personalised assignment-driven family mini-library as the next product iteration.
 
-Its purpose is to validate five things:
+The strategic decision after the pilot is GO, ITERATE, or STOP. Any GO is permission to scope the next phase, not permission for an unrestricted public launch.
 
-1. **Technical reliability** — can the sign-production workflow work consistently?
-2. **Operational fit** — can KinderFlow create/review content efficiently and can educators assign it easily?
-3. **Family value** — do families access and understand the material?
-4. **Trust and governance** — do schools understand the AI role and trust the controls?
-5. **Commercial viability** — are schools willing to continue and pay?
+## Strategic thesis
 
-The recommended path is:
+### Problem
 
-```text
-Round 1 — Market / concept validation
-→ Round 2 — Functional MVP
-→ Controlled pilot
-→ Go / Iterate / Stop
-→ Limited commercial launch
-→ Scale only after evidence
-```
+Nurseries that use baby signs can lack one controlled path from a sign reference to:
 
----
+- inspectable evidence;
+- professional interpretation;
+- explicit review status;
+- group assignment;
+- consistent family guidance;
+- source, rights, version, and exception history.
 
-# 2. Strategic thesis
+The Little Steps case shows a plausible need. Cleo, the owner and director, combines nursery administration, Baby Sign support, teaching, family questions, quality checks, and commercial relationships. Staff already use baby signs, and families request materials. Current monetisation is one-off training rather than a recurring structured digital service.
 
-KinderFlow's platform thesis is:
+These facts support the direction of the problem. They do not prove market-wide demand, repeat use, time savings, affordability, or willingness to pay.
 
-> **Bring nursery learning and routines home.**
+### Proposed value
 
-Kinder Signs is the first product because it creates a clear school-home continuity use case:
+KinderFlow's value hypothesis is:
 
-```text
-KinderFlow creates and governs sign content
-→ school selects approved content
-→ educator assigns it to a group or child
-→ family receives matching material
-```
+> Help a nursery turn a cleared sign reference into reviewed staff guidance and an assignment-linked family item, while preserving human judgement and an audit trail.
 
-The value is not simply access to another sign dictionary.
+Potential value by stakeholder:
 
-The value hypothesis is:
+- Cleo or another owner: consistent service, visible control, fewer repeated explanations, and a clearer paid Baby Sign offer.
+- Educator: faster access to reviewed content and a simple group-assignment workflow.
+- Family: clear guidance that matches what the nursery assigned.
+- Reviewer: traceable evidence and an explicit approve, revise, or block path.
+- KinderFlow: reusable approved content and per-centre recurring revenue, if rights and unit economics hold.
 
-> **The same trusted communication cue can move from school to home without asking educators or families to search, design or interpret disconnected content.**
+### Strategic restraint
 
----
+KinderFlow is not:
 
-# 3. Product scope for the pilot
+- a child assessment or diagnostic product;
+- an automated educational decision-maker;
+- a replacement for nursery staff or qualified reviewers;
+- a universal sign-language authority;
+- a direct-to-family subscription in the initial model;
+- a broad production library at pilot stage;
+- a production-ready multi-tenant service today.
 
-## In scope
+Child video, child scoring, automated educational decisions, unreviewed delivery, blocked delivery, and personal child or family data sent to a model provider or LangSmith must remain at 0.
 
-### KinderFlow internal operations
+## Operating case and jobs to be done
 
-- validated adult reference sign video;
-- Computer Vision / MediaPipe movement processing;
-- landmark / skeleton evidence;
-- technical Pass / Review needed / Fail status;
-- human review;
-- governed central content;
-- deterministic Flashcards / Routine Cards;
-- bounded family wording;
-- content provenance and approval status.
+### Little Steps
 
-### School
+This is a pseudonymised operating case. It is not audited client financial information.
 
-- access to approved Kinder Signs content;
-- simple assignment to one group or optional individual child;
-- visibility of available formats;
-- basic family-access / pilot engagement indicators.
+Founder-observed facts:
 
-### Family
+- three nursery groups have capacity of 8, 14, and 20 children;
+- total capacity is 42;
+- about 38 children represents 90% occupancy;
+- 3 lead educators are paid;
+- 3 classroom assistants are interns or practicum staff, with cost TBD;
+- operations, owner or administration, and finance support roles complete a 9-person operating model, but those 9 people are not 9 market-salary full-time equivalents;
+- Cleo is the likely buyer, sponsor, quality owner, and commercial decision-maker;
+- the nursery uses Pequebook for general communication in this setting;
+- Baby Sign already has staff and family relevance.
 
-- school-linked sign material;
-- concise routine guidance;
-- reviewed visual/printable material;
-- simple feedback.
+The selected central-to-upper tuition planning envelope is approximately EUR 195,000 to EUR 238,000 per year. It is used only to compare price scale; the 85% occupancy case is a lower sensitivity outside these endpoints.
 
----
+### Buyer, users, and beneficiaries
 
-## Out of scope
+The initial buyer and payer is the nursery owner or director purchasing a per-centre subscription. KinderFlow Team members and qualified reviewers prepare and govern content; nursery directors and educators choose and assign available material. Families use the basic guidance experience and are direct service beneficiaries. Children may benefit indirectly from consistent adult guidance, but KinderFlow does not profile, score, diagnose, or use their video in the core scope.
 
-The pilot should **not** include:
+### Cleo's job to be done
 
-- child video;
-- child sign-performance scoring;
-- developmental assessment;
-- emotion recognition;
-- biometric identification;
-- automated educational decisions;
-- AI recommendation of what a child needs;
-- autonomous publication;
-- production-grade generative avatar/video unless separately validated;
-- direct-to-child AI interaction;
-- billing automation;
-- large-scale integrations.
+> When my educators use baby signs, help me maintain a reviewed and consistent nursery practice, give families clear guidance, and see what was assigned without adding an unmanageable review or support burden.
 
-These exclusions are strategic controls, not product weaknesses.
+### Educator job to be done
 
----
+> When I want a group to practise a sign, help me find or submit a reference, understand its status, assign reviewed guidance quickly, and answer family questions consistently.
 
-# 4. Deployment phases
+### Family job to be done
 
-## Phase 0 — Current functional MVP
+> When the nursery assigns a sign, show me the same reviewed guidance in a clear, accessible format so I can understand what the nursery is practising and use it consistently if I choose.
 
-### Objective
+### Reviewer job to be done
 
-Prove that the technically differentiating workflow can run.
+> When a sign candidate reaches review, give me traceable evidence, rights information, model output, and a clear approve, revise, or block decision.
 
-### Current evidence
+## Evidence position
 
-- real reference MP4 processing;
-- MediaPipe pose/hand landmark extraction;
-- run-specific technical metrics;
-- browser-compatible movement overlay;
-- controlled error states;
-- human review gate;
-- Content Engine with deterministic quality gates;
-- deterministic Flashcard Studio;
-- interactive School and Family product flows.
+### What is demonstrated
 
-### Status
+The repository demonstrates:
 
-**FUNCTIONAL LOCAL MVP; NOT PILOT-READY**
+- a local computer vision evidence path;
+- traceable artefacts and versioned run records;
+- a professional interpretation with explicit status;
+- deterministic HUMAN mode and optional provider-backed modes;
+- a local nursery assignment flow;
+- a family-facing guidance preview;
+- review and content-state controls.
 
-### Remaining gate
+Historical WATER evidence and the current MORE demonstration are technical examples. They do not prove performance across signs, users, cameras, nurseries, or sign variants.
 
-The remaining gates are material, not cosmetic:
+### POC and MVP evidence
 
-- MORE source confirmation and rights are incomplete;
-- final artwork and reviewed hand pose are unresolved;
-- content approval is incomplete and publication is blocked;
-- founder visual QA remains pending;
-- pilot authentication, persistence, school separation and security are not implemented; and
-- operational privacy, reviewer and incident controls are not in place.
+The Computer Vision POC proves one versioned adult-reference evidence path with explicit gaps, diagnostics, and limits. The local MVP connects reference intake, review metrics, a human-selected evidence route, deterministic draft visuals, family-material proofs, synthetic nursery assignment, and a basic family preview. Neither artifact proves production reliability, qualified sign approval, real delivery, or commercial adoption.
 
-### Canonical MORE state
+### What remains incomplete
 
-| State | Current evidence |
-|---|---|
-| Source | Review Needed; confirmation pending |
-| Technical | Review Needed / Proceed with conditions |
-| Artwork | Needs Artwork; internal visual proof only |
-| Hand review | Needs Review |
-| Quality gate | Blocked where publication requirements are unmet |
-| Human review | Pending |
-| Library | Blocked |
-| Publication | Draft; not yet available to schools |
+- production identity, access, durable storage, and multi-site tenancy;
+- real family delivery and notification;
+- personalised assignment-driven family library;
+- production security, monitoring, support, and incident operations;
+- complete rights and presentation clearance for a pilot set;
+- measured reviewer throughput and cost;
+- family access and repeat-use evidence;
+- nursery willingness to pay and retention;
+- customer acquisition cost and lifetime value;
+- production build cost.
 
----
+### Family boundary
 
-# 5. Phase 1 — Pilot readiness
+A family-facing guidance prototype exists. A personalised assignment-driven family library remains a next product iteration.
 
-**Planning allowance within the 8–9 week validation programme: approximately 1–2 weeks**
+The pilot must add and test the mini-library. Current session state or static preview must not be represented as a completed personalised family service.
 
-This phase closes the items that should not be tested on real families for the first time.
+### Content boundary
 
-## Required outputs
+The repository contains a six-sign visual inventory and a separate five-sign content-operations regression set. Neither is an approved production library.
 
-### Product
+The pilot uses 3 to 5 signs only after source, rights, professional wording, family presentation, and qualified review are complete.
 
-- freeze pilot UX;
-- select 3–5 pilot signs;
-- final reviewed visual assets for those signs;
-- verify English/Spanish outputs;
-- verify PDF/print;
-- confirm school/family flow.
+### Review model
 
-### Technical
+The reviewer receives a complete evidence and rights package, then records approve, revise, or block. Approval applies to a named asset version and presentation context. Any change that can alter meaning, rights, or family wording returns to review. The content operations owner measures reviewer time, exceptions, rework, and reuse; the product blocks unapproved delivery.
 
-- stable pilot runtime;
-- pilot authentication and access control;
-- school-level data separation;
-- persistent minimal assignment storage;
-- basic audit logging;
-- controlled error handling;
-- backup demo / rollback path.
+## Confidence assessment
 
-### Governance
+### Market confidence: MEDIUM
 
-- reference-content provenance;
-- reviewer checklist and named reviewer;
-- AI literacy briefing;
-- GDPR DPIA;
-- data-processing agreement;
-- privacy notices;
-- retention schedule;
-- incident process;
-- EU AI Act intended-purpose / prohibited-use statement.
+Public providers, training products, family plans, and school offers show an active category. Addressable school count, budget ownership, and recurring demand are not yet measured.
 
-### Commercial
+### User confidence: LOW
 
-- pilot proposition;
-- pricing hypothesis;
-- school interview guide;
-- willingness-to-pay questions;
-- success criteria.
+The Little Steps case and prior research support the problem direction. Evidence is concentrated in one founder-led context, and no real assignment-driven family service has been tested.
 
-## Gate
+### Competitive confidence: MEDIUM
 
-**No real personal data until these items are closed.**
+The source register supports several adjacent offer types. Public price and feature detail is incomplete, and comparisons are not uniform.
 
----
+### Feasibility confidence: MEDIUM
 
-# 6. Phase 2 — Controlled service test
+The local proof of concept and nursery workflow support a controlled pilot. Production reliability, rights operations, family delivery, privacy controls, and multi-site support are incomplete.
 
-## Recommended duration
+## Round 1 learning and Round 2 purpose
 
-**Approximately 3–4 weeks within the 8–9 week validation programme**
+Round 1 established:
 
-## Recommended scale
+- a credible nursery problem direction;
+- a review-first product concept;
+- local technical evidence;
+- a nursery assignment prototype;
+- the importance of auditability, professional review, and family clarity.
 
-Start small enough that failures can be investigated manually.
+Round 1 did not establish:
 
-### Initial target
+- representative nursery demand;
+- a family adoption baseline;
+- a paid pilot;
+- price acceptance;
+- reviewer capacity;
+- content rights at production scale;
+- production economics.
 
-- **Proposed starting scale: 2–3 nursery schools / centres**
-- **Pilot assumption: 3–5 signs**
-- selected classroom groups;
-- limited number of participating families;
-- one named operational contact per school.
+Round 2 should purchase decision evidence, not accumulate features. It tests teacher use, family value, content operations, runtime reliability, and a paid continuation path in one controlled programme.
 
-The exact family count should follow the schools' normal group sizes and the DPIA/security design rather than an arbitrary large target.
+## Product strategy
 
-Neither the school count nor the sign count is empirically validated. They are deliberately small planning assumptions for a controlled test.
+### Core service
 
----
+The core Kinder Signs service should connect:
 
-# 7. Proposed Round 2 validation-programme structure
+1. cleared adult sign reference;
+2. computer vision evidence;
+3. professional interpretation;
+4. qualified review and status;
+5. nursery group assignment;
+6. reviewed family mini-library item;
+7. evidence and decision record.
 
-This is a proposed allocation of the existing 8–9 week validation framing. Weeks 2–5 contain the approximately 3–4 week controlled service test; preparation, commercial interviews and the final decision use the remaining time.
+Deterministic rules govern review, blocking, assignment, access, and audit history. AI assists evidence production and constrained drafting only.
 
-## Week 1 — Onboarding and baseline
+### Pilot product priorities
 
-- confirm participating schools/groups;
-- staff onboarding;
-- AI/privacy briefing;
-- explain purpose and boundaries;
-- collect baseline educator/family expectations;
-- verify accounts/access;
-- test first assignment.
+Must have:
 
-### Evidence
+- 3 to 5 rights-cleared signs;
+- qualified review;
+- visible professional and family boundaries;
+- educator assignment;
+- personalised assignment-driven family mini-library;
+- minimal consented access;
+- corrections, withdrawal, and support route;
+- event and manual evidence capture;
+- runtime fallback;
+- price-specific buyer research.
 
-- onboarding completion;
-- usability issues;
-- baseline willingness-to-pay / perceived problem.
+Should have if the readiness gate is not delayed:
 
----
+- accessible presentation checks;
+- reviewer work queue;
+- simple weekly pilot evidence summary;
+- exportable audit package;
+- low-friction participant feedback.
 
-## Weeks 2–3 — First real usage
+Later:
 
-- release first approved sign content;
-- educators assign content;
-- families access material;
-- measure operational friction;
-- record support requests;
-- monitor technical failures.
+- production accounts and tenancy;
+- durable notifications and integrations;
+- larger content library;
+- scalable billing and support;
+- Kinder Daily;
+- Kinder Food;
+- other countries, languages, or sign systems.
 
-### Evidence
+Kinder Daily and Kinder Food remain portfolio options. Neither is part of the current pilot or ROI case.
 
-- assignment completion;
-- family access;
-- support burden;
-- technical reliability.
+## Build, buy, and partner strategy
 
----
+### Build
 
-## Weeks 4–5 — Repeated workflow
+KinderFlow should own the workflow and governance logic that expresses its product decision:
 
-- introduce additional sign(s);
-- measure repeat educator use;
-- track content-production/review effort;
-- test English/Spanish outputs where relevant;
-- gather qualitative family feedback.
+- evidence-to-review state;
+- professional and family content separation;
+- assignment and family mini-library;
+- blocking and exception rules;
+- audit and version links;
+- nursery-specific administration;
+- measurement and decision records.
 
-### Evidence
+### Buy
 
-- repeated adoption;
-- review time;
-- asset reuse;
-- comprehension;
-- content quality.
+Where terms, cost, and privacy are acceptable, KinderFlow may buy:
 
----
+- commodity cloud hosting and storage;
+- identity and access components;
+- monitoring and error reporting;
+- model inference or tracing services;
+- survey, scheduling, or research tools.
 
-## Weeks 6–7 — Commercial validation
+Buying a component does not transfer responsibility for privacy, content quality, safeguarding, availability, or participant support.
 
-- test pricing proposition;
-- interview school decision-makers;
-- measure perceived differentiation;
-- assess renewal/continuation intent;
-- identify procurement/approval barriers.
+### Partner
 
-### Evidence
+KinderFlow needs partners for:
 
-- willingness to pay;
-- preferred commercial model;
-- decision-maker feedback;
-- objections.
+- qualified sign review;
+- pilot nursery participation;
+- family accessibility feedback;
+- source and presentation-rights advice;
+- external legal or privacy advice when needed;
+- independent technical or security review before production.
 
----
+### Do not build now
 
-## Weeks 8–9 — Decision
+- a proprietary foundation model;
+- child-video collection;
+- child scoring;
+- automated developmental assessment;
+- a public user-upload marketplace;
+- a broad content catalogue before reuse and rights are validated.
 
-- consolidate metrics;
-- review Responsible AI / GDPR / technical incidents;
-- update ROI assumptions;
-- calculate break-even scenarios;
-- compare pilot evidence with GO / ITERATE / STOP thresholds;
-- make a deployment decision.
+## Data and AI governance strategy
 
----
+### Data minimum
 
-# 8. Pilot stakeholder roles
+Pilot evidence should use synthetic nursery, class, educator, family, and sign identifiers where possible. Event payloads should record action, status, duration, outcome, and error without names, contact details, free-text family notes, or child information.
 
-| Role | Responsibility |
-|---|---|
-| KinderFlow product owner | Pilot decision, scope and priorities |
-| KinderFlow technical owner | Runtime, bugs, technical evidence |
-| KinderFlow content operator | Content production and provenance |
-| Qualified content/sign reviewer | Human approval and escalation |
-| Privacy/governance owner | GDPR, AI Act, incidents |
-| School director/contact | School participation and commercial feedback |
-| Educator | Select/assign approved content |
-| Family/caregiver | Receive/use material and provide feedback |
+### AI boundary
 
-No responsibility should be assigned to “the AI”.
+- adult or approved reference material only;
+- no child video;
+- no personal child or family data in model prompts or traces;
+- professional draft separated from family guidance;
+- human review before allowed status;
+- blocked or unreviewed content cannot be assigned or delivered;
+- HUMAN mode available;
+- provider and version recorded;
+- correction and withdrawal preserved.
 
----
+### Operational accountability
 
-# 9. Pilot operating model
+Named owners are required for:
 
-## Central KinderFlow content production
+- technical runtime and fallback;
+- privacy and participant data;
+- content source and rights;
+- qualified review;
+- nursery operations;
+- user research;
+- commercial evidence;
+- pilot decision.
 
-```text
-Validated reference
-→ CV movement evidence
-→ human review
-→ reviewed sign content
-→ Flashcard / Routine Card
-→ school availability
-```
+### Compliance boundary
 
-## School operation
+The current EU AI Act position is a preliminary intended-purpose assessment, not a conformity decision or certificate. The current local GDPR footprint uses an adult reference and synthetic nursery and family records; the real pilot flow still requires signed roles, legal bases, notices, retention, rights handling, processor and transfer review, security controls, and a completed data protection impact assessment. The [EU AI Act assessment](compliance/eu_ai_act_compliance.md) and [GDPR readiness record](compliance/gdpr_documentation.md) control those gates.
 
-```text
-Open available content
-→ select group
-→ optional child
-→ review assignment
-→ assign
-```
+The founder should not silently hold every control. The pilot must show which duties can be delegated and what they cost.
 
-## Family experience
+## Go-to-market strategy
 
-```text
-Receive/access school-linked content
-→ view sign material
-→ use in routine
-→ optional feedback
-```
+### Initial customer profile
 
-This division is important strategically:
+The first customer profile is:
 
-> **KinderFlow absorbs the technical complexity; schools receive a simple service.**
+- independent nursery or small nursery group;
+- owner or director can make a pilot decision;
+- educators already use or want to use baby signs;
+- nursery values family communication;
+- one staff member can coordinate content and assignments;
+- school accepts a controlled, review-led scope.
 
----
+This profile is a recruitment hypothesis, not a measured segment size.
 
-# 10. Go-to-market strategy
+### Buyer and sales motion
 
-## Initial market
+Initial sales should be founder-led and evidence-led:
 
-Madrid is the most logical first entry market because Round 1 research already established:
+1. confirm the current Baby Sign workflow and pain;
+2. identify the owner or director with budget authority;
+3. demonstrate reviewed assignment and family guidance;
+4. agree a narrow paid or conditionally paid continuation test;
+5. document price response and procurement route;
+6. convert only if operating and safety gates hold.
 
-- a reachable early-childhood centre base;
-- nursery-school concentration;
-- relevant private/concerted commercial channel;
-- geographic proximity for a hands-on pilot.
+A founder-led pilot is not assumed to be a scalable acquisition channel. Sales time, demonstrations, travel, onboarding, conversion, support, and retention must be recorded for a future CAC and LTV calculation.
 
----
+### Pricing hypotheses
 
-## Beachhead customer profile
+Annual per-centre price tests:
 
-Prioritise schools that:
+- EUR 600, equivalent to EUR 50 per month;
+- EUR 1,200, equivalent to EUR 100 per month;
+- EUR 1,800, equivalent to EUR 150 per month.
 
-- serve children aged 0–3;
-- already communicate digitally with families;
-- value school-family continuity;
-- have a director willing to test new services;
-- can identify one educator champion;
-- are small enough for fast decision-making but representative enough to produce useful evidence.
+For Little Steps, those values are approximately:
 
-Avoid beginning with the largest school groups if procurement and integration complexity would slow learning.
+- 0.25% to 0.31% of the calculated tuition envelope;
+- 0.50% to 0.62%;
+- 0.76% to 0.92%.
 
----
+This is a proportionality check, not proof of affordability or willingness to pay.
 
-# 11. Customer acquisition path
+Future add-on options may include:
 
-## Pilot acquisition
-
-Use founder-led / direct outreach.
-
-```text
-Warm school contact / targeted outreach
-→ short discovery call
-→ identify continuity problem
-→ show 3–5 minute MVP demo
-→ discuss pilot
-→ confirm decision-maker
-→ sign pilot terms
-```
-
-The objective is learning, not volume.
-
----
-
-## Early commercial acquisition
-
-If pilot evidence is positive:
-
-- direct school sales;
-- nursery-school networks/groups;
-- sector associations;
-- specialist early-childhood professionals as credibility/partner channel;
-- case-study/referral motion;
-- later partnerships with school-family communication platforms.
-
-Do not assume paid digital acquisition is the first channel until school CAC and sales cycle are known.
-
----
-
-# 12. Positioning
-
-## Primary message
-
-> **KinderFlow helps nursery schools extend everyday learning and routines into the home.**
-
-## Kinder Signs message
-
-> **Help families repeat at home the Baby Signs introduced at school.**
-
-## What not to lead with
-
-- AI;
-- MediaPipe;
-- LangSmith;
-- landmarks;
-- generative workflows.
-
-These support the service but are not the customer problem.
-
----
-
-# 13. Commercial model
-
-## Core model
-
-**B2B school subscription**
-
-The school / school group is the primary paying customer.
-
-Families are beneficiaries/users, not the default core payer.
-
----
-
-## Recommended pricing structure
-
-### Core subscription
-
-Price primarily **per centre**, not per child.
-
-Why:
-
-- easier procurement;
-- predictable school budget;
-- avoids monetising individual child profiles;
-- aligns with central school value;
-- reduces billing complexity.
-
-### Potential tiers later
-
-- single centre;
-- multi-centre / school group;
-- optional premium content modules.
-
-### Possible add-ons
-
-- expanded Flashcard packs;
-- Stories;
-- future content formats.
-
-Do not create too many add-ons before the core willingness-to-pay hypothesis is validated.
-
----
-
-# 14. Pricing hypothesis — numeric decision still open
-
-The strategic pricing model is stable:
-
-```text
-Annual or monthly centre subscription
-+ optional future content add-ons
-```
-
-The **exact price remains a commercial hypothesis** and must be reconciled with the Low / Base / High ROI model before final submission.
-
-## What the pilot must test
-
-Ask school decision-makers:
-
-- Would you pay for this service?
-- Which budget would it come from?
-- Would you prefer monthly or annual pricing?
-- Per centre or per classroom?
-- What price feels easy to approve?
-- At what price would you need stronger evidence?
-- What would make the service not worth paying for?
-
-## Important
-
-Do not rely only on:
-
-> “Would you use it?”
-
-Test:
-
-> **“Would you pay, who would approve it, and from which budget?”**
-
----
-
-# 15. Pilot success framework
-
-The pilot should not use one vanity metric.
-
-Use five evidence dimensions.
-
-## A. Technical
-
-- successful sign-processing rate;
-- Review needed / Fail rate;
-- technical incident rate;
-- repeated-processing rate.
-
-## B. Operational
-
-- content-production time;
-- human-review time;
-- educator assignment time;
-- support tickets.
-
-## C. Adoption
-
-- educators who assign content;
-- repeated assignment;
-- family access.
-
-## D. Trust / quality
-
-- school understanding of AI role;
-- content complaints;
-- review overrides;
-- family clarity/usefulness feedback.
-
-## E. Commercial
-
-- willingness to pay;
-- continuation intent;
-- decision-maker support;
-- acceptable price range;
-- expected sales/procurement friction.
-
----
-
-# 16. Proposed pilot KPIs
-
-Final thresholds should be agreed before the pilot starts so results are not interpreted retrospectively.
-
-| KPI | Direction | Purpose |
-|---|---|---|
-| Pilot educators onboarded | TBD before pilot | Readiness |
-| Educators completing first assignment | TBD before pilot | Usability |
-| Educators making repeat assignment | TBD before pilot | Real adoption |
-| Median assignment time | TBD before pilot | Workflow fit |
-| Participating families accessing material | TBD before pilot | Family value |
-| Critical content incidents | 0 | Trust |
-| Unreviewed content reaching families | 0 | Governance |
-| Child video processed | 0 | Privacy boundary |
-| Personal data sent to LLM/LangSmith | 0 | Privacy boundary |
-| Pilot sign provenance complete | 100% | Governance |
-| Review-needed approvals with rationale | 100% | Human oversight |
-| Schools willing to continue | TBD before pilot | Product value |
-| Schools expressing willingness to pay | TBD before pilot | Commercial evidence |
-| Support burden per school | TBD before pilot | Scalability |
-
-## Client-specific pilot decision instruments
-
-The targets below are intentionally not invented. Each accountable owner must set the threshold before the first real-school activity so the result cannot be reinterpreted retrospectively.
-
-| Client fact | Baseline | Pilot action | Target | Owner | Cost | Decision rule |
-|---|---|---|---|---|---|---|
-| Nursery-school educators need a low-friction assignment workflow | 0 production educators use Kinder Signs | Observe assignment and repeat use during the controlled service test | TBD before pilot | KinderFlow Product Owner + School Pilot Lead | User-research / pilot-onboarding category within €5.5k–€17.3k | **GO** if repeat use meets the agreed threshold and support is manageable; **ITERATE** if use is positive but friction is high; **STOP** if repeat use remains weak |
-| The family proposition depends on school-to-home continuity | 0 real family deliveries | Deliver reviewed material through the agreed pilot channel and record minimal access plus qualitative feedback | TBD before pilot | School Pilot Lead + Privacy / Governance Owner | Pilot/user-research category within €5.5k–€17.3k | **GO** if agreed access/use evidence and clarity are met; **ITERATE** if format or delivery causes friction; **STOP** if families consistently do not use or value it |
-| The current CV evidence comes from one reference run | One 332-frame reference; 100% pose coverage, 93.98% dominant-hand coverage, 20 missing hand frames; motion status Partial | Process the full proposed 3–5-sign pilot set and record Pass / Review needed / Fail outcomes | TBD before pilot; reliable evidence must remain reviewable | KinderFlow Technical Owner + Qualified Content / Sign Reviewer | CV/MVP refinement category within €5.5k–€17.3k | **GO** if the sign set produces reviewable movement evidence; **ITERATE** if Review needed cases are frequent but fixable; **STOP** if reliable evidence cannot be produced |
-| Human review is the publication gate | Logical gate exists; no production reviewer operation; 0 production published signs | Time reviews, record reasons and prevent unreviewed release | 0 unreviewed items reaching families; efficiency threshold TBD before pilot | KinderFlow Content Operations + Qualified Content / Sign Reviewer | Expert-review/content-production categories within €5.5k–€17.3k | **GO** if review is controlled and manageable; **ITERATE** if workload is high but reducible; **STOP** if quality cannot be controlled |
-| Pricing and willingness to pay are unknown | 0 paying schools; validated willingness-to-pay evidence not yet available | Ask the budget owner in each proposed pilot school about price, approval route and paid continuation | TBD before pilot | KinderFlow Product Owner + School Director | User-research/commercial discovery category within €5.5k–€17.3k | **GO** if multiple schools show credible paid-continuation intent; **ITERATE** if value is clear but price/package is wrong; **STOP** if schools do not perceive enough value to pay |
-| A school product must not create disproportionate support work | 0 real-school support history | Log onboarding time, incidents and support time by school | TBD before pilot | KinderFlow Product Owner + School Pilot Lead | Pilot onboarding/support category; exact allocation TBD | **GO** if burden meets the agreed operating threshold; **ITERATE** if recurring friction is fixable; **STOP** if support cost makes the model implausible |
-| Pilot content must have traceable rights and review evidence | MORE source confirmation, final hand pose, artwork and publication approval are incomplete | Close provenance, licence/attribution, qualified review and publication gates for every pilot sign | 100% of pilot signs meet the agreed evidence checklist; 0 blocked items delivered | KinderFlow Content Operations + Qualified Content / Sign Reviewer | Expert-review and visual/content-production categories within €5.5k–€17.3k | **GO** only when every pilot item clears the gate; **ITERATE** by replacing/fixing blocked assets; **STOP** launch while any distributed item remains blocked |
-| Real-school data introduces privacy and security duties absent from the local prototype | 0 real school/family deliveries; no production authentication, tenancy, DPIA or operating agreements | Complete the minimum pilot data model, role/legal review, DPIA, notices, access controls and incident process before personal data enters the service | 0 unresolved launch-blocking privacy/security actions; 0 personal-data fields sent to LLM/LangSmith | Privacy / Governance Owner + KinderFlow Technical Owner + School Director | Legal/privacy and technical refinement categories; exact allocation TBD before pilot | **GO** only after the launch gate is signed off; **ITERATE** the design to remove unresolved data/control needs; **STOP** real-data launch if critical actions remain |
-
----
-
-# 17. GO / ITERATE / STOP framework
-
-## GO
-
-Proceed to a limited commercial launch if:
-
-- technical workflow is reliable enough for the pilot sign set;
-- no critical privacy/AI governance issue remains;
-- educators can use assignment without significant support;
-- families show meaningful engagement;
-- human review is operationally manageable;
-- schools report clear value;
-- multiple pilot schools show credible willingness to pay;
-- ROI Base scenario becomes plausible using measured pilot inputs.
-
-GO does **not** mean immediate national scale.
-
----
-
-## ITERATE
-
-Continue development but repeat/refine the pilot if:
-
-- value is visible but workflow is too manual;
-- technical Review needed rates are too high;
-- content production/review costs are too high;
-- families engage but schools do not see enough differentiation;
-- willingness to pay exists only at a lower price;
-- support burden is too high;
-- product messaging is misunderstood.
-
----
-
-## STOP / PIVOT
-
-Stop Kinder Signs as the first commercial product, or substantially redesign it, if:
-
-- schools do not perceive a meaningful problem;
-- willingness to pay remains weak after clear product demonstration;
-- educator usage does not repeat;
-- family engagement is consistently negligible;
-- content quality cannot be controlled reliably;
-- legal/privacy controls make the product disproportionate;
-- sign-production cost cannot support a credible business model;
-- the AI/CV capability does not materially improve the customer value proposition.
-
-A STOP decision is a valid pilot outcome.
-
----
-
-# 18. Hard stop criteria
-
-Regardless of commercial performance, pause the affected workflow if:
-
-- child assessment/scoring is introduced without reassessment;
-- unreviewed content reaches families;
-- serious misleading/developmental claims appear;
-- child personal data enter an unapproved AI service;
-- cross-school personal-data exposure occurs;
-- reference-content rights are unresolved;
-- a critical technical failure cannot be contained;
-- reviewers repeatedly approve content without evidence.
-
----
-
-# 19. Pilot evidence pack
-
-For each pilot iteration retain:
-
-## Technical
-
-- version / commit;
-- runtime;
-- sign/run ID;
-- technical output;
-- test evidence;
-- known issues.
-
-## Content
-
-- source/provenance;
-- review status;
-- reviewer;
-- approved version;
-- generated/human origin.
-
-## Governance
-
-- DPIA version;
-- DPA;
-- notices;
-- AI literacy evidence;
-- incidents;
-- remediation.
-
-## Commercial
-
-- school interviews;
-- usage metrics;
-- support time;
-- pricing feedback;
-- continuation intent.
-
-This allows the final decision to be evidence-based rather than anecdotal.
-
----
-
-# 20. Pilot feedback cadence
-
-## Weekly internal review
-
-Review:
-
-- bugs;
-- review queue;
-- support;
-- incidents;
-- adoption;
-- scope changes.
-
-## Mid-pilot school review
-
-Ask:
-
-- What is working?
-- What is confusing?
-- Is this reducing or adding work?
-- Are families responding?
-- What is missing?
-
-## End-of-pilot decision review
-
-Evaluate the pre-agreed GO / ITERATE / STOP framework.
-
----
-
-# 21. Deployment architecture — pilot
-
-The current local desktop MVP should not be assumed to be the final production architecture.
-
-## Pilot principles
-
-- controlled hosted environment;
-- authenticated access;
-- school tenancy separation;
-- minimal persistent data;
-- secure secrets;
-- logging;
-- backup/restore;
-- documented MediaPipe runtime;
-- ability to disable a problematic content asset.
-
-## Computer Vision workload
-
-CV is an internal content-production workload.
-
-It does not need to run in real time for every school/family interaction.
-
-This enables a simpler deployment pattern:
-
-```text
-Internal content-production service
-→ approved reusable asset
-→ standard web delivery
-```
-
----
-
-# 22. Full deployment — only after pilot
-
-## Required capabilities
-
-### Product
-
-- stable content library;
-- authenticated school access and tenant separation;
-- family access;
-- permission management;
-- production analytics.
-
-### Technical
-
-- scalable runtime;
-- production database;
-- monitoring;
-- security;
-- backups;
-- incident handling;
-- deployment/version management.
-
-### Governance
-
-- formal review records;
-- privacy operations;
-- vendor management;
-- AI change control;
-- post-market monitoring;
-- documented content provenance.
-
-### Commercial
-
-- validated pricing;
-- repeatable sales process;
-- onboarding model;
-- support model;
-- measurable CAC;
-- retention evidence.
-
----
-
-# 23. Scaling strategy
-
-Do not scale all dimensions simultaneously.
-
-Recommended order:
-
-```text
-More evidence per sign
-→ more signs
-→ more pilot schools
-→ repeatable operations
-→ limited commercial launch
-→ school groups
-→ additional KinderFlow modules
-```
-
-Avoid:
-
-```text
-new markets
-+ many new signs
-+ new AI features
-+ new school integrations
-+ Kinder Daily
-+ Kinder Food
-all at once
-```
-
----
-
-# 24. KinderFlow platform roadmap
-
-## Stage 1 — Kinder Signs
-
-Validate:
-
-- school-home continuity;
-- school-led buying model;
-- family engagement;
-- central content operations.
-
-## Stage 2 — deepen Kinder Signs
-
-Potentially:
-
-- larger approved library;
-- more reusable content formats;
-- improved visual movement layer;
-- school-group capabilities.
-
-## Stage 3 — evaluate next platform module
-
-Kinder Daily or Kinder Food should only move forward after KinderFlow understands:
-
-- acquisition;
 - onboarding;
-- school data model;
-- family engagement;
-- willingness to pay.
+- staff training;
+- specialist review;
+- additional cleared content packs.
 
-The platform vision should not force premature multi-product development.
+Add-on adoption and revenue are set to EUR 0 in the current ROI scenarios.
 
----
+### Competitive position
 
-# 25. Build / buy / partner strategy
+Relevant alternatives include:
 
-## Build
+- family courses and self-guided plans;
+- educator training;
+- sign vocabulary or learning resources;
+- nursery communication platforms;
+- general early-years content or curriculum tools;
+- manual lists, messages, and staff explanations.
 
-Keep in-house where it creates KinderFlow differentiation:
+KinderFlow's position is a hypothesis:
 
-- product workflow;
-- content governance;
-- school/family experience;
-- movement/content evidence orchestration.
+> A school-led, review-first workflow that links evidence, educator assignment, and family guidance with explicit content status.
 
-## Buy / use external technology
+Existing evidence shows Spanish-language self-guided plans at about EUR 30 to EUR 50, educator training at about EUR 180, one-year platform access, live training, and school training. Some school and live-training prices are not public, and sources conflict on five versus six sessions, so no precise session-count benchmark is used.
 
-Where commodity technology is sufficient:
+Paid Spanish-language content and training already exist. Spanish-language content alone is not a defensible differentiation. Kinder Signs must test whether school-led continuity, governed and versioned content, sign-specific provenance, group or audience assignment, reusable family materials, and measured reuse economics provide sufficient additional value.
 
-- hosting;
-- authentication;
-- LLM API;
-- observability;
-- standard infrastructure.
+Do not claim that KinderFlow is the first, only, most accurate, clinically validated, or universally applicable service. Public competitor evidence is incomplete, and feature absence must not be inferred from a vendor page that does not mention a feature.
 
-## Partner
+## Pilot programme
 
-Potential partners:
+### Phase 1: setup and gates
 
-- validated sign/content experts;
-- nursery-school networks;
-- early-childhood specialists;
-- future school communication platforms.
+Timing:
 
----
+- week 1.
 
-# 26. Key strategic risks and deployment response
+Actions:
 
-| Risk | Deployment response |
-|---|---|
-| CV movement fidelity | Small reviewed sign set before scale |
-| Reviewer bottleneck | Measure time, standardise review, reuse assets |
-| Privacy | Minimal/pseudonymous child data, no child video |
-| AI Act scope creep | Hard product boundaries and change-control trigger |
-| Low educator adoption | Simple assignment workflow + onboarding |
-| Low family engagement | Test content format and routine relevance |
-| Weak willingness to pay | Validate before full deployment |
-| High content cost | Measure reuse and throughput |
-| Vendor dependency | Deterministic fallback / abstraction |
-| GenAI overuse | Technology-fit review before new AI feature |
-
----
-
-# 27. Strategic deployment milestones
-
-## Milestone 1 — MVP freeze
-
-Evidence:
-
-- core tests pass;
-- demo path stable;
-- visual QA complete;
-- documentation reconciled.
+- recruit 2 to 3 nursery schools;
+- confirm Cleo and other owner-level sponsors;
+- freeze 3 to 5 signs;
+- approve rights, privacy, safeguarding, measurement, and incident ownership;
+- baseline educator, family, review, support, and commercial measures;
+- sign off all provisional thresholds.
 
 Decision:
 
-**Ready for pilot preparation**
+- do not proceed if a qualified reviewer, content-rights route, participant-data route, or nursery owner cannot be secured.
 
----
+### Phase 2: readiness
 
-## Milestone 2 — Governance ready
+Timing:
 
-Evidence:
+- weeks 1 to 4, with overlapping technical, workflow, content, and research preparation.
 
-- DPIA;
-- DPA;
-- privacy notices;
-- AI literacy;
-- provenance;
-- reviewer process;
-- incident route.
+Actions:
 
-Decision:
-
-**Ready for real pilot data**
-
----
-
-## Milestone 3 — Pilot midpoint
-
-Evidence:
-
-- repeated assignments;
-- technical reliability;
-- initial family use;
-- support load.
+- refine technical evidence and fallback;
+- refine review and assignment;
+- add the personalised assignment-driven family mini-library;
+- clear 3 to 5 signs;
+- configure minimal evaluation;
+- rehearse delivery, correction, withdrawal, failure, and incident paths;
+- train limited pilot participants.
 
 Decision:
 
-**Continue / adjust / pause**
+- do not enter controlled service until all planned signs are cleared and the hard boundaries are enforceable.
 
----
+### Phase 3: controlled service
 
-## Milestone 4 — Pilot end
+Timing:
 
-Evidence:
+- 3 to 4 weeks within weeks 4 to 8.
 
-- technical;
-- operational;
-- adoption;
-- trust;
-- commercial;
-- ROI assumptions.
+Actions:
+
+- activate all 3 Little Steps groups;
+- observe first assignments;
+- collect repeat assignments;
+- deliver reviewed family items;
+- measure teacher, family, reviewer, technical, support, and buyer evidence;
+- perform weekly safety and evidence checks.
 
 Decision:
 
-**GO / ITERATE / STOP**
+- pause immediately for a critical content, privacy, rights, or safeguarding incident.
 
----
+### Phase 4: analysis and decision
 
-## Milestone 5 — Limited commercial launch
+Timing:
 
-Only if pilot evidence supports it.
+- weeks 8 to 9.
 
----
+Actions:
 
-# 28. Current readiness assessment
+- reconcile events, observations, interviews, reviews, incidents, and costs;
+- update nursery value, unit economics, risks, and confidence;
+- record limitations and missing data;
+- choose GO, ITERATE, or STOP;
+- scope production only after a GO.
 
-| Dimension | Current status | What remains |
-|---|---|---|
-| Problem/use case | **STRONG** | Real pilot confirmation |
-| Technical MVP | **FUNCTIONAL IN EVIDENCED LOCAL ENVIRONMENT** | Revalidate clean Python 3.11/3.12; production runtime and broader sign evidence |
-| Content governance | **STRONG CONCEPT / LOCAL FUNCTION** | Formal reviewer operation |
-| School UX | **INTERACTIVE PROTOTYPE** | Persistence/auth/integration |
-| Family UX | **INTERACTIVE PROTOTYPE** | Real access/delivery |
-| GDPR | **INTERNAL DRAFT ASSESSMENT / NOT PILOT-READY** | Legal-role confirmation, DPIA and operational controls |
-| EU AI Act | **PRELIMINARY INTERNAL ASSESSMENT** | Final pilot classification, AI literacy and transparency/role confirmation |
-| Responsible AI | **EVIDENCE REVIEWED / OPERATIONAL GAPS** | Named reviewer process and pilot controls |
-| Green AI | **ARCHITECTURE REVIEWED / MEASUREMENT GAP** | Energy and carbon baseline |
-| Risk | **DRAFT MATRIX / SCORES TO VALIDATE** | Confirm owners, scoring and monitoring |
-| ROI | **SCENARIO STRUCTURE READY** | Approved assumptions and measured inputs |
-| Commercial validation | **NOT YET PROVEN** | Pilot |
-| Full deployment | **NOT READY** | Pilot evidence first |
+## KPI framework
 
----
+### Primary outcomes
 
-# 29. Strategic recommendation to management
+Educator activation:
 
-## Recommendation
+- Definition: Little Steps nursery group has at least one completed reviewed-sign assignment.
+- Baseline: 0 of 3 groups in a real controlled service.
+- Target: 3 of 3 groups.
+- Evidence: assignment event plus observation record.
+- Owner: nursery pilot lead.
 
-**Proceed to a controlled pilot after closing pilot-readiness conditions. Do not move directly to full deployment.**
+Repeat educator use:
 
-Why:
+- Definition: completed assignment after the first assignment in the same group.
+- Baseline: 0 measured.
+- Target: at least 2 repeat assignments per Little Steps group.
+- Evidence: assignment history.
+- Owner: product lead and nursery pilot lead.
 
-### Technical evidence exists
+Paid continuation:
 
-The project has moved beyond a static concept.
+- Definition: named budget owner states a continuation decision at a specific annual price and names material conditions.
+- Baseline: 0 observed KinderFlow paying centres.
+- Target: at least 2 participating schools identify a budget owner and state credible continuation intent at a tested price.
+- Evidence: signed or recorded economic-buyer interview.
+- Owner: commercial lead.
 
-### Risk boundaries are defined; operational controls are incomplete
+### Driver measures
 
-The current AI role is narrow and logically human-controlled. Production reviewer identity, privacy/security controls and operating evidence remain open.
+First-assignment time:
 
-### Commercial evidence is still missing
+- Definition: elapsed time from opening the assignment task to confirmed assignment.
+- Baseline: not measured.
+- Target: 2 minutes or less.
+- Evidence: event timestamps and observed task record.
+- Owner: product lead.
 
-The largest unknown is not whether MediaPipe can process a video.
+Completion without help:
 
-It is whether schools value the service enough to adopt and pay.
+- Definition: educator completes the first assignment without facilitator action or procedural guidance.
+- Baseline: not measured.
+- Target: at least 80%.
+- Evidence: structured observation.
+- Owner: research lead.
 
-### Pilot is the most efficient next investment
+Family value:
 
-A small pilot can replace assumptions with evidence before KinderFlow commits to:
+- Definition: delivery, first access, repeat access, clarity, usefulness, questions, and accessibility for actual assigned guidance.
+- Baseline: no assignment-driven family service.
+- Target: exact thresholds in the pilot measurement plan, signed before activity.
+- Evidence: minimised delivery and access events plus participant feedback.
+- Owner: research lead, nursery pilot lead, and privacy owner.
 
-- larger content production;
-- cloud infrastructure;
-- integrations;
-- sales investment;
-- additional platform modules.
+Review and reuse:
 
----
+- Definition: creation, API, review, exception, and rework effort per approved sign, plus number of schools using the same approved asset.
+- Baseline: not measured in service.
+- Target: exact throughput and burden thresholds signed before activity; 100% provenance and exception rationale.
+- Evidence: content operations record.
+- Owner: content operations lead.
 
-# 30. Final decision logic
+### Guardrails
 
-```text
-Does the technical workflow work reliably?
-    ↓
-Do educators use it repeatedly?
-    ↓
-Do families engage?
-    ↓
-Can KinderFlow operate/review it at manageable cost?
-    ↓
-Do schools perceive enough value to pay?
-    ↓
-Are privacy / AI governance controls acceptable?
-    ↓
-YES → Limited commercial launch
-MIXED → Iterate
-NO → Stop / pivot
-```
+- child video processed: 0;
+- child scoring: 0;
+- automated educational decisions: 0;
+- unreviewed content delivered: 0;
+- blocked content delivered: 0;
+- personal child or family data sent to a language model or LangSmith: 0;
+- pilot sign provenance complete: 100%;
+- review exceptions with rationale: 100%;
+- critical content, privacy, rights, or safeguarding incidents: 0.
 
----
+## Economics
 
-# 31. Slide-ready summary
+### Validation investment
 
-| Question | Answer |
-|---|---|
-| Current stage | **Functional local MVP / pre-pilot** |
-| Recommended next step | **Controlled pilot** |
-| Validation-programme duration | **8–9 weeks, including approximately 3–4 weeks of controlled service testing** |
-| Proposed starting scale | **2–3 schools; pilot assumption of 3–5 signs** |
-| Main buyer | **Nursery school / school group** |
-| Business model | **B2B school subscription** |
-| Core pilot question | **Will schools use, value and pay for the service?** |
-| Main technical gate | Reliable reviewed sign-production flow |
-| Main regulatory gate | GDPR/DPIA + operational AI governance |
-| Main commercial gap | Pricing / willingness to pay |
-| Final decision | **GO / ITERATE / STOP** |
+Project estimate:
 
----
+- pilot readiness: EUR 1,700 to EUR 5,300;
+- controlled pilot and service: EUR 3,800 to EUR 12,000;
+- total: EUR 5,500 to EUR 17,300.
 
-# 32. Bottom line
+The high line items sum to EUR 17,300. Current prototype effort is sunk and excluded. Production build remains TBD.
 
-Kinder Signs has reached the point where adding more prototype breadth creates less value than testing the product in a controlled real-world environment.
+### Scenario summary
 
-The strategic priority is therefore:
+Calculated 12-month results:
 
-> **Freeze the smallest credible product, close the pilot governance gates, test it with a small number of schools, and let the evidence decide whether KinderFlow should scale.**
+- Low: EUR 1,800 revenue, EUR 11,440 cost, negative EUR 9,640 net, negative 84.3% ROI.
+- Base: EUR 7,200 revenue, EUR 21,640 cost, negative EUR 14,440 net, negative 66.7% ROI.
+- High: EUR 18,000 revenue, EUR 32,300 cost, negative EUR 14,300 net, negative 44.3% ROI.
 
-The pilot should be treated as a **decision instrument**, not as a miniature full launch.
+Calculated 36-month results:
 
-If the evidence is positive, KinderFlow can move toward a limited commercial deployment with a clearer pricing model, measured operating cost and stronger customer proof.
+- Low: EUR 9,600 revenue, EUR 24,580 cost, negative EUR 14,980 net, negative 60.9% ROI.
+- Base: EUR 61,200 revenue, EUR 50,040 cost, EUR 11,160 net, 22.3% ROI.
+- High: EUR 180,000 revenue, EUR 83,300 cost, EUR 96,700 net, 116.1% ROI.
 
-If the evidence is mixed, the pilot will identify exactly what must change.
+Calculated break-even:
 
-If schools do not value or pay for the service, KinderFlow should stop or pivot before committing to larger infrastructure or content-production investment.
+- Low: beyond 36 months;
+- Base: month 29.3;
+- High: month 17.2.
 
-That is the purpose of the proposed 8–9 week validation programme.
+The Base case becomes negative if price is 20% lower or centre-years are 25% lower. Production cost is outside the model. The ROI is therefore a conditional scenario, not an investment promise.
+
+### Reuse hypothesis
+
+Formula:
+
+> Allocated content cost per school = (creation + API + review + rework) / schools using the approved asset
+
+At an illustrative fully loaded approved-asset cost of EUR 1,000:
+
+- 1 school allocates EUR 1,000;
+- 3 schools allocate about EUR 333 each;
+- 10 schools allocate EUR 100 each;
+- 30 schools allocate about EUR 33 each.
+
+The EUR 1,000 value is a pilot hypothesis. Reuse is valid only when rights, content validity, presentation, version, and review effort support it.
+
+### CAC and LTV
+
+> CAC = (sales labour + demonstrations + travel + onboarding) / new paying centres
+
+> LTV = annual contribution per centre x expected retained years - incremental support cost
+
+Paying customers, acquisition cost, conversion, retention, and LTV have no observed KinderFlow baseline. The pilot records inputs but does not claim a ratio.
+
+## Owner, cost, and decision register
+
+Each workstream follows client fact, baseline, action, target, owner, cost, and decision rule.
+
+### Educator workflow
+
+- Client fact: Little Steps educators already use baby signs.
+- Baseline: no measured digital assignment time or repeat-use rate.
+- Action: test reviewed assignment with all three groups.
+- Target: 2 minutes or less for first assignment, at least 80% without help, 3 of 3 groups active, and at least 2 repeat assignments per group.
+- Owner: product lead and nursery pilot lead.
+- Cost: nursery workflow refinement, user research, and coordination.
+- Decision rule: ITERATE a bounded usability miss; STOP if workflow fit cannot be achieved without expanding burden or risk.
+
+### Family service
+
+- Client fact: families ask for sign lists or materials.
+- Baseline: static or session preview only; no personalised assignment-driven library.
+- Action: add and test the controlled mini-library.
+- Target: signed delivery, access, repeat-use, clarity, and accessibility thresholds with zero blocked or unreviewed delivery.
+- Owner: product lead, research lead, nursery pilot lead, and privacy owner.
+- Cost: workflow refinement, content production, research, and coordination.
+- Decision rule: ITERATE if safe delivery works but engagement misses; STOP if privacy, clarity, or safe access cannot be maintained.
+
+### Content operations
+
+- Client fact: Cleo currently carries sign-quality and explanation responsibility.
+- Baseline: technical controls exist; reviewer throughput and cost are unmeasured.
+- Action: clear 3 to 5 signs and measure full production and review effort.
+- Target: 100% provenance, 100% exception rationale, zero blocked or unreviewed delivery, and signed throughput targets.
+- Owner: content operations owner and qualified reviewer.
+- Cost: expert review and visual or content production.
+- Decision rule: ITERATE an operable burden gap; STOP if rights or qualified review cannot be secured.
+
+### Commercial model
+
+- Client fact: adjacent family and educator offers are paid, and Little Steps has a nursery service revenue base.
+- Baseline: zero KinderFlow paying centres, zero retention evidence, and no measured CAC or LTV.
+- Action: test EUR 600, EUR 1,200, and EUR 1,800 with named budget owners.
+- Target: at least 2 participating schools state credible continuation intent at a tested price.
+- Owner: commercial lead and owner-level nursery sponsors.
+- Cost: user research and pilot coordination.
+- Decision rule: GO only with price-specific evidence; ITERATE buyer process or packaging if value exists; STOP if no viable paid path exists.
+
+### Technical and governance readiness
+
+- Client fact: the local proof of concept and workflow run, but production controls are incomplete.
+- Baseline: no hosted multi-site service or production assurance.
+- Action: freeze pilot versions, preserve HUMAN fallback, rehearse failure, enforce data and review boundaries, and scope production after evidence.
+- Target: reviewable or manual-fallback evidence for every pilot sign, zero prohibited data transfer, and zero critical incidents.
+- Owner: technical, privacy, and product leads.
+- Cost: technical refinement, evaluation, review, and coordination.
+- Decision rule: STOP for an unresolved critical control failure; ITERATE recoverable reliability issues within the controlled scope.
+
+## Risk priorities
+
+The full risk register is maintained in the ROI and risk assessment. Strategic priorities are:
+
+1. Sign fidelity and content quality.
+2. Willingness to pay and repeat adoption.
+3. Source, reuse, and presentation rights.
+4. Privacy and safeguarding scope.
+5. Reviewer cost and throughput.
+6. Runtime reliability and fallback.
+7. Trust, claims, and liability.
+8. Provider dependency.
+9. Educator workflow fit.
+10. Family value and delivery.
+
+No strategic objective overrides a safety, privacy, rights, or human-review boundary.
+
+## Roadmap and dependencies
+
+### Pilot critical path
+
+The controlled programme depends on:
+
+1. 2 to 3 nursery schools and named owner-level sponsors;
+2. a qualified reviewer;
+3. source and presentation rights for 3 to 5 signs;
+4. approved privacy, safeguarding, retention, correction, and withdrawal routes;
+5. the assignment-driven family mini-library;
+6. measurable educator, family, technical, review, support, and commercial events;
+7. a 3 to 4 week controlled service test;
+8. a signed GO, ITERATE, or STOP review in week 8 or 9.
+
+If a rights, reviewer, privacy, or evidence dependency slips, reduce content or school scope. Do not compress the gate.
+
+### Product roadmap
+
+- Now: local POC, local assignment workflow, reviewed family preview, and pilot preparation.
+- Pilot: 3 to 5 cleared signs, 2 to 3 nurseries, family mini-library, measured use, and price-specific continuation evidence.
+- After GO: production architecture, identity, tenancy, delivery, monitoring, support, security, and durable content operations.
+- After paid retention evidence: broader nursery acquisition and library expansion.
+- Separate future cases: Kinder Daily and Kinder Food.
+
+## Decision rules
+
+### GO
+
+Proceed to scope a next phase only if:
+
+- every hard boundary holds;
+- teacher activation, first-use, help, and repeat-use targets are met;
+- signed family targets are met;
+- rights and review evidence is complete;
+- runtime and support burden are understood;
+- at least 2 participating schools state credible paid-continuation intent at a tested price;
+- reviewer, content, support, and selling inputs update a viable economic case;
+- production build and operating cost are scoped before approval.
+
+### ITERATE
+
+Run one bounded correction cycle when:
+
+- hard boundaries hold;
+- user value is material;
+- a specific workflow, family, price, reviewer, support, or reliability target misses;
+- the correction has a named owner, cost, evidence target, and decision date.
+
+Do not use ITERATE as an open-ended extension.
+
+### STOP
+
+Stop expansion when:
+
+- safe or rights-cleared content cannot be operated;
+- child-data, privacy, or safeguarding boundaries cannot be maintained;
+- qualified review cannot be secured;
+- educator or family value remains weak after a bounded correction;
+- no participating school identifies a credible paid path;
+- production, review, or content economics remain incompatible with tested pricing.
+
+## Next-phase conditions after GO
+
+A GO decision should trigger planning, not immediate launch. Before production:
+
+- estimate production architecture and build cost;
+- complete external privacy, security, and legal review as required;
+- define service levels, support, incident response, and business continuity;
+- complete provider review and exit routes;
+- validate access control, tenancy, retention, deletion, and audit operations;
+- turn pilot content rights into durable operating agreements;
+- test acquisition beyond founder-led recruitment;
+- establish paid retention evidence;
+- update CAC, LTV, content reuse, and scenario economics.
+
+Expansion beyond Kinder Signs requires a separate evidence case.
+
+## Final recommendation
+
+PROCEED WITH CONDITIONS.
+
+The next step is the 8 to 9 week controlled programme, including a 3 to 4 week service test with 2 to 3 nursery schools and 3 to 5 cleared signs. The conditions are a real assignment-driven family mini-library, qualified review, complete rights and provenance, exact teacher and family measurement, price-specific buyer evidence, and zero breach of the stated hard boundaries.

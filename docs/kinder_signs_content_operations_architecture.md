@@ -1,72 +1,111 @@
 # Kinder Signs content operations architecture
 
-## Operating model
+## Operating principle
 
-```text
-SOURCE LAYER
-validated reference identifier
-        ↓
-AI / TECHNICAL LAYER
-MediaPipe extraction, normalisation and diagnostics
-        ↓
-CONTENT LAYER
-structured sign data + optional constrained LLM assistance
-        ↓
-ORCHESTRATION
-n8n prepares or reuses a review package
-        ↓
-EVALUATION
-deterministic policy gate + LangSmith for LLM wording only
-        ↓
-VISUAL LAYER
-official modular character base + Kinder Signs reviewed hand asset
-        ↓
-GOVERNANCE
-explicit human review + append-only local events
-        ↓
-DELIVERY
-versioned item in the Signs & Flashcards Library
-        ↓
-PILOT MEASUREMENT
-privacy-minimised product events
-```
+The character defines the visual style. The reviewed reference defines the movement. A qualified person controls publication.
 
-The character defines the look. The validated reference defines the movement. Human review controls publication.
+KinderFlow separates technical capture, wording, visual preparation, review, and publication so that one successful check cannot be mistaken for complete approval.
 
-The video teaches the movement. The flashcard reinforces the sign and its routine.
+## End-to-end target flow
+
+    Reviewed adult reference
+    → MediaPipe extraction and diagnostics
+    → structured sign and routine context
+    → optional bounded wording assistance
+    → deterministic content checks
+    → source-grounded visual options
+    → qualified human review
+    → versioned publication package
+    → eligible school library
+    → school assignment
+    → family delivery
+
+The repository implements only parts of this target flow. It does not contain a published sign or real school-to-family delivery.
+
+## Current evidence layers
+
+### Computer Vision
+
+The versioned Round 1 diagnostics belong to WATER. They report 332 frames, 100.00% pose coverage, 93.98% dominant right-hand coverage, 20 missing hand frames, EXTRACTION_PASS, and MOTION_REPRESENTATION_PARTIAL.
+
+An ignored local MORE run reports 285 frames, 100.00% pose coverage, 91.93% dominant-hand coverage, EXTRACTION_PASS, and MOTION_REPRESENTATION_PARTIAL. It is local run evidence, not a committed artifact. The two runs must never be merged.
+
+### Visual preparation
+
+The canonical asset registry contains six signs: MORE, HELP, EAT, SLEEP, MILK, and WATER. Each has two initial Open Peeps-derived options and one deterministic regeneration option. All 18 options are drafts. There are no reviewed static visuals, distributable printables, or signs available to schools.
+
+Open Peeps supplies the fixed character style and line references. It does not supply or validate sign mechanics. The sign-specific hand and arm layers remain subject to qualified review.
+
+### Content Operations
+
+The Content Operations regression set has five records: MORE, EAT, WATER, ALL DONE, and HELP. This set tests wording, state, provenance, and package rules. It is separate from the six-sign visual registry. All five regression records are blocked from publication.
+
+The blocked MORE package under build/publication/more/v1 binds hashes and component versions. It is evidence of package construction, not evidence of publication.
+
+### School and family experience
+
+The Little Steps Nursery page simulates selection of a sign, group, material set, and audience. It blocks exact duplicate assignments and supports edit and removal actions. State remains in browser session storage.
+
+A family-facing guidance prototype exists. A personalised assignment-driven family library remains a next product iteration. There are no family accounts, real delivery, notifications, or persistent cross-session assignments.
 
 ## Responsibility boundaries
 
-| Layer | Does | Does not |
-|---|---|---|
-| Computer Vision | Extract movement structure and technical diagnostics | Certify linguistic sign correctness or evaluate children |
-| LLM | Assist short wording from supplied context | Invent biomechanics, approve or publish |
-| LangSmith | Trace and evaluate LLM-assisted wording | Evaluate movement, MediaPipe or professional validity |
-| n8n | Orchestrate controlled steps and stable contracts | Publish autonomously |
-| Deterministic gate | Enforce explicit content, asset and publication rules | Replace human judgment |
-| Human review | Control approval and publication | Delegate accountability to an automated score |
+### Computer Vision
 
-The machine-readable version is `content_ops/contracts/ai_responsibility_matrix.json`.
+Does: extracts and represents observed pose and hand landmarks; reports coverage, gaps, and movement diagnostics.
 
-## Versioning and provenance
+Does not: identify the sign automatically, certify linguistic correctness, assess a child, or approve content.
 
-Each sign has a local manifest under `content_ops/signs/<sign_id>/manifest.json`. A structured package contains component versions rather than duplicated video. SHA-256 hashes identify changes to local evidence and structured documents.
+### Optional LLM step
 
-`build/publication/more/v1/` is currently a blocked draft package, not a published asset. Rebuilding unchanged inputs reuses the same package identity.
+Does: transforms supplied approved wording into a bounded family draft when configured.
 
-## Review and publication
+Does not: invent movement mechanics, validate a sign, or publish content. Only dry-run and mocked provider-path evidence is committed.
 
-Technical, content, visual and publication states are independent. Publication requires:
+### LangSmith
 
-1. acceptable technical state;
-2. approved family content;
-3. ready illustration and character assets;
-4. reviewed sign-specific hand pose;
-5. explicit human approval; and
-6. an approved publication package.
+Does: represents an evaluation and trace path for optional LLM wording.
 
-The policy rejects incomplete packages and exposes readable blocking reasons.
+Does not: evaluate MediaPipe, the reference video, sign correctness, or professional validity. The repository contains dry-run evidence, not a live external trace.
+
+### n8n
+
+Does: provides an inactive, importable orchestration design with the exact JSON export.
+
+Does not: prove current target-runtime execution or autonomous publication.
+
+### Deterministic gates
+
+Do: enforce explicit schema, wording, asset, state, and publication requirements.
+
+Do not: replace professional judgement.
+
+### Human review
+
+Does: selects the evidence route, reviews the visual and content, and controls any future publication decision.
+
+Does not: become a production approval merely because a local browser button was selected.
+
+## State model
+
+Keep these states separate:
+
+1. extraction coverage;
+2. motion-representation status;
+3. content readiness;
+4. visual review;
+5. printable eligibility;
+6. publication status; and
+7. school availability.
+
+The current visual workflow can record APPROVED_FOR_INTERNAL_PRINTABLE in browser session state while publication remains DRAFT. Every canonical registry record remains BLOCKED for printable output, DRAFT_BLOCKED for publication, and UNAVAILABLE to schools.
+
+## Provenance and versioning
+
+Sign manifests live under content_ops/signs. The canonical visual and source record is assets/registry/sign_asset_registry.json. SHA-256 hashes identify exact local files and generated documents. A rebuilt package can reuse its deterministic identity when inputs are unchanged.
+
+The local input videos and Gemini FX files are outside the versioned repository. Their hashes and classifications are recorded in the registry. Rights and external-display permission remain a release gate.
 
 ## Deployment boundary
 
-This is a local pilot architecture using JSON, small Python modules and static JavaScript. It has no authentication, production database, cloud media store, billing, external analytics or autonomous publication.
+This is a local product and technical prototype using JSON, Python, static JavaScript, and browser session storage. It has no production authentication, reviewer identity, tenant isolation, database, cloud media store, retention service, billing, school integration, family delivery, or autonomous publication.

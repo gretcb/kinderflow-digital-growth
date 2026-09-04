@@ -1,66 +1,101 @@
-# MVP reality check
+# Kinder Signs MVP reality check
 
-This classification is based on repository evidence on 3 September 2026. “Functional now” means executable locally, not hosted or production-ready.
+## Current status
 
-## FUNCTIONAL NOW
+Kinder Signs is a working local product and technical prototype. It contains real MediaPipe processing, deterministic content checks, draft visual assets, and browser interaction. It is not a production service and no sign is published or available to a real school.
 
-| Capability | Evidence and boundary |
-|---|---|
-| Local reference-video intake | `mvp/app.py` accepts the registered MORE demo shortcut, an uploaded MP4, or a public direct MP4 URL. Upload safety plus URL scheme, credentials, DNS/address, redirects, timeout, MIME, byte cap, generated filename, cleanup and provenance-redaction cases are tested. This remains a local control rather than a production fetch service. |
-| MediaPipe processing | The MVP calls the existing `poc/src` extraction, normalization and analysis functions. It does not duplicate the CV implementation. |
-| Run isolation | Each run uses a generated ID under ignored `mvp/runs/`; upload filenames do not determine filesystem paths. |
-| Landmark/skeleton preview | The pipeline writes a run-specific landmark-overlay video and browser-facing H.264 copy when ffmpeg is available. |
-| Real movement metrics | Run responses contain calculated frames, pose/hand coverage, missing frames, gaps and technical status. |
-| Controlled CV result states | The service distinguishes pass, review needed, insufficient coverage and processing failure. |
-| POC evidence | The current app demo is the registered MORE reference. The committed Round 1 WATER run remains supporting evidence with 332 frames, 100% pose coverage, 93.98% dominant-hand coverage, 20 missing hand frames and a partial motion-representation result. |
-| Grounded visual review | MORE, HELP, EAT, SLEEP, MILK and WATER use the unchanged registered Open Peeps bust as the sole character base and a shared upper-limb grammar. Sign mechanics come from each sign’s functional reference and curated knowledge; video/frame/landmark data is supporting geometry. Human review controls printable-proof readiness. |
-| Sign-aware EAT fallback | The observed EAT run remains reviewable at 76.57% hand coverage and explicitly routes to knowledge/sign-reference fallback with a required operator rationale. It is not sign certification. |
-| Separate illustrative motion demo | After pose approval, the local UI can stream hash-verified registered Google Labs FX / Gemini FX outputs for MORE, HELP and MILK. The service exposes safe sign routes rather than filesystem paths. EAT, SLEEP and WATER fail closed to an honest unavailable state, and the preview never replaces current-run evidence or blocks visual preparation. |
-| Flashcard Studio | Internal KinderFlow tool with English/Spanish output, distinct Flashcard and Routine Card layouts, deterministic preview and human-controlled local proof approval. Routine guidance occupies its own row. |
-| Browser print | The builder opens a dedicated A5 portrait route. That route validates the exact local approval, waits for images, renders one card and then enables Print / Save as PDF. Final saved-PDF visual QA remains pending. No PNG action is exposed. |
-| Structured sign source | `prototype/data/signs.json` supplies five local bilingual records for rendering/regression. It is not a professionally approved library. |
-| Content-operations rules | Separate technical, content, visual and publication states are implemented in Python. Invalid status jumps are rejected. |
-| Deterministic readiness checks | Required content, visual assets, hand review, technical state and explicit human approval are checked with specific blocking reasons. |
-| Provenance and hashes | The canonical six-sign registry separates each reference, output and evidence asset by sign; WATER owns the committed demo diagnostics. Content Operations separately verifies that its MORE package hashes match and change when an input changes. |
-| Idempotent local package build | Rebuilding the same package inputs yields the same package identity and files. |
-| Local audit log helper | Unique structured events can be appended; duplicate event IDs are ignored. This is not a production audit service. |
-| Five-sign regression harness | MORE, EAT, WATER, ALL DONE and HELP are checked together. All schemas pass and all five are honestly blocked from publication. |
-| LLM deterministic quality gate | The sample family draft can be checked locally without API keys. |
-| LangSmith dry-run | The script builds the prompt, loads the sample output, runs the gate and records what would be traced without a network call. |
-| n8n workflow artifact | A credential-free workflow/export and node specification exist. Import/runtime compatibility still needs verification in the target n8n installation. |
+## Working local capabilities
 
-Environment note: the validated local prototype uses the existing `poc_env` with Python 3.9.6 and MediaPipe 0.10.14. Do not upgrade or substitute the machine's default environment for this checkpoint.
+### Reference processing
 
-## PROTOTYPE / LOCAL STATE
+- Accepts one adult MP4 by local upload.
+- Accepts one public direct MP4 URL within a 100 MB and 12-second retrieval boundary.
+- Provides a registered MORE demo-reference shortcut.
+- Runs pose and hand landmark extraction, body-relative normalization, conservative interpolation, smoothing, and movement diagnostics.
+- Produces isolated ignored run records, a reference preview, an H.264 pose preview, charts, and measured coverage.
+- Returns Pass, Review needed, or Fail for operator routing.
 
-| Capability | Evidence and boundary |
-|---|---|
-| Human approval controls | Buttons can record a local browser proof-approval state. A logical publication gate exists in Content Operations, but no reviewer identity, signature or persistent production approval exists. |
-| Demo publication | A local publication package and UI concepts exist, but MORE remains Draft/Blocked. No current sign is evidenced as published or available to schools. |
-| Master Content Library | The UI demonstrates scope and filtering. It is not backed by a production content database. |
-| School plan | The Little Steps Nursery workspace uses synthetic family records and session-only assignments. No permission engine or production persistence exists. |
-| Group/child assignment | Client-side controls show the intended hierarchy and confirmation. Demo assignments are saved only in browser session storage; nothing is sent or persisted to a backend. |
-| Family access | Family guidance is rendered locally. No delivery, account or live school-channel integration exists. |
-| Story generation | A constrained, deterministic prototype draft illustrates generation/evaluation/HITL. It does not call a live model. |
-| Content-operations admin | The readiness matrix reads generated JSON and exposes blocking reasons. Admin actions do not persist production state. |
-| Publication package | A real local JSON package is built, but MORE remains draft/blocked and is not a publishable content claim. |
-| Pilot event model | A machine-readable event schema and metric definitions exist, but no product instrumentation is active. |
+The direct URL path rejects credentials, fragments, unsafe ports, local or private destinations, unsafe DNS results, HTTPS downgrade, non-MP4 responses, oversized bodies, and excessive redirects. It redacts query data from stored provenance. It is not a webpage scraper.
 
-## PLANNED / NOT YET IMPLEMENTED
+### Human evidence routes
 
-| Capability | Missing evidence or work |
-|---|---|
-| Professionally approved reference library | Source rights, sign identity and professional suitability are not confirmed for the current local reference. |
-| Approved illustrative-motion rights and fidelity | The three registered Gemini FX demonstration files are pre-generated and separate from the current reference run. Display/redistribution permission, landmark-driven provenance, motion fidelity and qualified human approval are not established. |
-| Production-approved sign artwork | Source-grounded Open Peeps-derived vectors exist for all six canonical visual signs, but every option remains a draft requiring qualified human review; none is professionally certified or published by this implementation. |
-| Professional hand-pose review | Candidate review is operator-controlled local state; professional sign-language review evidence remains outside this prototype. |
-| Production avatar | No validated retargeting, generation or movement-fidelity result exists. |
-| Live LangSmith evaluation | The repository proves dry-run behaviour, not a captured live trace. |
-| Executed content-ops n8n adapter | The contract is documented; target-runtime execution evidence is missing. |
-| Production publishing | No database, authenticated reviewer, immutable approval record, rollback or release service exists. |
-| Authentication and permissions | Not implemented. |
-| Cloud storage and retention controls | Not implemented. Local run artifacts have no production retention policy. |
-| Production analytics | Not implemented. Dashboard/prototype figures are market or illustrative evidence, not live product telemetry. |
-| Real integrations | No school communication, payment or external content integrations are implemented. |
-| Live pilot | No educator/family behaviour, willingness-to-pay, retention or operational-cost results exist. |
-| Production scale and security | Concurrency, hosted MediaPipe runtime, threat modelling, backup and incident controls are not validated. |
+- Use tracked poses is available at 90% or higher dominant-hand coverage.
+- Choose reference frames supports one or two generated frame suggestions.
+- Use reviewed references requires a written rationale.
+- EAT can use the reviewed-reference route when near-face hand occlusion leaves otherwise usable evidence.
+
+The operator then selects a draft visual option. Local visual approval makes an exact asset eligible for the internal printable proof. Publication remains Draft.
+
+### Family-material proofs
+
+- Flashcard and Routine Card support Bilingual and Spanish modes.
+- The A5 print route opens browser Print or Save as PDF.
+- Story produces a deterministic English or Spanish prototype for MORE only.
+- Song is marked Coming soon and is inactive.
+
+There is no PNG export, server-side PDF service, production avatar, or completed saved-PDF visual quality check.
+
+### School and family demonstrations
+
+Little Steps Nursery uses synthetic groups and fictional child records. The school page supports sign, group, material, and audience selection, exact-duplicate control, and active-assignment editing or removal. Data remains in browser session storage.
+
+The family page can read and filter that session state, but it is still a demonstration. A family-facing guidance prototype exists. A personalised assignment-driven family library remains a next product iteration.
+
+## Evidence separation
+
+### Versioned WATER result
+
+The committed Round 1 diagnostics report 332 frames, 100.00% pose coverage, 93.98% dominant right-hand coverage, 20 missing frames, EXTRACTION_PASS, and MOTION_REPRESENTATION_PARTIAL. The source video itself is local and ignored; the JSON diagnostics, plots, and registry record are versioned.
+
+### Ignored local MORE result
+
+The successful local run at mvp/runs/run_20260904T061136125509Z_eb661bc3/run.json reports 285 frames, 100.00% pose coverage, 91.93% dominant-hand coverage, 25 missing frames, 4 interpolated frames, 21 unresolved frames, EXTRACTION_PASS, and MOTION_REPRESENTATION_PARTIAL. Processing took 8.37 seconds locally.
+
+That directory is ignored by Git. Treat these values as local run evidence only.
+
+### Verification on 4 September 2026
+
+The standard suites ran 184 tests: 183 passed and one opt-in integration test was skipped. The counts were:
+
+- Content Operations: 35 passed;
+- MVP: 44 passed and one skipped;
+- POC: 6 passed;
+- prototype: 80 passed; and
+- tools: 18 passed.
+
+Running the skipped integration explicitly produced one failure before frame processing. MediaPipe could not create an NSOpenGLPixelFormat in the current headless macOS session. The application returned a controlled processing error. This does not invalidate the earlier local MORE record, but it means that run was not reproduced in this session.
+
+## Draft visual and asset status
+
+The canonical registry contains six signs and 56 asset records. MORE, HELP, EAT, SLEEP, MILK, and WATER each have three deterministic draft SVG options. All six remain:
+
+- printable: BLOCKED;
+- publication: DRAFT_BLOCKED; and
+- school availability: UNAVAILABLE.
+
+Open Peeps supplies a fixed character base and style references. Custom sign-specific arms, hands, and movement marks are present in the draft SVGs. None has completed qualified sign and visual review.
+
+The three registered Gemini FX demonstrations map MORE to mas.mp4, HELP to ayuda.mp4, and MILK to leche.mp4. They are separate pre-generated files with unresolved usage permission and professional-review gates. EAT, SLEEP, and WATER have no such file.
+
+## Content and workflow status
+
+Content Operations has five regression records: MORE, EAT, WATER, ALL DONE, and HELP. This differs intentionally from the six-sign visual registry. Every regression record is blocked from publication.
+
+The repository has an inactive, importable n8n JSON export and LangSmith dry-run evidence. It does not have a final n8n target-runtime execution record, a live external LLM run, or a live LangSmith trace.
+
+## Production gaps
+
+- no qualified sign or hand-pose approval;
+- no published content package;
+- no authenticated reviewer identity;
+- no user accounts or tenant separation;
+- no production database or media store;
+- no enforced retention or deletion service;
+- no real school or family delivery;
+- no personalised family library;
+- no live product analytics;
+- no payment or billing;
+- no tested hosted MediaPipe runtime; and
+- no commercial pilot evidence.
+
+The safe claim is that the repository demonstrates a connected local prototype with explicit review and publication boundaries.

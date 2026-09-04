@@ -1,221 +1,269 @@
-# Kinder Signs n8n workflow
+# Kinder Signs n8n workflow specification
+
+## Evidence status
+
+workflow/kinder_signs_n8n_workflow.json is the exact n8n export stored in the repository. It parses as JSON, contains 12 nodes, and has active set to false.
+
+The repository contains an importable n8n orchestration design and its exact export. Live execution of the final adapter contract is not claimed.
+
+The export has no execution history, target-version compatibility record, or proof that it called the current Content Pack endpoint. It contains a placeholder credential reference but no API key.
 
 ## Purpose
 
-This workflow transforms approved Kinder Signs content into a structured family-facing draft while preserving deterministic checks and professional approval as mandatory gates.
+The design transforms an approved sign object into a structured family-facing draft while retaining deterministic checks and professional review:
 
-```text
-approved sign content + CV motion summary
-→ LLM-generated family draft
-→ deterministic quality checks
-→ optional LangSmith trace/evaluation for the LLM step
-→ draft pending professional approval
-```
+    approved sign object and bounded CV summary
+    → schema check
+    → optional LLM wording transformation
+    → deterministic quality gate
+    → rejected draft or draft pending professional approval
 
-There is no automatic publication. The current repository evidences the deterministic dry-run, not execution of this workflow in the target n8n runtime and not a live external LangSmith trace.
+There is no publication node.
 
-## Node design
+## Exported nodes
 
-| Node | Input | Output | Purpose | Failure path |
-|---|---|---|---|---|
-| 1. Manual Trigger | Manual execution | Execution event | Starts a controlled demonstration | No downstream action until manually started |
-| 2. Set: Approved Sign Object | Embedded generic sample or approved internal object | `sign` object | Establishes the content source of truth | Stop if object is absent |
-| 3. Code: CV Motion Summary | Incoming approved-sign item | Incoming item plus `cv_motion_summary` | Adds a stable technical summary while preserving the approved sign object | Always returns a JSON object; schema check rejects missing upstream data |
-| 4. Code: Schema Check | Sign and CV objects | `schema_check.passed` plus the input bundle | Checks required fields, review flag, and CV boundary | Returns a structured rejected state; does not throw a raw JavaScript error |
-| 5. IF: Schema Valid? | `schema_check.passed` | Valid or rejected branch | Prevents invalid input from reaching the LLM | Invalid branch routes directly to Rejected draft |
-| 6. LLM: Family Draft | Exact governed prompt and validated objects | JSON-only family draft | Transforms approved content into the required schema | Fail closed on provider, parsing, or schema error |
-| 7. Code: Quality Gate | LLM draft and upstream approved source | `quality_gate` result plus draft | Applies deterministic claim, ID, review, and movement checks | Returns `passed=false` with reasons |
-| 8. IF: Pass / Fail | `quality_gate.passed` | Pass or fail branch | Prevents failed drafts reaching the approval queue | Fail branch ends as rejected draft |
-| 9. Set: Draft pending professional approval | Passing draft | Draft with `workflow_status=draft_pending_professional_approval` | Produces a reviewable artifact | Human/professional review remains required |
+### Governance boundary
 
-The example export also contains a fail-state Set node so rejected drafts are explicit rather than discarded silently.
+Type: sticky note.
 
-## Exact LLM prompt
+Purpose: states that the flow creates a draft only and cannot validate sign correctness.
 
-The Python dry-run injects formatted JSON where the n8n expressions appear below. All other wording is identical.
+### Manual Trigger
 
-```text
-You are KinderFlow's family-facing content transformation assistant.
+Type: manual trigger.
 
-Transform only the approved sign content below into a concise family-facing draft.
-The approved sign object is the content source of truth.
-The CV motion summary is technical context only. It does not establish movement
-fidelity, professional sign correctness, linguistic correctness, or developmental benefit.
+Purpose: starts an operator-controlled demonstration. The export is not scheduled or event driven.
 
-Rules:
-1. Return valid JSON only, with exactly the requested schema.
-2. Preserve sign_id and source_id exactly.
-3. Set review_status to "draft_requires_professional_approval".
-4. Set requires_human_review to true.
-5. Do not invent movement details.
-6. If movement_notes is present, copy it verbatim into motion_note. If it is empty,
-   set motion_note exactly to: "Movement instructions are unavailable in the approved
-   input; use an approved reference only after professional review."
-7. Do not claim language acceleration or other unsupported developmental benefit.
-8. Do not diagnose, describe treatment, or replace professional advice.
-9. Do not mention ASL or LSE unless explicitly supplied as approved content.
-10. Use the CV motion summary only for bounded technical context, never as evidence
-    that the sign is correct.
-11. Keep the language clear, practical, and appropriate for families.
-12. Preserve the approved school-home connection.
+### Approved Sign Object
 
-Required output schema:
-{
-  "sign_id": "...",
-  "source_id": "...",
-  "review_status": "draft_requires_professional_approval",
-  "requires_human_review": true,
-  "parent_title": "...",
-  "short_explanation": "...",
-  "when_to_use": ["...", "..."],
-  "practice_tip": "...",
-  "school_home_connection": "...",
-  "motion_note": "...",
-  "boundaries": ["...", "..."]
-}
+Type: Set.
 
-APPROVED SIGN OBJECT:
-{{ JSON.stringify($json.sign, null, 2) }}
+Purpose: supplies the generic approved source object. This object, not the model, is the content source of truth.
 
-CV MOTION SUMMARY:
-{{ JSON.stringify($json.cv_motion_summary, null, 2) }}
-```
+Failure rule: missing or malformed source fields must stop before the model node.
 
-## Schema Check node
+### CV Motion Summary
 
-The pre-LLM Code node must return `schema_check.passed=false` when:
+Type: Code.
 
-- `sign_id`, `sign_name`, `source_id`, or `approved_description` is missing
-- `movement_notes` does not exist as a string
-- `do_not_claim` does not exist as an array
-- `requires_human_review` is not the boolean `true`
-- `cv_motion_summary` is missing
-- the CV summary lacks `motion_representation_status`
+Purpose: adds bounded technical context while preserving the approved source.
 
-An empty `movement_notes` string remains valid and triggers the fixed no-instruction fallback. A missing or non-string field is rejected before the LLM.
+Boundary: the summary can report extraction and motion-representation state. It cannot state that a sign is correct.
 
-## Troubleshooting CV Motion Summary
+### Schema Check
 
-If the CV Motion Summary node returns `Cannot convert undefined or null to object`, the node is not returning a valid `cv_motion_summary` object. Configure it as a Code node, or as a Set/Edit Fields node that returns the expected JSON payload while preserving the incoming approved-sign item.
+Type: Code.
 
-The importable workflow uses a defensive Code node. It treats a missing/non-object input as an empty object, adds the complete `cv_motion_summary`, and lets Schema Check return a structured rejection if the approved sign object is absent.
+Purpose: validates the approved sign and CV summary before generation.
 
-## Quality Gate node
+It must reject when:
 
-The example Code node implements the portable core of the local `quality_gate.py` policy:
+- sign_id is missing;
+- sign_name is missing;
+- source_id is missing;
+- approved_description is missing;
+- movement_notes is not a string;
+- do_not_claim is not an array;
+- requires_human_review is not true;
+- cv_motion_summary is missing; or
+- motion_representation_status is missing.
 
-- valid JSON object
-- all output fields present
-- `requires_human_review=true`
-- exact review status `draft_requires_professional_approval`
-- preserved `sign_id` and `source_id`
-- no banned claim terms
-- exact source movement note, or the fixed fallback
+An empty movement_notes string is valid. It triggers a fixed no-instruction fallback in the draft.
 
-The Python script remains the auditable reference implementation and adds the conservative anatomy/direction-term check outside `motion_note`. If the n8n Code node is changed, rerun the same sample through both implementations and reconcile any difference before demonstration.
+### Schema Valid?
+
+Type: IF.
+
+Purpose: routes a valid object to Family Draft and an invalid object to Rejected draft.
+
+### Family Draft
+
+Type: LangChain chain LLM.
+
+Purpose: transforms only the supplied approved content into the required JSON structure.
+
+Boundary: model or parsing failure must stop the branch. A result remains a draft.
+
+### OpenAI Chat Model
+
+Type: LangChain OpenAI chat-model subnode.
+
+Purpose: provides the optional model to Family Draft after a local credential is selected.
+
+Evidence boundary: the node exists in the export. No final live call is evidenced.
+
+### Quality Gate
+
+Type: Code.
+
+Purpose: checks the structured draft against identifiers, review rules, unsupported claims, and movement-note requirements.
+
+### Pass / Fail
+
+Type: IF.
+
+Purpose: sends a passing draft to the professional-review queue and a failed draft to the rejected state.
+
+### Draft pending professional approval
+
+Type: Set.
+
+Purpose: records workflow_status as draft_pending_professional_approval.
+
+This state is not Approved or Published.
+
+### Rejected draft
+
+Type: Set.
+
+Purpose: preserves a visible fail state rather than discarding an invalid item silently.
+
+## Governed model instruction
+
+The exported instruction requires the model to:
+
+1. transform only the approved sign content;
+2. treat the approved sign object as the source of truth;
+3. treat the CV summary as technical context only;
+4. return only the required JSON object;
+5. preserve sign_id and source_id exactly;
+6. set review_status to draft_requires_professional_approval;
+7. set requires_human_review to true;
+8. avoid invented movement detail;
+9. copy supplied movement_notes exactly into motion_note;
+10. use the fixed missing-instruction sentence when movement_notes is empty;
+11. avoid unsupported developmental, clinical, ASL, or LSE claims;
+12. use clear family language; and
+13. preserve the school-home connection.
+
+The fixed missing-instruction sentence is:
+
+    Movement instructions are unavailable in the approved input; use an approved reference only after professional review.
+
+The required output fields are:
+
+- sign_id;
+- source_id;
+- review_status;
+- requires_human_review;
+- parent_title;
+- short_explanation;
+- when_to_use;
+- practice_tip;
+- school_home_connection;
+- motion_note; and
+- boundaries.
+
+## Quality-gate relationship
+
+The n8n Code node contains the portable core checks:
+
+- valid JSON object;
+- every required field present;
+- requires_human_review is true;
+- exact draft review status;
+- unchanged sign and source IDs;
+- no forbidden claim terms; and
+- exact movement note or fixed fallback.
+
+workflow/quality_gate.py is the auditable local reference implementation. It also applies a conservative check for anatomy or direction language outside motion_note.
+
+If the n8n Code node changes, compare the same sample through the n8n node and Python implementation before presenting the workflow. A difference is an unresolved validation issue.
+
+The local sample gate passed on 4 September 2026 with no failures or warnings.
 
 ## LangSmith boundary
 
-LangSmith traces and evaluates the LLM content-transformation step. The trace can contain the generic approved content, bounded CV summary, governed prompt, and structured LLM response.
+LangSmith observability is represented through a documented evaluation path and dry-run evidence for the optional LLM content step.
+
+The committed dry-run records no network calls and no API keys. It uses dataset kinder_signs_microlearning_v1 and project kinderflow-kinder-signs-workflow. It shows that a future trace could contain:
+
+- the generic approved sign object;
+- the bounded CV summary;
+- the governed prompt;
+- the structured draft;
+- evaluation tags; and
+- gate results.
 
 LangSmith does not evaluate:
 
-- the MP4
-- sign movement correctness
-- Baby Sign correctness
-- Computer Vision quality
-- professional validity
+- the reference MP4;
+- MediaPipe;
+- hand or pose detection;
+- movement fidelity;
+- Baby Sign correctness;
+- professional validity; or
+- publication readiness.
 
-The CV POC separately addresses landmark coverage, missing-frame analysis, motion diagnostics, and human visual inspection.
+No live external trace is committed.
 
-## Import and manual setup
+## Import and validation procedure
 
-The example JSON is a documentation-first, credential-free n8n export using standard nodes and an OpenAI Chat Model sub-node. n8n node versions can vary, so after import:
+When a target n8n version is selected:
 
-1. Open the OpenAI Chat Model node.
-2. Select the existing local `OpenAI account` credential.
-3. Confirm the installed model node supports JSON-object output.
-4. Review expressions and Code-node syntax against the installed n8n version.
-5. Execute with the included generic sample.
-6. Force one banned-claim output and verify the fail branch.
-7. Leave the final node disconnected from publishing systems.
+1. Import workflow/kinder_signs_n8n_workflow.json.
+2. Confirm all 12 nodes load without substitution.
+3. Inspect expressions and Code syntax against that version.
+4. Select an approved local credential only if the optional model path remains in scope.
+5. Confirm the model node supports JSON-object output.
+6. Execute the generic valid sample.
+7. Remove a required source field and confirm the rejected branch.
+8. Force an unsupported claim and confirm the quality-gate failure.
+9. Confirm the passing state is draft_pending_professional_approval.
+10. Confirm no publication system is connected.
+11. Save a non-sensitive execution record if the final adapter contract is exercised.
 
-No credentials, API keys, private media, or personal data are present in the export.
+Do not report runtime execution until the saved record corresponds to the current export and final adapter contract.
 
-## Output state
+## Content Operations adapter
 
-A passing workflow produces:
+The broader contract is content_ops/contracts/n8n_content_operations_contract.json.
 
-```json
-{
-  "workflow_status": "draft_pending_professional_approval",
-  "requires_human_review": true,
-  "automatic_publication": false
-}
-```
+Its review operation identifies:
 
-That state is a queue for professional review, not an approval decision.
+- sign_id;
+- sign_version; and
+- operation prepare_for_review.
 
-## Content-operations adapter contract
+The intended flow is:
 
-The existing family-draft workflow remains the working n8n example. The stable adapter contract for the broader content-operations layer is documented in `content_ops/contracts/n8n_content_operations_contract.json`.
+    receive sign and version
+    → load structured source and manifest
+    → validate schema
+    → inspect technical state
+    → inspect visual readiness
+    → preserve human copy or prepare bounded draft
+    → apply deterministic content gate
+    → optionally evaluate LLM wording
+    → build or reuse review package
+    → READY_FOR_HUMAN_REVIEW or BLOCKED
 
-Input:
+The operation key joins sign_id, sign_version, and operation. Repeating the same operation should reuse or update the same package instead of creating a duplicate version.
 
-```json
-{
-  "sign_id": "more",
-  "sign_version": "v1",
-  "operation": "prepare_for_review"
-}
-```
+The local Python Content Operations module demonstrates deterministic package identity. The n8n export does not prove persistence or execution of this adapter.
 
-Controlled orchestration:
+## GENERATE_CONTENT_PACK adapter
 
-```text
-receive sign/version
-→ load structured source and manifest
-→ validate schema
-→ inspect technical state
-→ inspect visual readiness
-→ preserve approved human copy or prepare constrained draft
-→ deterministic content gate
-→ optional LangSmith evaluation for LLM-assisted wording only
-→ build/reuse review package
-→ READY_FOR_HUMAN_REVIEW or BLOCKED
-```
+The local MVP exposes POST /api/content-packs/generate. Input and output schemas are:
 
-After an explicit recorded human approval, a separate `build_approved_package` operation may build the versioned package. n8n must not set `PUBLISHED` autonomously.
+- content_ops/contracts/content_pack_input.schema.json; and
+- content_ops/contracts/content_pack_output.schema.json.
 
-The operation key is `sign_id:sign_version:operation`. Repeating the same operation must reuse or update the same review package rather than create a duplicate content version. The local Python content-operations harness demonstrates the idempotent package behavior; the imported n8n example does not claim production persistence.
+The local path can:
 
-### Generate Content Pack adapter
+- package approved human copy;
+- return an explicit DRY_RUN for optional LLM wording without credentials;
+- call a configured provider when dependencies and credentials are available;
+- apply deterministic checks;
+- record an isolated local run; and
+- expose local human-review actions.
 
-The Wednesday Content Engine uses one bounded operation: `GENERATE_CONTENT_PACK`. Its input and output contracts are:
+The repository has tests with injected provider behavior, but no committed real external LIVE run. The n8n export has not been executed against the final endpoint contract.
 
-- `content_ops/contracts/content_pack_input.schema.json`
-- `content_ops/contracts/content_pack_output.schema.json`
+Generation method and generation mode describe how a draft was prepared. They do not approve it.
 
-```text
-structured sign + approved source context
-→ optional family-copy drafting
-→ structured JSON
-→ deterministic quality gate
-→ optional LangSmith evaluation of LLM-assisted wording
-→ human review
-→ reviewed Flashcard Studio handoff
-```
+## Data and publication boundary
 
-The local MVP now exposes this operation at `POST /api/content-packs/generate` and stores isolated run evidence under the ignored `mvp/runs/content_packs/` directory. It can run human, live-provider or dry-run modes. The existing importable n8n workflow remains the orchestration reference; it has not been falsely marked as executed against the new endpoint.
+Do not put child, caregiver, school-user, private-media, or identifiable-landmark data into this workflow. The supplied samples are generic.
 
-Manual n8n connection steps:
-
-1. Import `workflow/kinder_signs_n8n_workflow.json` and attach the existing local OpenAI credential.
-2. Replace the sample sign Set node with an input matching `content_pack_input.schema.json`.
-3. Map generation to `GENERATE_CONTENT_PACK`. If n8n runs in a container, use the correct host address rather than assuming container `localhost` reaches this service.
-4. Keep the deterministic Code node after generation and map failure to a rejected review package.
-5. Trace/evaluate only the LLM wording step in LangSmith.
-6. End at a human review package; never connect the pass branch directly to publication.
-7. Run MORE once and save only non-sensitive execution evidence.
-
-`generation_method` records whether copy is `human` or `llm_assisted`. `generation_mode` records `LIVE`, `DRY_RUN` or `NOT_APPLICABLE`. These fields must not be used as publication approval. A deterministic PASS and a LangSmith trace/evaluation can prepare content for review; neither may publish it.
+A passing gate can move a draft to professional review. n8n, the LLM, and LangSmith must not set PUBLISHED autonomously.

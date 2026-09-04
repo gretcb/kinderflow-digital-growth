@@ -1,1000 +1,307 @@
-# KinderFlow — Green AI & Sustainable Technology Audit
+# KinderFlow Green AI Audit
 
-**Project:** KinderFlow — Early Childhood Digital Growth  
-**Use case assessed:** Kinder Signs  
-**Assessment date:** 2 September 2026  
-**Repository baseline:** `661c027 — Build Round 2 KinderFlow MVP and UX`  
-**Assessment approach:** Defend Your Stack / Carbon Story, aligned with Green Software Foundation principles and the Software Carbon Intensity (SCI) methodology
+**Audit date:** 4 September 2026
+**Frozen repository baseline:** 8eb0742, Freeze connected KinderFlow capstone demo
+**Scope:** Current Kinder Signs local MVP and proposed controlled pilot
 
-> This audit evaluates architecture and measurement readiness. KinderFlow does not yet have enough production energy, cloud-region or hardware-utilisation data to claim a measured carbon footprint or a quantified emissions reduction.
+This audit distinguishes architecture choices from measured environmental results. KinderFlow has not measured energy use, carbon emissions, embodied hardware impact, water use, or avoided impact. No environmental-benefit claim is supported.
 
----
+## Executive assessment
 
-# 1. Executive takeaway
+The current design limits unnecessary inference:
 
-## Executive question
+- Computer Vision runs during content preparation, not when a family opens material;
+- a small approved library can use exact sign-ID retrieval rather than RAG;
+- the workflow is fixed rather than agentic;
+- most validation and visual composition are deterministic;
+- the optional language-model step is bounded and is not required for the core product;
+- reviewed content is designed for reuse across groups and nurseries; and
+- Family View uses prepared material rather than live per-view generation.
 
-**Is KinderFlow using AI only where it creates meaningful product value, and is the architecture designed to avoid unnecessary computational cost before scale?**
+These choices are evidence of a resource-conscious design direction. They do not prove lower energy or carbon impact. The repository contains no meter data, provider carbon data, hardware baseline, workload benchmark, or measured reuse benefit.
 
-## Current conclusion
+Three pre-generated Gemini FX videos also exist. Their generation energy, provider region, hardware, retry count, and carbon data are unknown. The current product has no integrated avatar-generation or landmark-to-video pipeline.
 
-**PROCEED — MEASUREMENT REQUIRED BEFORE ENVIRONMENTAL CLAIMS**
+| Question | Evidence state | Finding |
+| --- | --- | --- |
+| Is live AI called when a family opens current content? | Evidence present | No |
+| Does the current app use RAG? | Evidence present | No |
+| Does the current app use autonomous agent loops? | Evidence present | No |
+| Is Computer Vision processing local? | Evidence present | Yes |
+| Is optional LLM use bounded? | Partial evidence | Design and dry-run exist; no live execution record |
+| Is content reused in production? | Measurement gap | Reuse is designed but published production signs equal zero |
+| Are energy and carbon measured? | Measurement gap | No |
+| Is Gemini generation impact known? | Measurement gap | No |
 
-KinderFlow has a useful technology-selection principle:
+## System boundary
 
-> **Not every problem needs Generative AI.**
+The audit includes:
 
-The current architecture uses different technologies for different jobs:
+1. receiving or loading an adult reference MP4;
+2. local video decoding;
+3. MediaPipe pose and hand inference;
+4. OpenCV frame processing;
+5. landmark normalization, plots, previews, and local artifacts;
+6. deterministic SVG candidate creation and review;
+7. optional family-copy drafting and evaluation;
+8. pre-generated Gemini FX demo files;
+9. local nursery and Family View interactions;
+10. storage, network transfer, retries, and rework; and
+11. potential reuse of one approved sign package.
 
-- **Computer Vision / MediaPipe** where movement representation is necessary;
-- **deterministic templates** for Flashcards and Routine Cards;
-- **deterministic quality gates** for predictable validation rules;
-- **optional LLM assistance** only where natural-language transformation may add value;
-- **human review** for approval rather than repeated model calls;
-- **reusable central content** rather than generating new content separately for every school or family.
+The audit does not have measured data for upstream model training, MediaPipe model training, Open Peeps creation, device manufacture, data-centre cooling, employee travel, or end-user device production. These exclusions prevent a full life-cycle claim.
 
-The architecture supports bounded computation and central reuse, but the environmental effect is not yet evidenced.
+## Current workload inventory
 
-However, KinderFlow has **not measured actual energy consumption or carbon emissions** for the current MVP.
+| Workload | Current status | Main resource use | Current evidence | Measurement status |
+| --- | --- | --- | --- | --- |
+| Local MP4 upload | Implemented | Network loopback, storage, video decode | Local service and tests | Bytes known per file; energy unmeasured |
+| Public direct MP4 URL | Implemented local control | External network transfer, temporary storage, video decode | Bounded fetch and tests | Transfer bytes bounded; energy unmeasured |
+| MediaPipe extraction | Implemented | CPU or local acceleration, memory, runtime | Pipeline and WATER run evidence | Coverage measured; power unmeasured |
+| OpenCV processing | Implemented | CPU, memory, file input and output | Pipeline | Power unmeasured |
+| ffmpeg preview conversion | Implemented where available | CPU, storage, encode time | Pipeline | Power unmeasured |
+| Landmark plots and previews | Implemented | CPU and local storage | Run artifacts and POC output | File size may be observed; energy unmeasured |
+| Deterministic SVG composition | Implemented | Small local compute and file storage | 18 draft sign candidates | Energy unmeasured |
+| Exact sign retrieval | Implemented | Small JSON read and browser work | Six-sign data and registry | Energy unmeasured |
+| Optional LLM wording | Code and dry-run evidence | Potential external inference and network | Schema, n8n design, LangSmith dry-run | No live workload or provider data |
+| Story draft | Deterministic prototype | Browser compute | Prototype code | Not current GenAI |
+| Gemini FX output generation | Performed separately before runtime | Unknown provider inference | Three local demo MP4 files | Provider impact unknown |
+| Family View | Local prototype | Browser rendering and local assets | Basic one-sign or session-based preview | No production traffic data |
 
-Therefore the project should not claim:
+## Architecture evidence
 
-- “low-carbon AI”;
-- a specific CO2 reduction;
-- that deterministic processing is a measured percentage more efficient;
-- that the current local runtime is environmentally optimal.
+### Deterministic-first design
 
-The correct current claim is:
+The service delegates stable rules to code:
 
-> **KinderFlow is designed to minimise unnecessary AI computation, and the pilot should establish an energy/carbon baseline before environmental performance is quantified.**
+- file and URL validation;
+- address, redirect, MIME, byte, and time limits;
+- landmark normalization;
+- threshold and fallback routing;
+- schema validation;
+- banned-claim checks;
+- sign-ID retrieval;
+- registry and hash validation; and
+- deterministic SVG composition.
 
----
+This reduces uncontrolled retries and makes each decision inspectable. It may also reduce compute compared with using a generative model for every step. That comparison has not been measured.
 
-# 2. Methodology
+### Local Computer Vision
 
-This audit follows the same logic used in the bootcamp's sustainable-stack exercises:
+MediaPipe and OpenCV run on the local host in the evidenced MVP. The service produces reusable technical artifacts from one adult reference run.
 
-```text
-Understand the stack
-→ identify computational hotspots
-→ challenge whether AI is necessary
-→ reduce unnecessary work
-→ reuse outputs
-→ measure
-→ optimise
-→ only then make environmental claims
-```
+Local processing avoids a required cloud video upload in the current flow. It does not make the run impact-free. Device efficiency, power source, runtime, frame count, decode and encode work, and reprocessing all affect impact.
 
-It is also aligned with the Green Software Foundation's emphasis on reducing impact at source.
+The direct URL route adds an external transfer before local processing. It caps the video at 100 MB and limits total fetch time and redirects, but the repository does not measure network energy or source-host impact.
 
-The Foundation describes three broad ways to reduce software emissions:
+### Exact retrieval instead of RAG
 
-1. use fewer physical resources;
-2. use less energy;
-3. use energy more intelligently.
+The current canonical set has six sign IDs. Exact lookup is sufficient for that bounded library. No embedding store, vector database, semantic retrieval, retrieval evaluation, or RAG inference appears in the current product.
 
----
+RAG should remain out of scope until a larger approved multilingual library creates a retrieval problem that exact IDs and metadata cannot solve. If that point arrives, measure quality gain and added compute before adoption.
 
-# 3. Software Carbon Intensity framework
+### Fixed workflow instead of agentic loops
 
-The Green Software Foundation's Software Carbon Intensity methodology expresses software emissions as a rate per functional unit.
+The current n8n design has explicit steps, branches, quality gates, and review preparation. It is not an autonomous planning agent.
 
-```text
-SCI = (E × I + M) / R
-```
+This fixed structure limits repeated tool calls and makes retries easier to count. Agentic orchestration should remain out of scope unless content volume and exception handling create a measured need.
 
-Where:
+### Bounded optional language model
 
-- **E** = energy consumed by the software system;
-- **I** = carbon intensity of the electricity;
-- **M** = embodied emissions allocated to the hardware used;
-- **R** = functional unit.
+The optional model path transforms approved sign and routine data into concise family wording. The core Computer Vision and static family-material path do not depend on it.
 
-The purpose is not simply to calculate a total.
+Current evidence includes local samples, JSON Schema checks, deterministic quality gates, an importable n8n design, and a LangSmith dry-run with network calls false. There is no live provider call, token count, latency, energy, carbon, or retry record.
 
-It is to measure:
+Before live use:
 
-> **the carbon intensity of delivering one useful unit of software functionality.**
+- test a human-authored and deterministic baseline;
+- use the smallest model that meets approved quality criteria;
+- cap prompt and output size;
+- reject retries that cannot improve a defined failure;
+- cache an approved output by content and prompt version;
+- prevent per-family or per-view regeneration;
+- record provider, model, region, tokens, latency, and errors; and
+- obtain provider environmental data where available.
 
-KinderFlow does not currently have the data required to calculate a defensible SCI score.
+### Reusable content
 
-This audit therefore defines what should be measured during the pilot.
+The product is designed to create a reviewed sign package once and reuse it across groups, family materials, and nurseries. Family access should retrieve the prepared asset without rerunning Computer Vision or an LLM.
 
----
-
-# 4. KinderFlow technology stack — sustainability view
-
-| Capability | Current technology | AI? | Current evidence | Sustainability implication |
-|---|---|---:|---|---|
-| Reference movement processing | MediaPipe / Computer Vision | Yes | Working local MVP | Compute-intensive relative to ordinary UI; should run only when a sign asset is created/reprocessed |
-| Landmark normalization / diagnostics | Python deterministic processing | No / algorithmic | Working | Reuse existing run outputs rather than recompute unnecessarily |
-| Video overlay preparation | OpenCV + ffmpeg | No | Working local MVP | Additional CPU work; should be generated once per required review artifact |
-| Family/content wording | Human or LLM-assisted | Optional AI | DRY_RUN evidenced; provider-path tests exist; LIVE external execution not evidenced | Model call should be optional and bounded |
-| Quality gates | Deterministic Python/rules | No | Working | Appropriate for repeatable checks; no reason to replace with LLM judgment |
-| Flashcard Studio | HTML/CSS/JS deterministic template | No | Working internal builder | Reusable rendering avoids per-card generative image calls |
-| PDF output | Browser print | No | Browser Print / Save as PDF path implemented; final saved-PDF visual QA pending | Uses existing rendered card; no separate server render pipeline |
-| School assignment | Standard application logic | No | Prototype | No AI required |
-| Family display | Standard application logic | No | Prototype | No AI required |
-| LangSmith | Observability for LLM step | Supporting service | DRY_RUN evidenced; LIVE external trace/evaluation not evidenced | Only relevant when LLM assistance is used |
-| Avatar/video generation | Future | Potentially high-compute AI | Not implemented | Must be justified and measured before adoption |
-| Story generation | GenAI concept/prototype | Yes | Illustrative | Should be generated/reviewed centrally and reused, not generated per family |
-| Song generation | Future | Potential AI | Concept only | No current environmental claim |
-
----
-
-# 5. The strongest Green AI decision already made
-
-## Do not use GenAI for deterministic tasks
-
-Flashcard Studio is intentionally template-based.
-
-The system already knows:
-
-- sign;
-- word;
-- language;
-- card type;
-- approved routine/context.
-
-A generative model is not required to decide the layout each time.
-
-The controlled flow is:
-
-```text
-Reviewed sign
-→ deterministic template
-→ live preview
-→ local approval
-→ print / PDF
-```
-
-This is better architecture for several reasons:
-
-- predictable output;
-- easier testing;
-- lower vendor dependency;
-- no hallucination risk in layout;
-- easier accessibility control;
-- easier reuse;
-- less unnecessary AI computation.
-
-### Environmental claim boundary
-
-It is reasonable to say this **avoids unnecessary model calls**.
-
-It is **not yet reasonable** to claim a quantified carbon saving without measurement.
-
----
-
-# 6. Computer Vision — justified AI use
-
-KinderFlow uses Computer Vision where the information being processed is genuinely visual and temporal.
-
-The question is:
-
-> Can validated reference movement be represented in structured form?
-
-MediaPipe therefore has a clear role:
-
-```text
-reference video
-→ pose / hand landmarks
-→ movement representation
-→ human review
-```
-
-This cannot be replaced by a simple text template without losing the core movement information.
-
-## Sustainability principle
-
-Use Computer Vision:
-
-- during central sign production;
-- when a new/changed reference requires processing;
-- when evidence must be regenerated.
-
-Do **not** run Computer Vision:
-
-- every time a family views a sign;
-- every time a school assigns a sign;
-- for every Flashcard render;
-- continuously in the background;
-- on child video in the current product.
-
-This creates a potentially important scaling property:
-
-> **AI processing occurs during asset production; approved assets can then be reused many times.**
-
-The environmental benefit of this reuse should be measured during pilot rather than assumed.
-
----
-
-# 7. LLM use — bounded by design
-
-The Content Engine supports:
-
-- HUMAN;
-- LLM_ASSISTED.
-
-It also distinguishes:
-
-- LIVE;
-- DRY_RUN;
-- NOT_APPLICABLE.
-
-This is useful environmentally as well as operationally.
-
-## Current principle
-
-Do not call an LLM simply because the product contains an AI capability.
-
-A model call is justified only when it adds useful language-generation capability.
-
----
-
-## Current examples
-
-### Appropriate deterministic work
-
-- ID validation;
-- required-field validation;
-- restricted-claim detection;
-- schema checking;
-- Flashcard layout;
-- publication-state rules.
-
-### Potentially appropriate LLM work
-
-- transforming approved structured context into concise family-facing wording;
-- future original stories.
-
----
-
-## Recommended pilot rule
-
-Before adding an LLM call, ask:
-
-1. Can a stored human version solve the task?
-2. Can a deterministic template solve the task?
-3. Does generation materially improve user value?
-4. Will the output be reused?
-5. Is the selected model appropriately sized for the task?
-6. Can the result be cached/versioned after human review?
-
-If the first or second answer is yes, GenAI may not be necessary.
-
----
-
-# 8. Central generation and reuse
-
-One of KinderFlow's most important scale assumptions is central content reuse.
-
-Potential flow:
-
-```text
-Create/review MORE once
-→ approved sign asset
-→ approved family copy
-→ Flashcard
-→ Routine Card
-→ future Story
-→ multiple schools
-→ multiple groups
-→ multiple families
-```
-
-The alternative would be:
-
-```text
-new AI generation for every user/request
-```
-
-KinderFlow should avoid the second model unless personalisation is proven to create enough value to justify the additional complexity and compute.
-
-## Pilot metric
-
-Track:
-
-```text
-Number of family/school uses
-÷
-Number of AI production runs
-```
-
-A higher reuse ratio is directionally desirable.
-
----
-
-# 9. Current computational hotspots
-
-## 9.1 MediaPipe processing
-
-Likely current hotspot in the local MVP because it performs frame-by-frame processing.
-
-Actual energy consumption:
-
-**NOT MEASURED**
-
----
-
-## 9.2 Video transcoding
-
-OpenCV creates the movement overlay and ffmpeg converts it to a browser-compatible H.264 representation.
-
-This is necessary for the current review experience.
-
-Actual energy consumption:
-
-**NOT MEASURED**
-
----
-
-## 9.3 Live LLM inference
-
-If enabled, external model inference will add computation outside KinderFlow's local runtime.
-
-Actual energy/carbon data:
-
-**NOT AVAILABLE IN THE CURRENT MVP EVIDENCE**
-
----
-
-## 9.4 LangSmith observability
-
-Tracing creates:
-
-- network transfer;
-- processing;
-- stored trace data.
-
-It should therefore be used for a clear governance/evaluation purpose rather than indiscriminate logging.
-
-Actual incremental impact:
-
-**NOT MEASURED**
-
----
-
-## 9.5 Browser/UI
-
-Static HTML/CSS/JS and deterministic card rendering are unlikely to dominate the AI workload, but no measured comparison has been performed.
-
----
-
-# 10. Future high-compute risk: generative video/avatar production
-
-Production-ready avatar/video generation is **not part of the current MVP**.
-
-This matters environmentally.
-
-Generative video can involve substantially more computation than:
-
-- static templates;
-- standard image assets;
-- deterministic animation;
-- lightweight rendering.
-
-KinderFlow should not select generative video simply because it appears more advanced.
-
-## Decision gate
-
-Before adding a generative-video model, compare:
-
-### Option A
-
-Deterministic / rigged character animation using reviewed movement data.
-
-### Option B
-
-Generative-video production.
-
-Evaluate:
-
-- movement fidelity;
-- visual quality;
-- review burden;
-- inference cost;
-- latency;
-- reproducibility;
-- energy/carbon evidence;
-- rights/governance;
-- ability to reuse the final asset.
-
-### Rule
-
-> Choose the simplest technology that reliably preserves the validated movement and meets the product requirement.
-
----
-
-# 11. Avoid / Shift / Improve strategy
-
-## A. AVOID unnecessary computation
-
-Current or recommended controls:
-
-- do not process child video;
-- do not run CV during family consumption;
-- do not generate every Flashcard with AI;
-- do not regenerate approved copy unless content changes;
-- do not generate personalised content by default;
-- do not call LangSmith when the workflow is NOT_APPLICABLE;
-- do not rerun successful CV jobs only to reproduce already stored evidence;
-- do not use generative video unless it solves a validated requirement.
-
----
-
-## B. SHIFT computation intelligently
-
-Once a hosting architecture is selected:
-
-- review cloud region carbon data;
-- schedule non-urgent batch content processing when appropriate;
-- avoid keeping oversized compute continuously provisioned for infrequent content-production jobs;
-- consider batch/queue architecture for non-real-time production workloads.
-
-The current local MVP does not provide enough evidence to choose a production region or hosting model.
-
----
-
-## C. IMPROVE efficiency
-
-Potential actions:
-
-- right-size input video resolution where fidelity allows;
-- avoid duplicate video transcodes;
-- reuse normalized landmarks and generated overlays;
-- cache reviewed content assets;
-- select an appropriately sized language model for bounded copy tasks;
-- keep prompts/context concise and structured;
-- prevent retries caused by malformed output through schemas;
-- monitor failed/repeated AI calls;
-- version outputs so unchanged content is reused.
-
-Any technical optimisation that might reduce movement fidelity must be tested before adoption.
-
----
-
-# 12. Reliability is also a sustainability issue
-
-Failed computation creates no product value.
-
-Examples:
-
-```text
-invalid video
-→ processing attempt
-→ failure
-→ repeat
-```
-
-or:
-
-```text
-poorly constrained LLM prompt
-→ bad output
-→ retry
-→ another bad output
-```
-
-KinderFlow already reduces this risk through:
-
-- file validation;
-- controlled capture guidance;
-- schema checks;
-- quality gates;
-- explicit failure states;
-- deterministic fallback/human content.
-
-## Green AI implication
-
-Improving first-pass success can reduce wasted computation.
-
-The actual saving has not yet been measured.
-
----
-
-# 13. Model-selection principle
-
-KinderFlow should not default to the largest available model.
-
-For each AI task:
-
-```text
-Task requirement
-→ quality threshold
-→ smallest model meeting the threshold
-→ measured cost / latency / energy
-→ human-review outcome
-```
-
-## Pilot comparison
-
-For bounded family copy, compare candidate models using:
-
-- content quality;
-- deterministic-gate pass rate;
-- reviewer-edit rate;
-- latency;
-- financial cost;
-- available energy/carbon evidence.
-
-A larger model is justified only if the additional quality creates enough value.
-
----
-
-# 14. Environmental measurement boundary
-
-KinderFlow should define a measurement boundary before calculating environmental impact.
-
-## Include where practical
-
-### Local / server computation
-
-- MediaPipe;
-- Python processing;
-- OpenCV;
-- ffmpeg;
-- application backend.
-
-### AI providers
-
-- LLM inference where provider data allow attribution.
-
-### Supporting services
-
-- LangSmith;
-- storage;
-- networking;
-- hosted database/authentication once deployed.
-
-### Client layer
-
-- browser rendering;
-- content delivery where material.
-
-### Hardware allocation
-
-Include embodied emissions when enough deployment/hardware information exists to apply SCI credibly.
-
----
-
-# 15. Recommended functional units
-
-A single overall number is not enough to understand KinderFlow.
-
-Measure separate workflows.
-
-## Functional unit 1 — Create a Sign
-
-```text
-1 adult reference video processed
-→ technical movement evidence produced
-```
-
-Potential metric:
-
-**gCO2e / completed sign-processing run**
-
----
-
-## Functional unit 2 — Content Pack
-
-```text
-1 reviewed content candidate generated
-```
-
-If LIVE external execution is enabled later, compare:
-
-- HUMAN; and
-- LLM_ASSISTED LIVE.
-
-Potential metric:
-
-**gCO2e / accepted content candidate**
-
-Accepted is preferable to “per model call” because failed/rejected outputs create less business value.
-
----
-
-## Functional unit 3 — Approved reusable sign asset
-
-```text
-production + review
-→ reusable approved content package
-```
-
-Potential metric:
-
-**gCO2e / approved reusable sign package**
-
----
-
-## Functional unit 4 — School/family delivery
-
-Potential later metric:
-
-**gCO2e / 1,000 approved content views or deliveries**
-
----
-
-## Functional unit 5 — School service
-
-For production:
-
-**gCO2e / active school / month**
-
-This can help management compare architecture changes over time.
-
----
-
-# 16. Pilot measurement plan
-
-## Baseline first
-
-Do not begin with a sustainability target that has no measured baseline.
-
-During pilot, record:
-
-| Workflow | Measure |
-|---|---|
-| MediaPipe run | duration, CPU/energy where available, success state |
-| ffmpeg conversion | duration, energy where available |
-| LLM call | provider/model, tokens, latency, result status |
-| Content review | accepted/rejected/retry |
-| LangSmith | traces created / retention |
-| Asset reuse | schools/families served per approved asset |
-| Infrastructure | region, instance/resource type, utilisation |
-| Storage | raw/intermediate/final asset volume |
-
----
-
-# 17. Proposed Green AI KPIs
-
-| KPI | Why it matters |
-|---|---|
-| CV runs per approved sign | Reprocessing efficiency |
-| Failed CV runs / total runs | Wasted computation |
-| LLM calls per approved content asset | Generation efficiency |
-| LLM retry rate | Wasted inference |
-| Human-source vs LLM-assisted use | Shows whether AI is actually necessary |
-| Reviewed assets reused across schools | Amortisation of production compute |
-| Model tokens per accepted content asset | LLM efficiency |
-| Median processing duration | Operational proxy |
-| Storage per approved asset | Lifecycle efficiency |
-| % Flashcards created without GenAI | Demonstrates deterministic-first architecture |
-| gCO2e per functional unit | Environmental outcome once measurable |
-
----
-
-# 18. Carbon Story — current state
-
-## What KinderFlow can demonstrate now
-
-### 1. Challenge the need for AI
-
-KinderFlow does not treat GenAI as the default solution.
-
-### 2. Use AI where modality requires it
-
-Computer Vision addresses movement representation.
-
-### 3. Use deterministic tools for predictable work
-
-Flashcards and rule-based quality gates are deterministic.
-
-### 4. Produce centrally and reuse
-
-The architecture is designed around reusable approved content.
-
-### 5. Keep AI out of high-frequency end-user interactions
-
-The current school/family experience does not trigger CV/LLM inference on every interaction.
-
----
-
-## What KinderFlow cannot demonstrate yet
-
-- measured kWh;
-- measured gCO2e;
-- embodied-carbon allocation;
-- production cloud-region intensity;
-- model-provider inference emissions;
-- quantified emissions avoided through templates/reuse;
-- lifecycle water impact.
-
-These should remain explicit measurement gaps.
-
----
-
-# 19. Greenwashing / unsupported-claim audit
-
-## Do not say
-
-> KinderFlow is carbon neutral.
-
-No evidence.
-
----
-
-## Do not say
-
-> KinderFlow's AI is sustainable.
-
-Too broad and unmeasured.
-
----
-
-## Do not say
-
-> Deterministic Flashcards reduce emissions by X%.
-
-No measurement.
-
----
-
-## Do not say
-
-> Our local CV processing is greener than cloud AI.
-
-Not demonstrated.
-
----
-
-## Safe statement
-
-> KinderFlow uses a deterministic-first architecture and limits AI computation to tasks where it adds functional value. Environmental performance will be baselined during pilot before quantitative sustainability claims are made.
-
----
-
-# 20. Sustainable-stack decision matrix
-
-| Product need | Candidate approach | Decision | Reason |
-|---|---|---|---|
-| Capture movement | Text/manual description only | Reject as core method | Does not preserve structured visual movement evidence |
-| Capture movement | Computer Vision | **Use** | Modality matches problem |
-| Flashcard layout | Generative image/layout model | Avoid | No validated need |
-| Flashcard layout | Deterministic template | **Use** | Predictable and reusable |
-| Quality checks | LLM judge for every rule | Avoid where possible | Deterministic rules already cover known constraints |
-| Quality checks | Deterministic checks + human review | **Use** | Controlled, testable |
-| Family wording | Stored human text | **Use when sufficient** | No inference required |
-| Family wording | Bounded LLM assistance | **Use selectively** | Adds language-generation value |
-| School assignment | AI recommendation engine | Reject current scope | No need; increases risk/compute |
-| School assignment | Educator selection | **Use** | Human-controlled and simple |
-| Family viewing | Real-time AI generation | Reject current scope | Reusable approved material is sufficient |
-| Final sign visual | Generative video | **TBD** | Must beat deterministic/rigged alternatives on fidelity, cost and sustainability |
-
----
-
-# 21. Green AI risk matrix
-
-| Risk | Likelihood | Impact | Current control | Remaining action |
-|---|---:|---:|---|---|
-| GenAI added to tasks that do not require it | 2 | 4 | Deterministic-first principle | Architecture review |
-| Repeated CV processing wastes compute | 3 | 3 | Isolated stored runs | Cache/reuse policy |
-| LLM retries caused by weak outputs | 2 | 3 | Schemas/quality gates | Measure retry rate |
-| Largest model used by default | 3 | 3 | Configurable model | Benchmark right-sized options |
-| Generative video adopted without business need | 3 | 5 | Outside MVP | Explicit build/buy/measure gate |
-| Excess trace/storage retention | 2 | 3 | LangSmith optional | Retention policy |
-| Sustainability claims made without measurements | 3 | 4 | Current docs are conservative | Claims review |
-| Production infrastructure overprovisioned | 3 | 3 | Not yet deployed | Right-size pilot infrastructure |
-| Cloud carbon intensity ignored | 3 | 2 | No region decision yet | Include sustainability in hosting decision |
-| Fidelity sacrificed for efficiency | 2 | 5 | Human review | Quality threshold remains primary |
-
----
-
-# 22. Green AI assessment matrix
-
-| Area | Status | Evidence | Gap | Action |
-|---|---|---|---|---|
-| Challenge whether AI is necessary | **Architecture evidence present** | Deterministic-first architecture | Must preserve as scope grows | Architecture gate |
-| AI/task fit | **Partial evidence** | CV used for movement | Broader sign evidence needed | Pilot validation |
-| Reuse / caching | **Architecture supports reuse** | Central reusable-content model | No current sign is published; production cache policy not formal | Define version/reuse rules |
-| Model right-sizing | **Measurement gap** | Model configurable | No comparative benchmark | Pilot test |
-| Failed-work reduction | **Partial evidence** | Validation/error handling | No measured waste baseline | Measure |
-| Energy measurement | **Measurement gap** | None | kWh not measured | Baseline pilot |
-| Carbon measurement | **Measurement gap** | None | SCI inputs missing | Measure once infrastructure known |
-| Embodied emissions | **Evidence not yet available** | No production hardware allocation | Deployment unknown | Add if SCI implemented |
-| Carbon-aware hosting | **TBD** | No production region | Region/provider undecided | Include in deployment decision |
-| Environmental claims governance | **Pilot control required** | No current quantitative claim | Formal claims review absent | Add sign-off |
-| High-compute future features | **Pilot control required** | Gen video not implemented | Future pressure to add it | Require comparison gate |
-
----
-
-# 23. Pilot Green AI gates
-
-## Before pilot
-
-1. Define the workloads to measure.
-2. Record model/provider/version for all live AI calls.
-3. Define cache/version/reuse rules.
-4. Avoid personalisation that requires unnecessary per-user inference.
-5. Define trace/log retention.
-6. Select right-sized infrastructure.
-7. Define one or more functional units.
-8. Do not make quantitative sustainability claims without measurements.
-
----
-
-## During pilot
+This is an architecture hypothesis, not a realised saving. The canonical registry records zero school-available signs, and no real nursery traffic or reuse count exists.
 
 Measure:
 
-- CV run count;
-- failed/repeated CV runs;
-- LLM call count;
-- LLM retry count;
-- tokens;
-- latency;
-- accepted outputs;
-- asset reuse;
-- storage;
-- infrastructure utilisation;
-- energy/carbon where tools/provider data allow.
+- approved assets created;
+- groups, family accounts, and nurseries served per asset;
+- content views per approved generation;
+- rework and withdrawal;
+- storage copies; and
+- compute per approved and actually used asset.
 
----
+Unused or repeatedly rejected assets can erase the expected reuse advantage.
 
-## After pilot
+## Gemini FX boundary
 
-Decide:
+The exact current mapping is:
 
-### GO
+| Sign | File | Generation relationship |
+| --- | --- | --- |
+| MORE | mas.mp4 | Prepared separately |
+| HELP | ayuda.mp4 | Prepared separately |
+| MILK | leche.mp4 | Prepared separately |
+| EAT | None | Static flow only |
+| SLEEP | None | Static flow only |
+| WATER | None | Static flow only |
 
-If environmental intensity is measured, manageable and the architecture remains efficient.
+These videos were prepared separately as illustrative motion previews. They are not generated automatically from the current MediaPipe run or its landmarks.
 
-### ITERATE
+The repository does not record:
 
-If excessive computation comes from:
+- model version;
+- provider region;
+- input and output token or media units;
+- generation count;
+- failed attempts;
+- compute hardware;
+- electricity use;
+- carbon intensity;
+- storage before repository capture; or
+- provider retention.
 
-- retries;
-- repeated processing;
-- overprovisioning;
-- oversized models;
-- unnecessary generation.
+Do not describe the files as an efficient animation pipeline. If the pilot retains them, request available provider data, record every generation attempt, and compare the result with reviewed static or human-produced alternatives. Rights and sign-fidelity gates also apply.
 
-### STOP / REDESIGN FEATURE
+## Data, storage, and network
 
-If a high-compute feature provides insufficient user/business value relative to its cost, risk and environmental burden.
+### Current storage
 
----
+The workflow can create:
 
-# 24. Relationship with ROI
+- copied or downloaded reference video;
+- raw landmarks;
+- normalized landmarks;
+- diagnostic summaries;
+- plots;
+- reference and overlay previews;
+- visual candidates; and
+- content package files.
 
-Green AI and financial efficiency are partially aligned.
+Ignored local run directories are not automatically deleted. Duplicate runs and previews can increase storage without improving an approved asset.
 
-Examples:
+### Storage controls
 
-- fewer unnecessary model calls → lower variable cost;
-- asset reuse → lower repeated production cost;
-- right-sized models → lower inference cost;
-- fewer failed runs → less staff time and compute;
-- deterministic templates → predictable operating cost.
+- delete raw and temporary files on an approved retention schedule;
+- retain only evidence required for review, accountability, or correction;
+- avoid duplicate renditions unless a client or browser requirement justifies them;
+- record output size by run and approved asset;
+- expire failed and abandoned runs quickly;
+- deduplicate approved assets by content hash and version; and
+- measure backup copies and deletion lag.
 
-However:
+### Network controls
 
-> **financial cost is not a reliable substitute for carbon measurement.**
+- prefer a registered local source when it meets the purpose;
+- avoid repeated direct-URL downloads of the same authorised asset;
+- cache only when rights, privacy, and freshness permit;
+- prevent production requests to unapproved hosts;
+- keep model prompts free of media and personal data;
+- serve one approved family asset rather than regenerate it; and
+- measure ingress and egress bytes.
 
-A cheap service is not necessarily low-carbon.
+These controls must not weaken privacy, security, or correction requirements to save compute.
 
-The ROI model and Green AI audit should therefore use some shared operational metrics but keep financial and environmental conclusions separate.
+## Measurement plan
 
----
+### Functional units
 
-# 25. Relationship with Responsible AI
+Measure at least four units separately:
 
-The Green AI principle reinforces Responsible AI proportionality:
+1. one adult reference processed into a reviewable technical run;
+2. one sign package that receives qualified approval;
+3. one bounded family-copy draft that receives approval; and
+4. one hundred authorised views of an approved family asset.
 
-> Use AI only when the expected benefit justifies the additional complexity and resource use.
+A run that fails review still consumes resources and belongs in the denominator.
 
-For KinderFlow this is particularly relevant because the product serves early childhood.
+### Minimum telemetry
 
-Technology should support the school-family routine, not add AI for novelty.
+| Measure | Unit | Collection point |
+| --- | --- | --- |
+| Runtime | Seconds per stage and per run | Local service |
+| Device utilisation | Average and peak CPU, GPU if used, and memory | Host monitor |
+| Electricity | kWh per run and per approved asset | External power meter or supported device telemetry |
+| Reference transfer | MB ingress per run | Direct URL or upload service |
+| Artifact storage | MB retained per run and approved asset | Run and asset stores |
+| Model use | Provider, model, region, input and output units, calls, retries | Optional model wrapper |
+| Gemini generation | Attempts, duration, output size, provider metadata | Generation record if repeated |
+| Review and rework | Attempts, rejected candidates, reruns, reviewer minutes | Content operations log |
+| Reuse | Groups, nurseries, accounts, and views per approved asset | Delivery analytics |
+| Carbon | gCO2e per functional unit | kWh and documented regional or provider factor |
 
----
+Report both energy and carbon. A low-energy run in a high-carbon region and a higher-energy run in a lower-carbon region are not equivalent.
 
-# 26. Slide-ready summary
+### Baseline comparison
 
-| Question | Answer |
-|---|---|
-| Does every KinderFlow feature use GenAI? | **No** |
-| Why use CV? | Movement is visual/temporal and needs structured representation |
-| Why not GenAI for Flashcards? | Deterministic templates solve the task reliably |
-| Is the family experience real-time AI? | **No** |
-| Can content be reused after publication? | **The architecture supports reuse; no current sign has reached published library status** |
-| Are actual carbon emissions measured? | **Not yet** |
-| What is the pilot sustainability goal? | Establish a baseline and reduce unnecessary computation |
-| Main future sustainability risk | High-compute generative video without validated need |
-| Current Green AI decision | **PROCEED — MEASURE BEFORE CLAIMING** |
+Compare:
 
----
+- current deterministic family copy with optional model-assisted copy;
+- one approved central asset with repeated local preparation;
+- tracked-pose route with avoidable reruns;
+- static visual with Gemini motion preview where both meet the user need; and
+- current file retention with the proposed deletion schedule.
 
-# 27. Bottom line
+Use the same quality threshold for each comparison. A cheaper or lower-energy output that fails sign review is not a valid substitute.
 
-## Assessment
+## Claims policy
 
-**PROCEED — MEASUREMENT REQUIRED BEFORE ENVIRONMENTAL CLAIMS**
+Allowed current wording:
 
-KinderFlow has made a strong architectural choice by separating:
+- Kinder Signs uses a deterministic-first, local content-preparation architecture.
+- The small sign library uses exact retrieval and does not need RAG.
+- The bounded workflow does not use agentic loops.
+- Family View does not trigger live Computer Vision or LLM inference.
+- Reviewed content is designed for reuse.
+- Energy and carbon are not yet measured.
 
-```text
-AI that is functionally necessary
-from
-tasks that can be solved deterministically
-```
+Unsupported wording:
 
-The current design avoids several common sources of unnecessary AI computation:
+- Kinder Signs reduces carbon emissions.
+- Local processing is greener than cloud processing.
+- Deterministic output is proven to use less energy.
+- Reuse has already reduced cost or emissions.
+- The Gemini previews are environmentally efficient.
+- KinderFlow is carbon neutral or sustainable.
 
-- no child-video inference;
-- no AI recommendation engine for school assignments;
-- no generative Flashcard layout;
-- no real-time LLM call whenever a family opens content;
-- no automatic repeated generation after human approval;
-- no production generative-video dependency.
+Every future environmental claim needs a defined baseline, functional unit, measurement period, calculation method, uncertainty, and reviewer.
 
-The strongest sustainability opportunity is the same one that supports KinderFlow's business model:
+## Pilot gates and decision rules
 
-> **Create reviewed content centrally, then reuse it.**
+| Client fact | Action | Target | Owner | Decision rule |
+| --- | --- | --- | --- | --- |
+| No energy baseline exists | Instrument the agreed pilot hardware | Energy captured for at least 90 percent of technical runs | Engineering lead | Make no efficiency claim below coverage target |
+| Published production signs equal zero | Measure creation, approval, use, and rework together | Compute reported per approved and used sign | Content Operations | Iterate if reruns or unused assets dominate |
+| Live model use is not evidenced | Compare human, deterministic, and candidate model paths | Select only a path that meets quality and resource thresholds | Product Owner | Keep model optional if gain is not material |
+| Gemini impact is unknown | Obtain provider data and log any new generation | Every generation attempt and output recorded | Product Owner | Do not make an environmental claim without data |
+| Direct URL adds network work | Log bytes and avoid duplicate retrieval | Duplicate authorised downloads below an agreed pilot limit | Engineering lead | Change intake if transfer waste is material |
+| Storage has no automated expiry | Apply GDPR-aligned retention and verify deletion | One hundred percent of test records expire as designed | Engineering and privacy owner | No pilot if deletion cannot be shown |
+| Reuse is only a hypothesis | Measure approved asset use across groups and nurseries | Target fixed before pilot | Pilot lead | Continue only if reuse improves cost and resource use without quality loss |
+| Carbon factors are undecided | Record provider and host regions and calculation source | One documented method per reporting period | Sustainability owner | Report energy only if carbon evidence is not credible |
 
-The next step is measurement.
+## Evidence index
 
-KinderFlow should baseline energy/carbon per useful functional unit during the pilot and use that evidence to decide:
+- [Local Computer Vision pipeline](../../mvp/pipeline.py)
+- [Local service](../../mvp/app.py)
+- [Current MVP tests](../../mvp/tests/)
+- [WATER technical POC evidence](../../poc/output/)
+- [Canonical asset registry](../../assets/registry/sign_asset_registry.json)
+- [Asset inventory](../../assets/registry/sign_asset_inventory.md)
+- [Visual sign packages](../../prototype/data/visual_sign_packages.json)
+- [LangSmith dry-run](../../workflow/langsmith_dry_run_summary.json)
+- [n8n workflow](../../workflow/kinder_signs_n8n_workflow.json)
+- [Family View prototype](../../prototype/family.html)
+- [GDPR retention and data-flow record](../../compliance/gdpr_documentation.md)
 
-- whether workloads can be reduced;
-- whether models can be right-sized;
-- whether processing can be reused;
-- whether future high-compute features create enough value.
+## Audit conclusion
 
-Until then, the project's environmental strength should be presented as **sustainable architecture and measurement readiness**, not as a quantified carbon-performance claim.
+Architecture evidence is present. Environmental measurement is not.
 
----
-
-# 28. Official sources
-
-1. Green Software Foundation — Software Carbon Intensity (SCI)  
-   https://greensoftware.foundation/standards/sci/
-
-2. Green Software Foundation — Software standards  
-   https://greensoftware.foundation/standards/
-
-3. Green Software Foundation — What is Green Software?  
-   https://greensoftware.foundation/articles/what-is-green-software/
-
-4. Green Software Foundation — Software Energy Intensity (SEI)  
-   https://greensoftware.foundation/standards/sei/
-
-5. Green Software Foundation — SCI for AI Specification  
-   https://greensoftware.foundation/articles/sci-ai-specification-ratified-standard-for-measuring-ai-emissions-across-the/
-
-6. Green Software Foundation — Real Time Cloud standard  
-   https://greensoftware.foundation/standards/rtc/
-
----
-
-# 29. Repository evidence used
-
-Assessment aligned to:
-
-`661c027 — Build Round 2 KinderFlow MVP and UX`
-
-Relevant evidence includes:
-
-- `mvp/mvp_documentation.md`
-- `mvp/app.py`
-- `content_ops/`
-- `workflow/kinder_signs_n8n_workflow.md`
-- `prototype/README.md`
-- `prototype/create-sign.*`
-- `prototype/flashcards.*`
-
-Key repository facts reflected in this audit:
-
-- MediaPipe processing is local in the current MVP;
-- CV runs produce reusable stored run artifacts;
-- ffmpeg is used to create the browser-facing overlay;
-- the Content Engine supports human and optional LLM-assisted modes;
-- DRY_RUN is evidenced and LIVE external execution is not yet evidenced;
-- quality gates are deterministic;
-- Flashcards are template-based;
-- browser Print / Save as PDF is implemented without a generative/export service; final saved-PDF visual QA remains pending;
-- school/family use does not require live CV processing;
-- production-ready avatar/generative video is not implemented;
-- production infrastructure and environmental telemetry are not yet defined.
+The pilot should preserve exact retrieval, deterministic controls, central reuse, and no live per-view inference. It should also measure the full path from input transfer through review, rework, storage, approved reuse, and deletion. Until those measurements exist, KinderFlow should make no environmental-benefit claim.

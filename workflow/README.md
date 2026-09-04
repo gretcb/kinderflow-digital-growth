@@ -1,125 +1,147 @@
 # Kinder Signs governed workflow
 
-This folder contains the smallest credible workflow layer for transforming approved Kinder Signs content into a family-facing draft:
+## Purpose
 
-```text
-approved sign content + CV motion summary
-→ LLM-generated family draft
-→ deterministic quality checks
-→ optional LangSmith trace/evaluation for the LLM step
-→ draft pending professional approval
-```
+This folder documents a bounded content-transformation path:
 
-The LLM path can transform approved content into a draft. The quality gate checks unsupported claims, traceability, review status, and movement-note adherence. The repository evidences a LangSmith dry-run only; LIVE external execution and a LIVE trace/evaluation are not yet evidenced.
+    approved sign content and CV summary
+    → optional LLM family draft
+    → deterministic quality checks
+    → optional LangSmith trace for the wording step
+    → draft pending professional approval
 
-Nothing in this workflow validates sign correctness or publishes content automatically.
+The workflow cannot certify movement or publish content.
+
+## Current evidence status
+
+The repository contains an importable n8n orchestration design and its exact export. Live execution of the final adapter contract is not claimed.
+
+The exact export is workflow/kinder_signs_n8n_workflow.json. It is valid JSON, has active set to false, and contains 12 nodes. Its name is Kinder Signs: Governed Family Draft (Example).
+
+LangSmith observability is represented through a documented evaluation path and dry-run evidence for the optional LLM content step. No live external model output or live LangSmith trace is committed.
 
 ## Files
 
-| File | Purpose |
-|---|---|
-| `sample_sign_input.json` | Generic approved-content example |
-| `sample_cv_motion_summary.json` | Technical CV context with bounded interpretation |
-| `sample_llm_output.json` | Example draft matching the required schema |
-| `quality_gate.py` | Dependency-free deterministic validation |
-| `langsmith_eval.py` | Keyless dry-run and optional traced LLM run |
-| `langsmith_dry_run_summary.json` | Reproducible offline trace plan and gate result |
-| `evaluation_cases.json` | Five governed evaluation cases |
-| `langsmith_evaluation_plan.md` | Dataset and evaluation design |
-| `kinder_signs_n8n_workflow.md` | Node-by-node workflow specification and exact prompt |
-| `kinder_signs_n8n_workflow_example.json` | Credential-free illustrative n8n export |
+- sample_sign_input.json: generic approved-content example;
+- sample_cv_motion_summary.json: bounded technical context;
+- sample_llm_output.json: example structured draft;
+- quality_gate.py: dependency-free deterministic validation;
+- langsmith_eval.py: keyless dry-run and optional live-provider script;
+- langsmith_dry_run_summary.json: committed offline trace plan and passing gate result;
+- evaluation_cases.json: five governed evaluation cases;
+- langsmith_evaluation_plan.md: dataset and evaluation design;
+- kinder_signs_n8n_workflow.md: node, prompt, and adapter specification; and
+- kinder_signs_n8n_workflow.json: exact inactive n8n export.
 
-## Run the deterministic gate
+## Deterministic gate
 
-From the repository root:
+The gate compares the example draft with the approved source. It checks required fields, identifier preservation, review state, human-review requirement, unsupported claims, and movement-note adherence.
 
-```bash
-python workflow/quality_gate.py \
-  --input workflow/sample_llm_output.json \
-  --source workflow/sample_sign_input.json
-```
+Verified on 4 September 2026:
 
-A passing result exits with status 0:
+- passed: true;
+- failed checks: none; and
+- warnings: none.
 
-```json
-{
-  "passed": true,
-  "failed_checks": [],
-  "warnings": []
-}
-```
+The executable expects workflow/sample_llm_output.json as the input document and workflow/sample_sign_input.json as the source document. A failed check returns structured reasons and a nonzero exit status.
 
-A failed check returns structured evidence and a non-zero exit status.
+## LangSmith dry-run
 
-## Run the LangSmith dry-run
+The committed workflow/langsmith_dry_run_summary.json records:
 
-```bash
-python workflow/langsmith_eval.py --dry-run
-```
+- mode: dry_run;
+- network calls made: false;
+- API keys required: false;
+- dataset: kinder_signs_microlearning_v1;
+- project: kinderflow-kinder-signs-workflow; and
+- deterministic gate: passed.
 
-Dry-run mode requires no API keys and makes no network calls. It builds the production prompt, loads the sample LLM output, runs the same deterministic gate, and writes `workflow/langsmith_dry_run_summary.json`.
+The dry-run builds the governed prompt, loads the supplied example output, applies the same deterministic gate, and records what a future trace would contain. It does not contact OpenAI or LangSmith.
 
-## Optional live LangSmith run
+## Optional live-provider path
 
-The script reads credentials only from the invoking environment:
+workflow/langsmith_eval.py includes an optional path that reads OPENAI_API_KEY, LANGSMITH_API_KEY, LANGSMITH_PROJECT, and an optional OPENAI_MODEL from the invoking environment. Credentials must not be stored in this repository.
 
-```bash
-export OPENAI_API_KEY="<local value>"
-export LANGSMITH_API_KEY="<local value>"
-export LANGSMITH_PROJECT="kinderflow-kinder-signs-workflow"
-# Optional:
-export OPENAI_MODEL="gpt-5-mini"
+This code path is not current evidence of a live run. If it is used later, the generated draft must remain pending professional approval and the resulting trace must exclude personal data and private media.
 
-python -m pip install openai langsmith
-python workflow/langsmith_eval.py --run
-```
+## n8n export
 
-Do not place credentials in the repository or workflow export. If either required environment variable is absent, the live command exits before importing the SDKs or calling an API.
+The exact inactive export contains:
 
-The live run saves `workflow/generated_llm_output.json`, traces the OpenAI LLM call through LangSmith, and applies the local deterministic gate. Generated output remains a draft requiring professional approval.
+1. Governance boundary.
+2. Manual Trigger.
+3. Approved Sign Object.
+4. CV Motion Summary.
+5. Schema Check.
+6. Schema Valid?
+7. Family Draft.
+8. OpenAI Chat Model.
+9. Quality Gate.
+10. Pass / Fail.
+11. Draft pending professional approval.
+12. Rejected draft.
 
-## Manual n8n setup
+The export includes a placeholder credential reference, not a secret.
 
-1. Import `kinder_signs_n8n_workflow_example.json`.
-2. Review node compatibility with the installed n8n version.
-3. Select the existing local credential named `OpenAI account` in the OpenAI Chat Model node.
-4. Confirm the selected model supports JSON output.
-5. Test both the pass and fail branches with non-sensitive sample data.
-6. Keep the final output as `draft_pending_professional_approval`; do not connect it to automatic publishing.
-7. If LangSmith tracing is enabled in n8n, scope it to the LLM transformation only.
+## Manual target-runtime validation
 
-The export contains a placeholder credential reference, not a credential or API key.
+Future validation in the selected n8n installation should:
 
-## Scope boundary
+1. Import workflow/kinder_signs_n8n_workflow.json.
+2. Review node compatibility with the installed version.
+3. Select an approved local OpenAI credential only if the optional LLM path is retained.
+4. Confirm JSON-object output support.
+5. Test the valid and rejected branches with non-sensitive samples.
+6. Confirm that the final passing state remains draft_pending_professional_approval.
+7. Leave publication systems disconnected.
+8. Save a non-sensitive execution record if the final adapter is executed.
 
-LangSmith evaluates:
+Until that record exists, describe the file as an importable design, not an executed workflow.
 
-- source adherence
-- unsupported-claim suppression
-- movement-note adherence
-- parent clarity
-- JSON validity
-- preservation of the professional review gate
+## LangSmith scope
+
+LangSmith may evaluate:
+
+- source adherence;
+- unsupported-claim suppression;
+- movement-note adherence;
+- family clarity;
+- JSON validity; and
+- preservation of the professional-review gate.
 
 LangSmith does not evaluate:
 
-- the MP4 video
-- sign movement correctness
-- Baby Sign correctness
-- Computer Vision quality
-- professional validity
+- an MP4;
+- MediaPipe;
+- hand or pose detection;
+- movement fidelity;
+- Baby Sign correctness;
+- professional validity; or
+- publication readiness.
 
-Those boundaries remain with the CV diagnostics and qualified human review.
+## Content Pack adapter
 
-## Pitch evidence
+The local MVP exposes GENERATE_CONTENT_PACK at POST /api/content-packs/generate. Its schemas are:
 
-The pitch can show:
+- content_ops/contracts/content_pack_input.schema.json; and
+- content_ops/contracts/content_pack_output.schema.json.
 
-- the governed architecture and node diagram
-- the approved sign input and bounded CV summary
-- the structured family draft
-- a passing deterministic quality-gate result
-- the LangSmith dry-run summary or a later live trace
-- the n8n pass/fail routing and professional-approval status
+The content path is:
 
-Do not present the workflow as evidence that movement or sign content has been professionally validated.
+    structured sign and approved source
+    → human copy or optional LLM-assisted draft
+    → structured JSON
+    → deterministic gate
+    → optional LangSmith evaluation for LLM wording
+    → human review
+    → reviewed printable handoff
+
+Generation method records human or llm_assisted. Generation mode records LIVE, DRY_RUN, or NOT_APPLICABLE. None of these values is publication approval.
+
+The local service stores content attempts in ignored mvp/runs/content_packs directories. Provider-path tests use mocks. The n8n export has not been executed against this final endpoint contract.
+
+## Safety boundary
+
+Use only approved, non-sensitive structured source content. Do not send reference video, landmarks linked to an identifiable person, child data, caregiver data, or school-user personal data to the optional LLM or LangSmith path.
+
+A deterministic pass, n8n pass branch, or LangSmith result may prepare a draft for review. None may publish it.

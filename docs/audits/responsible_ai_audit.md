@@ -1,1147 +1,452 @@
-# KinderFlow — Responsible AI Audit
+# KinderFlow Responsible AI Audit
 
-**Project:** KinderFlow — Early Childhood Digital Growth  
-**Use case assessed:** Kinder Signs  
-**Assessment date:** 2 September 2026  
-**Repository baseline:** `661c027 — Build Round 2 KinderFlow MVP and UX`  
-**Frameworks used:** European Commission ALTAI / Ethics Guidelines for Trustworthy AI, supplemented by the UNESCO Recommendation on the Ethics of Artificial Intelligence
+**Audit date:** 4 September 2026
+**Frozen repository baseline:** 8eb0742, Freeze connected KinderFlow capstone demo
+**Scope:** Kinder Signs local MVP, documented workflow, assets, and proposed controlled pilot
 
-> This is a practical product-governance audit. It is not a legal certification and does not replace the EU AI Act or GDPR assessments.
+This audit reports evidence states. It is not a safety certificate, professional sign-language approval, legal advice, or proof that the product is ready for production.
 
----
+## Executive assessment
 
-# 1. Executive takeaway
+Kinder Signs has a defensible narrow purpose: help a human content team turn an adult sign reference into reviewable technical evidence and reusable family material. Computer Vision is the strongest active AI evidence. The repository also contains an optional model-assisted wording path, but only local and dry-run evaluation is evidenced. It does not prove a live external model run.
 
-## Executive question
+The product includes meaningful controls: local processing, bounded inputs, deterministic validation, explicit review routes, source registries, versioned assets, and no autonomous publication. It also has material gaps: no production reviewer identity or approval ledger, no qualified sign approval for the current draft visuals, incomplete source and Gemini usage rights, no production correction process, no secure family-account system, and a mismatch between the six-sign registry and the older five-sign content package.
 
-**Is Kinder Signs being designed and operated in a way that keeps AI useful without allowing it to become the authority over sign correctness, children or educational decisions?**
+The evidence supports controlled pilot preparation. It does not support external pilot launch until the stated gates close.
 
-## Current conclusion
+| Dimension | Evidence state | Current conclusion |
+| --- | --- | --- |
+| Narrow intended purpose | Evidence present | Adult-reference content support, not child assessment |
+| Human oversight | Partial evidence | Review routes exist; production accountability does not |
+| Technical explainability | Evidence present | Landmarks, coverage, missing frames, plots, and previews are inspectable |
+| Sign and visual correctness | Operational gap | All current visual options require qualified review |
+| Provenance and rights | Partial evidence | Strong identity records; several usage rights remain unresolved |
+| Privacy | Evidence present for local MVP; pilot control required | No real child data or live personal-data model transfer is evidenced |
+| Fail-closed behaviour | Partial evidence | Many validation states block progress; Gemini display rights are not fully fail-closed |
+| Accessibility and inclusion | Partial evidence | Spanish and bilingual formats exist; user testing and accessibility conformance are absent |
+| Complaints and corrections | Operational gap | No production intake, service level, recall, or notification process |
+| Environmental evidence | Measurement gap | Design choices are documented; energy and carbon are unmeasured |
 
-**PROCEED WITH CONDITIONS**
+## People, purpose, and potential harm
 
-Kinder Signs already contains several strong Responsible AI design choices:
+### People in scope
 
-- Computer Vision is used to represent adult reference movement, not assess children;
-- technical metrics are separated from linguistic correctness;
-- child video has been removed from the core product;
-- deterministic methods are used where Generative AI is unnecessary;
-- LLM-assisted wording is bounded by structured contracts and deterministic checks;
-- human review remains the publication gate;
-- school users do not operate the internal AI pipeline;
-- the system distinguishes LIVE, DRY_RUN and NOT_APPLICABLE states;
-- current documentation explicitly states what the MVP does not prove.
+- adult reference performers;
+- KinderFlow content operators and reviewers;
+- nursery owners, administrators, and educators;
+- families and caregivers; and
+- children as beneficiaries and potentially affected persons.
 
-The main remaining risks are less about whether the MVP “uses AI” and more about **how people may interpret or operate it**.
+Children are not buyers or reference-video subjects in the intended core workflow.
 
-The highest Responsible AI risks are:
+### Intended purpose
 
-1. reviewers treating technical PASS as proof of sign correctness;
-2. human review becoming a rubber-stamp;
-3. generated family wording sounding authoritative despite weak evidence;
-4. future scope creep toward child assessment;
-5. insufficient evidence across different signs, performers and capture conditions;
-6. unclear responsibility when something goes wrong.
+The operator supplies an adult reference video and declares that it is suitable for the selected input path. That declaration does not itself prove authority, consent, or sign correctness. MediaPipe extracts pose and hand landmarks, and the service creates technical evidence. A human reviews the reference, selects or reviews a pose, reviews draft visuals and family material, and controls publication.
 
-### Recommendation
+The product does not assess a child. It does not recognise emotion, establish biometric identity, categorise a person, diagnose development, score learning, or make an educational decision.
 
-KinderFlow should preserve the current narrow AI role and formalise the human, evidence and escalation controls before a real-school pilot.
+### Current Family View boundary
 
----
+The Little Steps Nursery assignment experience uses synthetic records and local or session-based state. Family View displays a basic guidance prototype.
 
-# 2. Framework used
+A family-facing guidance prototype exists. A personalised assignment-driven family library remains a next product iteration. Current screens do not prove real delivery, account identity, access control, or cross-session persistence.
 
-The European Commission's Trustworthy AI framework identifies seven areas:
+### Foreseeable harms
 
-1. Human agency and oversight
-2. Technical robustness and safety
-3. Privacy and data governance
-4. Transparency
-5. Diversity, non-discrimination and fairness
-6. Societal and environmental well-being
-7. Accountability
+- a technically measurable pose is described as a correct sign;
+- an incorrect hand shape, palm direction, contact point, or movement reaches a family;
+- a source is used without performer authority or distribution rights;
+- a generated or rewritten claim sounds clinical or developmental;
+- a Gemini demo is mistaken for current landmark-generated output;
+- one family sees another child's assignment;
+- technical metrics become a child score after scope expansion;
+- missing or partial landmarks are hidden from the reviewer;
+- a correction cannot reach every copy of an asset; or
+- reviewers approve content without adequate training or independence.
 
-UNESCO reinforces these principles with:
+## AI and automation inventory
 
-- proportionality and do no harm;
-- safety and security;
-- privacy;
-- transparency;
-- human oversight;
-- fairness;
-- responsibility and accountability;
-- sustainability;
-- AI literacy.
+| Component | What it does | Evidence | What it does not prove |
+| --- | --- | --- | --- |
+| MediaPipe | Extracts adult pose and hand landmarks | Local pipeline and versioned WATER evidence | Sign correctness, identity, emotion, or child ability |
+| OpenCV | Reads and processes video frames | Local pipeline | AI intelligence or linguistic validity |
+| Deterministic normalization and thresholds | Converts landmarks to body-relative evidence and review states | Code and tests | Professional approval |
+| Optional language model | Can draft bounded family wording from supplied sign and routine content | Provider path, schema, samples, deterministic evaluation | Live execution, truth, publication approval, or CV quality |
+| LangSmith path | Defines trace and evaluation for the optional wording step | Dry-run summary with network calls false | A live trace or evaluation of movement fidelity |
+| n8n | Represents fixed orchestration and review preparation | Exact importable JSON and documentation | A proven final target-runtime run |
+| Deterministic SVG composition | Creates repeatable visual candidates | Six sign packages and 18 files | Correct fingers, palms, contact, direction, or readability |
+| Gemini FX files | Provide pre-generated illustrative motion direction | Three registered local MP4 files | Current-run output, landmark control, rights, or sign certification |
+| Nursery and Family Views | Simulate product handoff | Local interfaces and synthetic data | Production assignment or secure family delivery |
 
-This audit translates those principles into concrete Kinder Signs controls.
+## Technical evidence interpretation
 
----
+### Versioned WATER evidence
 
-# 3. Responsible AI scope
+The committed Round 1 WATER reference records:
 
-Not every KinderFlow component is AI.
+- 332 processed frames;
+- 100.00 percent pose coverage;
+- 93.98 percent dominant right-hand coverage;
+- 20 missing hand frames;
+- extraction status pass; and
+- motion representation partial.
 
-## AI-enabled components
+Evidence:
 
-### Computer Vision
+- [WATER validation summary](../../poc/output/validation_summary.json)
+- [WATER movement summary](../../poc/output/diagnostics/sign_reference_motion_summary.json)
+- [POC documentation](../../poc/poc_documentation.md)
 
-MediaPipe-based processing of validated adult reference video.
+The 93.98 percent value is hand-detection coverage in that reference run. It is not 93.98 percent sign accuracy.
 
-Outputs include:
+### Current MORE evidence boundary
 
-- pose/hand landmarks;
-- normalized movement representation;
-- technical coverage metrics;
-- movement diagnostics;
-- skeleton/landmark overlay.
+The registered MORE reference input is present and hash-mapped. The canonical registry does not assign the versioned WATER diagnostics to MORE. A current MORE run with 285 frames, 100 percent pose coverage, and 91.93 percent dominant-hand coverage was observed only in an ignored local run directory. That local record must not be presented as versioned repository evidence.
 
----
+The registry therefore describes MORE as having a reference input without a canonical analysed run. This separation prevents metrics from one sign being used to support another.
 
-### LLM-assisted Content Engine
+### Status vocabulary
 
-Optional content transformation for family-facing wording.
+Keep these decisions separate:
 
-Controls include:
+- extraction coverage;
+- motion representation;
+- content readiness;
+- sign review;
+- visual review;
+- rights clearance; and
+- publication status.
 
-- strict input/output contracts;
-- bounded source context;
-- deterministic quality gates;
-- review states;
-- optional LangSmith observability;
-- human approval.
+Extraction pass means that the system created usable technical evidence. It does not mean the sign, illustration, wording, or publication is approved.
 
-Current execution evidence covers HUMAN, NOT_APPLICABLE and LLM_ASSISTED DRY_RUN behavior plus injected provider-path tests. Real external LIVE LLM execution and a LIVE LangSmith trace/evaluation are not evidenced. A trace would not itself mean evaluation or human approval is complete.
+## Human oversight
 
----
+### Current evidence
 
-## Deterministic components
+The local workflow asks the operator to:
 
-Examples:
+- declare the reference validated;
+- review the source video;
+- inspect coverage, missing-frame, movement, and preview evidence;
+- use a tracked pose only when the technical threshold permits it;
+- select a representative frame when tracking cannot support the next step;
+- review sign-specific visual candidates;
+- review generated family material; and
+- control local publication actions.
 
-- Flashcard rendering;
-- schema validation;
-- restricted-term checks;
-- status logic;
-- ordinary school-assignment logic.
+The EAT flow has an explicit reviewed-reference fallback. Missing or partial evidence is visible rather than silently converted into a quality claim.
 
-These should remain deterministic where generation provides no clear additional value.
+### Operational gaps
 
----
+The frozen product does not evidence:
 
-# 4. Core Responsible AI principle
+- authenticated reviewer identity;
+- role separation between creator and approver;
+- qualified sign-review credentials;
+- timestamped approval and rationale;
+- an immutable publication record;
+- review sampling or second review for high-risk exceptions;
+- a correction and withdrawal service; or
+- review-time and disagreement measurement.
 
-> **AI may support the workflow. It does not become the authority.**
+UI approval buttons simulate governance. They are not a production control by themselves.
 
-For Kinder Signs this means:
+### Required authority
 
-- MediaPipe does not decide whether a sign is linguistically correct.
-- An LLM does not invent movement instructions.
-- LangSmith does not validate sign correctness.
-- A technical PASS does not equal publication.
-- An educator does not receive an AI score about a child.
-- A child is not evaluated by the system.
+| Decision | Required reviewer |
+| --- | --- |
+| Adult source is authorised and suitable | Content and rights owner |
+| Technical run is interpretable | Trained Computer Vision operator |
+| Sign mechanics are correct | Qualified sign or Baby Sign reviewer |
+| Illustration is readable and faithful | Qualified sign reviewer and visual reviewer |
+| Family wording is accurate and bounded | Content reviewer |
+| Asset may be released | Publication owner after all prior approvals |
+| Asset must be corrected or withdrawn | Product Owner with Content Operations |
 
----
+No model or deterministic rule may replace these decisions.
 
-# 5. Human agency and oversight
+## Source fidelity, visuals, and provenance
 
-## Current controls
+### Six-sign evidence chain
 
-### Separation of technical and human decisions
+The canonical registry covers MORE, HELP, EAT, SLEEP, MILK, and WATER. Each sign has three current static candidates. All 18 candidates remain draft and blocked from printable or school use.
 
-The MVP distinguishes:
+Sign mechanics should follow this source order:
 
-```text
-Technical processing
-→ Pass / Review needed / Fail
-→ Human decision
-```
+1. registered functional sign illustration;
+2. curated sign knowledge;
+3. registered reference video and relevant frames or movement evidence;
+4. Open Peeps visual grammar; and
+5. human sign and visual review.
 
-Computer Vision does not directly set `Published`.
+### Open Peeps role
 
----
+The provenance record identifies Open Peeps by Pablo Stanley, links to the official source, records CC0, and hashes the selected base components.
 
-### Human review of content
+Open Peeps provides the base character and line grammar. It does not determine a sign's fingers, palm, contact, direction, or motion. KinderFlow adds deterministic, sign-specific anatomy from reviewed sources.
 
-LLM-assisted content is not automatically published.
+The character defines the look. The reviewed reference defines the sign.
 
-A deterministic quality-gate PASS only means:
+Human review remains required because deterministic composition is repeatable, not self-validating.
 
-> the candidate satisfies defined structural/rule-based checks.
+### Hash meaning
 
-It does not mean:
+Hashes support:
 
-> the content is educationally, linguistically or professionally correct.
+- exact asset identity;
+- change detection;
+- reproducible mapping; and
+- linkage between evidence and a version.
 
----
+A hash does not prove ownership, performer consent, lawful distribution, sign correctness, accessibility, or security.
 
-### School autonomy
+### Rights gaps
 
-The school selects which available approved content to assign.
+Open Peeps provenance is recorded. Other founder-provided videos, functional illustrations, icons, reference PDFs, the current context image, and Gemini output need purpose-specific display, adaptation, and distribution decisions.
 
-The system does not automatically determine what a child “needs”.
+Reference flashcards and vendor icons are marked reference-only and cannot enter printable output. Current draft SVGs are marked non-printable until human review and publication approval.
 
----
+### Registry and package drift
 
-## Main risk: automation bias
+The current asset registry covers six signs and 18 visual candidates. The older content-operations manifests, golden-set report, prototype content-operations data, and built MORE package cover a five-sign wording workflow. MORE still points to WATER technical evidence there.
 
-A reviewer may trust the system simply because it presents:
+The golden-set report's passing result means schema and hash checks passed. It does not mean that rights, sign fidelity, visual quality, or publication readiness passed.
 
-- percentages;
-- PASS states;
-- structured outputs;
-- polished wording.
+Required action:
 
-This can create false confidence.
+1. reconcile canonical sign IDs;
+2. assign technical evidence only to its source sign;
+3. bind current visual and rights records;
+4. regenerate the package;
+5. complete qualified review; and
+6. record explicit publication approval.
 
-### Example
+No current sign is registered as school-available or published.
 
-Incorrect interpretation:
+## Gemini FX motion previews
 
-> “Dominant-hand detection was 93.98%, therefore the sign is 93.98% correct.”
+The exact current mapping is:
 
-Correct interpretation:
+| Sign | File | Current status |
+| --- | --- | --- |
+| MORE | mas.mp4 | Available as pre-generated demo only |
+| HELP | ayuda.mp4 | Available as pre-generated demo only |
+| MILK | leche.mp4 | Available as pre-generated demo only |
+| EAT | None | Static workflow remains available |
+| SLEEP | None | Static workflow remains available |
+| WATER | None | Static workflow remains available |
 
-> “The dominant hand was detected in 93.98% of analysed frames in this reference run.”
+These videos were prepared separately as illustrative motion previews. They are not generated automatically from the current MediaPipe run or its landmarks.
 
----
+The registry records external-usage confirmation as pending. The files are not linguistically certified. The local service validates file identity and mapping, but it treats a null demo-display permission as available. This is a material rights-control gap.
 
-## Main risk: rubber-stamping
+Before external display, require:
 
-Human review is only meaningful if the reviewer:
+- documented display and redistribution rights;
+- confirmation of source inputs and permitted purpose;
+- qualified sign and motion-fidelity review;
+- clear separation from current-run evidence;
+- a synthetic-content transparency assessment; and
+- a withdrawal route.
 
-- understands the limits of the AI;
-- can reject output;
-- has enough time;
-- sees relevant evidence;
-- has clear escalation criteria.
+## Direct MP4 intake
 
-A checkbox labelled “Approve” is not sufficient human oversight by itself.
+The direct URL path accepts one public HTTP or HTTPS MP4. It validates syntax, resolved address, redirects, type, time, and size. It pins the validated public destination, uses a generated local filename, removes partial files, and strips query parameters from stored provenance.
 
----
+This supports safer local testing. It does not prove that the operator owns the video, that the adult agreed to the use, or that the sign is correct. It also is not a production fetch service.
 
-## Pilot controls
+Misuse controls still needed:
 
-Before pilot:
+- authenticated and authorised operators;
+- approved source or host policy;
+- evidence of performer authority and licence;
+- HTTPS-only production intake or a controlled object store;
+- rate and concurrency limits;
+- media decoder isolation;
+- incident monitoring;
+- deletion and access logs; and
+- sanctions for prohibited child or third-party media.
 
-- define who can review movement/content;
-- define reviewer competence;
-- provide a checklist;
-- require a reason for `Approve anyway` where technical status is Review needed;
-- define escalation;
-- measure review time;
-- monitor override frequency;
-- periodically sample approved items for second review.
+## Privacy and child safeguards
 
----
+### Current evidence
 
-## Assessment
+- the reference subject is intended to be an adult;
+- the core workflow does not need a child's identity;
+- the nursery and family records are synthetic;
+- current processing is local;
+- no real child account or production delivery exists;
+- no live transfer of personal data to an LLM or LangSmith is evidenced;
+- no age estimation, emotion recognition, identity matching, or child scoring exists; and
+- the optional wording path can operate on sign and routine content without personal data.
 
-**PARTIAL EVIDENCE — a logical human gate exists; a production reviewer process does not.**
+### Pilot controls
 
----
+- use group assignment by default;
+- create a pseudonymous child assignment ID only when necessary;
+- keep child media, health data, development notes, and free text out of scope;
+- keep all nursery, staff, family, and child identifiers out of LLM and LangSmith inputs;
+- implement family relationship verification, role access, and nursery separation;
+- complete notices, lawful-basis analysis, contracts, retention, rights, and DPIA;
+- log access and deletion; and
+- stop the pilot on any unauthorised personal-data model transfer.
 
-# 6. Technical robustness and safety
+Detailed requirements appear in [the GDPR record](../../compliance/gdpr_documentation.md).
 
-## Evidence already present
+## Model-assisted wording
 
-The current MVP demonstrates:
+### Current evidence
 
-- real MP4 input;
-- MediaPipe processing;
-- isolated runs;
-- run-specific metrics;
-- controlled invalid-file handling;
-- insufficient-coverage handling;
-- Pass / Review needed / Fail;
-- browser-compatible movement overlay;
-- no raw traceback exposure;
-- automated tests.
+The repository contains:
 
-The current repository also records an important runtime limitation:
+- a structured content contract;
+- an optional provider call;
+- JSON Schema validation;
+- banned-claim and source-adherence checks;
+- an importable n8n workflow design;
+- evaluation cases; and
+- a LangSmith dry-run with network calls false.
 
-MediaPipe Holistic on the current macOS environment requires a graphics context and should not be assumed to scale unchanged into headless production infrastructure.
+LangSmith covers the optional wording step only. It does not validate MediaPipe, hand shape, movement fidelity, or sign correctness.
 
----
+### Responsible-use rules
 
-## Current evidence limitation
+- supply only approved sign and routine content;
+- send no personal data;
+- constrain length, tone, and fields;
+- block clinical, developmental, diagnostic, or guaranteed-outcome claims;
+- show source and model version to the reviewer;
+- require human editing and approval;
+- retain the draft, final text, checks, reviewer, and rationale; and
+- prevent any failed or unreviewed output from family delivery.
 
-The strongest Computer Vision evidence is still based on a very small evidence base.
+The current evidence does not prove a live provider's behaviour, model drift, data retention, or incident response.
 
-MORE is the deepest demonstrated sign.
+## Fail-closed and fallback assessment
 
-The other sign records demonstrate the shared content/data architecture but should not be presented as equivalent movement-validation evidence.
+| Control | Evidence state | Finding |
+| --- | --- | --- |
+| Invalid local upload | Evidence present | Rejected |
+| Unsafe or private direct URL | Evidence present | Rejected |
+| Wrong response type, excessive size, redirect, or timeout | Evidence present | Rejected and partial file cleaned |
+| Missing or weak tracking | Evidence present | Reviewer sees partial state or selects a frame |
+| Missing Gemini file or false display permission | Evidence present | Static flow remains available |
+| Null Gemini display permission | Operational gap | File remains locally available |
+| Failed wording quality check | Partial evidence | Deterministic sample blocks progression; production enforcement is not evidenced |
+| Missing publication approval | Partial evidence | Registry blocks current signs, but no production delivery layer exists to test |
 
----
+Transparent fallback is preferable to invented certainty. A static reviewed asset or human-selected frame is acceptable when the interface explains why it was used.
 
-## Robustness risks
+## Explainability and transparency
 
-- different lighting;
-- occlusion;
-- different clothing/backgrounds;
-- different performers;
-- different devices;
-- one-hand vs two-hand movements;
-- motion speed;
-- camera framing;
-- landmark drop-out;
-- encoding/runtime differences.
+The reviewer can inspect:
 
----
+- source video;
+- reference and overlay previews;
+- representative frames;
+- pose and hand coverage;
+- missing-frame counts;
+- motion paths;
+- warnings and fallback state;
+- source asset and hash;
+- sign-specific visual candidates; and
+- structured wording checks.
 
-## Required pilot evidence
+Families should receive a plain explanation that material was prepared and reviewed by KinderFlow. They do not need raw technical metrics. If AI assistance materially shapes content or synthetic video is displayed, provide the disclosure required for that context.
 
-For each pilot sign:
+Never present detection coverage as accuracy. Never describe a separately prepared Gemini file as current-run output.
 
-- successful reference processing;
-- failure/review case;
-- human visual inspection;
-- documented capture conditions;
-- measured missing/coverage data;
-- evidence that a poor input does not silently become an approved asset.
+## Accessibility and inclusion
 
----
+### Evidence present
 
-## Fail-safe principle
+- Spanish and bilingual material modes;
+- visual and text formats;
+- consistent sign labels and routine context;
+- browser print or Save as PDF path; and
+- a static fallback when no Gemini video exists.
 
-When evidence is weak:
+### Evidence missing
 
-> **fail closed or require review — do not invent confidence.**
+- WCAG conformance test;
+- keyboard and screen-reader test across all routes;
+- contrast and zoom evidence;
+- caption and transcript policy for motion media;
+- comprehension testing with families;
+- testing across literacy, language, disability, and device conditions; and
+- qualified review that visual candidates remain legible when printed.
 
----
+The existence of two languages does not prove cultural or accessibility fairness. The pilot should measure comprehension and correction patterns by language and access mode without profiling children.
 
-## Assessment
+## Complaints, corrections, and withdrawal
 
-**PARTIAL EVIDENCE — local tests and one reference run exist; broader runtime and sign-set evidence is required.**
+The production service needs one accountable route for:
 
----
+- incorrect sign mechanics;
+- misleading family wording;
+- accessibility barriers;
+- source-rights claims;
+- privacy requests;
+- wrong-recipient access; and
+- harmful or confusing synthetic media.
 
-# 7. Privacy and data governance
+For each issue, record intake time, affected sign and version, severity, owner, containment, reviewer decision, correction, affected recipients, notification, and closure.
 
-A detailed GDPR assessment exists separately.
+Critical sign, rights, or privacy issues should block the affected asset immediately. The system must be able to identify and withdraw every active copy. The current prototype does not provide this service.
 
-Responsible AI implications are:
+## Risk register
 
-## Strong current design choices
+| Risk | Evidence state | Current control | Required pilot control |
+| --- | --- | --- | --- |
+| Technical coverage becomes a quality claim | Present risk | Metric labels and documentation | Review every presentation surface and sales claim |
+| Wrong sign mechanics | Present risk | Source hierarchy and draft state | Qualified sign approval for every asset |
+| Rights or consent missing | Present risk | Registry status and hashes | Written authority, usage scope, expiry, and withdrawal |
+| Gemini file mistaken for pipeline output | Present risk | Separate registry class and local disclosure | Rights, fidelity, and transparency gate |
+| Child data enters AI path | Current evidence shows zero; future risk | Synthetic data and local flow | Field blocks, monitoring, contracts, and stop rule |
+| Wrong family access | Not testable in current prototype | Session-only fixture | Production identity, tenant, relationship, and access tests |
+| Unreviewed publication | Current registry blocks all signs | Human review UX | Authenticated approval ledger and delivery enforcement |
+| Reviewer inconsistency | Measurement gap | Review prompts | Training, rubric, second review, disagreement measure |
+| Unsupported family claim | Partial evidence | Banned-claim checks | Live-provider evaluation and human approval |
+| Accessibility exclusion | Measurement gap | Basic bilingual formats | Formal test and family comprehension study |
+| Correction fails to propagate | Operational gap | None | Version recall and recipient notification |
+| Content package uses wrong evidence | Present contradiction | Canonical registry identifies WATER correctly | Regenerate and validate package before release |
 
-- no child video;
-- no child-performance assessment;
-- content generation does not require child identity;
-- adult reference video remains local in the current MVP;
-- LLM/LangSmith can be kept free of school/family/child personal data;
-- fictional child/family data are used in the prototype.
+## Pilot controls and decision rules
 
----
+| Client fact | Action | Target | Owner | Decision rule |
+| --- | --- | --- | --- | --- |
+| Published production signs equal zero | Qualify and approve the pilot set | Three to five signs with complete source, rights, sign, visual, and publication records | Content Operations and sign reviewer | Stop if any sign lacks evidence |
+| Registry and package disagree | Rebuild from the canonical six-sign registry | Zero cross-sign evidence links | Engineering and Content Operations | Block an unreconciled package |
+| Human decisions lack identity and time | Implement approval logging | One hundred percent of decisions attributable with rationale | Product Owner | Unattributed approval cannot publish |
+| Gemini rights and fidelity are unresolved | Close rights, review, and transparency decisions | Written decision for each displayed file | Rights owner and sign reviewer | No external display while unknown |
+| Family access is only a preview | Build and security-test group-first delivery | Zero cross-family or cross-nursery access in tests | Engineering and privacy owner | Stop on any wrong-recipient access |
+| Child and family data are unnecessary for content generation | Enforce separated data paths | Zero personal child or family data sent to LLM or LangSmith | Engineering and privacy owner | Stop on first transfer |
+| Review quality is unmeasured | Calibrate reviewers and measure disagreement | One hundred percent exceptions include rationale; threshold agreed before pilot | Content lead | Iterate if review cannot be consistent |
+| Complaints and recall are absent | Exercise correction and withdrawal | Complete drill before launch | Product Owner | No pilot until every active version can be found and withdrawn |
 
-## Responsible AI design rule
+Hard pilot boundaries:
 
-> **Keep content intelligence separate from personal identity.**
+- child video processed in core scope equals zero;
+- child scoring equals zero;
+- automated educational decisions equal zero;
+- unreviewed content delivered equals zero;
+- blocked content delivered equals zero;
+- personal child or family data sent to LLM or LangSmith equals zero;
+- pilot sign provenance, including rights and review, equals 100 percent; and
+- review exceptions with rationale equals 100 percent.
 
-The Content Engine should not need to know:
+## Evidence index
 
-- child name;
-- diagnosis;
-- caregiver identity;
-- family history.
-
----
-
-## Hard boundaries
-
-Do not introduce without a separate assessment:
-
-- child video;
-- health/developmental profiling;
-- emotion analysis;
-- biometric identification;
-- cross-school profiling;
-- behavioural advertising.
-
----
-
-## Assessment
-
-**PRIVACY-BY-DESIGN EVIDENCE — operational GDPR controls remain a pilot gap.**
-
----
-
-# 8. Transparency
-
-Transparency must exist at several levels.
-
-## 8.1 Internal operator transparency
-
-Content operators should see:
-
-- source/provenance;
-- technical status;
-- processing limitations;
-- generation method;
-- generation mode;
-- review state;
-- blocking reasons.
-
-The current system already distinguishes:
-
-- HUMAN;
-- LLM_ASSISTED;
-- LIVE;
-- DRY_RUN;
-- NOT_APPLICABLE.
-
-This is a strong governance pattern.
-
----
-
-## 8.2 School transparency
-
-Schools do not need internal engineering details.
-
-They do need to understand:
-
-- KinderFlow creates/reviews the content centrally;
-- AI supports internal content production;
-- the school assigns approved content;
-- the system does not assess children.
-
----
-
-## 8.3 Family transparency
-
-Families should receive simple explanations.
-
-Do not expose unnecessary terminology such as:
-
-- MediaPipe;
-- LangSmith;
-- prompt version;
-- landmark coverage.
-
-Do explain the meaningful boundary:
-
-> KinderFlow does not analyse your child's signing or development.
-
----
-
-## 8.4 Metric transparency
-
-Every metric should answer:
-
-1. What is being measured?
-2. What is not being measured?
-3. What decision may it support?
-4. Who makes that decision?
-
----
-
-## Assessment
-
-**EVIDENCE PRESENT — role-specific explanations and training remain a pilot control.**
-
----
-
-# 9. Explainability
-
-KinderFlow does not need to explain every mathematical detail of MediaPipe to every user.
-
-Explainability should match the audience.
-
-## Content operator
-
-Needs:
-
-- coverage/missing data;
-- why status is Pass/Review needed/Fail;
-- evidence needed for approval.
-
-## School
-
-Needs:
-
-- what AI supports;
-- what humans control;
-- what the product does not assess.
-
-## Family
-
-Needs:
-
-- why the content exists;
-- what role the school plays;
-- what AI does not do to the child.
-
----
-
-## Anti-pattern
-
-Bad:
-
-> “The AI validated MORE.”
-
-Better:
-
-> “The reference video passed the technical movement-capture checks and remains subject to human review.”
-
----
-
-# 10. Diversity, non-discrimination and fairness
-
-## Current fairness exposure
-
-Kinder Signs does not currently make decisions about:
-
-- admission;
-- grades;
-- access;
-- educational level;
-- child performance.
-
-This substantially reduces algorithmic-discrimination risk.
-
-However, fairness still matters.
-
----
-
-## 10.1 Computer Vision performance
-
-Pose/hand tracking may perform differently depending on:
-
-- skin tone;
-- clothing contrast;
-- lighting;
-- body visibility;
-- mobility;
-- hand visibility;
-- performer/camera characteristics.
-
-The current MVP evidence is not broad enough to claim equal performance across populations.
-
-### Required wording
-
-Do not claim:
-
-> “MediaPipe works equally for everyone.”
-
-Use:
-
-> “Broader testing across performers and capture conditions is required.”
-
----
-
-## 10.2 Content representation
-
-The visual/content library should avoid implying that:
-
-- one family structure is standard;
-- one cultural routine is universal;
-- one child-development trajectory is expected;
-- Baby Signs replace professional communication support.
-
----
-
-## 10.3 Accessibility
-
-Pilot content should be reviewed for:
-
-- readable language;
-- visual clarity;
-- sufficient contrast;
-- keyboard access;
-- zoom;
-- printable usability;
-- Spanish/English quality.
-
----
-
-## 10.4 Differential access
-
-A school-led product can create unequal access if only some families:
-
-- have reliable connectivity;
-- speak supported languages;
-- understand the digital interface.
-
-Pilot feedback should therefore include accessibility and inclusion questions.
-
----
-
-## Assessment
-
-**REVIEW REQUIRED**
-
-Not because current evidence shows discrimination, but because the evidence base is not sufficient to claim fairness.
-
----
-
-# 11. Societal well-being and child-centred design
-
-Kinder Signs operates around children aged approximately 0–3.
-
-The product should therefore remain proportionate.
-
-## Positive design direction
-
-The system supports:
-
-- school-home continuity;
-- adult-mediated family routines;
-- reusable educational content;
-- simple educator workflow.
-
----
-
-## Risks
-
-### Overclaiming developmental benefit
-
-Avoid claims such as:
-
-- accelerates language;
-- treats delay;
-- improves development;
-- prevents developmental problems;
-
-unless supported by appropriate evidence and reviewed for the intended context.
-
-The Content Engine already blocks several unsupported claim patterns.
-
----
-
-### Substituting professional judgment
-
-Kinder Signs should not present itself as:
-
-- speech therapy;
-- developmental assessment;
-- clinical advice;
-- a replacement for professional support.
-
----
-
-### Technology replacing interaction
-
-The product should support parent/educator interaction rather than encourage screen use as the primary experience for a very young child.
-
-The intended value is:
-
-> adult uses the material to reinforce a shared routine.
-
-Not:
-
-> child independently consumes an AI product.
-
----
-
-## Assessment
-
-**PARTIAL EVIDENCE — claimed benefits and real-world use still require pilot review.**
-
----
-
-# 12. Environmental well-being
-
-Detailed environmental analysis is handled in the separate Green AI audit.
-
-The Responsible AI principle already visible in KinderFlow is:
-
-> **Not every problem needs Generative AI.**
-
-Examples:
-
-- Flashcards use deterministic templates;
-- technical quality checks use rules;
-- CV is used only where movement representation adds value;
-- LLM use is limited to content wording where generation may add value.
-
-This reduces unnecessary model calls, cost and operational complexity.
-
----
-
-## Assessment
-
-**MEASUREMENT GAP — the deterministic-first architecture avoids unnecessary AI, but no energy or carbon benefit has been measured.**
-
----
-
-# 13. Accountability
-
-Responsible AI requires a clear answer to:
-
-> **Who is responsible if the system is wrong?**
-
-The answer must never be:
-
-> “the AI.”
-
----
-
-## Proposed accountability map
-
-| Activity | Accountable role |
-|---|---|
-| Reference-source rights/provenance | KinderFlow content operations |
-| Technical CV pipeline | KinderFlow technical owner |
-| Movement interpretation | Qualified human reviewer |
-| Family content approval | KinderFlow content reviewer |
-| School content assignment | School/educator |
-| Product/privacy governance | KinderFlow governance owner |
-| Child/family personal data | Controller/processor roles defined contractually |
-| Incident escalation | Named pilot owner |
-| Model/prompt changes | KinderFlow technical/content owner |
-
----
-
-## Current gap
-
-The prototype has human-review logic but not production:
-
-- reviewer identity;
-- timestamps;
-- reasons;
-- immutable audit record;
-- formal owner/escalation paths.
-
----
-
-## Assessment
-
-**OPERATIONAL GAP — conceptual owners exist; production reviewer identity, audit records and escalation do not.**
-
----
-
-# 14. AI literacy
-
-Responsible AI controls fail if users do not understand them.
-
-## KinderFlow content operators
-
-Should understand:
-
-- difference between detection and correctness;
-- limitations of reference-video processing;
-- when Review needed means escalate;
-- limitations of LLM-generated text;
-- dry-run/live distinction;
-- publication controls.
-
----
-
-## School staff
-
-Should understand:
-
-- AI is used internally by KinderFlow;
-- approved content is selected by the educator;
-- AI does not assess the child;
-- issues should be reported.
-
----
-
-## Technical team
-
-Should understand:
-
-- versioning;
-- runtime limitations;
-- logs;
-- prompt/model changes;
-- observability boundaries;
-- incident process.
-
----
-
-## Evidence to retain
-
-- training material;
-- attendance/completion;
-- version/date;
-- role;
-- periodic update.
-
----
-
-## Assessment
-
-**GAP BEFORE PILOT**
-
----
-
-# 15. Misuse and foreseeable misuse
-
-## Intended use
-
-> Help schools share reviewed Kinder Signs content with families so the same communication cue can be repeated at home.
-
----
-
-## Foreseeable misuse
-
-### Using technical metrics as child guidance
-
-Example:
-
-> educator interprets a movement metric as a clinical/developmental finding.
-
-**Control:** technical metrics remain internal.
-
----
-
-### Treating content as therapy
-
-**Control:** bounded claims + family-facing wording + escalation to professionals where appropriate.
-
----
-
-### Uploading child video into reference workflow
-
-**Control:** operational policy and pilot input restrictions.
-
----
-
-### Uploading an unvalidated random internet video
-
-**Control:** provenance requirements and content-operator permissions.
-
----
-
-### Using LLM output without human review
-
-**Control:** downstream handoff remains blocked until reviewed.
-
----
-
-### Using engagement metrics to rank families
-
-**Control:** aggregate measurement, no behavioural scoring.
-
----
-
-# 16. Hallucination and content-integrity risk
-
-The main hallucination exposure is not Computer Vision.
-
-It is LLM-assisted wording.
-
-## Existing controls
-
-- approved source context;
-- exact IDs;
-- structured fields;
-- banned unsupported claims;
-- biomechanics restrictions;
-- human review;
-- no automatic publication;
-- HUMAN fallback.
-
----
-
-## Important limitation
-
-Deterministic quality gates can detect:
-
-- missing fields;
-- banned terms;
-- malformed IDs;
-- certain prohibited claims.
-
-They cannot guarantee:
-
-- factual completeness;
-- cultural appropriateness;
-- professional correctness;
-- good judgment.
-
----
-
-## Assessment
-
-**PILOT CONTROL REQUIRED — documentation exists; completed role-based training evidence does not.**
-
----
-
-# 17. Human-review quality audit
-
-A production-grade review process should record:
-
-```text
-Asset/version
-Reviewer
-Review type
-Evidence viewed
-Technical state
-Content state
-Decision
-Reason
-Timestamp
-Escalation if any
-```
-
-## Review outcomes
-
-Use:
-
-- APPROVED
-- CHANGES REQUIRED
-- REJECTED
-- ESCALATED
-
-Avoid a single generic:
-
-- OK
-
----
-
-## Second-review triggers
-
-Recommended for:
-
-- Review needed technical state;
-- new sign;
-- new visual hand/pose;
-- new content-generation prompt/model;
-- safety/clinical/developmental wording;
-- user complaint;
-- material change after approval.
-
----
-
-# 18. Responsible AI risk matrix
-
-| Risk | Likelihood | Impact | Score | Existing control | Remaining action |
-|---|---:|---:|---:|---|---|
-| Technical PASS interpreted as linguistic correctness | 3 | 5 | 15 | Clear documentation/status separation | Training + UI wording + review checklist |
-| Reviewer rubber-stamping | 3 | 5 | 15 | Human gate exists | Reviewer standard + sampling + override monitoring |
-| LLM invents movement/content detail | 3 | 4 | 12 | Structured contract + biomechanics gate | Human semantic review |
-| Unsupported developmental claim | 2 | 5 | 10 | Claim checks | Reviewer policy + incident monitoring |
-| Future child-assessment scope creep | 3 | 5 | 15 | Current explicit exclusion | Product change gate |
-| CV performs unevenly across conditions/performers | 3 | 4 | 12 | Review needed/fail states | Broader pilot testing |
-| Schools misunderstand AI's role | 3 | 3 | 9 | Simplified school UI | AI literacy / onboarding |
-| Family perceives AI content as professional/clinical advice | 2 | 4 | 8 | Bounded family copy | Clear positioning |
-| Personal data enters LLM workflow | 2 | 5 | 10 | Not required by architecture | Technical/policy prohibition |
-| Accountability unclear after incident | 3 | 4 | 12 | Role separation concept | Named owners + incident process |
-| Engagement analytics become child/family profiling | 2 | 4 | 8 | Aggregate model proposed | Privacy/product governance |
-| Vendor/model change alters behavior | 3 | 3 | 9 | Config/version fields | Formal change control |
-
----
-
-# 19. Trustworthy AI assessment matrix
-
-| ALTAI area | Status | Strongest current evidence | Main gap | Pilot action |
-|---|---|---|---|---|
-| Human agency & oversight | **Partial evidence** | Logical human publication gate | No production reviewer process; rubber-stamping risk | Formal reviewer process |
-| Technical robustness & safety | **Partial evidence** | Real local run, errors, Pass/Review/Fail | Small evidence base/runtime constraints | Broader testing |
-| Privacy & data governance | **Partial evidence** | No child video, separable identity/content | Real pilot controls not implemented | GDPR/DPIA gate |
-| Transparency | **Evidence present** | Honest status/mode documentation | User/operator training | Role-specific explanations |
-| Fairness & non-discrimination | **Pilot control required** | No child decisions | Insufficient representative performance evidence | Test conditions/performers/accessibility |
-| Societal well-being | **Partial evidence** | No clinical/developmental claims intended | Must monitor positioning/use | Pilot feedback |
-| Environmental well-being | **Measurement gap** | Deterministic-first approach | Energy/carbon not quantified | Green AI measurement plan |
-| Accountability | **Operational gap** | Clear conceptual role boundaries | No formal reviewer/audit identities | Named owners + logs |
-| AI literacy | **Operational gap** | Documentation exists | Training evidence missing | Complete before pilot |
-
----
-
-# 20. Pilot Responsible AI gates
-
-## Must resolve before pilot
-
-1. Reviewer role and competence.
-2. Review checklist.
-3. AI literacy briefing.
-4. Clear definition of technical metric meanings.
-5. Explicit prohibited-use list.
-6. No-personal-data LLM/LangSmith rule.
-7. Reference provenance.
-8. Incident/escalation owner.
-9. Product-change classification trigger.
-10. Pilot sign-by-sign evidence review.
-
----
-
-## Monitor during pilot
-
-- Review needed frequency;
-- approval overrides;
-- reviewer time;
-- rejected content;
-- user misunderstanding;
-- complaints;
-- accessibility/inclusion issues;
-- unexpected CV failure patterns;
-- generated-content changes;
-- misuse attempts.
-
----
-
-## Stop / escalate criteria
-
-Stop or pause the affected workflow if:
-
-- AI output is presented as child assessment;
-- a sign reaches users without required review;
-- unapproved movement instruction is generated;
-- child personal data enters an unapproved AI service;
-- repeated CV failures are hidden by manual approval;
-- a reviewer cannot explain why an asset was approved;
-- material user harm or serious misleading content is identified.
-
----
-
-# 21. Responsible AI KPIs for pilot
-
-| KPI | Target |
-|---|---|
-| Content reaching families without human approval | **0** |
-| Child assessment/scoring events | **0** |
-| Child video processed | **0** |
-| Personal-data LLM inputs | **0** |
-| Technical metrics labelled as sign accuracy | **0** |
-| Pilot operators completing AI literacy | **100%** |
-| Review-needed approvals with recorded rationale | **100%** |
-| Critical content issues unresolved at release | **0** |
-| Sign assets with documented source/provenance | **100%** |
-| Material AI incidents with documented follow-up | **100%** |
-
----
-
-# 22. Change-control triggers
-
-A Responsible AI reassessment is required when:
-
-- MediaPipe/model version changes;
-- quality thresholds change;
-- LLM provider/model changes;
-- prompts materially change;
-- new generated content type is introduced;
-- child video is proposed;
-- child performance is proposed;
-- recommendation/scoring is added;
-- emotion or biometric inference is proposed;
-- school/family data enter AI processing;
-- automatic publication is proposed.
-
----
-
-# 23. What KinderFlow should say
-
-## Safe
-
-> KinderFlow uses Computer Vision to represent movement from validated adult reference material and uses human review before content becomes available. AI-assisted wording can support content production, but it does not assess children or determine whether a sign is linguistically correct.
-
----
-
-## Avoid
-
-> AI validates the sign.
-
-> AI checks whether children sign correctly.
-
-> The system is unbiased.
-
-> Human review guarantees correctness.
-
-> The quality gate guarantees safe content.
-
-> 93.98% accuracy.
-
----
-
-# 24. Slide-ready summary
-
-| Question | Answer |
-|---|---|
-| What is AI allowed to do? | Support movement representation and bounded content drafting |
-| What is AI not allowed to do? | Assess children, certify sign correctness or publish autonomously |
-| Main human control | Review before publication |
-| Main automation-bias risk | Technical PASS being mistaken for professional correctness |
-| Main LLM risk | Authoritative-sounding unsupported content |
-| Main fairness gap | Broader CV evidence across performers/conditions is still needed |
-| Main accountability gap | Formal reviewer identity/escalation process |
-| Responsible AI decision | **PROCEED WITH CONDITIONS** |
-
----
-
-# 25. Bottom line
-
-## Assessment
-
-**PROCEED WITH CONDITIONS**
-
-Kinder Signs has a comparatively strong Responsible AI architecture for an early MVP because it has deliberately limited what AI is allowed to decide.
-
-The most important design choices are already visible:
-
-- Computer Vision supports movement representation rather than child assessment;
-- technical evidence is not described as linguistic correctness;
-- child video is excluded;
-- Generative AI is not used where deterministic logic is sufficient;
-- content generation is separated from publication;
-- human review remains mandatory.
-
-The main risk now is **human interpretation**.
-
-A polished interface, a PASS label or a percentage can create more confidence than the underlying evidence supports.
-
-Therefore the next governance step is not to add more AI.
-
-It is to make review, responsibility, evidence limits and escalation operationally real.
-
-The product should preserve this rule throughout pilot and production:
-
-> **AI may prepare evidence or content. A qualified human remains responsible for what KinderFlow approves and distributes.**
-
----
-
-# 26. Official framework sources
-
-1. European Commission — Assessment List for Trustworthy Artificial Intelligence (ALTAI)  
-   https://digital-strategy.ec.europa.eu/en/library/assessment-list-trustworthy-artificial-intelligence-altai-self-assessment
-
-2. European Commission — Ethics Guidelines for Trustworthy AI  
-   https://digital-strategy.ec.europa.eu/en/library/ethics-guidelines-trustworthy-ai
-
-3. UNESCO — Recommendation on the Ethics of Artificial Intelligence  
-   https://www.unesco.org/en/artificial-intelligence/recommendation-ethics
-
----
-
-# 27. Related KinderFlow governance documents
-
-This audit should be read together with:
-
-- `compliance/eu_ai_act_compliance.md`
-- `compliance/gdpr_documentation.md`
-- `roi_risk_assessment.md`
-- `docs/audits/green_ai_audit.md` — next audit
-- `strategic_plan.md` — pilot governance and go/no-go controls
-
----
-
-# 28. Repository evidence used
-
-Assessment aligned to:
-
-`661c027 — Build Round 2 KinderFlow MVP and UX`
-
-Relevant evidence:
-
-- `mvp/mvp_documentation.md`
-- `content_ops/`
-- `workflow/kinder_signs_n8n_workflow.md`
-- `prototype/README.md`
-- `prototype/create-sign.*`
-- `prototype/flashcards.*`
-- `prototype/school.*`
-- `prototype/family.html`
-
-Key repository facts reflected here:
-
-- real adult-reference MediaPipe processing works locally;
-- Computer Vision status does not set publication;
-- technical metrics are not sign correctness;
-- Content Pack generation is human or LLM-assisted;
-- deterministic quality gates are separate from human review;
-- LangSmith applies only to LLM wording/observability;
-- LLM dry-run is explicitly distinguished from live execution;
-- unreviewed content cannot populate the reviewed Flashcard handoff;
-- child video and child assessment are outside the product;
-- production reviewer identity, persistence and audit trail are not yet implemented.
+- [Current MVP reality check](../mvp_reality_check.md)
+- [Local MVP code](../../mvp/)
+- [Current MVP tests](../../mvp/tests/)
+- [Canonical sign asset registry](../../assets/registry/sign_asset_registry.json)
+- [Generated asset inventory](../../assets/registry/sign_asset_inventory.md)
+- [Source and asset provenance](../../assets/registry/source_assets_provenance.md)
+- [Open Peeps provenance](../../assets/flashcards/open_peeps/provenance.json)
+- [Visual sign packages](../../prototype/data/visual_sign_packages.json)
+- [Content operations reports](../../content_ops/reports/)
+- [LangSmith dry-run](../../workflow/langsmith_dry_run_summary.json)
+- [n8n workflow documentation](../../workflow/kinder_signs_n8n_workflow.md)
+- [GDPR record](../../compliance/gdpr_documentation.md)
+- [EU AI Act assessment](../../compliance/eu_ai_act_compliance.md)

@@ -1,103 +1,274 @@
-# KinderFlow Create a Sign MVP
+# KinderFlow local MVP guide
 
-This local MVP serves two connected internal capabilities: the existing Create a Sign movement workflow and a governed Content Pack service. It reuses the Round 1 POC and the shared `content_ops` contracts rather than duplicating either method.
+## Scope
 
-## Requirements
+The local service connects three internal prototype areas:
 
-- the existing `poc_env` with Python 3.9.6;
-- MediaPipe 0.10.14 using the legacy Solutions API;
-- ffmpeg with an H.264 encoder available on PATH;
-- an MP4 reference video supplied as a local upload or a public direct-video URL; and
-- the local MORE reference at *../resources/video_input/more.mp4* for the current demo-reference path.
+- Create a Sign reference processing and visual preparation;
+- governed Content Pack generation and review; and
+- the static KinderFlow product routes.
 
-Do not upgrade or replace this environment for the current prototype. The machine's default Python/MediaPipe installation is not equivalent to the validated local path.
+It reuses the Round 1 POC and Content Operations contracts. It does not publish a sign or deliver content to a real school or family.
+
+## Evidenced environment
+
+The frozen local environment uses:
+
+- Python 3.9.6;
+- MediaPipe 0.10.14 with the legacy Solutions API;
+- OpenCV through the POC requirements;
+- ffmpeg 8.1.2 with an H.264 encoder; and
+- the repository-local poc_env.
+
+Python 3.11 or 3.12 remains the preferred clean-environment target, but that setup was not revalidated in this evidence pass. The local MediaPipe runtime may require a macOS graphics context even when inference uses the CPU delegate.
+
+The demo shortcut also requires the local, ignored MORE file registered at ../resources/video_input/more.mp4.
 
 ## Start
 
 From the repository root:
 
-~~~bash
-source poc_env/bin/activate
-python mvp/app.py
-~~~
+    poc_env/bin/python mvp/app.py
 
-Open [http://127.0.0.1:8000/create-sign.html](http://127.0.0.1:8000/create-sign.html).
+Open http://127.0.0.1:8000/create-sign.html.
 
-The service also serves the existing prototype routes, including the Flashcard Builder.
+The service root at http://127.0.0.1:8000 also opens create-sign.html.
 
-## Generate Content Pack API
+## Page routes
 
-`POST /api/content-packs/generate` accepts one `GENERATE_CONTENT_PACK` request containing canonical structured sign context and `generation_method` set to `human` or `llm_assisted`.
+The service exposes these prototype files:
 
-- Human mode packages the existing human-authored source and marks LangSmith `NOT_APPLICABLE`.
-- LLM-assisted mode calls the configured OpenAI model when provider credentials and the optional dependency are available.
-- Without provider credentials, the same request runs as deterministic `DRY_RUN`.
-- Every attempt is stored under an isolated ignored `mvp/runs/content_packs/content_.../` directory.
-- Deterministic checks run before review. They are not replaced by LangSmith.
+- /index.html: KinderFlow platform overview;
+- /kinder-signs.html: Kinder Signs product overview;
+- /admin.html: KinderFlow Team operations overview;
+- /content-studio.html: internal workspace selector;
+- /create-sign.html: connected reference and visual flow;
+- /library.html: content and readiness review;
+- /flashcards.html: Flashcard and Routine Card builder;
+- /print-card.html: A5 print proof;
+- /create-story.html: deterministic MORE story prototype;
+- /create-song.html: Coming soon page;
+- /school.html: Little Steps Nursery assignment demonstration; and
+- /family.html: family-facing preview.
+
+## Create a Sign path
+
+The visible five-step flow is:
+
+1. Sign & reference.
+2. Review reference.
+3. Choose poses.
+4. Approve visual.
+5. Family materials.
+
+Choose MORE, HELP, EAT, SLEEP, MILK, or WATER. Add a source with Upload a video or Use a direct video URL, or select the separate Use demo reference shortcut. Then select Review the sign reference.
+
+The interface compares Reference video and Pose preview. Technical and source details contains:
+
+- Frames analysed;
+- Pose detection coverage;
+- Dominant-hand detection coverage;
+- Missing hand frames;
+- Unresolved frames; and
+- Processing duration.
+
+The operator result is Pass, Review needed, or Fail. Raw extraction and motion-representation statuses remain visible separately.
+
+### Evidence routes
+
+- Use tracked poses is available when dominant-hand coverage is at least 90%.
+- Choose reference frames accepts one or two generated frame suggestions.
+- Use reviewed references requires a written rationale.
+- EAT can remain Review needed and use the reviewed-reference route when near-face occlusion produces partial but usable evidence.
+
+The action is Create family materials.
+
+### Visual review
+
+Create visual options loads two deterministic draft SVGs for the selected sign. Create another visual option requests one distinct registered SVG with a new ID, path, version, and verified hash. This action does not call a paid or external generator.
+
+Approve selected visual records APPROVED_FOR_INTERNAL_PRINTABLE in browser session storage. The record still has publication_status DRAFT. It is not professional approval or library publication.
+
+## Reference input boundaries
+
+### Upload
+
+- MP4 is the supported format.
+- The maximum request body is 100 MB plus multipart overhead.
+- The file is written under a generated mvp/runs directory.
+- Run artifacts are ignored by Git.
+- Filenames are sanitized for display and do not determine the run path.
+
+### Demo shortcut
+
+Use demo reference processes the registered local MORE input through the same pipeline. The shortcut fixes the selected identity to MORE. The product does not infer identity from frames.
+
+### Direct video URL
+
+Use a direct public MP4 URL only. The backend:
+
+- accepts http or https on the default ports;
+- rejects credentials, fragments, control characters, local names, private addresses, reserved addresses, and unsafe DNS results;
+- pins each connection to a validated public address;
+- follows no more than three redirects and validates every hop;
+- rejects an HTTPS to HTTP downgrade;
+- disables environment proxies;
+- accepts video/mp4 or application/mp4 responses;
+- enforces declared and streamed size limits of 100 MB;
+- applies a 12-second total retrieval deadline;
+- writes to a temporary staging file;
+- deletes partial files on failure; and
+- stores redacted provenance without credentials, query parameters, or fragments.
+
+This is a bounded media fetcher, not a generic webpage scraper or permission check.
+
+## Processing
+
+Each run receives a generated identifier and isolated directory. Processing is serialized to protect the legacy MediaPipe runtime.
+
+The pipeline:
+
+1. validates the input;
+2. extracts pose and hand landmarks;
+3. creates an OpenCV landmark overlay;
+4. normalizes hand coordinates to shoulder midpoint and width;
+5. identifies missing intervals;
+6. interpolates only internal gaps of no more than three frames;
+7. applies centered three-frame smoothing;
+8. writes diagnostic JSON and plots;
+9. selects four reference-frame suggestions when available; and
+10. transcodes the overlay to browser-compatible H.264, yuv420p, fast-start MP4.
+
+If ffmpeg or H.264 encoding fails, the run stops with a controlled preview error. Raw paths and tracebacks are not returned to the browser.
+
+## Status model
+
+Pass requires EXTRACTION_PASS and PASS across automated quality dimensions A to E.
+
+Review needed means extraction produced usable movement evidence but one or more automated dimensions is PARTIAL, or an explicit sign-aware exception applies.
+
+Fail means extraction or motion representation failed, or an automated quality dimension failed outside an allowed sign-aware case.
+
+Content state, visual state, printable eligibility, publication, and school availability are separate. Computer Vision never sets Published.
+
+## Evidence from distinct runs
+
+### Versioned WATER diagnostics
+
+The committed Round 1 JSON and plots report:
+
+- 332 frames;
+- 100.00% pose coverage;
+- 93.98% dominant right-hand coverage;
+- 20 missing hand frames;
+- 1 interpolated frame;
+- 19 unresolved frames;
+- EXTRACTION_PASS; and
+- MOTION_REPRESENTATION_PARTIAL.
+
+The local source MP4 is ignored by Git. The versioned artifacts and registry identify the result as WATER.
+
+### Ignored local MORE run
+
+The successful run at mvp/runs/run_20260904T061136125509Z_eb661bc3/run.json reports:
+
+- 285 frames;
+- 100.00% pose coverage;
+- 91.93% dominant-hand coverage;
+- 25 missing hand frames;
+- 4 interpolated frames;
+- 21 unresolved frames;
+- EXTRACTION_PASS;
+- MOTION_REPRESENTATION_PARTIAL; and
+- 8.37 seconds of local pipeline processing.
+
+This directory is ignored. Cite it only as local run evidence.
+
+### Headless integration result
+
+On 4 September 2026, the opt-in demo integration failed before frame processing because MediaPipe could not create an NSOpenGLPixelFormat in the current headless macOS session. The service returned a controlled processing_error. A normal unlocked desktop session is required for this local runtime, or the runtime must be redesigned and validated for hosting.
+
+## Illustrative Gemini FX videos
+
+Registered local mappings are:
+
+- MORE to mas.mp4;
+- HELP to ayuda.mp4; and
+- MILK to leche.mp4.
+
+EAT, SLEEP, and WATER have no current Gemini FX output.
+
+These videos were prepared separately as illustrative motion previews. They are not generated automatically from the current MediaPipe run or its landmarks. The service exposes a file only after path, size, sign mapping, type, and SHA-256 match the registry. Usage rights, external-display permission, fidelity, and professional suitability remain unresolved.
+
+## Family-material handoff
+
+After local visual approval:
+
+- Flashcard and Routine Card offer Bilingual or Spanish proofs;
+- print-card.html provides an A5 browser Print or Save as PDF route;
+- Story provides a deterministic English or Spanish draft for MORE only; and
+- Song remains Coming soon.
+
+There is no PNG export, server PDF service, or live LLM call from the Story page.
+
+## Content Pack API
+
+POST /api/content-packs/generate accepts a GENERATE_CONTENT_PACK object under the shared schema.
+
+- Human mode packages approved human-authored source and records LangSmith as NOT_APPLICABLE.
+- LLM-assisted mode can call a configured OpenAI model when optional dependencies and credentials are present.
+- Without provider credentials, the request returns explicit DRY_RUN evidence.
+- Every attempt is stored under an isolated ignored mvp/runs/content_packs directory.
+- Deterministic checks run before human review.
 
 Review endpoints:
 
-```text
-POST /api/content-packs/<run_id>/approve
-POST /api/content-packs/<run_id>/request-changes
-POST /api/content-packs/<run_id>/restore
-GET  /api/content-packs/<run_id>
-```
+- POST /api/content-packs/{content_id}/approve
+- POST /api/content-packs/{content_id}/request-changes
+- POST /api/content-packs/{content_id}/restore
+- GET /api/content-packs/{content_id}
 
-Approval records the generic actor type `human_reviewer` and creates a reviewed content version. Printable creation remains unavailable until the same sign also has an approved visual. It does not publish anything. Repeated approval of the same run is idempotent.
+Local approval records the generic actor type human_reviewer and creates a reviewed content version. It does not publish a library item.
 
-The server loads only allowlisted provider settings from the ignored repository `.env` when present. No key is returned, printed or written into a run. `OPENAI_MODEL` controls the model configuration.
-
-## Demonstration paths
-
-- **Demo reference:** choose **Use demo reference**, then **Review the sign reference**. This processes the registered MORE reference through the real pipeline and keeps the selected identity fixed to MORE. The product does not infer a sign from the video.
-- **Uploaded reference:** choose **Upload a video** and select another validated MP4. Metrics and artifacts are calculated for that upload.
-- **Direct video URL:** choose **Use a direct video URL** and provide one public `http` or `https` URL that responds with MP4 video bytes. The backend retrieves the video into the same isolated run structure before processing it; the browser does not proxy, scrape or hot-link the source.
-
-MP4 is the supported MVP format. Uploads are limited to 100 MB, remain local and are stored under a generated *mvp/runs/run_...* directory. Run artifacts are ignored by Git. The canonical Round 1 files in *poc/output* are not overwritten.
-
-Direct-URL retrieval fails closed. It rejects credentials, fragments, nonstandard ports, local/private/reserved destinations, unsafe DNS results and HTTPS-to-HTTP redirects. Each connection is pinned to the public address already validated for that hop; redirects are followed manually and revalidated, and environment proxies are disabled. The request has a total deadline, both declared and streamed size are capped at 100 MB, and the response must identify as MP4 video. Query tokens are removed from stored provenance, the destination filename is generated by the service, and partial files are deleted on failure. This is a bounded local MVP control, not a complete production fetch service or permission check; use only a source you are authorized to review.
+## Reference and asset API
 
 Reference-run endpoints:
 
-```text
-POST /api/runs       multipart upload or registered demo shortcut
-POST /api/runs/url   JSON direct-video URL intake
-```
+- POST /api/runs/demo
+- POST /api/runs/upload
+- POST /api/runs/url
+- GET /api/runs/{run_id}
+- GET /runs/{run_id}/{artifact}
 
-MediaPipe/OpenCV first writes the real landmark overlay as an intermediate MPEG-4 Part 2 file. The MVP then uses ffmpeg to create a browser-facing H.264 MP4 with yuv420p pixel format and fast-start metadata. MediaPipe is not rerun. If ffmpeg or H.264 encoding is unavailable, the run stops with a controlled preview error rather than presenting an unplayable video.
+Asset endpoints:
 
-## Operator-facing status and evidence routes
+- GET /api/illustrative-videos
+- GET /api/illustrative-videos/{sign}
+- GET /api/visual-assets/open-peeps
+- POST /api/visual-candidates/regenerate
+- GET /api/health
 
-- **Pass:** extraction is EXTRACTION_PASS and all five automated POC quality dimensions are PASS.
-- **Review needed:** extraction produced usable movement data with conditions, or a sign-aware exception applies. EAT at 65–80% dominant-hand coverage with strong pose coverage remains reviewable because near-face occlusion is expected.
-- **Fail:** extraction is unusable outside an explicit sign-aware exception. Visual-package availability is reported separately and is not a MediaPipe result.
+## Verification
 
-The POC's raw statuses remain available under technical details. Proceed with conditions is not shown as the main operator status.
+Run the standard suites from the repository root:
 
-The visual flow records one explicit route: `LANDMARK_KEY_POSE`, `HUMAN_SELECTED_FRAME`, `KNOWLEDGE_REFERENCE_FALLBACK`, or the last-resort `INTERNAL_POSE_GUIDE`. Review-needed video can expose four selectable frame suggestions. Grounded fallback requires a rationale. The observed local EAT reference returns **Review needed** at 76.57% dominant-hand coverage and can continue through grounded fallback.
+    poc_env/bin/python -m unittest discover -s content_ops/tests -v
+    poc_env/bin/python -m unittest discover -s mvp/tests -v
+    poc_env/bin/python -m unittest discover -s poc/tests -v
+    poc_env/bin/python -m unittest discover -s prototype/tests -v
+    poc_env/bin/python -m unittest discover -s tools/tests -v
 
-After the operator accepts a pose, the page can show a separate illustrative motion preview registered for that exact sign. The only current mappings are MORE → `mas.mp4`, HELP → `ayuda.mp4`, and MILK → `leche.mp4`; EAT, SLEEP and WATER intentionally show the missing-preview state. The browser receives only `/api/illustrative-videos/<sign>` URLs after the service verifies the registered path, size and SHA-256. These pre-generated Google Labs FX / Gemini FX files were prepared separately: they are not generated by the current run, not driven by its landmarks, not certified, and still require human review. Registry usage permission remains unconfirmed, so confirm rights before any external demonstration or distribution.
+Verified result on 4 September 2026:
 
-Visual approval records **Approved for internal printable** in session state. It does not certify the sign or publish the asset. The Flashcard Studio hands off to a dedicated A5 route so Flashcards and Routine Cards print as one deterministic portrait card.
+- Content Operations: 35 passed;
+- MVP: 44 passed and one skipped;
+- POC: 6 passed;
+- prototype: 80 passed;
+- tools: 18 passed; and
+- total: 184 run, 183 passed, one skipped.
 
-For live presentations, keep a short screen recording of the completed demo flow as a fallback. The recording should show the input, stage progression, visual comparison, metrics and review boundary without including private filesystem paths.
+The skipped integration invokes private local media and MediaPipe. Its separate headless failure is documented above.
 
-The current app sample is MORE reference material, not a production library asset. Its sign identity is confirmed by its byte-for-byte match with the registered MORE input. The committed POC reference and Round 1 diagnostics remain supporting WATER evidence and are never relabelled. Confirm source rights and presentation permission before showing either reference or overlay externally; otherwise replace it with an owned or appropriately licensed reviewed reference.
+## Production gaps
 
-## Tests
-
-~~~bash
-python -m unittest discover -s mvp/tests -v
-python -m unittest discover -s poc/tests -v
-~~~
-
-The real demo-reference integration test is opt-in because it runs MediaPipe:
-
-~~~bash
-KINDERFLOW_RUN_INTEGRATION=1 python -m unittest mvp.tests.test_mvp.DemoIntegrationTest -v
-~~~
-
-## Boundaries
-
-The technical result answers whether the captured movement produced usable structured evidence for review. It does not certify linguistic sign correctness. Movement review and content review remain separate, and human review remains the publication gate. LangSmith can trace only LLM wording; it does not evaluate MediaPipe or movement. Local review controls are demo state only; no authentication, database, cloud storage, automatic publication, production avatar or child-video processing is implemented.
+The service has no authentication, production database, reviewer identity, tenant isolation, cloud store, enforced retention policy, real publication, school integration, family accounts, notifications, payment, or production monitoring. It processes adult references only and performs no child scoring, language recognition, or autonomous educational decision.

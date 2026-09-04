@@ -1,76 +1,135 @@
-# Kinder Signs system in one page
+# Kinder Signs system summary
 
-This is an evidence summary, not final submission copy.
+## Product
 
-## Problem
+Kinder Signs is KinderFlow's first active AI-enabled product. The proposition is a centrally governed Signs and Flashcards Library that helps a nursery introduce a sign in context and gives families simple material for the same routine.
 
-Some nursery schools use signs in class, while families may receive little or mismatched guidance for using the same sign at home. Existing content does not automatically create continuity between a school routine and family practice.
+The current repository is a local prototype. It does not yet operate as a production library or delivery service.
 
-## Solution
+## Product roles
 
-Kinder Signs is a school-led Signs & Flashcards Library. Kinder Signs prepares and governs the content centrally. An educator selects an available sign and assigns it to a group or child. The family receives the matching short guidance and printable material.
+- KinderFlow prepares reference evidence, content, draft visuals, and publication records.
+- A qualified reviewer must assess movement, hand pose, wording, and suitability before release.
+- Little Steps Nursery represents the school buyer and educator workflow with synthetic data.
+- The family page demonstrates basic guidance and materials.
 
-## How it works
+A family-facing guidance prototype exists. A personalised assignment-driven family library remains a next product iteration.
 
-```text
-Validated reference video
-→ movement extraction and technical checks
-→ content and visual preparation
-→ human review
-→ published library item
-→ school assignment
-→ family output
-```
+## Current local flow
 
-One published source can support a video interface, flashcards and later approved derivative content. The school does not upload reference videos or manage the production workflow.
+    Choose one of six signs
+    → add an adult reference by upload, direct MP4 URL, or MORE demo shortcut
+    → select Review the sign reference
+    → inspect reference and pose preview
+    → inspect coverage and gap evidence
+    → choose tracked poses, reference frames, or reviewed references
+    → create and review deterministic visual options
+    → record local internal-printable approval
+    → open a Flashcard, Routine Card, or MORE Story proof
 
-## AI role
+The Create a Sign page presents five steps: Sign & reference; Review reference; Choose poses; Approve visual; Family materials.
 
-- Computer Vision turns observed reference movement into landmarks, a skeleton preview and technical diagnostics.
-- An LLM may help draft short family wording from supplied source content.
-- LangSmith can trace and evaluate only that LLM-assisted wording.
-- n8n can move structured information through defined workflow steps.
+## Technical evidence
 
-AI does not certify sign correctness or publish content on its own.
+### Versioned WATER evidence
 
-## Human role
+The committed Round 1 JSON diagnostics and plots describe WATER:
 
-A qualified person must confirm the source and content before publication. Human control is also required when technical evidence needs interpretation. The repository models this gate but does not implement production reviewer identity or authentication.
+- 332 processed frames;
+- 100.00% pose coverage;
+- 93.98% dominant right-hand coverage;
+- 20 missing hand frames;
+- 1 interpolated frame;
+- 19 unresolved frames;
+- EXTRACTION_PASS; and
+- MOTION_REPRESENTATION_PARTIAL.
 
-## School role
+The local source video is ignored by Git. The versioned evidence files and registry preserve its identity and measured results.
 
-The school selects from content it is entitled to use, assigns it to groups or a fictional child profile, and uses it in routines. It does not create videos, run Computer Vision or approve master content.
+### Local MORE evidence
 
-## Family role
+One successful ignored MORE run records:
 
-Families receive the same sign label, routine context, short guidance and optional printable material. The family view contains no technical AI language and makes no clinical or developmental claim.
+- 285 processed frames;
+- 100.00% pose coverage;
+- 91.93% dominant-hand coverage;
+- 25 missing dominant-hand frames;
+- 4 interpolated frames;
+- 21 unresolved frames;
+- EXTRACTION_PASS; and
+- MOTION_REPRESENTATION_PARTIAL.
 
-## What is working today
+This is local run evidence, not committed proof. A fresh opt-in integration run failed before frame processing in the current headless session because MediaPipe could not create the required graphics context.
 
-- Local MP4 upload and the existing MediaPipe processing pipeline.
-- Run-specific landmarks, diagnostics, metrics and landmark-overlay video.
-- A reproducible sample path for the known reference video.
-- A deterministic Flashcard Studio with Spanish/English content, three layouts, A6/A5 options and browser print.
-- Deterministic content, asset and publication checks with automated tests.
-- A five-sign engineering regression set and versioned local package output.
-- A keyless LangSmith dry-run and deterministic LLM-output quality gate.
+Computer Vision supports movement review. It does not identify or certify a sign.
 
-## What is still pending
+## Visual and family-material state
 
-- Confirmed source rights, sign identity and professional review for publishable material.
-- Final character artwork and reviewed sign-specific hand assets.
-- Production avatar generation and movement-fidelity testing.
-- Persistent publishing, user accounts, permissions, hosted storage and integrations.
-- Live LangSmith evidence and a tested n8n runtime execution for content operations.
-- Real school/family use and commercial evidence.
+The visual registry contains six signs and 18 deterministic Open Peeps-derived SVG options. Each sign has two initial options and one additional local option. All options need qualified human review. No sign has a reviewed visual, distributable Flashcard, distributable Routine Card, publication approval, or school availability in the registry.
 
-## What the pilot must prove
+The character controls the look. The reviewed reference controls the mechanics.
 
-- Educators can assign content with little additional effort.
-- Families open and use the material.
-- Several signs can pass through the same controlled production process.
-- Technical capture works across more references and conditions.
-- Professional review is operationally feasible.
-- A school payer sees enough value to continue and the economics are credible.
+Current material routes:
 
-No real pilot has taken place yet.
+- Flashcard: deterministic Bilingual or Spanish proof;
+- Routine Card: deterministic Bilingual or Spanish proof;
+- Story: deterministic local English or Spanish draft for MORE only;
+- Song: Coming soon; and
+- print: browser Print or Save as PDF through the A5 proof route.
+
+There is no PNG export and no completed saved-PDF visual quality check.
+
+## Illustrative motion previews
+
+Three local Gemini FX files are registered:
+
+- MORE maps to mas.mp4;
+- HELP maps to ayuda.mp4; and
+- MILK maps to leche.mp4.
+
+EAT, SLEEP, and WATER have no current Gemini FX preview.
+
+These videos were prepared separately as illustrative motion previews. They are not generated automatically from the current MediaPipe run or its landmarks. Rights, external-display permission, movement fidelity, and professional suitability remain unresolved.
+
+## Content and orchestration evidence
+
+The five-record Content Operations set covers MORE, EAT, WATER, ALL DONE, and HELP. It is a wording and readiness regression set, not the six-sign visual catalog. All five records are blocked from publication.
+
+The repository contains:
+
+- deterministic quality-gate code and passing sample evidence;
+- human and optional LLM-assisted content-pack paths;
+- LangSmith dry-run evidence for the optional wording step;
+- an exact, inactive n8n workflow export; and
+- no live external LLM trace or target-runtime n8n execution record.
+
+## School and family prototype
+
+The Little Steps Nursery route uses three synthetic groups and six fictional child records. It supports sign, group, materials, and audience selection, duplicate control, and assignment edit or removal. Assignments remain in browser session storage.
+
+The family route can read that session state and filter or combine relevant assignments. It also supplies a synthetic MORE fallback when no assignment state exists. This behavior demonstrates interface logic only. It does not provide identity, authorisation, real delivery, persistence, or notifications.
+
+## Evidence status
+
+Working locally:
+
+- MediaPipe extraction and movement diagnostics;
+- bounded upload and direct-MP4 intake;
+- reference and pose previews;
+- human-selectable evidence routes;
+- deterministic visual options;
+- local printable and story proofs;
+- deterministic content checks; and
+- session-based school and family demonstrations.
+
+Pending:
+
+- owned or confirmed presentation rights;
+- qualified sign, hand-pose, visual, and content review;
+- a production avatar tied to reviewed landmarks;
+- published library assets;
+- real accounts, access control, storage, delivery, and audit records;
+- live n8n and LangSmith evidence;
+- a personalised family mini-library;
+- a live pilot; and
+- commercial validation.
